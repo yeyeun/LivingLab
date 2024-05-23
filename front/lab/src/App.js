@@ -7,8 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload. <br></br>
-          5/23일 목요일 자취연구소 깃허브 협업작업 시작 (준현)
+          git test ho Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
           className="App-link"
