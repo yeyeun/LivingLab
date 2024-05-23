@@ -1,13 +1,16 @@
 import logo from "./logo.svg";
 import "./App.css";
+import { RouterProvider } from "react-router-dom";
+import root from "./router/root";
+
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
+          git test ho
           Edit <code>src/App.js</code> and save to reload.
-          깃허브 작업시작(정운)
         </p>
         <a
           className="App-link"
