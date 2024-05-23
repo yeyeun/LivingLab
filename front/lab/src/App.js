@@ -9,6 +9,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>5/23 오후 3시 2조 git 연습</p>
+        <p>update, pull 완료(정운)</p>
         <a
           className="App-link"
           href="https://reactjs.org"
