@@ -14,7 +14,7 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        "[format_sql]": true
+        '[format_sql]': true
 
   servlet:
     multipart:
@@ -23,6 +23,13 @@ spring:
 
 # warning 발생 시 setting에서 설정 변경
 com:
-  conan:
+  mlp:
     upload:
       path: upload
+
+logging:
+  level:
+    com:
+      springframework:
+        security:
+          web: trace
