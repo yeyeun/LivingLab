@@ -40,7 +40,7 @@ public class CustomSecurityConfig {
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
-    
+
     CorsConfiguration configuration = new CorsConfiguration();
 
     configuration.setAllowedOriginPatterns(Arrays.asList("*"));
@@ -54,14 +54,3 @@ public class CustomSecurityConfig {
     return source;
   }
 }
-
-
-// @Override
-// public void addCorsMappings(CorsRegistry registry) {
-
-//     registry.addMapping("/**")
-//             .allowedOrigins("*")
-//             .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS")
-//             .maxAge(300)
-//             .allowedHeaders("Authorization", "Cache-Control", "Content-Type");
-// }

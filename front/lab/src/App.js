@@ -7,7 +7,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <RouterProvider router={root} />   */
-}
