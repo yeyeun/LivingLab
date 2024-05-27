@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.mlp.lab.controller.formatter.LocalDateFormatter;
 
+// CORS: 웹 브라우저에서 다른 출처(origin)의 리소스를 요청할 수 있도록 하는 메커니즘
 @Configuration
 public class CustomServletConfig implements WebMvcConfigurer {
   @SuppressWarnings("null")
