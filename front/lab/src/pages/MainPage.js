@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import BasicLayout from '../layouts/BasicLayout';
 import MultipleItems from '../components/products/MultipleItemsComponent';
 
