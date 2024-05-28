@@ -34,7 +34,7 @@ const Header = () => {
               </Link>
             </li>
             <li className="pr-10">
-              <Link to={'/livingRoom'} className="menu-hover">
+              <Link to={'/shareRoom'} className="menu-hover">
                 자취방쉐어
               </Link>
             </li>

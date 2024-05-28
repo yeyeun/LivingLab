@@ -1,5 +1,4 @@
 import JoinComponent from '../../components/member/JoinComponent';
-import BasicMenu from '../../components/menus/BasicMenu';
 import BasicLayout from '../../layouts/BasicLayout';
 
 const JoinPage = () => {

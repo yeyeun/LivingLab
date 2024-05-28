@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{js, jsx, ts, tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        NotoSansKR : ["Noto Sans KR", "sans-serif"],
+        Jua : ["Jua", "sans-serif"]
+      },
+    },
   },
   plugins: [],
 };
