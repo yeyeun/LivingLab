@@ -1,4 +1,3 @@
-import BasicMenu from '../components/menus/BasicMenu';
 import Header from '../components/menus/Header';
 import Footer from '../components/menus/Footer';
 
