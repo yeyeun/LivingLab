@@ -1,4 +1,5 @@
 import ListComponent from '../../components/common/ListComponent';
+import SearchComponent from '../../components/common/SearchComponent';
 
 const ListPage = () => {
   return (
@@ -7,6 +8,7 @@ const ListPage = () => {
       공동구매
     </div>
     <div className="m-auto bg-slate-200 w-2/5 rounded-md px-10 py-4">
+      <SearchComponent/>
       <ListComponent />
       <ListComponent />
       <ListComponent />
