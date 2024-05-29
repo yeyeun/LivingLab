@@ -21,23 +21,14 @@ public class User {
     @Id //기본키(PK) 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     private String email;
     private String pwd;
     private String name;
-    private String phone;
     private String addr;
-    private String birth;
+    private String phone;
     private String nickname;
     private String profileImage;
-
-    public void setNickname(String nickname) {  //닉네임 변경
-        this.nickname = nickname;
-    }
-
-    public void setPwd(String pwd) { //비밀번호 변경
-        this.pwd = pwd; 
-    }
 
     //static으로 만들어 클래스를 만들지 않아도 사용가능
     public static User createMember(UserDto dto){   //화면에서 dto를 통해 받은 값과 Entity를 통해 DB에 저장할 값을 지정
@@ -47,8 +38,7 @@ public class User {
         user.setName(dto.getName());
         user.setPhone(dto.getPhone());
         user.setAddr(dto.getAddr());
-        user.setBirth(dto.getBirth());
-        user.setBirth(dto.getNickname());
+        user.setNickname(dto.getNickname());
         return user;
     }
 }
