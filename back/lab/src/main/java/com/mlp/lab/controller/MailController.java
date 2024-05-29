@@ -24,10 +24,11 @@ public class MailController {
 
     @GetMapping("/send")
     @ResponseBody //@ResponseBody: 자바 객체를 json 기반의 HTTP Body로 변환
-    public void findPwd(@RequestBody UserDto userDto) {
-        User user = userService.findByEmail(userDto.getEmail());
+    public String mailSend(@RequestBody UserDto userDto) {
+        User user = userService.findByEmail(userDto.getEmail());    //입력받은 이메일로 유저정보 가져오기
         System.out.println("이메일 인증 요청");
         System.out.println("이메일 인증 이메일 : " + user.getEmail());
-        String authNumber = mailService.joinEmail(user, user.getEmail());
+        String authNum = mailService.joinEmail(user, user.getEmail());   //해당 유저의 이메일로 인증메일 발송
+        return authNum; //인증번호 리턴
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.mlp.lab.entity.User;
-import com.mlp.lab.repository.UserRepository;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -19,7 +18,6 @@ public class MailService {
 
 	private final JavaMailSender mailSender;
 	private int authNumber; // 난수코드
-	private final UserRepository userRepository;
 
 	public int makeRandomNumber() {
 		// 난수의 범위 111111 ~ 999999 (6자리 난수)
@@ -47,16 +45,19 @@ public class MailService {
 		}
 	}
 
-	public String joinEmail(User user, String email) { // 이메일 보낼 양식(링크 추가도 가능)
-		authNumber = makeRandomNumber();
+	public String joinEmail(User user, String email) { 
+		// 이메일 보낼 양식(링크 추가도 가능)
+		// 인증메일 보내고 인증번호 리턴하는 기능
+
+		authNumber = makeRandomNumber();	//위에서 만든 난수코드
 		System.out.println("user의 이메일"+email);
         String setFrom = "jwlee20541@gmail.com"; // email-config에 설정한 자신의 이메일 주소를 입력
-		String toMail = email;
+		String toMail = email;	//인증메일 보낼 메일 주소
 		String title = "자취연구소 인증 이메일 입니다."; // 이메일 제목
 		String content = "안녕하세요, " + user.getNickname() + " 님." + "<br>" + "자취연구소를 방문해주셔서 감사합니다." 
                 + "</br>" + "인증 번호는 " + authNumber + "입니다." + "<br>"
 				+ "해당 인증번호를 입력해 주세요.";
 		mailSend(setFrom, toMail, title, content);
-		return Integer.toString(authNumber);
+		return Integer.toString(authNumber);	//인증번호 String 타입으로 리턴
 	}
 }
