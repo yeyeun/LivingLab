@@ -1,5 +1,4 @@
 import LoginComponent from '../../components/member/LoginComponent';
-import BasicMenu from '../../components/menus/BasicMenu';
 import BasicLayout from '../../layouts/BasicLayout';
 
 const LoginPage = () => {
