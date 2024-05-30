@@ -1,4 +1,4 @@
-import ListComponent from '../../components/common/ListComponent';
+import ListComponent from '../../components/market/ListComponent';
 import SearchComponent from '../../components/common/SearchComponent';
 import LocationComponent from '../../components/common/LocationComponent';
 import SelectComponent from '../../components/common/SelectComponent';
@@ -15,8 +15,6 @@ const ListPage = () => {
     <div className="m-auto bg-slate-200 w-2/5 rounded-md px-10 py-4">
       <SearchComponent/>
       <SelectComponent/>
-      <ListComponent/>
-      <ListComponent/>
       <ListComponent/>
     </div>
     </>
