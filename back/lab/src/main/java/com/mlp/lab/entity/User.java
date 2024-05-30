@@ -1,5 +1,6 @@
 package com.mlp.lab.entity;
 
+
 import com.mlp.lab.dto.UserDto;
 
 import jakarta.persistence.Entity;
@@ -41,4 +42,6 @@ public class User {
         user.setNickname(dto.getNickname());
         return user;
     }
+
+
 }
