@@ -1,6 +1,5 @@
 package com.mlp.lab.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mlp.lab.dto.UserDto;
+import com.mlp.lab.dto.LoginDto;
 import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.entity.User;
@@ -29,13 +30,12 @@ public class UserController {
     private final MailService mailService;
 
     @PostMapping("/login")
-    public ResponseDto<?> login(@RequestBody UserDto userDto) {
-        User user = userService.findByEmail(userDto.getEmail());
-        System.out.println(user.toString());
-        if (user == null || (!user.getPwd().equals(userDto.getPwd()))) {
+    public ResponseDto<?> login(@RequestBody LoginDto loginDto) {
+        User user = userService.findByEmail(loginDto.getEmail());
+        if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
             return ResponseDto.setFailed("아이디와 비밀번호를 확인해주세요.");
         }
-        return ResponseDto.setSuccess("환영합니다 " + userDto.getEmail() + " 님");  //ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
+        return ResponseDto.setSuccess("환영합니다 " + loginDto.getEmail() + " 님");  //ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
     }
 
     @PostMapping("/join")
@@ -68,5 +68,4 @@ public class UserController {
         }
         return ResponseDto.setSuccess(user.getName() + "님의 패스워드는 " + user.getPwd() + " 입니다.");
     }
-
 }
