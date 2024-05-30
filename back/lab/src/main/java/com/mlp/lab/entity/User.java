@@ -21,7 +21,6 @@ public class User {
     @Id //기본키(PK) 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     private String email;
     private String pwd;
     private String name;
