@@ -6,9 +6,10 @@ const Header = () => {
   const location = useLocation();
 
   const getLinkClass = (path) => {
-    if (path === '/') {
+    if (path === '/') { //홈의 경우
       return location.pathname === path ? 'header-active' : 'menu-hover color-wood';
     }
+    // 그 외의 경우
     return location.pathname.startsWith(path) && location.pathname !== '/' ? 'header-active' : 'menu-hover color-wood';
   };
 
