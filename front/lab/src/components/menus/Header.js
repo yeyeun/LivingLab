@@ -26,8 +26,7 @@ const Header = () => {
   return (
     <nav
       id="navbar"
-      className="bg-white flex-wrap relative flex w-full items-center justify-start py-3 border-b-2"
-    >
+      className="bg-white flex-wrap relative flex w-full items-center justify-start py-3 border-b-2">
       <div className="flex w-full flex-wrap items-center justify-between px-3">
         {/* left section */}
         <div className="flex items-center basis-auto text-xl font-semibold">
