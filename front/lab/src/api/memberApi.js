@@ -8,7 +8,7 @@ export const loginPost = async (loginParam) => {
 
   const form = new FormData();
   form.append('username', loginParam.email);
-  form.append('password', loginParam.pw);
+  form.append('password', loginParam.pwd);
 
   const res = await axios.post(`${host}/login`, form, header);
   return res.data;
