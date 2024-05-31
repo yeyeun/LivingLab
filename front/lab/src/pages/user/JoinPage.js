@@ -1,4 +1,4 @@
-import JoinComponent from '../../components/member/JoinComponent';
+import JoinComponent from '../../components/user/JoinComponent';
 import BasicLayout from '../../layouts/BasicLayout';
 
 const JoinPage = () => {

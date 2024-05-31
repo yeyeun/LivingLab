@@ -1,4 +1,4 @@
-import LogoutComponent from '../../components/member/LogoutComponent';
+import LogoutComponent from '../../components/user/LogoutComponent';
 import BasicMenu from '../../components/menus/BasicMenu';
 
 const LogoutPage = () => {
