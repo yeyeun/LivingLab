@@ -1,8 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Logo from '../../resources/images/logo1.png';
+import { logout } from '../../slices/loginSlice';
+import { useDispatch } from 'react-redux';
+//import useCustomLogin from '../../hooks/useCustomLogin';
 
 const Header = () => {
+  // 아래 한 줄 코드 userSelector로 어디서든간에 로그인 데이터가 바뀌는 걸 알 수 있다.
+  // 이게 리덕스 툴킷이 하는 일
+  const loginState = useSelector((state) => state.loginSlice);
+
+  //const { doLogout, moveToPath } = useCustomLogin();
+
+  const dispatch = useDispatch();
+
+  const handleClickLogout = () => {
+    dispatch(logout());
+
+    //doLogout();
+    //alert('로그아웃되었습니다.');
+    //moveToPath('/');
+  };
+
   return (
     <nav
       id="navbar"
@@ -47,21 +67,34 @@ const Header = () => {
         </div>
         {/* right section */}
         <div className="relative flex items-center">
-          <button
-            type="button"
-            className="border border-gray-700 bg-gray-700 text-white 
+          {!loginState.email ? (
+            <button
+              type="button"
+              className="border border-gray-700 bg-gray-700 text-white 
                         rounded-lg px-2 py-1 mx-1 transition duration-300 ease select-none hover:bg-gray-950 
                         focus:outline-none focus:shadow-outline"
-          >
-            <Link to={'/member/login'}>로그인</Link>
-          </button>
+            >
+              <Link to={'/user/login'}>로그인</Link>
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="border border-gray-700 bg-gray-700 text-white
+                        rounded-lg px-2 py-1 mx-1 transition duration-300 ease select-none hover:bg-gray-950 
+                        focus:outline-none focus:shadow-outline"
+              onClick={handleClickLogout}
+            >
+              <Link to={'/'}>로그아웃</Link>
+            </button>
+          )}
+
           <button
             type="button"
             className="border border-gray-700 bg-gray-700 text-white
                         rounded-lg px-2 py-1 mx-1 transition duration-300 ease select-none hover:bg-gray-950 
                         focus:outline-none focus:shadow-outline"
           >
-            <Link to={'/member/join'}>회원가입</Link>
+            <Link to={'/user/join'}>회원가입</Link>
           </button>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { Suspense, lazy } from 'react'; // 필요한 순간까지 컴포넌트�
 import { createBrowserRouter } from 'react-router-dom';
 import todoRouter from './todoRouter';
 import productsRouter from './productsRouter';
-import memberRouter from './memberRouter';
+import userRouter from './userRouter';
 import buyRouter from './buyRouter';
 import teamRouter from './teamRouter';
 import marketRouter from './marketRouter';
@@ -24,46 +24,78 @@ const ProductsIndex = lazy(() => import('../pages/products/IndexPage'));
 const root = createBrowserRouter([
   {
     path: '', // 경로가 '/' 혹은 아무것도 없을 때는 MainPage 컴포넌트를 보여줌
-    element: <Suspense fallback={Loading}><Main /></Suspense>
+    element: (
+      <Suspense fallback={Loading}>
+        <Main />
+      </Suspense>
+    ),
   },
   {
     path: 'buy',
-    element: <Suspense fallback={Loading}><BuyIndex /></Suspense>,
+    element: (
+      <Suspense fallback={Loading}>
+        <BuyIndex />
+      </Suspense>
+    ),
     children: buyRouter(), //중첩 라우팅
   },
   {
     path: 'team',
-    element: <Suspense fallback={Loading}><TeamIndex /></Suspense>,
+    element: (
+      <Suspense fallback={Loading}>
+        <TeamIndex />
+      </Suspense>
+    ),
     children: teamRouter(),
   },
   {
     path: 'market',
-    element: <Suspense fallback={Loading}><MarketIndex /></Suspense>,
+    element: (
+      <Suspense fallback={Loading}>
+        <MarketIndex />
+      </Suspense>
+    ),
     children: marketRouter(),
   },
   {
     path: 'shareRoom',
-    element: <Suspense fallback={Loading}><ShareRoomIndex /></Suspense>,
+    element: (
+      <Suspense fallback={Loading}>
+        <ShareRoomIndex />
+      </Suspense>
+    ),
     children: shareRoomRouter(),
   },
   {
     path: 'community',
-    element: <Suspense fallback={Loading}><CommunityIndex /></Suspense>,
+    element: (
+      <Suspense fallback={Loading}>
+        <CommunityIndex />
+      </Suspense>
+    ),
     children: communityRouter(),
   },
   {
     path: 'todo',
-    element: <Suspense fallback={Loading}><TodoIndex /></Suspense>,
+    element: (
+      <Suspense fallback={Loading}>
+        <TodoIndex />
+      </Suspense>
+    ),
     children: todoRouter(),
   },
   {
     path: 'products',
-    element: <Suspense fallback={Loading}><ProductsIndex /></Suspense>,
+    element: (
+      <Suspense fallback={Loading}>
+        <ProductsIndex />
+      </Suspense>
+    ),
     children: productsRouter(),
   },
   {
-    path: 'member',
-    children: memberRouter(),
+    path: 'user',
+    children: userRouter(),
   },
 ]);
 export default root;
