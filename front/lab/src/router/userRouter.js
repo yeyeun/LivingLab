@@ -1,11 +1,12 @@
 import { Suspense, lazy } from 'react';
 
 const Loading = <div>Loading...</div>;
-const Join = lazy(() => import('../pages/member/JoinPage'));
-const Login = lazy(() => import('../pages/member/LoginPage'));
-const Logout = lazy(() => import('../pages/member/LogoutPage'));
+const Join = lazy(() => import('../pages/user/JoinPage'));
+const Login = lazy(() => import('../pages/user/LoginPage'));
+const Logout = lazy(() => import('../pages/user/LogoutPage'));
+const KakaoRedirect = lazy(() => import('../pages/user/KakaoRedirectPage'));
 
-const memberRouter = () => {
+const userRouter = () => {
   return [
     {
       path: 'join',
@@ -31,6 +32,14 @@ const memberRouter = () => {
         </Suspense>
       ),
     },
+    {
+      path: 'kakao',
+      element: (
+        <Suspense fallback={Loading}>
+          <KakaoRedirect />
+        </Suspense>
+      ),
+    },
   ];
 };
-export default memberRouter;
+export default userRouter;
