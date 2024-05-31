@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
+import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Market;
 import com.mlp.lab.repository.MarketRepository;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,5 +42,14 @@ public class MarketService {
             .totalCount(totalCount)
             .build();
         return responseDTO;
+    }
+
+    public Optional<Market> read(int marketNo){
+        Optional<Market> market = marketRepository.findById(marketNo);
+        return market;
+    }
+
+    public void add(Market market){  
+        marketRepository.save(market);
     }
 }

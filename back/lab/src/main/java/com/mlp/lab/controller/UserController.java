@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.dto.LoginDto;
 import com.mlp.lab.dto.ResponseDto;
-import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.entity.User;
 import com.mlp.lab.service.MailService;
 import com.mlp.lab.service.UserService;

@@ -1,5 +1,9 @@
 package com.mlp.lab.dto;
 
+import java.util.Optional;
+
+import com.mlp.lab.entity.Buy;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -25,4 +29,5 @@ public class ResponseDto<D> {
     public static <D> ResponseDto<D> setFailedData(String message, D data) {
         return ResponseDto.set(false, message, data);
     }
+
 }

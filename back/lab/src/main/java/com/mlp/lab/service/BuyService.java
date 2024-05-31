@@ -10,10 +10,13 @@ import org.springframework.stereotype.Service;
 import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
+import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.entity.Buy;
+import com.mlp.lab.entity.User;
 import com.mlp.lab.repository.BuyRepository;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,5 +43,14 @@ public class BuyService {
             .totalCount(totalCount)
             .build();
         return responseDTO;
+    }
+
+    public Optional<Buy> read(int buyNo){
+        Optional<Buy> buy = buyRepository.findById(buyNo);
+        return buy;
+    }
+
+    public void add(Buy buy){  
+        buyRepository.save(buy);
     }
 }
