@@ -1,9 +1,12 @@
 import image from '../../resources/images/room.jpg';
+import useCustomMove from "../../hooks/useCustomMove"
 
 const RoomComponent = () => {
+    const { page, size, moveToList, moveToRead } = useCustomMove()
+
     return(
         <div class="mx-12 overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-60 md:w-80">
-            <a href="#" class="block w-full h-full">
+            <div className="block w-full h-full" onClick={()=>moveToRead(1)}>
                 <img alt="..." src={image} class="object-cover w-full max-h-40"/>
                 <div class="w-full p-4 bg-white">
                     <p class="font-medium text-indigo-500 text-md">
@@ -15,7 +18,7 @@ const RoomComponent = () => {
                         140,000원/월
                     </p>
                 </div>
-            </a>
+            </div>
         </div> 
     );
 }
