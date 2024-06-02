@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
-import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Market;
 import com.mlp.lab.repository.MarketRepository;
 import lombok.RequiredArgsConstructor;
