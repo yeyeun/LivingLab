@@ -1,14 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login, loginPostAsync } from '../../slices/loginSlice';
 import imgLogo2 from '../../resources/images/logo2.png';
 import HorizonLine from '../../utils/HorizontalLine';
+import KakaoLoginComponent from './KakaoLoginComponent';
+import { getKakaoLoginLink } from '../../api/kakaoApi';
 
 const initState = {
   email: '',
   pwd: '',
 };
+
+const kakaoLink = getKakaoLoginLink(); // 카카오 로그인 링크
 
 function LoginComponent(props) {
   const [loginParam, setLoginParam] = useState({ ...initState });
@@ -34,7 +39,7 @@ function LoginComponent(props) {
           <img
             src={imgLogo2}
             alt="imgLogo2"
-            class="object-contain h-48 w-96 ..."
+            className="object-contain h-48 w-96 ..."
           />
         </div>
       </div>
@@ -57,7 +62,7 @@ function LoginComponent(props) {
             <div className="w-full p-3 text-left font-bold">Password</div>
             <input
               className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="pw"
+              name="pwd"
               type={'password'}
               placeholder="비밀번호"
               value={loginParam.pwd}
@@ -107,15 +112,17 @@ function LoginComponent(props) {
           </div>
         </div>
 
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
             <div className="w-full flex justify-center font-bold">
               <button className="rounded p-2 w-full bg-yellow-300 text-xl text-white">
-                KAKAO
+                <Link to={kakaoLink}>KAKAO LOGIN</Link>
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
+
+        <KakaoLoginComponent />
 
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
