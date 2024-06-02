@@ -3,6 +3,7 @@ package com.mlp.lab.service;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,6 +26,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class UserService {
   // final 붙여야지 생성자 만들어줌(RequiredArgsConstructor)
+  private final ModelMapper modelMapper;
   private final UserRepository userRepository;
 
   // 사용자가 DB에 없다면 새로운 데이터를 추가해줘야된다.
@@ -40,6 +42,30 @@ public class UserService {
 
   public User findId(String name, String phone) {
     return userRepository.findByNameAndPhone(name, phone);
+  }
+
+  // 마이페이지 회원정보 조회
+  // public UserDto get(Long id) {
+  // Optional<User> result = userRepository.findById(id);
+  // User user = result.orElseThrow();
+  // UserDto userDto = modelMapper.map(user, UserDto.class);
+  // return userDto;
+  // }
+
+  // 마이페이지 회원정보 수정
+  public void modifyUserInfo(UserDto userDto) {
+    Optional<User> result = userRepository.findByEmail(userDto.getEmail());
+
+    User user = result.orElseThrow(); // throwException(예외처리)
+
+    // 이름, 휴대폰 번호, 닉네임, 비밀번호, 주소 (5개 항목 변경)
+    user.changeName(userDto.getName());
+    user.changePhone(userDto.getPhone());
+    user.changeNickname(userDto.getNickname());
+    user.changePwd(passwordEncoder.encode(userDto.getPwd()));
+    user.changeAddr(userDto.getAddr());
+
+    userRepository.save(user);
   }
 
   // 카카오 연동해서 accessToken을 이용해서 카카오api에 등록된 사용자 정보 가져오기
@@ -91,10 +117,9 @@ public class UserService {
         user.getEmail(),
         user.getPwd(),
         user.getName(),
-        user.getAddr(),
         user.getPhone(),
         user.getNickname(),
-        user.getProfileImage()
+        user.getAddr()
     // user.isSocial(),
     ); // 사용자가 DB에 없다면 새로운 데이터를 추가해줘야된다.
 

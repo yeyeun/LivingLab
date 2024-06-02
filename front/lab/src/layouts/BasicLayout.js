@@ -1,5 +1,6 @@
 import Header from '../components/menus/Header';
 import Footer from '../components/menus/Footer';
+import ScrollToTopButton from './ScrollToTopButton'; // 클릭하면 페이지 최상단으로 가게 되는 화살표 버튼
 
 const BasicLayout = ({ children }) => {
   return (
@@ -7,6 +8,7 @@ const BasicLayout = ({ children }) => {
       <div className="font-NotoSansKR">
         <Header />
         {children}
+        <ScrollToTopButton />
         <Footer />
       </div>
     </>

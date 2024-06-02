@@ -2,6 +2,8 @@ package com.mlp.lab.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +20,11 @@ import lombok.RequiredArgsConstructor;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor // 초기화 되지않은 final 필드나, @NonNull 이 붙은 필드에 대해 생성자를 생성
 public class UserController {
-    // 리액트와 연동시 보통 rest api를 통해 프론트로 json 형태의 데이터를 넘겨주기 때문에 이런 식으로 데이터를 return 하는 것이 좋음
+    // 리액트와 연동시 보통 rest api를 통해 프론트로 json 형태의 데이터를 넘겨주기 때문에 이런 식으로 데이터를 return 하는 것이
+    // 좋음
     // REST API로 만든다면 클라이언트와 서버 간의 통신 가능
 
     // final을 붙여 생성자 생성(@Autoweird 대신)
@@ -58,13 +61,19 @@ public class UserController {
     @PostMapping("/findPwd")
     public ResponseEntity<String> findPwd(@RequestParam int inputAuthNum, @RequestBody User user) {
         int authNumber = mailService.makeRandomNumber();
-        System.out.println("인증번호: " +authNumber);
-        System.out.println("입력받은 인증번호: " +authNumber);
+        System.out.println("인증번호: " + authNumber);
+        System.out.println("입력받은 인증번호: " + authNumber);
 
-        if(authNumber != inputAuthNum){
+        if (authNumber != inputAuthNum) {
             return ResponseEntity.badRequest().body("인증번호가 일치하지 않습니다.");
         }
         return ResponseEntity.ok(user.getName() + "님의 패스워드는 " + user.getPwd() + " 입니다.");
     }
+
+    // 회원정보 조회
+    // @GetMapping("/{id}")
+    // public UserDto get(@PathVariable(name = "id") Long id) {
+    // return userService.get(id);
+    // }
 
 }

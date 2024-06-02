@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class UserDto { // 화면에서 받을 데이터
     private String email;
     private String pwd;
-    private String pwdCheck;
+    // private String pwdCheck;
     private String name;
     private String phone;
     private String nickname;
@@ -25,7 +25,7 @@ public class UserDto { // 화면에서 받을 데이터
 
         dataMap.put("email", email);
         dataMap.put("pwd", pwd);
-        dataMap.put("pwdCheck", pwdCheck);
+        // dataMap.put("pwdCheck", pwdCheck);
         dataMap.put("name", name);
         dataMap.put("phone", phone);
         dataMap.put("nickname", nickname);

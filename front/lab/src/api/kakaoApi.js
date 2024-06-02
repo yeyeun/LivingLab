@@ -14,7 +14,7 @@
 // 2) 카카오 인증 서버가 토큰을 발급해 서비스 서버에 전달합니다.
 
 import axios from 'axios';
-import { API_SERVER_HOST } from './memberApi';
+import { API_SERVER_HOST } from './userApi';
 
 const rest_api_key = '2b0436fd31d228c6702bb085c415ef9e'; // 이메일 나오는 rest api 키 받음
 
@@ -35,8 +35,8 @@ const access_token_url = 'https://kauth.kakao.com/oauth/token'; // 토큰 받는
 // 다시 카카오 계정으로 로그인하는 과정을 거쳐 서비스에 카카오 로그인하도록 할 수 있다.
 // 인가 코드 받기 요청시 prompt 파리미터 값을 login으로 지정
 export const getKakaoLoginLink = () => {
-  //const kakaoURL = `${auth_code_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&prompt=login`;
-  const kakaoURL = `${auth_code_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+  const kakaoURL = `${auth_code_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&prompt=login`;
+  //const kakaoURL = `${auth_code_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
 
   return kakaoURL;
 };
@@ -70,9 +70,7 @@ export const getAccessToken = async (authCode) => {
 
 // 리액트에서 api 서버 호출
 export const getUserWithAccessToken = async (accessToken) => {
-  const res = await axios.get(
-    `${API_SERVER_HOST}/api/user/kakao?accessToken=${accessToken}`
-  );
+  const res = await axios.get(`${API_SERVER_HOST}/api/user/kakao?accessToken=${accessToken}`);
 
   return res.data;
 };
