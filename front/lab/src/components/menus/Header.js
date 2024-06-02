@@ -38,7 +38,7 @@ const Header = () => {
               </Link>
             </li>
             <li className="pr-10">
-              <Link to={'/community'} className="menu-hover">
+              <Link to={'/community/tip'} className="menu-hover">
                 커뮤니티
               </Link>
             </li>

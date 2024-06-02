@@ -11,7 +11,7 @@ const MainPage = () => {
     //     <div>Main Page</div>
     //   </div>
     // </BasicLayout>
-    <div className="flex flex-col">
+    <div>
       <BasicLayout>
         <div className="flex-grow text-2xl">
           <MultipleItems />
