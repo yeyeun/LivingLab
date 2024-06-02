@@ -24,13 +24,13 @@ const IndexPage = () => {
     <div>
       <BasicLayout>
         <div className="text-xl flex-grow">
-          <div class="min-h-screen flex flex-row bg-orange-200">
+          <div class="min-h-screen flex flex-row bg-slate-100">
             <div class="flex flex-col w-80 bg-white shadow-md overflow-hidden">
             <ul class="flex flex-col py-4 mt-8">
                 <li>
-                    <div class="flex flex-row items-center h-24 transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+                    <div class="flex flex-row items-center h-24 group transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
                     onClick={handleClickTip}>
-                        <span class="text-lg font-semibold ml-24">자취 TIP 공유</span>
+                        <span class="text-lg font-semibold ml-24 group-hover:underline-offset-1">자취 TIP 공유</span>
                     </div>
                 </li>
                 <li>
