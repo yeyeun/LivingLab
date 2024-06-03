@@ -14,6 +14,7 @@ import com.mlp.lab.entity.Market;
 import com.mlp.lab.repository.MarketRepository;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,5 +41,14 @@ public class MarketService {
             .totalCount(totalCount)
             .build();
         return responseDTO;
+    }
+
+    public Optional<Market> read(int marketNo){
+        Optional<Market> market = marketRepository.findById(marketNo);
+        return market;
+    }
+
+    public void add(Market market){  
+        marketRepository.save(market);
     }
 }

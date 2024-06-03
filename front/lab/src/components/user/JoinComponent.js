@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login, loginPostAsync } from '../../slices/loginSlice';
 import imgLogo2 from '../../resources/images/logo2.png';
+import Post from '../common/PostComponent';
 
 const initState = {
   email: '',
@@ -17,6 +18,10 @@ const initState = {
 function JoinComponent(props) {
   const [joinParam, setJoinParam] = useState({ ...initState });
 
+  //주소 찾기 팝업 추가 - 정운
+  const [address, setAddress] = React.useState("");
+  const [popup, setPopup] = React.useState(false);
+
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -30,6 +35,8 @@ function JoinComponent(props) {
 
     //dispatch(loginPostAsync(loginParam));
   };
+
+
 
   return (
     <div className="max-h-400">
@@ -131,25 +138,32 @@ function JoinComponent(props) {
             ></input>
           </div>
         </div>
-
+        
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-full p-3 text-left font-bold">주소</div>
+            <button className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
+              onClick={() => {
+                setPopup(!popup)
+              }}
+            >🔍︎ 주소 검색</button>
+            {
+              popup &&
+              <Post address={address} setAddress={setAddress}></Post>
+            }
             <input
               className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="name"
+              name="address"
               type={'text'}
-              placeholder="주소(클릭시 주소검색창 열림)"
-              value={joinParam.addr}
-              onChange={handleChange}
+              placeholder="주소"
+              required={true}
+              value={address}
             ></input>
             <input
               className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="name"
+              name="secondAddress"
               type={'text'}
-              placeholder="상세주소"
-              value={joinParam.addr}
-              onChange={handleChange}
+              placeholder="상세주소를 입력해주세요"
             ></input>
           </div>
         </div>
