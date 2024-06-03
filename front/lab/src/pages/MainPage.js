@@ -16,7 +16,7 @@ const MainPage = () => {
     //     <div>Main Page</div>
     //   </div>
     // </BasicLayout>
-    <div className="flex flex-col">
+    <div>
       <BasicLayout>
         <div className="main-container-top">
           <img className="main-image" src={Main} alt="MainImage" />
