@@ -39,7 +39,7 @@ const KakaoRedirectPage = (props) => {
   return (
     <div>
       <div>kakao Login Redirect</div>
-      <div>{authCode}</div>
+      {/* <div>{authCode}</div> */}
     </div>
   );
 };

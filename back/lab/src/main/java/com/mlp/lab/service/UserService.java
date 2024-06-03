@@ -56,10 +56,12 @@ public class UserService {
 
   // 마이페이지 회원정보 수정
   public void modifyUserInfo(UserDto userDto) {
-    Optional<User> result = userRepository.findByEmail(userDto.getEmail());
-
+    // 1. 조회(이메일로 데이터 조회)
+    // Optional<User> result = userRepository.findByEmail(userDto.getEmail());
+    Optional<User> result = userRepository.findById(userDto.getId());
     User user = result.orElseThrow(); // throwException(예외처리)
 
+    // 2. 수정(Dto에 받은 값으로 Entiry의 데이터 수정)
     // 이름, 휴대폰 번호, 닉네임, 비밀번호, 주소 (5개 항목 변경)
     user.changeName(userDto.getName());
     user.changePhone(userDto.getPhone());

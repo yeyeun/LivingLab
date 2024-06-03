@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { modifyUser } from '../../api/userApi';
+import { modifyUser, getUser } from '../../api/userApi';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import useCustomMove from '../../hooks/useCustomMove';
+import useCustomLogin from '../../hooks/useCustomLogin';
 
 const initState = {
-  id: 0,
-  email: '',
   name: '',
   phone: '',
   nickname: '',
@@ -16,23 +16,22 @@ const initState = {
   addr: '',
 };
 
-function MyInfoModifyComponent(props) {
+const MyInfoModifyComponent = ({ id }) => {
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
   const navigate = useNavigate();
 
+  const ino = loginInfo.id;
+
   useEffect(() => {
-    setUser({ ...loginInfo });
-  }, [loginInfo]); // loginInfo가 변경되면 useEffect 사용해서 영향을 준다.
+    getUser(ino).then((data) => {
+      console.log('계정의 id값 : ' + ino);
+      console.log(data);
+      setUser(data);
+    });
+  }, [ino]);
 
-  // 상태값 변경 함수
-  // const handleChange = (e) => {
-  //   user[e.target.name] = e.target.value; // 입력값에 따라서 상태값 변경
-  //   setUser({ ...user }); // 변경된 값을 상태값으로 잡아줌 (새로운 객체 설정)
-
-  //   //setUser({ ...user, [e.target.name]: e.target.value }); // 위의 2줄 코드와 같음
-  // };
-
+  // 상태변경 (입력값에 따라 상태값 변경)
   const handleChange = (e) => {
     setUser({
       ...user,
@@ -42,12 +41,9 @@ function MyInfoModifyComponent(props) {
 
   // 수정완료 버튼
   const handleClickModify = () => {
-    //modifyUser(user); // 사용자 정보 전달 (userApi.js에 있는 modifyUser 함수)
-    modifyUser(user).then((modifiedUser) => {
-      alert('회원정보 수정 완료되었습니다');
-      navigate('/myPage/info', { state: { user: modifiedUser } });
-      // 회원정보 수정페이지에서 변경된 회원정보값을 가지고 회원정보 조회페이지로 이동
-    });
+    modifyUser(user); // 사용자 정보 전달 (userApi.js에 있는 modifyUser 함수)
+    alert('회원정보 수정 완료되었습니다');
+    navigate('/myPage/info');
   };
 
   return (
@@ -174,5 +170,5 @@ function MyInfoModifyComponent(props) {
       </div>
     </div>
   );
-}
+};
 export default MyInfoModifyComponent;

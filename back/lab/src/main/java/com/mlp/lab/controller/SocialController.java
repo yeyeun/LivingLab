@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @Log4j2
 @RequiredArgsConstructor // 초기화 되지않은 final 필드나, @NonNull 이 붙은 필드에 대해 생성자를 생성
-// @RequestMapping("/user")
+// @RequestMapping("/api/user")
 
 // 카카오, 구글, 네이버 소셜 로그인용
 public class SocialController {
@@ -57,16 +57,6 @@ public class SocialController {
 
     return Map.of("result", "userInfo modified");
   }
-
-  // @GetMapping("/api/user/get")
-  // public Map<String, String> getUser(@RequestBody UserDto userDto) {
-  // log.info("---------------------userInfo modify-------------------");
-
-  // userService.modifyUserInfo(userDto);
-
-  // return Map.of("result", "userInfo modified");
-
-  // }
 
   // 회원정보 조회
   // @GetMapping("/api/user/{id}")

@@ -1,6 +1,9 @@
 import MyInfoComponent from '../../../components/myPage/MyInfoComponent';
+import { useParams } from 'react-router-dom';
 
 const MyInfoPage = () => {
+  const { id } = useParams();
+
   return (
     <div className="text-xl p-4 flex-grow">
       <div className="m-auto bg-slate-50 w-4/5 rounded-md px-10 py-4">
@@ -10,7 +13,7 @@ const MyInfoPage = () => {
               <div className="overflow-hidden">
                 <div className="text-2xl pl-2 my-2 border-l-4 font-Jua border-teal-300">회원정보</div>
 
-                <MyInfoComponent />
+                <MyInfoComponent id={id} />
               </div>
             </div>
           </div>

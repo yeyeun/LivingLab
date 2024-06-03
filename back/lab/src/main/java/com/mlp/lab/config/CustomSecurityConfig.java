@@ -23,20 +23,24 @@ public class CustomSecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     log.info("-----------------------security config------------------------------");
 
+    // CORS 설정
     http.cors(httpSecurityCorsConfigurer -> {
       httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
     });
 
+    // CSRF 설정
     http.csrf(httpSecurityCsrfCorsConfigurer -> httpSecurityCsrfCorsConfigurer.disable());
 
     return http.build();
   }
 
+  // 사용자 계정 암호화
   @Bean
   public PasswordEncoder PasswordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
+  // CORS 설정
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
 
