@@ -1,10 +1,12 @@
 package com.mlp.lab.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
+import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.service.BuyService;
 import com.mlp.lab.util.CustomFileUtil;
 
@@ -32,7 +35,7 @@ public class BuyController {
     }
 
     @GetMapping("/{buyNo}") // 상세조회
-    public BuyDto read(@PathVariable(name="buyNo") int buyNo) {
+    public BuyDto read(@PathVariable(name = "buyNo") int buyNo) {
         return buyService.read(buyNo);
     }
 
@@ -43,5 +46,36 @@ public class BuyController {
         List<String> uploadFileNames = fileUtil.saveFiles(files);
         buyDto.setUploadFileNames(uploadFileNames);
         buyService.add(buyDto);
+    }
+
+    @PutMapping("/{buyNo}")
+    public ResponseDto<String> modify(@PathVariable(name = "buyNo") Long buyNo, BuyDto buyDto) {
+        buyDto.setBuyNo(buyNo);
+        BuyDto oldDto = buyService.read(buyNo.intValue());
+        // 기존 파일들(데이터베이스에 저장된 파일 이름)
+
+        List<String> oldFileNames = oldDto.getUploadFileNames();
+        // 새로 업로드해야 하는 파일들
+
+        List<MultipartFile> files = buyDto.getFiles();
+        // 새로 업로드된 파일 이름들
+
+        List<String> newUploadFileNames = fileUtil.saveFiles(files);
+        // 변화가 없이 유지되는 파일들
+
+        List<String> uploadedFileNames = buyDto.getUploadFileNames();
+        // 유지되는 파일들 + 새로 업로드된 파일 이름들이 저장해야하는 파일 목록
+        if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
+            uploadedFileNames.addAll(newUploadFileNames);
+        }
+        buyService.modify(buyDto);
+        if (oldFileNames != null && oldFileNames.size() > 0) {
+            List<String> removeFiles = oldFileNames
+                    .stream()
+                    .filter(fileName -> uploadedFileNames.indexOf(fileName) == -1).collect(Collectors.toList());
+            // 파일 삭제
+            fileUtil.deleteFiles(removeFiles);
+        }
+        return ResponseDto.setSuccess("수정되었습니다.");
     }
 }
