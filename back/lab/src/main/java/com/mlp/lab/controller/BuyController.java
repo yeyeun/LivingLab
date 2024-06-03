@@ -1,12 +1,10 @@
 package com.mlp.lab.controller;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
-import com.mlp.lab.dto.ResponseDto;
-import com.mlp.lab.entity.Buy;
 import com.mlp.lab.service.BuyService;
 import com.mlp.lab.util.CustomFileUtil;
 
@@ -35,10 +31,9 @@ public class BuyController {
         return buyService.list(pageRequestDto);
     }
 
-    @GetMapping("/read") // 상세조회
-    public ResponseDto<Optional<Buy>> read(int buyNo) {
-        Optional<Buy> buy = buyService.read(buyNo);
-        return ResponseDto.setSuccessData("공동구매" + buyNo, buy);
+    @GetMapping("/{buyNo}") // 상세조회
+    public BuyDto read(@PathVariable(name="buyNo") int buyNo) {
+        return buyService.read(buyNo);
     }
 
     @PostMapping("/add") // 작성(이미지 포함)

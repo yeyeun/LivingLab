@@ -25,10 +25,10 @@ public class BuyService {
     private final BuyRepository buyRepository;
 
     public void add(BuyDto buyDto) { // 공동구매 등록(이미지 포함)
-        Buy buy = Buy.createBuy(buyDto);
+        Buy buy = Buy.DtoToEntity(buyDto);
         buyRepository.save(buy);
     }
-   
+
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto) { // 목록 가져오기(페이징 처리, 이미지 포함)
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
@@ -59,9 +59,11 @@ public class BuyService {
         return responseDto;
     }
 
-    public Optional<Buy> read(int buyNo) {
-        Optional<Buy> buy = buyRepository.findById(buyNo);
-        return buy;
+    public BuyDto read(int buyNo) {
+        Optional<Buy> result = buyRepository.findById(buyNo);
+        Buy buy = result.orElseThrow();
+        BuyDto buyDto = buy.entityToDto(buy);
+        return buyDto;
     }
 
 }

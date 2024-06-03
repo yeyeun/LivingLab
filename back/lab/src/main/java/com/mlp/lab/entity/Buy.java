@@ -25,7 +25,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "buy")
-@ToString(exclude ="imageList")
+@ToString(exclude = "imageList")
 public class Buy extends BaseEntity {
     @Id // 기본키 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class Buy extends BaseEntity {
     private String location;
     private Character buyHit;
     private String nickname;
-    private boolean flag; //글 삭제시 작성 기록 관리를 위해 삭제된 글 표시
+    private boolean flag; // 글 삭제시 작성 기록 관리를 위해 삭제된 글 표시
 
     @ElementCollection
     @Builder.Default
@@ -60,21 +60,33 @@ public class Buy extends BaseEntity {
         this.imageList.clear();
     }
 
-    public static Buy createBuy(BuyDto buyDto) {
+    public static Buy DtoToEntity(BuyDto buyDto) { // 화면에서 받은 dto를 entity로
         ModelMapper modelMapper = new ModelMapper();
         Buy buy = modelMapper.map(buyDto, Buy.class);
-        
-        //업로드 처리가 끝난 파일들의 이름
+
+        // 업로드 처리가 끝난 파일들의 이름
         List<String> uploadFileNames = buyDto.getUploadFileNames();
-        if(uploadFileNames == null){
+        if (uploadFileNames == null) {
             return buy;
         }
-            uploadFileNames.stream().forEach(uploadName ->{
+        uploadFileNames.stream().forEach(uploadName -> {
             buy.addImageString(uploadName);
         });
 
         return buy;
     }
 
-    
+    public static BuyDto entityToDto(Buy buy) {
+        ModelMapper modelMapper = new ModelMapper();
+        BuyDto buyDto = modelMapper.map(buy, BuyDto.class);
+
+        List<BuyImage> imageList = buy.getImageList();
+        if (imageList == null || imageList.size() == 0) {
+            return buyDto;
+        }
+        List<String> fileNameList = imageList.stream().map(productImage -> productImage.getFileName()).toList();
+        buyDto.setUploadFileNames(fileNameList);
+        return buyDto;
+    }
+
 }
