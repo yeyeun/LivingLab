@@ -5,7 +5,7 @@ import ScrollToTopButton from './ScrollToTopButton'; // 클릭하면 페이지 �
 const BasicLayout = ({ children }) => {
   return (
     <>
-      <div className="font-NotoSansKR">
+      <div className="font-NotoSansKR min-h-screen flex flex-col">
         <Header />
         {children}
         <ScrollToTopButton />
