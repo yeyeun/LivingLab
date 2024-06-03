@@ -6,11 +6,6 @@ const Login = lazy(() => import('../pages/user/LoginPage'));
 const Logout = lazy(() => import('../pages/user/LogoutPage'));
 const KakaoRedirect = lazy(() => import('../pages/user/KakaoRedirectPage'));
 
-const MyActivity = lazy(() => import('../pages/myPage/MyActivityPage'));
-const MyChat = lazy(() => import('../pages/myPage/MyChatPage'));
-const MyInfo = lazy(() => import('../pages/myPage/MyInfoPage'));
-const MyInfoModify = lazy(() => import('../pages/myPage/MyInfoModifyPage'));
-
 const userRouter = () => {
   return [
     {
@@ -42,38 +37,6 @@ const userRouter = () => {
       element: (
         <Suspense fallback={Loading}>
           <KakaoRedirect />
-        </Suspense>
-      ),
-    },
-    {
-      path: 'myActivity',
-      element: (
-        <Suspense fallback={Loading}>
-          <MyActivity />
-        </Suspense>
-      ),
-    },
-    {
-      path: 'myChat',
-      element: (
-        <Suspense fallback={Loading}>
-          <MyChat />
-        </Suspense>
-      ),
-    },
-    {
-      path: 'myInfo',
-      element: (
-        <Suspense fallback={Loading}>
-          <MyInfo />
-        </Suspense>
-      ),
-    },
-    {
-      path: 'myInfoModify',
-      element: (
-        <Suspense fallback={Loading}>
-          <MyInfoModify />
         </Suspense>
       ),
     },

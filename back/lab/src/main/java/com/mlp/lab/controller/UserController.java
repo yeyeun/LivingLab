@@ -71,9 +71,9 @@ public class UserController {
     }
 
     // 회원정보 조회
-    // @GetMapping("/{id}")
-    // public UserDto get(@PathVariable(name = "id") Long id) {
-    // return userService.get(id);
-    // }
+    @GetMapping("/{id}")
+    public UserDto get(@PathVariable(name = "id") Long id) {
+        return userService.get(id);
+    }
 
 }

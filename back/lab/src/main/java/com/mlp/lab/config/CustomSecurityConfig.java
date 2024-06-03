@@ -15,7 +15,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-
 @Configuration
 @Log4j2
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class CustomSecurityConfig {
       httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
     });
 
-    http.csrf(httpSecurityCsrfCorsConfigurer->httpSecurityCsrfCorsConfigurer.disable());
+    http.csrf(httpSecurityCsrfCorsConfigurer -> httpSecurityCsrfCorsConfigurer.disable());
 
     return http.build();
   }

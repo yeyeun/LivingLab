@@ -26,19 +26,26 @@ function MyInfoModifyComponent(props) {
   }, [loginInfo]); // loginInfo가 변경되면 useEffect 사용해서 영향을 준다.
 
   // 상태값 변경 함수
-  const handleChange = (e) => {
-    user[e.target.name] = e.target.value; // 입력값에 따라서 상태값 변경
-    setUser({ ...user }); // 변경된 값을 상태값으로 잡아줌 (새로운 객체 설정)
+  // const handleChange = (e) => {
+  //   user[e.target.name] = e.target.value; // 입력값에 따라서 상태값 변경
+  //   setUser({ ...user }); // 변경된 값을 상태값으로 잡아줌 (새로운 객체 설정)
 
-    //setUser({ ...user, [e.target.name]: e.target.value }); // 위의 2줄 코드와 같음
+  //   //setUser({ ...user, [e.target.name]: e.target.value }); // 위의 2줄 코드와 같음
+  // };
+
+  const handleChange = (e) => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  // 수정하기 버튼
+  // 수정완료 버튼
   const handleClickModify = () => {
     //modifyUser(user); // 사용자 정보 전달 (userApi.js에 있는 modifyUser 함수)
     modifyUser(user).then((modifiedUser) => {
       alert('회원정보 수정 완료되었습니다');
-      navigate('/user/myInfo', { state: { user: modifiedUser } });
+      navigate('/myPage/info', { state: { user: modifiedUser } });
       // 회원정보 수정페이지에서 변경된 회원정보값을 가지고 회원정보 조회페이지로 이동
     });
   };
@@ -49,7 +56,7 @@ function MyInfoModifyComponent(props) {
       <div>
         <div className="flex justify-center">
           <div className="w-full p-3 my-3 text-left font-bold text-2xl text-emerald-400">회원정보 수정</div>
-          <Link to={'/user/myInfo'}>
+          <Link to={'/myPage/info'}>
             <button type="button" className="rounded p-1 mt-8 text-m w-32 text-white bg-blue-500">
               회원정보
             </button>

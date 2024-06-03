@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto { // 화면에서 받을 데이터
+    private Long id;
     private String email;
     private String pwd;
     // private String pwdCheck;
@@ -23,6 +24,7 @@ public class UserDto { // 화면에서 받을 데이터
     public Map<String, Object> getClaims() {
         Map<String, Object> dataMap = new HashMap<>();
 
+        dataMap.put("id", id);
         dataMap.put("email", email);
         dataMap.put("pwd", pwd);
         // dataMap.put("pwdCheck", pwdCheck);

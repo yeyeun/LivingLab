@@ -29,8 +29,10 @@ public class UserService {
   private final ModelMapper modelMapper;
   private final UserRepository userRepository;
 
+  // private final PasswordEncoder passwordEncoder; // 이럴 때 비밀번호는 인코딩해서
+  // 넣어줘야된다.(스프링 시큐리티)
+
   // 사용자가 DB에 없다면 새로운 데이터를 추가해줘야된다.
-  private final PasswordEncoder passwordEncoder; // 이럴 때 비밀번호는 인코딩해서 넣어줘야된다.(스프링 시큐리티)
 
   public void save(User member) {
     userRepository.save(member);
@@ -45,12 +47,12 @@ public class UserService {
   }
 
   // 마이페이지 회원정보 조회
-  // public UserDto get(Long id) {
-  // Optional<User> result = userRepository.findById(id);
-  // User user = result.orElseThrow();
-  // UserDto userDto = modelMapper.map(user, UserDto.class);
-  // return userDto;
-  // }
+  public UserDto get(Long id) {
+    Optional<User> result = userRepository.findById(id);
+    User user = result.orElseThrow();
+    UserDto userDto = modelMapper.map(user, UserDto.class);
+    return userDto;
+  }
 
   // 마이페이지 회원정보 수정
   public void modifyUserInfo(UserDto userDto) {
@@ -62,7 +64,8 @@ public class UserService {
     user.changeName(userDto.getName());
     user.changePhone(userDto.getPhone());
     user.changeNickname(userDto.getNickname());
-    user.changePwd(passwordEncoder.encode(userDto.getPwd()));
+    // user.changePwd(passwordEncoder.encode(userDto.getPwd()));
+    user.changePwd(userDto.getPwd());
     user.changeAddr(userDto.getAddr());
 
     userRepository.save(user);
@@ -102,7 +105,8 @@ public class UserService {
 
     User user = User.builder()
         .email(email)
-        .pwd(passwordEncoder.encode(tempPassword))
+        .pwd(tempPassword)
+        // .pwd(passwordEncoder.encode(tempPassword))
         .nickname(nickname)
         // .social(true)
         .build();
@@ -114,6 +118,7 @@ public class UserService {
   // User entity를 User dto로 변환하는 entityToDto 함수
   public UserDto entityToDto(User user) {
     UserDto dto = new UserDto(
+        user.getId(),
         user.getEmail(),
         user.getPwd(),
         user.getName(),

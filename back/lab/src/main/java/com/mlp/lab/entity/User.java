@@ -28,7 +28,7 @@ import lombok.ToString;
 public class User {
     @Id // 기본키(PK) 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String email;
     private String pwd;
@@ -41,6 +41,7 @@ public class User {
     // static으로 만들어 클래스를 만들지 않아도 사용가능
     public static User createMember(UserDto dto) { // 화면에서 dto를 통해 받은 값과 Entity를 통해 DB에 저장할 값을 지정
         User user = new User();
+        user.setId(dto.getId());
         user.setEmail(dto.getEmail());
         user.setPwd(dto.getPwd());
         user.setName(dto.getName());

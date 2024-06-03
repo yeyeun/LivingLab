@@ -6,16 +6,7 @@ import { logout } from '../../slices/loginSlice';
 import { useDispatch } from 'react-redux';
 import useCustomLogin from '../../hooks/useCustomLogin';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faUser,
-  faHeart,
-  faComments,
-  faMessage,
-  faHouse,
-  faFilePen,
-  faRightToBracket,
-  faRightFromBracket,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUser, faHeart, faComments, faMessage, faHouse, faFilePen, faRightToBracket, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
   // 아래 한 줄 코드 userSelector로 어디서든간에 로그인 데이터가 바뀌는 걸 알 수 있다.
@@ -37,7 +28,8 @@ const Header = () => {
   const location = useLocation();
 
   const getLinkClass = (path) => {
-    if (path === '/') { //홈의 경우
+    if (path === '/') {
+      //홈의 경우
       return location.pathname === path ? 'header-active' : 'menu-hover color-wood';
     }
     // 그 외의 경우
@@ -45,10 +37,7 @@ const Header = () => {
   };
 
   return (
-    <nav
-      id="navbar"
-      className="z-50 bg-white flex-wrap relative flex w-full items-center justify-start py-3 border-b-2"
-    >
+    <nav id="navbar" className="z-50 bg-white flex-wrap relative flex w-full items-center justify-start py-3 border-b-2">
       <div className="flex w-full flex-wrap items-center justify-between px-3">
         {/* left section */}
         <div className="flex items-center basis-auto text-xl  ">
@@ -140,8 +129,8 @@ const Header = () => {
                         rounded-lg px-2  mx-1 transition duration-100 ease select-none hover:bg-gray-950 
                         focus:outline-none focus:shadow-outline"
               >
-                <Link to={'/user/myActivity'}>
-                  <div href="#" className="flex items-center p-2 text-white rounded-lg">
+                <Link to={'/myPage/activity'}>
+                  <div className="flex items-center p-2 text-white rounded-lg">
                     <FontAwesomeIcon
                       icon={faUser}
                       className="flex-shrink-0 w-5 h-5 mr-2 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"

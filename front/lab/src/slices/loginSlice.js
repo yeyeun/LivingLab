@@ -11,9 +11,7 @@ const loadUserCookie = () => {
   return userInfo;
 };
 
-export const loginPostAsync = createAsyncThunk('loginPostAsync', (param) =>
-  loginPost(param)
-);
+export const loginPostAsync = createAsyncThunk('loginPostAsync', (param) => loginPost(param));
 
 const loginSlice = createSlice({
   name: 'loginSlice',

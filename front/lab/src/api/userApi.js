@@ -30,10 +30,10 @@ export const modifyUser = async (user) => {
   return res.data;
 };
 
-// export const getUser = async (id) => {
-//   // 로그인한 사용자 기준으로 axios 처리 (JSON으로 바로 보냄)
-//   // 파라미터 전달값은 user를 SocialController로 전달
-//   const res = await axios.get(`${host}/get`, user);
+export const getUser = async (id) => {
+  //   // 로그인한 사용자 기준으로 axios 처리 (JSON으로 바로 보냄)
+  //   // 파라미터 전달값은 user를 SocialController로 전달
+  const res = await axios.get(`${host}/${id}`);
 
-//   return res.data;
-// };
+  return res.data;
+};
