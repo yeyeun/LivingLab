@@ -40,10 +40,10 @@ const ListComponent = () => {
                 <p class="font-medium text-indigo-500 text-md">
                 </p>
                 <p class="mb-2 text-xl font-medium text-gray-800">
-                  13평 원룸 2층입니다.
+                  {shareRoom.title}
                 </p>
                 <p class="font-light text-gray-400 text-md">
-                  140,000원/월
+                  {shareRoom.monthlyRent}
                 </p>
               </div>
             </div>

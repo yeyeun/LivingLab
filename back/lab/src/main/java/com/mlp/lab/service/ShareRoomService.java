@@ -1,4 +1,5 @@
 package com.mlp.lab.service;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -42,5 +43,12 @@ public class ShareRoomService {
             .totalCount(totalCount)
             .build();
         return responseDTO;
+    }
+
+    public ShareRoomDto get(Integer roomNo){
+        Optional<ShareRoom> result = shareRoomRepository.selectOne(roomNo);
+        ShareRoom shareRoom = result.orElseThrow();
+        ShareRoomDto shareRoomDto = modelMapper.map(shareRoom, ShareRoomDto.class);
+        return shareRoomDto;
     }
 }

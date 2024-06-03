@@ -30,6 +30,6 @@ public class ShareRoom {
     private Integer monthlyRent;
     private boolean parking;
     private String location;
-    private String option;
+    private String option1;
     private boolean bookmark;
 }

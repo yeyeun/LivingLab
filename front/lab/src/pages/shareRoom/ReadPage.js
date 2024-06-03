@@ -1,4 +1,4 @@
-import ReadComponent from '../../components/common/ReadComponent';
+import ReadComponent from '../../components/shareRoom/ReadComponent';
 
 const ReadPage = () => {
   return (

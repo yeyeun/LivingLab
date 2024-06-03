@@ -7,3 +7,8 @@ export const getList = async (pageParam) => {
     const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size }});
     return res.data;
   };
+
+export const getOne = async (roomNo) =>{
+    const res =await axios.get(`${prefix}/${roomNo}`)
+    return res.data;
+}
