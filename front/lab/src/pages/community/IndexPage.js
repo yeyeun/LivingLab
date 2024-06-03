@@ -2,23 +2,25 @@ import BasicLayout from '../../layouts/BasicLayout';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
+
 const IndexPage = () => {
 
   const navigate = useNavigate();
 
   //useCallback 훅을 사용할 때는 두 번째 인자로 의존성 배열을 전달해야함
   const handleClickTip = useCallback(()=>{
-    navigate({pathname:'tip'})
+    navigate({pathname:'tip/list'})
   }, [navigate]);
   const handleClickQna = useCallback(()=>{
-    navigate({pathname:'qna'})
+    navigate({pathname:'qna/list'})
   }, [navigate]);
   const handleClickReview = useCallback(()=>{
-    navigate({pathname:'review'})
+    navigate({pathname:'review/list'})
   }, [navigate]);
   const handleClickHelp = useCallback(()=>{
-    navigate({pathname:'help'})
+    navigate({pathname:'help/list'})
   }, [navigate]);
+
 
   return (
     <div>

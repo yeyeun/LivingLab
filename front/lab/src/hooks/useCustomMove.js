@@ -43,7 +43,12 @@ const useCustomMove = () => {
     navigate({ pathname: `../read/${num}`, search: queryDefault });
   };
 
-  return { moveToList, moveToModify, moveToRead, page, size };
+  const moveToAdd = () => {
+    console.log(queryDefault);
+    navigate({ pathname: `../add`, search: queryDefault });
+  }
+
+  return { moveToList, moveToModify, moveToRead, moveToAdd, page, size };
 };
 export default useCustomMove;
 // 네비게이션 관련 커스텀 훅
