@@ -5,7 +5,7 @@ const IndexPage = () => {
   return (
     <div>
       <BasicLayout>
-        <div className="text-xl p-4">
+        <div className="text-xl p-4 flex-grow">
             <Outlet/>
         </div>
       </BasicLayout>

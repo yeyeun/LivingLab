@@ -4,7 +4,7 @@ import Footer from '../components/menus/Footer';
 const BasicLayout = ({ children }) => {
   return (
     <>
-      <div className="font-NotoSansKR">
+      <div className="font-NotoSansKR min-h-screen flex flex-col">
         <Header />
         {children}
         <Footer />
