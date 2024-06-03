@@ -3,6 +3,8 @@ package com.mlp.lab.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import com.mlp.lab.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+
 @Log4j2
 @RestController
 @RequestMapping("/api/buy")
@@ -34,10 +37,16 @@ public class BuyController {
         return buyService.list(pageRequestDto);
     }
 
-    @GetMapping("/{buyNo}") // 상세조회
+    @GetMapping("/read/{buyNo}") // 상세조회
     public BuyDto read(@PathVariable(name = "buyNo") int buyNo) {
         return buyService.read(buyNo);
     }
+
+    @GetMapping("/display/{fileName}") // 이미지 출력
+    public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
+        return fileUtil.getFile(fileName);
+    }
+    
 
     @PostMapping("/add") // 작성(이미지 포함)
     public void add(BuyDto buyDto) {
@@ -48,8 +57,8 @@ public class BuyController {
         buyService.add(buyDto);
     }
 
-    @PutMapping("/{buyNo}")
-    public ResponseDto<String> modify(@PathVariable(name = "buyNo") Long buyNo, BuyDto buyDto) {
+    @PutMapping("/modify/{buyNo}") // 수정
+    public ResponseDto<BuyDto> modify(@PathVariable(name = "buyNo") Long buyNo, BuyDto buyDto) {
         buyDto.setBuyNo(buyNo);
         BuyDto oldDto = buyService.read(buyNo.intValue());
         // 기존 파일들(데이터베이스에 저장된 파일 이름)
@@ -68,7 +77,9 @@ public class BuyController {
         if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
             uploadedFileNames.addAll(newUploadFileNames);
         }
+        
         buyService.modify(buyDto);
+
         if (oldFileNames != null && oldFileNames.size() > 0) {
             List<String> removeFiles = oldFileNames
                     .stream()
@@ -76,6 +87,6 @@ public class BuyController {
             // 파일 삭제
             fileUtil.deleteFiles(removeFiles);
         }
-        return ResponseDto.setSuccess("수정되었습니다.");
+        return ResponseDto.setSuccessData("수정되었습니다.", buyDto);
     }
 }

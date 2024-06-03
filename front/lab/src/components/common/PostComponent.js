@@ -22,14 +22,11 @@ const Post = (props) => {
 
     return (
         <>
-
             <DaumPostcode
                 style={postCodeStyle}
                 autoClose
                 onComplete={onCompletePost}
-
             />
-
         </>
     );
 };
