@@ -2,6 +2,8 @@ package com.mlp.lab.dto;
 
 import java.time.LocalDateTime;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
@@ -9,12 +11,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeamDto { // 동네모임 화면에서 받을 데이터
-    private Integer teamNo;
+    private Long teamNo;
     private String user_id;
     private String title;
     private String content;
@@ -27,4 +32,11 @@ public class TeamDto { // 동네모임 화면에서 받을 데이터
     private String location;
     private Character teamHit;
     private String teamImage;
+    private String nickname;
+
+    @Builder.Default
+    private List<MultipartFile> files = new ArrayList<>(); // 서버에 저장되는 실제 파일 데이터
+
+    @Builder.Default
+    private List<String> uploadFileNames = new ArrayList<>(); // 데이터베이스에 저장될 파일 이름
 }
