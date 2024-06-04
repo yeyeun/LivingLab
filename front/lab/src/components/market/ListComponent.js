@@ -2,7 +2,7 @@ import image from '../../resources/images/defaultImage.jpg';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
 import { useEffect, useState } from "react";
-import { getList } from "../../api/marketApi"
+import { API_SERVER_HOST, getList } from "../../api/marketApi"
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../common/PageComponent";
 
@@ -18,6 +18,9 @@ const initState = {
     totalPage: 0,
     current: 0
 }
+
+const host = API_SERVER_HOST
+
 const ListComponent = () => {
     const{page, size, moveToList, moveToRead} = useCustomMove();
     const [serverData, setServerData] = useState(initState);
@@ -32,7 +35,7 @@ const ListComponent = () => {
         {serverData.dtoList.map(market=>
             <div key={market.marketNo} className="w-full mb-4" onClick={()=>moveToRead(market.marketNo)}>
                 <div className="flex flex-col justify-center items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                    <img className="object-cover w-full h-96 md:h-auto md:w-48 md:rounded-none" src={image} alt="..."/>
+                    <img className="object-cover w-full h-96 md:h-auto md:w-48 md:rounded-none" src={`${host}/api/market/display/${market.uploadFileNames[0]}`} alt="..."/>
                     <div className="flex flex-col p-4 mx-5 leading-normal">
                         <div className="mb-2 inline-flex">
                             <span className="bg-white text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl border border-gray-900 dark:bg-gray-700 dark:text-gray-300">
