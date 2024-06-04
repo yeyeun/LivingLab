@@ -41,7 +41,7 @@ const MyInfoComponent = ({ id }) => {
         </Link>
       </div>
 
-      <div className="border-2 border-sky-200 p-4  bg-gray-50">
+      <div className="p-4 bg-gray-50">
         <div className="flex justify-center">
           <div className="w-1/3 p-3 text-left font-bold">아이디</div>
           <div className="relative mb-4 flex w-full items-stretch">
