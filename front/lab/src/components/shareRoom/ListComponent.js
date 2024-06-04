@@ -4,7 +4,9 @@ import { getList } from "../../api/shareRoomApi"
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../common/PageComponent";
 import SearchComponent from '../../components/common/SearchComponent';
+
 import SelectComponent from '../../components/common/SelectComponent';
+
 
 const initState = {
   dtoList: [], //한 페이지에 불러오는 게시물 갯수
@@ -29,6 +31,7 @@ const ListComponent = () => {
     })
   }, [page, size]);
   return (
+
     <>
     <div className='h-1/2 items-center'>
       <SearchComponent/>

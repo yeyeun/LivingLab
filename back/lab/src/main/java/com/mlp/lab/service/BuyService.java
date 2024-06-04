@@ -24,11 +24,6 @@ import lombok.RequiredArgsConstructor;
 public class BuyService {
     private final BuyRepository buyRepository;
 
-    public void add(BuyDto buyDto) { // 공동구매 등록(이미지 포함)
-        Buy buy = Buy.createBuy(buyDto);
-        buyRepository.save(buy);
-    }
-   
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto) { // 목록 가져오기(페이징 처리, 이미지 포함)
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
@@ -59,9 +54,40 @@ public class BuyService {
         return responseDto;
     }
 
-    public Optional<Buy> read(int buyNo) {
-        Optional<Buy> buy = buyRepository.findById(buyNo);
-        return buy;
+
+    public void add(BuyDto buyDto) { // 공동구매 등록(이미지 포함)
+        Buy buy = Buy.DtoToEntity(buyDto);
+        buyRepository.save(buy);
     }
 
+    public BuyDto read(int buyNo) { // 공동구매 조회
+        Optional<Buy> result = buyRepository.findById(buyNo);
+        Buy buy = result.orElseThrow();
+        BuyDto buyDto = buy.entityToDto(buy);
+        return buyDto;
+    }
+
+    
+    public void modify(BuyDto buyDto) { //수정하기
+        // 1.조회
+        Optional<Buy> result = buyRepository.findById(buyDto.getBuyNo().intValue());
+        Buy buy = result.orElseThrow();
+
+        // 수정
+        buy.setTitle(buyDto.getTitle());
+        buy.setContent(buyDto.getContent());
+        buy.setLocation(buyDto.getLocation());
+        buy.setBuyCategory(buyDto.getBuyCategory());
+        buy.setDeadline(buyDto.getDeadline());
+
+        // 파일들 삭제
+        buy.clearList();
+        List<String> uploadFileNames = buyDto.getUploadFileNames();
+        if (uploadFileNames != null && uploadFileNames.size() > 0) {
+            uploadFileNames.stream().forEach(uploadName -> {
+                buy.addImageString(uploadName);
+            });
+        }
+        buyRepository.save(buy);
+    }
 }
