@@ -1,14 +1,14 @@
-import useCustomTip from "../../hooks/useCustomTip";
-import SearchComponent from "../../components/common/SearchComponent";
+import SearchComponent from "../../../components/common/SearchComponent";
+import useCustomTip from "../../../hooks/useCustomTip";
 
 const ListComponent = () => {
-  const {moveToAdd} = useCustomTip();
+  const{ moveToRead } = useCustomTip();
 
     return(
       <>
       <SearchComponent/>
       <table className="min-w-full text-center text-lg font-light text-surface dark:text-white">
-        <thead className="border-b-2 border-neutral-500 font-semibold dark:border-white/10">
+        <thead className="text-base border-b-2 border-neutral-500 font-semibold dark:border-white/10">
           <tr>
             <th scope="col" className="w-2/12 py-4">카테고리</th>
             <th scope="col" className="w-1/12 py-4">좋아요수</th>
@@ -19,7 +19,8 @@ const ListComponent = () => {
         </thead>
         <tbody>
             <tr
-              className="border-b border-neutral-200 transition duration-300 ease-in-out hover:bg-neutral-100 hover:cursor-pointer">
+              className="border-b border-neutral-200 transition duration-300 ease-in-out hover:bg-neutral-100 hover:cursor-pointer"
+              onClick={()=>moveToRead(1)}>
               <td className="whitespace-nowrap py-4">인테리어</td>
               <td className="whitespace-nowrap py-4">10</td>
               <td className="whitespace-nowrap py-4">글 제목입니다</td>
@@ -69,10 +70,6 @@ const ListComponent = () => {
           </tbody>
           <div className="text-xl">1 2 3 4 5</div>
           </table>
-      <button type="button" className="float-right inline-block rounded bg-teal-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-teal-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none"
-      onClick={()=>moveToAdd()}>
-        글쓰기
-      </button>
       </>
     );
 
