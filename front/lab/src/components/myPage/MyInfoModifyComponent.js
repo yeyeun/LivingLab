@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { modifyUser, getUser } from '../../api/userApi';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import useCustomMove from '../../hooks/useCustomMove';
-import useCustomLogin from '../../hooks/useCustomLogin';
-import Post from '../common/PostComponent';
+//import useCustomMove from '../../hooks/useCustomMove';
+//import useCustomLogin from '../../hooks/useCustomLogin';
+import PostComponent from '../common/PostComponent';
 
 const initState = {
+  email: '',
   name: '',
   phone: '',
   nickname: '',
@@ -24,16 +25,19 @@ const MyInfoModifyComponent = ({ id }) => {
   const navigate = useNavigate();
 
   //주소 찾기 팝업 추가
-  const [address, setAddress] = React.useState('');
-  const [popup, setPopup] = React.useState(false);
+  const [address, setAddress] = useState('');
 
   const ino = loginInfo.id;
+  //console.log(address);
 
   useEffect(() => {
     getUser(ino).then((data) => {
-      console.log('계정의 id값 : ' + ino);
-      console.log(data);
+      //console.log('계정의 id값 : ' + ino);
+      //console.log(data);
+      //console.log(data.addr);
+      //console.log(data.detailAddr);
       setUser(data);
+      setAddress(data.addr);
     });
   }, [ino]);
 
@@ -44,6 +48,20 @@ const MyInfoModifyComponent = ({ id }) => {
       [e.target.name]: e.target.value,
     });
   };
+
+  // addr(팝업 검색주소)만 따로 상태변경
+  const handleAddrChange = (newAddr) => {
+    setAddress(newAddr);
+    setUser({
+      ...user,
+      addr: newAddr,
+    });
+  };
+
+  // const handleChange = (e) => {
+  //   user[e.target.name] = e.target.value;
+  //   setUser({ ...user });
+  // };
 
   // 수정완료 버튼
   const handleClickModify = () => {
@@ -145,25 +163,18 @@ const MyInfoModifyComponent = ({ id }) => {
 
           <div className="flex justify-center">
             <div className="w-1/3 p-3 text-left font-bold">주소</div>
-            <div className="relative mb-4 flex flex-wrap w-full items-stretch">
-              <button
-                className="rounded p-2 w-1/5 bg-gray-500 text-xm text-white"
-                onClick={() => {
-                  setPopup(!popup);
-                }}
-              >
-                🔍︎ 주소 검색
-              </button>
-              {popup && <Post className="z-50" address={address} setAddress={setAddress}></Post>}
+            <div className="relative mb-4 w-full items-stretch">
+              <PostComponent address={address} setAddress={handleAddrChange}></PostComponent>
               <input
                 className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
                 name="addr"
                 type={'text'}
                 placeholder="주소(우편번호 및 도로명 검색)"
-                required={true}
-                value={user.addr}
-                onChange={handleChange}
-              ></input>
+                value={address}
+                readOnly // 추가
+              />
+              {/* 오류수정 : // onChange={handleChange} */}
+
               <input
                 className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
                 name="detailAddr"

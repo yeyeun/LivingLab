@@ -13,6 +13,7 @@ const initState = {
   pwd: '',
   pwdCheck: '',
   addr: '',
+  detailAddr: '',
 };
 
 const MyInfoComponent = ({ id }) => {
@@ -23,8 +24,8 @@ const MyInfoComponent = ({ id }) => {
 
   useEffect(() => {
     getUser(ino).then((data) => {
-      console.log('계정의 id값 : ' + ino);
-      console.log(data);
+      //console.log('계정의 id값 : ' + ino);
+      //console.log(data);
       setUser(data);
     });
   }, [ino]);
@@ -126,17 +127,17 @@ const MyInfoComponent = ({ id }) => {
               className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
               name="addr"
               type={'text'}
-              placeholder="주소(클릭시 주소검색창 열림)"
+              placeholder="주소"
               value={user.addr}
               readOnly
             ></input>
 
             <input
               className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
-              name="addr"
+              name="detailAddr"
               type={'text'}
               placeholder="상세주소"
-              value={user.addr}
+              value={user.detailAddr}
               readOnly
             ></input>
           </div>
