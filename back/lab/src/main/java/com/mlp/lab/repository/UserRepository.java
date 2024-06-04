@@ -2,7 +2,10 @@ package com.mlp.lab.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.mlp.lab.entity.User;
 
@@ -15,5 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findUserByEmail(String email);
 
     User findByNameAndPhone(String name, String phone); // 이름과 번호로 이메일(아이디) 찾기
+
+    // @EntityGraph(attributePaths = { "memberRoleList" })
+    // @Query("select u from User u where u.email = :email")
+    // User getWithRoles(@Param("email") String email);
 
 }

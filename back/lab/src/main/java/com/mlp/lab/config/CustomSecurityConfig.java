@@ -5,12 +5,15 @@ import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.mlp.lab.security.APILoginSuccessHandler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,8 +31,19 @@ public class CustomSecurityConfig {
       httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
     });
 
+    http.sessionManagement(httpSecuritySessionManagementConfigurer -> {
+      httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER);
+      // 세션 안 만들게 하는 것
+    });
+
     // CSRF 설정
     http.csrf(httpSecurityCsrfCorsConfigurer -> httpSecurityCsrfCorsConfigurer.disable());
+
+    http.formLogin(config -> {
+      config.loginPage("/api/user/login");
+      config.successHandler(new APILoginSuccessHandler());
+      // config.failureHandler(new APILoginFailHandler());
+    });
 
     return http.build();
   }

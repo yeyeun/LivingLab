@@ -19,7 +19,6 @@ public class UserDto { // 화면에서 받을 데이터
     private String phone;
     private String nickname;
     private String addr;
-    // private String birth;
 
     public Map<String, Object> getClaims() {
         Map<String, Object> dataMap = new HashMap<>();

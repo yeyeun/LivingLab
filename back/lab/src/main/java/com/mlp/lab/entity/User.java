@@ -59,13 +59,15 @@ public class User {
     private List<UserRole> userRoleList = new ArrayList<>();
 
     // 스프링 시큐리티 쓸 때 활용
+    // 새로운 회원의 권한을 추가
     public void addRole(UserRole userRole) {
-        userRoleList.add(userRole); // 새로운 회원의 권한을 추가
+        userRoleList.add(userRole);
     }
 
     // 스프링 시큐리티 쓸 때 활용
+    // 회원이 가진 권한 삭제
     public void userRole() {
-        userRoleList.clear(); // 회원이 가진 권한 삭제
+        userRoleList.clear();
     }
 
     // 회원정보 수정 (5개 함수)
