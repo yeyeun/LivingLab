@@ -3,6 +3,8 @@ package com.mlp.lab.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
+
 import com.mlp.lab.dto.UserDto;
 
 import jakarta.persistence.ElementCollection;
@@ -55,6 +57,14 @@ public class User {
         return user;
     }
 
+    //// ModelMapper: 서로 다른 클래스의 값을 한 번에 복사하게 도와주는 라이브러리
+    // public static User createMember(UserDto userDto){
+    // ModelMapper modelMapper = new ModelMapper();
+    // User user = modelMapper.map(userDto, User.class);
+    // return user;
+    // }
+
+    ////////////////////////////////////////////////////////////////////////////
     // 스프링 시큐리티 쓸 때 활용
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
@@ -96,6 +106,7 @@ public class User {
     public void changeDetailAddr(String detailAddr) {
         this.detailAddr = detailAddr;
     }
+
     ///////////////////////////////////////
 
     // 소셜 권한 바꿀 때 사용 (스프링 시큐리티)

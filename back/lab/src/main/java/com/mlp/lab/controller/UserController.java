@@ -1,5 +1,6 @@
 package com.mlp.lab.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +33,7 @@ public class UserController {
     private final MailService mailService;
 
     @PostMapping("/login")
-    public ResponseDto<?> login(@RequestBody LoginDto loginDto) {
+    public ResponseDto<Object> login(@RequestBody LoginDto loginDto) {
         User user = userService.findByEmail(loginDto.getEmail());
         if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
             return ResponseDto.setFailed("아이디와 비밀번호를 확인해주세요.");
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseDto<?> join(@RequestBody UserDto userDto) {
+    public ResponseDto<Object> join(@RequestBody UserDto userDto) {
         if (userService.findByEmail(userDto.getEmail()) != null) {
             return ResponseDto.setFailed("이미 존재하는 아이디입니다.");
         }
@@ -54,19 +55,19 @@ public class UserController {
     }
 
     @PostMapping("/findId")
-    public ResponseDto<String> findId(@RequestBody UserDto userDto) {
+    public ResponseDto<Object> findId(@RequestBody UserDto userDto) {
         User user = userService.findId(userDto.getName(), userDto.getPhone());
         return ResponseDto.setSuccess(user.getName() + "님의 아이디는 " + user.getEmail() + " 입니다.");
     }
 
     @PostMapping("/findPwd")
-    public ResponseDto<String> findPwd(@RequestParam int inputAuthNum, @RequestBody User user) {
+    public ResponseDto<Object> findPwd(@RequestParam int inputAuthNum, @RequestBody User user) {
         int authNumber = mailService.makeRandomNumber();
         System.out.println("인증번호: " + authNumber);
         System.out.println("입력받은 인증번호: " + authNumber);
 
         if (authNumber != inputAuthNum) {
-            return ResponseEntity.badRequest().body("인증번호가 일치하지 않습니다.");
+            return ResponseDto.setFailed("인증번호가 일치하지 않습니다.");
         }
         return ResponseDto.setSuccess(user.getName() + "님의 패스워드는 " + user.getPwd() + " 입니다.");
     }
