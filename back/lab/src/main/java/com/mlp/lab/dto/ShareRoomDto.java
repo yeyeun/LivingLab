@@ -24,7 +24,7 @@ public class ShareRoomDto { // 화면에서 받을 데이터
     private Integer monthlyRent;
     private boolean parking;
     private String location;
-    private String option;
+    private String option1;
     private boolean bookmark;
 
 

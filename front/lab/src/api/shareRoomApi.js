@@ -10,5 +10,6 @@ export const getList = async (pageParam) => {
 
 export const getOne = async (roomNo) =>{
     const res =await axios.get(`${prefix}/${roomNo}`)
+    console.log(res);
     return res.data;
 }

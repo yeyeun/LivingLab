@@ -9,6 +9,7 @@ import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.service.ShareRoomService;
 import lombok.RequiredArgsConstructor;
 
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -24,7 +25,7 @@ public class ShareRoomController {
         return shareRoomService.list(pageRequestDto);
     }
 
-    @GetMapping("/{pno}")
+    @GetMapping("/{roomNo}")
     public ShareRoomDto read(@PathVariable(name="roomNo") Integer roomNo){
         return shareRoomService.get(roomNo);
     }

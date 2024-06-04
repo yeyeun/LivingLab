@@ -46,7 +46,7 @@ public class ShareRoomService {
     }
 
     public ShareRoomDto get(Integer roomNo){
-        Optional<ShareRoom> result = shareRoomRepository.selectOne(roomNo);
+        Optional<ShareRoom> result = shareRoomRepository.findById(roomNo);
         ShareRoom shareRoom = result.orElseThrow();
         ShareRoomDto shareRoomDto = modelMapper.map(shareRoom, ShareRoomDto.class);
         return shareRoomDto;
