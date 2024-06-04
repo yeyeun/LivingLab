@@ -69,6 +69,7 @@ public class UserService {
     // user.changePwd(passwordEncoder.encode(userDto.getPwd()));
     user.changePwd(userDto.getPwd());
     user.changeAddr(userDto.getAddr());
+    user.changeDetailAddr(userDto.getDetailAddr());
 
     userRepository.save(user);
   }
@@ -103,11 +104,11 @@ public class UserService {
   // 회원 생성 함수(기존 DB에 없을 때 사용)
   private User makeSocialUser(String email, String nickname) {
 
-    String tempPassword = makeTempPassword();
+    // String tempPassword = makeTempPassword();
 
     User user = User.builder()
         .email(email)
-        .pwd(tempPassword)
+        // .pwd(tempPassword)
         // .pwd(passwordEncoder.encode(tempPassword))
         .nickname(nickname)
         // .social(true)
@@ -126,7 +127,8 @@ public class UserService {
         user.getName(),
         user.getPhone(),
         user.getNickname(),
-        user.getAddr()
+        user.getAddr(),
+        user.getDetailAddr()
     // user.isSocial(),
     ); // 사용자가 DB에 없다면 새로운 데이터를 추가해줘야된다.
 

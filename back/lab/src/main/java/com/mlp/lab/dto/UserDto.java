@@ -19,6 +19,7 @@ public class UserDto { // 화면에서 받을 데이터
     private String phone;
     private String nickname;
     private String addr;
+    private String detailAddr;
 
     public Map<String, Object> getClaims() {
         Map<String, Object> dataMap = new HashMap<>();
@@ -31,6 +32,7 @@ public class UserDto { // 화면에서 받을 데이터
         dataMap.put("phone", phone);
         dataMap.put("nickname", nickname);
         dataMap.put("addr", addr);
+        dataMap.put("detailAddr", detailAddr);
         // dataMap.put("social", social);
         // dataMap.put("roleNames", roleNames);
 

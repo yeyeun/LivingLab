@@ -36,6 +36,7 @@ public class User {
     private String pwd;
     private String name;
     private String addr;
+    private String detailAddr;
     private String phone;
     private String nickname;
     private String profileImage;
@@ -49,6 +50,7 @@ public class User {
         user.setName(dto.getName());
         user.setPhone(dto.getPhone());
         user.setAddr(dto.getAddr());
+        user.setDetailAddr(dto.getDetailAddr());
         user.setNickname(dto.getNickname());
         return user;
     }
@@ -89,6 +91,10 @@ public class User {
 
     public void changeAddr(String addr) {
         this.addr = addr;
+    }
+
+    public void changeDetailAddr(String detailAddr) {
+        this.detailAddr = detailAddr;
     }
     ///////////////////////////////////////
 
