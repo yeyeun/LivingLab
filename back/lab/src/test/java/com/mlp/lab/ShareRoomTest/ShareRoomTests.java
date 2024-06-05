@@ -34,6 +34,7 @@ class ShareRoomTests {
 			.content("asd")
 			.option1("냉장고,에어컨,세탁기")
 			.parking('O')
+			// user 테이블에 id 값이 1인 데이터가 하나는 있어야함
 			.userId(1)
 			.location(null).build();
 			
