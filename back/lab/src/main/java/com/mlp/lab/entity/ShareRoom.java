@@ -17,19 +17,22 @@ import lombok.NoArgsConstructor;
 @Builder //빌터 패턴으로 객체 생성
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "livingroom")
+@Table(name = "shareroom")
 public class ShareRoom {
     @Id //기본키 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roomNo;
-    private String email;
-    private String nickname;
+    private Integer userId;
     private String title;
     private String content;
     private LocalDateTime regDate;
-    private Integer monthlyRent;
-    private boolean parking;
+    private String rentFee;
+    private Character parking;
     private String location;
     private String option1;
-    private boolean bookmark;
+    private String roomImage;
+    private String rentStartDate;
+    private String rentEndDate;
+    
+
 }

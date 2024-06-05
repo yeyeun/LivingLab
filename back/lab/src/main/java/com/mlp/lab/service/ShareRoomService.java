@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.mlp.lab.dto.PageRequestDto;
-import com.mlp.lab.dto.PageResponseDto;
+import com.mlp.lab.dto.RoomPageRequestDto;
+import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.dto.ShareRoomDto;
 import com.mlp.lab.entity.ShareRoom;
 
@@ -25,10 +25,10 @@ public class ShareRoomService {
     private final ModelMapper modelMapper;
     private final ShareRoomRepository shareRoomRepository;
 
-    public PageResponseDto<ShareRoomDto> list(PageRequestDto pageRequestDto){
+    public RoomPageResponseDto<ShareRoomDto> list(RoomPageRequestDto roomPageRequestDto){
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
+            roomPageRequestDto.getPage()-1,
+            roomPageRequestDto.getSize(),
             Sort.by("roomNo").descending());
          
         Page<ShareRoom> result = shareRoomRepository.findAll(pageable);
@@ -37,9 +37,9 @@ public class ShareRoomService {
             .collect(Collectors.toList());     
             
         long totalCount = result.getTotalElements();
-        PageResponseDto<ShareRoomDto> responseDTO = PageResponseDto.<ShareRoomDto>withAll()
+        RoomPageResponseDto<ShareRoomDto> responseDTO = RoomPageResponseDto.<ShareRoomDto>withAll()
             .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
+            .roomPageRequestDto(roomPageRequestDto)
             .totalCount(totalCount)
             .build();
         return responseDTO;
