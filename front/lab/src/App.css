@@ -100,6 +100,17 @@
   border-width: 1px;
 }
 
+.myPage-box {
+  width: 340px;
+  height: 220px;
+  border-radius: 8px;
+  border-color: rgb(196, 196, 196);
+  border-width: 1px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
 .header-active {
   font-weight: 700;
   color: #6ac5b7;

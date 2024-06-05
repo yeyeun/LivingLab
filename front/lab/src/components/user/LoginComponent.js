@@ -4,9 +4,10 @@ import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login, loginPostAsync } from '../../slices/loginSlice';
 import imgLogo2 from '../../resources/images/logo2.png';
-import HorizonLine from '../../utils/HorizontalLine';
+import HorizonLine from '../../util/HorizontalLine';
 import KakaoLoginComponent from './KakaoLoginComponent';
 import { getKakaoLoginLink } from '../../api/kakaoApi';
+import useCustomLogin from '../../hooks/useCustomLogin';
 
 const initState = {
   email: '',
@@ -26,8 +27,12 @@ function LoginComponent(props) {
     setLoginParam({ ...loginParam });
   };
 
+  const { moveToLogin, moveToPath } = useCustomLogin();
+
   const handleClickLogin = (e) => {
     dispatch(login(loginParam));
+    alert('로그인 되었습니다!');
+    moveToPath('/');
 
     //dispatch(loginPostAsync(loginParam));
   };
@@ -36,11 +41,7 @@ function LoginComponent(props) {
     <div className="max-h-400">
       <div className="flex justify-center">
         <div className="text-4xl m-1 p-1 font-extrabold text-blue-500">
-          <img
-            src={imgLogo2}
-            alt="imgLogo2"
-            className="object-contain h-48 w-96 ..."
-          />
+          <img src={imgLogo2} alt="imgLogo2" className="object-contain h-48 w-96 ..." />
         </div>
       </div>
       <div className="border-2 border-sky-200 p-4">
@@ -74,10 +75,7 @@ function LoginComponent(props) {
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
             <div className="w-full flex justify-center font-bold">
-              <button
-                className="rounded p-2 w-full bg-black text-xl text-white"
-                onClick={handleClickLogin}
-              >
+              <button className="rounded p-2 w-full bg-black text-xl text-white" onClick={handleClickLogin}>
                 로그인
               </button>
             </div>
@@ -87,9 +85,7 @@ function LoginComponent(props) {
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
             <div className="w-full flex justify-center font-bold">
-              <button className="rounded p-2 w-full bg-blue-500 text-xl text-white">
-                회원가입
-              </button>
+              <button className="rounded p-2 w-full bg-blue-500 text-xl text-white">회원가입</button>
             </div>
           </div>
         </div>
@@ -105,9 +101,7 @@ function LoginComponent(props) {
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
             <div className="w-full flex justify-center font-bold">
-              <button className="rounded p-2 w-full bg-gray-300 text-xl text-white">
-                Google
-              </button>
+              <button className="rounded p-2 w-full bg-gray-300 text-xl text-white">Google</button>
             </div>
           </div>
         </div>
@@ -127,9 +121,7 @@ function LoginComponent(props) {
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
             <div className="w-full flex justify-center font-bold">
-              <button className="rounded p-2 w-full bg-green-400 text-xl text-white">
-                Naver
-              </button>
+              <button className="rounded p-2 w-full bg-green-400 text-xl text-white">Naver</button>
             </div>
           </div>
         </div>

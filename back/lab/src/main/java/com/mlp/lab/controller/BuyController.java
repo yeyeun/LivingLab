@@ -42,7 +42,7 @@ public class BuyController {
         return buyService.read(buyNo);
     }
 
-    @GetMapping("/display/{fileName}") // 이미지 출력
+    @GetMapping("/display/{fileName}") // 목록조회
     public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);
     }

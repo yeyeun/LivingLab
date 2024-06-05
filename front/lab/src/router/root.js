@@ -1,14 +1,14 @@
 // 어떤 경로에 어떤 컴포넌트를 보여줄 것인지 결정
 import { Suspense, lazy } from 'react'; // 필요한 순간까지 컴포넌트를 메모리상으로 올리지 않도록 지연코딩
 import { createBrowserRouter } from 'react-router-dom';
-import todoRouter from './todoRouter';
-import productsRouter from './productsRouter';
+
 import userRouter from './userRouter';
 import buyRouter from './buyRouter';
 import teamRouter from './teamRouter';
 import marketRouter from './marketRouter';
 import shareRoomRouter from './shareRoomRouter';
 import communityRouter from './community/allRouter';
+import myPageRouter from './myPage/allRouter';
 
 const Loading = <div>Loading...</div>; // 컴포넌트의 처리가 끝나지 않은 경우 화면에 'Loading...' 메시지 출력
 const Main = lazy(() => import('../pages/MainPage'));
@@ -17,9 +17,7 @@ const TeamIndex = lazy(() => import('../pages/team/IndexPage')); // 동네모임
 const MarketIndex = lazy(() => import('../pages/market/IndexPage')); // 동네장터 페이지
 const ShareRoomIndex = lazy(() => import('../pages/shareRoom/IndexPage')); // 자취방쉐어 페이지
 const CommunityIndex = lazy(() => import('../pages/community/IndexPage')); // 커뮤니티 페이지
-
-const TodoIndex = lazy(() => import('../pages/todo/IndexPage'));
-const ProductsIndex = lazy(() => import('../pages/products/IndexPage'));
+const MyPageIndex = lazy(() => import('../pages/myPage/IndexPage')); // 마이 페이지
 
 const root = createBrowserRouter([
   {
@@ -76,26 +74,17 @@ const root = createBrowserRouter([
     children: communityRouter(),
   },
   {
-    path: 'todo',
-    element: (
-      <Suspense fallback={Loading}>
-        <TodoIndex />
-      </Suspense>
-    ),
-    children: todoRouter(),
-  },
-  {
-    path: 'products',
-    element: (
-      <Suspense fallback={Loading}>
-        <ProductsIndex />
-      </Suspense>
-    ),
-    children: productsRouter(),
-  },
-  {
     path: 'user',
     children: userRouter(),
+  },
+  {
+    path: 'myPage',
+    element: (
+      <Suspense fallback={Loading}>
+        <MyPageIndex />
+      </Suspense>
+    ),
+    children: myPageRouter(),
   },
 ]);
 export default root;

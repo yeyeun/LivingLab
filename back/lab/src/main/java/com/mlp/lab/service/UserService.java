@@ -3,6 +3,7 @@ package com.mlp.lab.service;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,10 +26,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class UserService {
   // final 붙여야지 생성자 만들어줌(RequiredArgsConstructor)
+  private final ModelMapper modelMapper;
   private final UserRepository userRepository;
 
+  // private final PasswordEncoder passwordEncoder; // 이럴 때 비밀번호는 인코딩해서
+  // 넣어줘야된다.(스프링 시큐리티)
+
   // 사용자가 DB에 없다면 새로운 데이터를 추가해줘야된다.
-  private final PasswordEncoder passwordEncoder; // 이럴 때 비밀번호는 인코딩해서 넣어줘야된다.(스프링 시큐리티)
 
   public void save(User member) {
     userRepository.save(member);
@@ -40,6 +44,34 @@ public class UserService {
 
   public User findId(String name, String phone) {
     return userRepository.findByNameAndPhone(name, phone);
+  }
+
+  // 마이페이지 회원정보 조회
+  public UserDto get(Long id) {
+    Optional<User> result = userRepository.findById(id);
+    User user = result.orElseThrow();
+    UserDto userDto = modelMapper.map(user, UserDto.class);
+    return userDto;
+  }
+
+  // 마이페이지 회원정보 수정
+  public void modifyUserInfo(UserDto userDto) {
+    // 1. 회원정보 조회
+    // Optional<User> result = userRepository.findByEmail(userDto.getEmail()); //이메일
+    Optional<User> result = userRepository.findById(userDto.getId()); // 아이디로 조회
+    User user = result.orElseThrow(); // throwException(예외처리)
+
+    // 2. 수정(Dto에 받은 값으로 Entiry의 데이터 수정)
+    // 이름, 휴대폰 번호, 닉네임, 비밀번호, 주소 (5개 항목 변경)
+    user.changeName(userDto.getName());
+    user.changePhone(userDto.getPhone());
+    user.changeNickname(userDto.getNickname());
+    // user.changePwd(passwordEncoder.encode(userDto.getPwd()));
+    user.changePwd(userDto.getPwd());
+    user.changeAddr(userDto.getAddr());
+    user.changeDetailAddr(userDto.getDetailAddr());
+
+    userRepository.save(user);
   }
 
   // 카카오 연동해서 accessToken을 이용해서 카카오api에 등록된 사용자 정보 가져오기
@@ -72,11 +104,12 @@ public class UserService {
   // 회원 생성 함수(기존 DB에 없을 때 사용)
   private User makeSocialUser(String email, String nickname) {
 
-    String tempPassword = makeTempPassword();
+    // String tempPassword = makeTempPassword();
 
     User user = User.builder()
         .email(email)
-        .pwd(passwordEncoder.encode(tempPassword))
+        // .pwd(tempPassword)
+        // .pwd(passwordEncoder.encode(tempPassword))
         .nickname(nickname)
         // .social(true)
         .build();
@@ -88,13 +121,15 @@ public class UserService {
   // User entity를 User dto로 변환하는 entityToDto 함수
   public UserDto entityToDto(User user) {
     UserDto dto = new UserDto(
+        user.getId(),
         user.getEmail(),
         user.getPwd(),
+        // user.getPwdCheck(),
         user.getName(),
-        user.getAddr(),
         user.getPhone(),
         user.getNickname(),
-        user.getProfileImage()
+        user.getAddr(),
+        user.getDetailAddr()
     // user.isSocial(),
     ); // 사용자가 DB에 없다면 새로운 데이터를 추가해줘야된다.
 

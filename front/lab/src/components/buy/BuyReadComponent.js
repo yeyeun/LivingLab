@@ -32,25 +32,27 @@ const BuyReadComponent = ({ buyNo }) => {
         <div>
             <div className="flex justify-between">
                 <div className="my-5 mx-5">모집 상황</div>
-                <div className="my-5 mx-5">기간</div>
+                <div className="my-5 mx-5">{buy.deadline} 까지</div>
             </div>
             <div className="image-upload">
                 {buy.uploadFileNames.map((imgFile, i) =>
                     <img
                         alt="buy"
                         key={i}
-                        className="p-4 w-1/2"
                         src={`${host}/api/buy/display/${imgFile}`} />
                 )}
             </div>
             <div className="text-center my-5">
-                <span className="tag-button">{buy.category}</span>
-                <span className="tag-button">{buy.deadline}</span>
-
+                <span className="tag-button">카테고리: 
+                    {buy.buyCategory === '1' && '구매'}
+                    {buy.buyCategory === '2' && '판매'}
+                    {buy.buyCategory === '3' && '교환'}
+                    {buy.buyCategory === '4' && '나눔'}</span>
+                <span className="tag-button">마감일: {buy.deadline}</span>
             </div>
-            <div className="detail-box">{buy.title}</div>
-            <div className="detail-box">{buy.location}</div>
-            <div className="detail-box">작성자</div>
+            <div className="detail-box">제목: {buy.title}</div>
+            <div className="detail-box">장소: {buy.location}</div>
+            <div className="detail-box">작성자: {buy.nickname}</div>
 
 
             <div className="detail-content">{buy.content}</div>
