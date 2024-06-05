@@ -38,6 +38,7 @@
   }
 }
 
+/* 홈 화면 상단 */
 .main-container-top {
   display: flex;
 }
@@ -124,28 +125,26 @@
   flex-direction: column;
   width: 40%;
   gap: 1.25rem;
-  margin: auto;
   padding: 0.5rem;
   margin: 0 auto;
   background-color: white;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
-  user-select: none;
   border-radius: 1rem;
 }
 
 .detail-box {
-    width: 90%;
-    margin: 5px auto;
-    background-color: #e5e7eb;
-    border-radius: 1rem;
+  width: 90%;
+  margin: 5px auto;
+  background-color: #e5e7eb;
+  border-radius: 1rem;
 }
 
-.detail-box2 {
-    width: 90%;
-    height: 13rem;
-    margin: 20px auto;
-    background-color: #e5e7eb;
-    border-radius: 1rem;
+.detail-content {
+  width: 90%;
+  height: 13rem;
+  margin: 20px auto;
+  background-color: #e5e7eb;
+  border-radius: 1rem;
 }
 
 .image-upload {
@@ -153,22 +152,151 @@
   margin: 20px auto;
   width: 450px;
   height: 300px;
-  border-color:#e5e7eb;
-  border-width:1px;
+  border-color: #e5e7eb;
+  border-width: 1px;
 }
 
 .tag-button {
-    background-color: #ffffff; 
-    color: #4b5563;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-right: 0.75rem;
-    padding: 0.125rem 0.625rem;
-    border: 1px solid #1f2937; 
-    border-radius: 1rem;
-    font-size:20px;
-  
+  background-color: #ffffff;
+  color: #4b5563;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-right: 0.75rem;
+  padding: 0.125rem 0.625rem;
+  border: 1px solid #1f2937;
+  border-radius: 1rem;
+  font-size: 20px;
+
 }
 
+.team-category-container {
+  margin: 0 auto;
+  width: 40%;
+}
 
+.team-category {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  gap: 1.25rem;
+  padding: 0.5rem;
+  margin: 10px 0;
+  background-color: white;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  text-align: center;
 
+}
+
+.map-container {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.map-draw {
+  width: 100%;
+  height: 300px;
+  margin: 5px auto;
+  border-color: #e5e7eb;
+  border-width: 1px;
+}
+
+.button-part {
+  padding: 5px 15px;
+  background-color: #95e4d8;
+  border-radius: 0.5rem;
+}
+
+.modal-header {
+  padding: 20px;
+  font-size: 22px;
+  border-radius: 5px 5px 0 0;
+  background-color: #ade1f0;
+}
+
+.modal-body {
+  padding: 10px 20px;
+  font-size: 20px;
+}
+
+.modal-footer {
+  margin-bottom: 10px;
+  padding: 15px 0;
+  font-size: 20px;
+  display: flex;
+	justify-content: space-evenly; 
+}
+
+/* 모달 오버레이 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 모달 콘텐츠 스타일 */
+.modal-content {
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  position: relative;
+  width: 80%;
+  max-width: 500px;
+}
+
+/* 닫기 버튼 스타일 */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.modal-profile-container {
+  padding:10px;
+  display: flex;
+  align-items: center;
+}
+
+.modal-profile-box {
+  width: 70px;
+  height: 70px;
+  margin: 10px;
+  border-radius: 50%;
+  border-width: 1px;
+  overflow: hidden;
+}
+
+.modal-profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-profile-name {
+  margin: 15px;
+}
+
+.modal-button-enter {
+  width: 150px;
+  height: 50px;
+  border-radius: 24px;
+  background-color: hsl(196, 78%, 61%);
+  color:#ffffff;
+  font-weight: 500;
+}
+
+.modal-button-exit {
+  width: 150px;
+  height: 50px;
+  border-radius: 24px;
+  background-color: hsl(217, 15%, 83%);
+  font-weight: 500;
+
+}
