@@ -5,7 +5,7 @@ import { getOne } from "../../api/shareRoomApi"
 const initState = {
     roomNo: 0,
     title: '',
-    monthlyRent: 0,
+    rentFee: 0,
     parking: '',
     option1: '',
     location: ''
