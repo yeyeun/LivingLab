@@ -53,7 +53,7 @@ const BuyReadComponent = ({ buyNo }) => {
             <div className="detail-box">작성자</div>
 
 
-            <div className="detail-box2">{buy.content}</div>
+            <div className="detail-content">{buy.content}</div>
             <div className="flex justify-end p-4">
                 <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500" onClick={() => moveToList()}>
                     공동구매
