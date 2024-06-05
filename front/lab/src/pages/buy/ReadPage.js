@@ -1,8 +1,12 @@
+import { useParams } from "react-router-dom";
+import BuyReadComponent from "../../components/buy/BuyReadComponent";
 
 const ReadPage = () => {
+  const {buyNo} = useParams();
   return (
-    <div className="m-auto bg-slate-200 w-2/5 rounded-md">
-      공동구매 글 상세 페이지
+    <div className="detail-container">
+      <BuyReadComponent buyNo={buyNo}/>
+
     </div>
   );
 };
