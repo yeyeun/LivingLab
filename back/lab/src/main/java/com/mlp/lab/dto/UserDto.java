@@ -39,8 +39,4 @@ public class UserDto { // 화면에서 받을 데이터
         return dataMap;
     }
 
-    public Object getPwdCheck() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPwdCheck'");
-    }
 }
