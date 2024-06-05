@@ -34,7 +34,7 @@ const ReadComponent = ({roomNo}) => {
                                 <div class="pt-6 pb-3 pl-2 flex">
                                     <div class="font-bold text-gray-900 flex-none text-lg">월세</div>
                                     <div class="grow"></div>
-                                    <div class="text-gray-700 sm:col-span-2 flex-none">{shareRoom.monthlyRent}</div>
+                                    <div class="text-gray-700 sm:col-span-2 flex-none">{shareRoom.rentFee}</div>
                                 </div>
                                 <div class="py-3 pl-2 flex">
                                     <div class="font-bold text-gray-900 flex-none text-lg">주차</div>

@@ -48,7 +48,7 @@ const ListComponent = () => {
                 {shareRoom.title}
               </p>
               <p class="font-light text-gray-400 text-md">
-                {shareRoom.monthlyRent}
+                {shareRoom.rentFee}
               </p>
             </div>
           </div>
