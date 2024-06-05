@@ -29,12 +29,12 @@ const useCustomLogin = () => {
 
   //로그인 페이지로 이동
   const moveToLogin = () => {
-    navigate({ pathname: '/member/login' }, { replace: true });
+    navigate({ pathname: '/user/login' }, { replace: true });
   };
 
   //로그인 페이지로 이동 컴포넌트
   const moveToLoginReturn = () => {
-    return <Navigate replace to="/member/login" />;
+    return <Navigate replace to="/user/login" />;
   };
 
   // 토큰에 따른 예외 처리
@@ -47,7 +47,7 @@ const useCustomLogin = () => {
 
     if (errorMsg === 'REQUIRE_LOGIN') {
       alert('로그인 해야만 합니다.');
-      navigate({ pathname: '/member/login', search: errorStr }); // 로그인 페이지로 이동
+      navigate({ pathname: '/user/login', search: errorStr }); // 로그인 페이지로 이동
       return;
     }
 
