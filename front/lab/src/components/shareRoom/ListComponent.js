@@ -1,7 +1,7 @@
 import image from '../../resources/images/room.jpg';
 import { useEffect, useState } from "react";
 import { getList } from "../../api/shareRoomApi"
-import useCustomMove from "../../hooks/useCustomMove";
+import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PageComponent from "../common/PageComponent";
 import SearchComponent from '../../components/common/SearchComponent';
 
@@ -11,7 +11,7 @@ import SelectComponent from '../../components/common/SelectComponent';
 const initState = {
   dtoList: [], //한 페이지에 불러오는 게시물 갯수
   pageNumList: [],
-  pageRequestDto: null,
+  roomPageRequestDto: null,
   prev: false,
   next: false,
   totalCount: 0,
@@ -22,7 +22,7 @@ const initState = {
 }
 
 const ListComponent = () => {
-  const { page, size, moveToList, moveToRead } = useCustomMove();
+  const { page, size, moveToList, moveToRead } = useRoomCustomMove();
   const [serverData, setServerData] = useState(initState);
   useEffect(() => {
     getList({ page, size }).then(data => {
