@@ -38,7 +38,7 @@ public class Market extends BaseEntity{
     private Integer max;
     private Integer current;
     private String location;
-    private Character marketHit;
+    private Character MarketHit;
     private String nickname;
     private boolean flag;
 

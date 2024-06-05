@@ -12,14 +12,14 @@ const initState = {
   phone: '',
   nickname: '',
   addr: '',
-  birth: '',
+  detailAddr: '',
 };
 
 function JoinComponent(props) {
   const [joinParam, setJoinParam] = useState({ ...initState });
 
   //주소 찾기 팝업 추가 - 정운
-  const [address, setAddress] = React.useState("");
+  const [address, setAddress] = React.useState('');
   const [popup, setPopup] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -42,11 +42,7 @@ function JoinComponent(props) {
     <div className="max-h-400">
       <div className="flex justify-center">
         <div className="text-4xl m-1 p-1 font-extrabold text-blue-500">
-          <img
-            src={imgLogo2}
-            alt="imgLogo2"
-            class="object-contain h-48 w-96 ..."
-          />
+          <img src={imgLogo2} alt="imgLogo2" class="object-contain h-48 w-96 ..." />
         </div>
       </div>
       <div className="border-2 border-sky-200 p-4">
@@ -61,10 +57,7 @@ function JoinComponent(props) {
               value={joinParam.email}
               onChange={handleChange}
             ></input>
-            <button
-              className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
-              onClick={handleClickJoin}
-            >
+            <button className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white" onClick={handleClickJoin}>
               중복확인
             </button>
           </div>
@@ -142,53 +135,31 @@ function JoinComponent(props) {
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-full p-3 text-left font-bold">주소</div>
-            <button className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
+            <button
+              className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
               onClick={() => {
-                setPopup(!popup)
+                setPopup(!popup);
               }}
-            >🔍︎ 주소 검색</button>
-            {
-              popup &&
-              <Post address={address} setAddress={setAddress}></Post>
-            }
+            >
+              🔍︎ 주소 검색
+            </button>
+            {popup && <Post address={address} setAddress={setAddress}></Post>}
             <input
               className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="address"
+              name="addr"
               type={'text'}
               placeholder="주소"
               required={true}
               value={address}
             ></input>
-            <input
-              className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="secondAddress"
-              type={'text'}
-              placeholder="상세주소를 입력해주세요"
-            ></input>
+            <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input>
           </div>
         </div>
-
-        {/* <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-full p-3 text-left font-bold">생년월일</div>
-            <input
-              className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="name"
-              type={'text'}
-              placeholder="생년월일"
-              value={joinParam.birth}
-              onChange={handleChange}
-            ></input>
-          </div>
-        </div> */}
 
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
             <div className="w-full flex justify-center font-bold">
-              <button
-                className="rounded p-2 w-1/2 bg-sky-500 text-xl text-white"
-                onClick={handleClickJoin}
-              >
+              <button className="rounded p-2 w-1/2 bg-sky-500 text-xl text-white" onClick={handleClickJoin}>
                 가입하기
               </button>
             </div>
