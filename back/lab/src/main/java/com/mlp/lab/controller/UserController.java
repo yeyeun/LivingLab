@@ -47,7 +47,7 @@ public class UserController {
             return ResponseDto.setFailed("이미 존재하는 아이디입니다.");
         }
         // if (!userDto.getPwd().equals(userDto.getPwdCheck())) {
-        //     return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
+        // return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
         // }
         User user = User.createMember(userDto); // 화면에서 받은 데이터를 담은 Dto를 Entity에 담아 DB에 저장
         userService.save(user);
