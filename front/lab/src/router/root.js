@@ -7,12 +7,8 @@ import buyRouter from './buyRouter';
 import teamRouter from './teamRouter';
 import marketRouter from './marketRouter';
 import shareRoomRouter from './shareRoomRouter';
-<<<<<<< HEAD
 import communityRouter from './communityRouter';
-=======
-import communityRouter from './community/allRouter';
 import myPageRouter from './myPage/allRouter';
->>>>>>> develop
 
 const Loading = <div>Loading...</div>; // 컴포넌트의 처리가 끝나지 않은 경우 화면에 'Loading...' 메시지 출력
 const Main = lazy(() => import('../pages/MainPage'));

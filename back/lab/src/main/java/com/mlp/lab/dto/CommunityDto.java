@@ -1,4 +1,4 @@
-package com.mlp.lab.dto.community;
+package com.mlp.lab.dto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,17 +17,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TipDto {
+public class CommunityDto {
     private Long commNo;
     private String user_id;
     private Character type;
     private String title;
     private String content;
-    private Character commHit;
+    private Integer commHit;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime regDate;
     private Character commCategory; //0:기타, 1:부동산, 2:인테리어, 3:할인정보
     private String nickname;
+    private boolean flag;
 
     @Builder.Default
     private List<MultipartFile> files = new ArrayList<>(); //서버에 저장되는 실제 파일 데이터

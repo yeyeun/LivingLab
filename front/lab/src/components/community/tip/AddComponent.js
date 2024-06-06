@@ -1,10 +1,40 @@
 import { useRef, useState } from "react";
 import { postAddTip } from "../../../api/communityApi";
 
+const initState = {
+    user_id: 'iamuser',
+    type: '1', //자취TIP 게시판은 1
+    title: '',
+    content: '',
+    commHit: 0,
+    commCategory: '',
+    nickname: '김유저',
+    files: []
+};
 
 const AddComponent = () => {
-    //const [ tip, setTip ] = useState({...initState});
+    const [ tip, setTip ] = useState({...initState});
     const uploadRef = useRef();
+    const handleChangeTip = (e) => {
+        tip[e.target.name] = e.target.value;
+        setTip({...tip});
+    }
+    const handleClickAdd = (e) => {
+        const files = uploadRef.current.files;
+        const formData = new FormData();
+        for(let i=0; i<files.length; i++){
+            formData.append("files",files[i]);
+        }
+        //파일이 아닌 데이터를 formData에 추가
+        formData.append("title", tip.title);
+        formData.append("content", tip.content);
+        formData.append("commCategory",tip.commCategory);
+
+        // for (const x of formData.entries()){
+        //     console.log(x);
+        // }
+        postAddTip(formData);
+    }
 
     return(
         <div>
@@ -12,32 +42,36 @@ const AddComponent = () => {
                 <div className="border-b border-gray-900/10 pb-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
-                            <label for="category" className="block font-medium leading-6 text-gray-900">카테고리</label>
+                            <label for="commCategory" className="block font-medium leading-6 text-gray-900">카테고리</label>
                             <div className="mt-2">
-                                <select id="category" name="category" autocomplete="category-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
-                                    <option>인테리어</option>
-                                    <option>부동산</option>
-                                    <option>할인정보</option>
-                                    <option>기타</option>
+                                <select id="commCategory" name="commCategory" value={tip.commCategory} onChange={handleChangeTip}
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
+                                    <option value='1'>부동산</option>
+                                    <option value='2'>인테리어</option>
+                                    <option value='3'>할인정보</option>
+                                    <option value='4'>기타</option>
                                 </select>
                             </div>
                         </div>
                         <div className="col-span-full">
                             <label for="title" className="block font-medium leading-6 text-gray-900">제목</label>
                             <div className="mt-2">
-                                <input type="text" name="title" id="title" autocomplete="address-level2" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"/>
+                                <input type={'text'} name="title" id="title" value={tip.title} onChange={handleChangeTip} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"/>
                             </div>
                         </div>
                         <div className="col-span-full">
-                            <label for="about" className="block font-medium leading-6 text-gray-900">내용</label>
+                            <label for="content" className="block font-medium leading-6 text-gray-900">내용</label>
                             <div className="mt-2">
-                                <textarea id="about" name="about" rows="6" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"></textarea>
+                                <textarea id="content" name="content" value={tip.content} onChange={handleChangeTip} rows="6"
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
+                                    {tip.content}
+                                </textarea>
                             </div>
                         </div>
                         <div className="col-span-3">
                             <label for="about" className="block text-sm font-medium leading-6 text-gray-900">사진 업로드</label>
                             <div className="mt-2">
-                                <input type="file" className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
+                                <input ref={uploadRef} type={'file'} multiple={true} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
                                 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-700 hover:file:bg-violet-100"/>
                             </div>
                         </div>
@@ -46,7 +80,8 @@ const AddComponent = () => {
             </div>
             <div className="mt-6 flex items-center justify-end gap-x-6">
                 <button type="button" className="text-sm font-semibold leading-6 text-gray-900">취소하기</button>
-                <button type="button" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">등록하기</button>
+                <button type="button" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={handleClickAdd}>등록하기</button>
             </div>
     </div>
     );
