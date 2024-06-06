@@ -1,9 +1,11 @@
+import { useParams } from "react-router-dom";
 import ReadComponent from "../../components/team/ReadComponent";
 
 const ReadPage = () => {
+  const {teamNo} = useParams();
   return (
     <div>
-      <ReadComponent/>
+      <ReadComponent teamNo={teamNo}/>
     </div>
   );
 };

@@ -158,12 +158,12 @@
 
 .tag-button {
   background-color: #ffffff;
-  color: #4b5563;
+  color: #000000;
   font-size: 0.875rem;
   font-weight: 500;
   margin-right: 0.75rem;
   padding: 0.125rem 0.625rem;
-  border: 1px solid #1f2937;
+  border: 1px solid #000000;
   border-radius: 1rem;
   font-size: 20px;
 
@@ -181,10 +181,11 @@
   gap: 1.25rem;
   padding: 0.5rem;
   margin: 10px 0;
-  background-color: white;
+  background-color: #ffffff;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   text-align: center;
+  
 
 }
 
@@ -194,17 +195,21 @@
 }
 
 .map-draw {
+  display: flex;
   width: 100%;
   height: 300px;
   margin: 5px auto;
   border-color: #e5e7eb;
   border-width: 1px;
+  overflow: hidden;
+  align-items: center;
 }
 
 .button-part {
   padding: 5px 15px;
-  background-color: #95e4d8;
-  border-radius: 0.5rem;
+  border-radius: 24px;
+  background-color: hsl(196, 78%, 61%);
+  color:#ffffff;
 }
 
 .modal-header {
@@ -269,8 +274,10 @@
   height: 70px;
   margin: 10px;
   border-radius: 50%;
-  border-width: 1px;
+  border-width: 1px;  
+  border-color: #d1d1d1;
   overflow: hidden;
+  
 }
 
 .modal-profile-picture {
@@ -298,5 +305,4 @@
   border-radius: 24px;
   background-color: hsl(217, 15%, 83%);
   font-weight: 500;
-
 }

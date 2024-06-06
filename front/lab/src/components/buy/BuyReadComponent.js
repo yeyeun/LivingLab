@@ -43,19 +43,20 @@ const BuyReadComponent = ({ buyNo }) => {
                 )}
             </div>
             <div className="text-center my-5">
-                <span className="tag-button">카테고리: 
+                <span className="tag-button">
                     {buy.buyCategory === '1' && '구매'}
                     {buy.buyCategory === '2' && '판매'}
                     {buy.buyCategory === '3' && '교환'}
-                    {buy.buyCategory === '4' && '나눔'}</span>
-                <span className="tag-button">마감일: {buy.deadline}</span>
+                    {buy.buyCategory === '4' && '나눔'}
+                </span>
+                <span className="tag-button">마감일 : {buy.deadline}</span>
             </div>
-            <div className="detail-box">제목: {buy.title}</div>
-            <div className="detail-box">장소: {buy.location}</div>
-            <div className="detail-box">작성자: {buy.nickname}</div>
+            <div className="detail-box p-2">제목 : {buy.title}</div>
+            <div className="detail-box p-2">장소 : {buy.location}</div>
+            <div className="detail-box p-2">작성자 : {buy.nickname}</div>
 
 
-            <div className="detail-content">{buy.content}</div>
+            <div className="detail-content p-2">{buy.content}</div>
             <div className="flex justify-end p-4">
                 <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500" onClick={() => moveToList()}>
                     공동구매
