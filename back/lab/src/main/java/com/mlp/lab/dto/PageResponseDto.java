@@ -14,6 +14,7 @@ public class PageResponseDto<E> {
     private PageRequestDto pageRequestDto;
     private boolean prev, next;
     private int totalCount, prevPage, nextPage, totalPage, current;
+    private String search;
 
     @Builder(builderMethodName = "withAll")
     public PageResponseDto(List<E> dtoList, PageRequestDto pageRequestDto, long totalCount){

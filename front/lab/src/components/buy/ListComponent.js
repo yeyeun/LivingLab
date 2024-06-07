@@ -21,7 +21,7 @@ const initState = {
 
 const host = API_SERVER_HOST
 
-const ListComponent = () => {
+const ListComponent = ({search}) => {
     const { page, size, moveToList, moveToRead } = useCustomMove();
     const [serverData, setServerData] = useState(initState);
 
@@ -32,7 +32,7 @@ const ListComponent = () => {
     };
 
     useEffect(() => {
-        getList({ page, size }).then(data => {
+        getList({ page, size }, search).then(data => {
             // 데이터에 모집 상태 추가
             const updatedData = {
                 ...data,
@@ -44,7 +44,7 @@ const ListComponent = () => {
             console.log(updatedData);
             setServerData(updatedData);
         })
-    }, [page, size]);
+    }, [page, size, search]);
 
     return (
         <div>

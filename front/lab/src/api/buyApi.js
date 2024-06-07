@@ -6,8 +6,9 @@ export const getOne = async (buyNo) => {
     const res = await axios.get(`${prefix}/read/${buyNo}`)
     return res.data
 };
-export const getList = async (pageParam) => {
+
+export const getList = async (pageParam, search) => {
     const { page, size } = pageParam;
-    const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size }});
+    const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size, search: search }});
     return res.data;
 };
