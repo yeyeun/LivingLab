@@ -4,6 +4,7 @@ import { getListTip } from "../../../api/communityApi";
 import { useEffect, useState } from "react";
 import PageComponent from "../../common/PageComponent";
 import nolist from "../../../resources/images/nolist.png"
+import flagIcon from "../../../resources/images/flagIcon.png"
 
 const initState = {
   dtoList: [], //한 페이지에 불러오는 게시물 갯수
@@ -54,7 +55,12 @@ const ListComponent = () => {
                 {tip.commCategory === '4' && '기타'}
               </td>
               <td className="whitespace-nowrap py-4">{tip.commHit}</td>
-              <td className="whitespace-nowrap py-4">{tip.title}</td>
+              <td className="whitespace-nowrap py-4">
+                {tip.title}
+                {tip.flag && (
+                    <img src={flagIcon} alt="Flag Icon" className="inline-block ml-2 w-5 h-5" />
+                  )}
+              </td>
               <td className="whitespace-nowrap py-4">{tip.regDate}</td>
               <td className="whitespace-nowrap py-4">{tip.nickname}</td>
             </tr>
@@ -69,8 +75,8 @@ const ListComponent = () => {
           </tr>
         )}
           </tbody>
-          <PageComponent serverData={serverData} movePage={moveToList}/>
           </table>
+          <PageComponent serverData={serverData} movePage={moveToList}/>
       </>
     );
 

@@ -32,22 +32,30 @@ public class CommunityController {
     private final CommunityService communityService;
     private final CustomFileUtilCommunity fileUtil;
 
-    @GetMapping("/tip/list") // 목록조회
-    public PageResponseDto<CommunityDto> List(PageRequestDto pageRequestDto) {
-        return communityService.list(pageRequestDto);
+    // 목록조회
+    @GetMapping("/{type}/list")
+    public PageResponseDto<CommunityDto> List(@PathVariable("type") String type, PageRequestDto pageRequestDto) {
+        //예외 처리
+        if(!List.of("tip","qna","review","help").contains(type)){
+            throw new IllegalArgumentException("Invalid list type : " + type);
+        }
+        return communityService.list(pageRequestDto,type);
     }
-
-    @GetMapping("/tip/read/{commNo}") // 상세조회
+    
+    // 상세조회
+    @GetMapping(value={"/tip/read/{commNo}","/qna/read/{commNo}","/review/read/{commNo}","/help/read/{commNo}"})
     public CommunityDto read(@PathVariable(name = "commNo") int commNo) {
         return communityService.read(commNo);
     }
 
-    @GetMapping("/tip/display/{fileName}") // 목록조회
+    // 사진조회
+    @GetMapping(value={"/tip/display/{fileName}","/qna/display/{fileName}","/review/display/{fileName}","/help/display/{fileName}"})
     public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);
     }
-    
-    @PostMapping("/tip/add") // 작성(이미지 포함)
+
+    // 글 작성(이미지 포함)
+    @PostMapping(value={"/tip/add","/qna/add","/review/add","/help/add"})
     public void add(CommunityDto communityDto) {
         List<MultipartFile> files = communityDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
@@ -58,11 +66,11 @@ public class CommunityController {
             communityDto.setFlag(true);
         }
         communityDto.setUploadFileNames(uploadFileNames);
-        log.info("===========tip add : " + communityDto);
+        log.info("===========community add : " + communityDto);
         communityService.add(communityDto);
     }
 
-    @PutMapping("/tip/modify/{commNo}") // 수정
+    @PutMapping(value={"/tip/modify/{commNo}","/qna/modify/{commNo}","/review/modify/{commNo}","/help/modify/{commNo}"}) // 수정
     public ResponseDto<CommunityDto> modify(@PathVariable(name = "commNo") Long commNo, CommunityDto communityDto) {
         communityDto.setCommNo(commNo);
         CommunityDto oldDto = communityService.read(commNo.intValue());
@@ -94,4 +102,6 @@ public class CommunityController {
         }
         return ResponseDto.setSuccessData("수정되었습니다.", communityDto);
     }
+
+    
 }

@@ -15,7 +15,6 @@ import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.entity.Community;
-import com.mlp.lab.entity.CommunityImage;
 import com.mlp.lab.repository.CommunityRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,13 +25,26 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final ModelMapper modelMapper;
 
-    public PageResponseDto<CommunityDto> list(PageRequestDto pageRequestDto) { // 커뮤니티 게시글 목록 가져오기(페이징 처리, 이미지 포함)
+    public PageResponseDto<CommunityDto> list(PageRequestDto pageRequestDto, String type) { // 커뮤니티 게시글 목록 가져오기(페이징 처리, 이미지 포함)
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
                 Sort.by("commNo").descending());
+        Page<Community> result;
+        if(type=="tip"){
+            result = communityRepository.selectTipList(pageable);
+        }
+        else if(type=="qna"){
+            result = communityRepository.selectQnaList(pageable);
+        }
+        else if(type=="review"){
+            result = communityRepository.selectReviewList(pageable);
+        }
+        else{
+            result = communityRepository.selectHelpList(pageable);
+        }
 
-        Page<Community> result = communityRepository.selectTipList(pageable);
+
         List<CommunityDto> dtoList = result.getContent().stream()
         .map(tip-> modelMapper.map(tip, CommunityDto.class)).collect(Collectors.toList());
 
