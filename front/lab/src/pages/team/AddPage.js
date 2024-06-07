@@ -1,3 +1,5 @@
+import WriteComponent from "../../components/common/WriteComponent";
+
 const AddPage = () => {
     return(
         <div>

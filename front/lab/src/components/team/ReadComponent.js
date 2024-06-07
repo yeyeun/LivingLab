@@ -22,6 +22,7 @@ const host = API_SERVER_HOST
 const ReadComponent = ({ teamNo }) => {
     const [team, setTeam] = useState(initState)
     const { moveToList, moveToModify } = useCustomMove()
+    const [showModal, setShowModal] = useState(false);
 
 
 
@@ -32,7 +33,6 @@ const ReadComponent = ({ teamNo }) => {
         })
     }, [teamNo])
 
-    const [showModal, setShowModal] = useState(false);
 
     const handleOpenModal = () => {
         setShowModal(true);
@@ -62,17 +62,31 @@ const ReadComponent = ({ teamNo }) => {
                                 src={`${host}/api/team/display/${imgFile}`} />
                         )}
                     </div>
+                    <div className="text-center my-5">
+                        <span className="tag-button">
+                            {team.teamCategory === '1' && '운동'}
+                            {team.teamCategory === '2' && '문화생활'}
+                            {team.teamCategory === '3' && '반려생활'}
+                        </span>
+                        <span className="tag-button">마감일 : {team.deadline}</span>
+                    </div>
                     <div className="detail-box p-2">제목 : {team.title}</div>
                     <div className="detail-box p-2">주소 : {team.location}</div>
                     <div className="detail-box p-2">작성자 : {team.nickname}</div>
                     <div className="detail-content p-2">{team.content}</div>
                     <div className="map-container">지도
                         <div className="map-draw">
-                            <MapComponent location={team.location}/>
+                            <MapComponent location={team.location} />
                         </div>
                     </div>
-                    <div className="map-container text-center">
-                        <button className="button-part" onClick={handleOpenModal}>참여하기</button>
+                    <div className="detail-footer text-center">
+                        <div></div>
+                        <div>
+                            <button className="button-part mr-3" onClick={handleOpenModal}>참여하기</button>
+                            <button className="button-return" onClick={() => moveToList()}>목록</button>
+
+                        </div>
+
                     </div>
                 </div>
             </div>

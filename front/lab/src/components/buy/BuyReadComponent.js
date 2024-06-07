@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { API_SERVER_HOST, getOne } from "../../api/buyApi";
 import useCustomMove from "../../hooks/useCustomMove"
-
+import ModalComponent from '../common/ModalComponent';
+import MapComponent from "../common/MapComponent";
 
 const initState = {
     buyNo: 0,
@@ -18,9 +19,29 @@ const initState = {
 const host = API_SERVER_HOST
 
 const BuyReadComponent = ({ buyNo }) => {
+
     const [buy, setBuy] = useState(initState)
     const { moveToList, moveToModify } = useCustomMove()
+    const [recruit, setRecruit] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
+    // 모집이 마감일을 넘겼는지 체크
+    const checkDeadline = (deadline) => {
+        const currentDate = new Date();
+        const deadlineDate = new Date(deadline);
+        if (currentDate > deadlineDate) {
+            setRecruit(true);
+        } else {
+            setRecruit(false);
+        }
+    };
+    const handleOpenModal = () => {
+        setShowModal(true);
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    }
     useEffect(() => {
         getOne(buyNo).then(data => {
             console.log(data)
@@ -28,10 +49,19 @@ const BuyReadComponent = ({ buyNo }) => {
         })
     }, [buyNo])
 
+    useEffect(() => {
+        checkDeadline(buy.deadline);
+    }, [buy.deadline]);
     return (
         <div>
             <div className="flex justify-between">
-                <div className="my-5 mx-5">모집 상황</div>
+                <div className="my-5 mx-5">
+                    {recruit ? (
+                        <span>모집 종료</span>
+                    ) : (
+                        <span >모집 중</span>
+                    )}
+                </div>
                 <div className="my-5 mx-5">{buy.deadline} 까지</div>
             </div>
             <div className="image-upload">
@@ -54,17 +84,23 @@ const BuyReadComponent = ({ buyNo }) => {
             <div className="detail-box p-2">제목 : {buy.title}</div>
             <div className="detail-box p-2">장소 : {buy.location}</div>
             <div className="detail-box p-2">작성자 : {buy.nickname}</div>
-
-
             <div className="detail-content p-2">{buy.content}</div>
-            <div className="flex justify-end p-4">
-                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500" onClick={() => moveToList()}>
-                    공동구매
-                </button>
-                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500" onClick={() => moveToModify(buyNo)}>
-                    수정하기
-                </button>
+            <div className="map-container">지도
+                <div className="map-draw">
+                    <MapComponent location={buy.location} />
+                </div>
             </div>
+            <div className="detail-footer text-center">
+                <div></div>
+                <div>
+                    <button className="button-part mr-3" onClick={handleOpenModal}>참여하기</button>
+                    <button className="button-return" onClick={() => moveToList()}>목록</button>
+
+                </div>
+
+            </div>
+            <ModalComponent show={showModal} onClose={handleCloseModal} />
+
         </div>
 
 
