@@ -1,46 +1,44 @@
-import { useEffect, useState } from "react"
-import { API_SERVER_HOST, getOne } from "../../api/teamApi";
-import useCustomMove from "../../hooks/useCustomMove"
+import { useEffect, useState } from 'react';
+import { API_SERVER_HOST, getOne } from '../../api/teamApi';
+import useCustomMove from '../../hooks/useCustomMove';
 import ModalComponent from '../common/ModalComponent';
-import MapComponent from "../common/MapComponent";
+import MapComponent from '../common/MapComponent';
+import LandingComponent from '../common/mapSearch/LandingComponent';
 
 const initState = {
-    teamNo: 0,
-    title: '',
-    location: '',
-    content: '',
-    teamCategory: '',
-    max: 0,
-    current: 0,
-    deadline: '',
-    uploadFileNames: []
-}
+  teamNo: 0,
+  title: '',
+  location: '',
+  content: '',
+  teamCategory: '',
+  max: 0,
+  current: 0,
+  deadline: '',
+  uploadFileNames: [],
+};
 
-const host = API_SERVER_HOST
-
+const host = API_SERVER_HOST;
 
 const ReadComponent = ({ teamNo }) => {
-    const [team, setTeam] = useState(initState)
-    const { moveToList, moveToModify } = useCustomMove()
-    const [showModal, setShowModal] = useState(false);
+  const [team, setTeam] = useState(initState);
+  const { moveToList, moveToModify } = useCustomMove();
 
+  useEffect(() => {
+    getOne(teamNo).then((data) => {
+      console.log(data);
+      setTeam(data);
+    });
+  }, [teamNo]);
 
+  const [showModal, setShowModal] = useState(false);
 
-    useEffect(() => {
-        getOne(teamNo).then(data => {
-            console.log(data)
-            setTeam(data)
-        })
-    }, [teamNo])
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
 
-
-    const handleOpenModal = () => {
-        setShowModal(true);
-    }
-
-    const handleCloseModal = () => {
-        setShowModal(false);
-    }
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
     return (
 

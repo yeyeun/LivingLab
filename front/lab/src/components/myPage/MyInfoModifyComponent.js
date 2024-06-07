@@ -26,16 +26,10 @@ const MyInfoModifyComponent = ({ id }) => {
 
   //주소 찾기 팝업 추가
   const [address, setAddress] = useState('');
-
   const ino = loginInfo.id;
-  //console.log(address);
 
   useEffect(() => {
     getUser(ino).then((data) => {
-      //console.log('계정의 id값 : ' + ino);
-      //console.log(data);
-      //console.log(data.addr);
-      //console.log(data.detailAddr);
       setUser(data);
       setAddress(data.addr);
     });
@@ -43,11 +37,15 @@ const MyInfoModifyComponent = ({ id }) => {
 
   // 상태변경 (입력값에 따라 상태값 변경)
   const handleChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
+    user[e.target.name] = e.target.value;
+    setUser({ ...user });
   };
+  // const handleChange = (e) => {
+  //   setUser({
+  //     ...user,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   // addr(팝업 검색주소)만 따로 상태변경
   const handleAddrChange = (newAddr) => {
@@ -58,11 +56,6 @@ const MyInfoModifyComponent = ({ id }) => {
     });
   };
 
-  // const handleChange = (e) => {
-  //   user[e.target.name] = e.target.value;
-  //   setUser({ ...user });
-  // };
-
   // 수정완료 버튼
   const handleClickModify = () => {
     modifyUser(user); // 사용자 정보 전달 (userApi.js에 있는 modifyUser 함수)
@@ -72,7 +65,6 @@ const MyInfoModifyComponent = ({ id }) => {
 
   return (
     <div>
-      {/* 회원정보 수정 */}
       <div>
         <div className="flex justify-center">
           <div className="w-full p-3 my-3 text-left font-bold text-2xl text-emerald-400">회원정보 수정</div>
@@ -164,7 +156,7 @@ const MyInfoModifyComponent = ({ id }) => {
           <div className="flex justify-center">
             <div className="w-1/3 p-3 text-left font-bold">주소</div>
             <div className="relative mb-4 w-full items-stretch">
-              <PostComponent address={address} setAddress={handleAddrChange}></PostComponent>
+              <PostComponent setAddress={handleAddrChange}></PostComponent>
               <input
                 className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
                 name="addr"

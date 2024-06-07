@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
-import ReadComponent from "../../components/team/ReadComponent";
+import { useParams } from 'react-router-dom';
+import ReadComponent from '../../components/team/ReadComponent';
 
 const ReadPage = () => {
-  const {teamNo} = useParams();
+  const { teamNo } = useParams();
   return (
     <div>
-      <ReadComponent teamNo={teamNo}/>
+      <ReadComponent teamNo={teamNo} />
     </div>
   );
 };

@@ -1,13 +1,9 @@
 import React from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-//import DaumPostcode from 'react-daum-postcode';
 
-const PostComponent = (props) => {
+const PostComponent = ({ setAddress }) => {
   const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
   const open = useDaumPostcodePopup(scriptUrl);
-
-  // const address = props.address; // 추가
-  const setAddress = props.setAddress; // 추가
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -22,7 +18,7 @@ const PostComponent = (props) => {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    setAddress(fullAddress); // 추가 : 이거 중요!
+    setAddress(fullAddress); // setAddress를 호출하여 부모 컴포넌트 상태를 업데이트(중요!)
     console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
   };
 
@@ -35,7 +31,6 @@ const PostComponent = (props) => {
       <button onClick={handleClick} className="rounded p-2 w-2/6 bg-gray-500 text-xm text-white" type="button">
         🔍︎ 주소 검색
       </button>
-      {/* <DaumPostcode onComplete={handleComplete} /> */}
     </div>
   );
 };

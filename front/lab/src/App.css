@@ -174,7 +174,6 @@
   border: 1px solid #000000;
   border-radius: 1rem;
   font-size: 20px;
-
 }
 
 .team-category-container {
@@ -250,7 +249,7 @@
   padding: 15px 0;
   font-size: 20px;
   display: flex;
-	justify-content: space-evenly; 
+  justify-content: space-evenly;
 }
 
 /* 모달 오버레이 */
@@ -287,7 +286,7 @@
 }
 
 .modal-profile-container {
-  padding:10px;
+  padding: 10px;
   display: flex;
   align-items: center;
 }
@@ -318,7 +317,7 @@
   height: 50px;
   border-radius: 24px;
   background-color: hsl(196, 78%, 61%);
-  color:#ffffff;
+  color: #ffffff;
   font-weight: 500;
 }
 
@@ -328,4 +327,32 @@
   border-radius: 24px;
   background-color: hsl(217, 15%, 83%);
   font-weight: 500;
+}
+
+/* MapComponent.js */
+/* 키워드 주소 검색 후 리스트 나열  */
+#result-list {
+  width: 60%;
+  height: 500px;
+  overflow: auto;
+}
+
+#result-one {
+  display: flex;
+}
+
+#pagination {
+  margin-top: 3rem;
+}
+
+#pagination a {
+  color: black;
+  font-size: 20px;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+#pagination a.on {
+  color: lightblue;
+  font-weight: bold;
 }

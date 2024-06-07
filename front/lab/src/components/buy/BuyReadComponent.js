@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
-import { API_SERVER_HOST, getOne } from "../../api/buyApi";
-import useCustomMove from "../../hooks/useCustomMove"
+import { useEffect, useState } from 'react';
+import { API_SERVER_HOST, getOne } from '../../api/buyApi';
+import useCustomMove from '../../hooks/useCustomMove';
+import MapComponent from '../common/MapComponent';
+import LandingComponent from '../common/mapSearch/LandingComponent';
 import ModalComponent from '../common/ModalComponent';
-import MapComponent from "../common/MapComponent";
 
 const initState = {
     buyNo: 0,
@@ -13,10 +14,10 @@ const initState = {
     max: 0,
     current: 0,
     deadline: '',
-    uploadFileNames: []
-}
+    uploadFileNames: [],
+};
 
-const host = API_SERVER_HOST
+const host = API_SERVER_HOST;
 
 const BuyReadComponent = ({ buyNo }) => {
 
@@ -53,59 +54,60 @@ const BuyReadComponent = ({ buyNo }) => {
         checkDeadline(buy.deadline);
     }, [buy.deadline]);
     return (
-        <div>
-            <div className="flex justify-between">
-                <div className="my-5 mx-5">
-                    {recruit ? (
-                        <span>모집 종료</span>
-                    ) : (
-                        <span >모집 중</span>
+        <div className="detail-container">
+            <div >
+                <div className="flex justify-between">
+                    <div className="my-5 mx-5">
+                        {recruit ? (
+                            <span>모집 종료</span>
+                        ) : (
+                            <span >모집 중</span>
+                        )}
+                    </div>
+                    <div className="my-5 mx-5">{buy.deadline} 까지</div>
+                </div>
+                <div className="image-upload">
+                    {buy.uploadFileNames.map((imgFile, i) =>
+                        <img
+                            alt="buy"
+                            key={i}
+                            src={`${host}/api/buy/display/${imgFile}`} />
                     )}
                 </div>
-                <div className="my-5 mx-5">{buy.deadline} 까지</div>
-            </div>
-            <div className="image-upload">
-                {buy.uploadFileNames.map((imgFile, i) =>
-                    <img
-                        alt="buy"
-                        key={i}
-                        src={`${host}/api/buy/display/${imgFile}`} />
-                )}
-            </div>
-            <div className="text-center my-5">
-                <span className="tag-button">
-                    {buy.buyCategory === '1' && '구매'}
-                    {buy.buyCategory === '2' && '판매'}
-                    {buy.buyCategory === '3' && '교환'}
-                    {buy.buyCategory === '4' && '나눔'}
-                </span>
-                <span className="tag-button">마감일 : {buy.deadline}</span>
-            </div>
-            <div className="detail-box p-2">제목 : {buy.title}</div>
-            <div className="detail-box p-2">장소 : {buy.location}</div>
-            <div className="detail-box p-2">작성자 : {buy.nickname}</div>
-            <div className="detail-content p-2">{buy.content}</div>
-            <div className="map-container">지도
-                <div className="map-draw">
-                    <MapComponent location={buy.location} />
+                <div className="text-center my-5">
+                    <span className="tag-button">
+                        {buy.buyCategory === '1' && '구매'}
+                        {buy.buyCategory === '2' && '판매'}
+                        {buy.buyCategory === '3' && '교환'}
+                        {buy.buyCategory === '4' && '나눔'}
+                    </span>
+                    <span className="tag-button">마감일 : {buy.deadline}</span>
                 </div>
-            </div>
-            <div className="detail-footer text-center">
-                <div></div>
-                <div>
-                    <button className="button-part mr-3" onClick={handleOpenModal}>참여하기</button>
-                    <button className="button-return" onClick={() => moveToList()}>목록</button>
+                <div className="detail-box p-2">제목 : {buy.title}</div>
+                <div className="detail-box p-2">장소 : {buy.location}</div>
+                <div className="detail-box p-2">작성자 : {buy.nickname}</div>
+                <div className="detail-content p-2">{buy.content}</div>
+                <div className="map-container">지도
+                    <div className="map-draw">
+                        <MapComponent location={buy.location} />
+                    </div>
+                </div>
+                <div className="detail-footer text-center">
+                    <div></div>
+                    <div>
+                        <button className="button-part mr-3" onClick={handleOpenModal}>참여하기</button>
+                        <button className="button-return" onClick={() => moveToList()}>목록</button>
+
+                    </div>
 
                 </div>
-
             </div>
             <ModalComponent show={showModal} onClose={handleCloseModal} />
-
+            <div className="mt-10 ml-60">
+                <LandingComponent />
+            </div>
         </div>
-
-
     );
-
-}
+};
 
 export default BuyReadComponent;

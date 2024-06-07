@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfileComponent from '../team/ProfileComponent';
+import ProfileComponent from './ProfileComponent';
 
 const ModalComponent = ({ show, onClose }) => {
     if (!show) {
