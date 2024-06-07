@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommunityService {
     private final CommunityRepository communityRepository;
+    private final ModelMapper modelMapper;
 
     public PageResponseDto<CommunityDto> list(PageRequestDto pageRequestDto) { // 커뮤니티 게시글 목록 가져오기(페이징 처리, 이미지 포함)
         Pageable pageable = PageRequest.of(
@@ -30,18 +32,9 @@ public class CommunityService {
                 pageRequestDto.getSize(),
                 Sort.by("commNo").descending());
 
-        Page<Object[]> result = communityRepository.selectList(pageable);
-        List<CommunityDto> dtoList = result.get().map(arr -> {
-            Community community = (Community) arr[0];
-            CommunityImage communityImage = (CommunityImage) arr[1];
-
-            CommunityDto communityDto = CommunityDto.builder().commNo(community.getCommNo()).type(community.getType())
-                            .title(community.getTitle()).regDate(community.getCreatedDate()).nickname(community.getNickname()).build();
-
-            String imageStr = communityImage.getFileName();
-            communityDto.setUploadFileNames(List.of(imageStr));
-            return communityDto;
-        }).collect(Collectors.toList());
+        Page<Community> result = communityRepository.selectTipList(pageable);
+        List<CommunityDto> dtoList = result.getContent().stream()
+        .map(tip-> modelMapper.map(tip, CommunityDto.class)).collect(Collectors.toList());
 
         long totalCount = result.getTotalElements();
         PageResponseDto<CommunityDto> responseDto = PageResponseDto.<CommunityDto>withAll()

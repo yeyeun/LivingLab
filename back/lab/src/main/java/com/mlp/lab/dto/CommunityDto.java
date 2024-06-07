@@ -28,7 +28,7 @@ public class CommunityDto {
     private LocalDateTime regDate;
     private Character commCategory; //0:기타, 1:부동산, 2:인테리어, 3:할인정보
     private String nickname;
-    private boolean flag;
+    private boolean flag; //해당 글에 사진 데이터 여부 확인
 
     @Builder.Default
     private List<MultipartFile> files = new ArrayList<>(); //서버에 저장되는 실제 파일 데이터

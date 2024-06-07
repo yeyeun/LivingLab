@@ -27,7 +27,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @Table(name = "community")
 @ToString(exclude = "imageList")
-public class Community extends BaseEntity {
+public class Community extends BaseTimeEntity {
+    /* 해당 글 작성자만 수정할수 있으므로 BaseEntity는 상속받지 않음
+    생성일, 최근 수정일만 사용하도록 BaseTimeEntity만 상속 받음 */
     @Id // 기본키 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commNo;

@@ -18,7 +18,7 @@ import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.service.CommunityService;
-import com.mlp.lab.util.CustomFileUtil;
+import com.mlp.lab.util.CustomFileUtilCommunity;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,7 +30,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class CommunityController {
     private final CommunityService communityService;
-    private final CustomFileUtil fileUtil;
+    private final CustomFileUtilCommunity fileUtil;
 
     @GetMapping("/tip/list") // 목록조회
     public PageResponseDto<CommunityDto> List(PageRequestDto pageRequestDto) {
@@ -49,10 +49,16 @@ public class CommunityController {
     
     @PostMapping("/tip/add") // 작성(이미지 포함)
     public void add(CommunityDto communityDto) {
-        log.info("add : " + communityDto);
         List<MultipartFile> files = communityDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
+        if(uploadFileNames == null || uploadFileNames.isEmpty()){
+            communityDto.setFlag(false);
+        }
+        else{
+            communityDto.setFlag(true);
+        }
         communityDto.setUploadFileNames(uploadFileNames);
+        log.info("===========tip add : " + communityDto);
         communityService.add(communityDto);
     }
 

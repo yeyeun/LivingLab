@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import { postAddTip } from "../../../api/communityApi";
+import ResultModal from "../../common/ResultModal";
+import useCustomTip from "../../../hooks/useCustomTip";
 
 const initState = {
     user_id: 'iamuser',
@@ -9,11 +11,13 @@ const initState = {
     commHit: 0,
     commCategory: '',
     nickname: '김유저',
-    files: []
+    files: [],
 };
 
 const AddComponent = () => {
+    const [result, setResult] = useState(null);
     const [ tip, setTip ] = useState({...initState});
+    const { moveToList } = useCustomTip(); //목록으로 이동하기
     const uploadRef = useRef();
     const handleChangeTip = (e) => {
         tip[e.target.name] = e.target.value;
@@ -26,14 +30,23 @@ const AddComponent = () => {
             formData.append("files",files[i]);
         }
         //파일이 아닌 데이터를 formData에 추가
+        formData.append("user_id", tip.user_id);
+        formData.append("type",tip.type);
         formData.append("title", tip.title);
         formData.append("content", tip.content);
+        formData.append("commHit", tip.commHit);
         formData.append("commCategory",tip.commCategory);
+        formData.append("nickname", tip.nickname);
 
         // for (const x of formData.entries()){
         //     console.log(x);
         // }
         postAddTip(formData);
+        setResult("게시글이 등록되었습니다");
+    }
+    const closeModal = () => {
+        setResult(null);
+        moveToList();
     }
 
     return(
@@ -41,11 +54,14 @@ const AddComponent = () => {
             <div className="space-y-12 text-base">
                 <div className="border-b border-gray-900/10 pb-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        {result? <ResultModal title={'알림'} content={`${result}`}
+                        callbackFn={closeModal}/> : <></>}
                         <div className="sm:col-span-3">
                             <label for="commCategory" className="block font-medium leading-6 text-gray-900">카테고리</label>
                             <div className="mt-2">
                                 <select id="commCategory" name="commCategory" value={tip.commCategory} onChange={handleChangeTip}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
+                                    <option value='' selected disabled hidden>==카테고리 선택==</option>
                                     <option value='1'>부동산</option>
                                     <option value='2'>인테리어</option>
                                     <option value='3'>할인정보</option>
