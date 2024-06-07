@@ -70,7 +70,7 @@ const ListComponent = () => {
           <tr>
             <td colSpan="5" className="py-4">
               등록된 게시물이 없습니다
-              <img src={nolist} width={60} className="mx-auto mt-3"/>
+              <img src={nolist} width={60} alt="..." className="mx-auto mt-3"/>
             </td>
           </tr>
         )}
