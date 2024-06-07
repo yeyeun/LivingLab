@@ -21,15 +21,17 @@ const initState = {
 
 const host = API_SERVER_HOST
 
-const ListComponent = () => {
+const ListComponent = ({search}) => {
     const{page, size, moveToList, moveToRead} = useCustomMove();
     const [serverData, setServerData] = useState(initState);
+
     useEffect(()=>{
-        getList({page,size}).then(data=>{
+        getList({page,size}, search).then(data=>{
             console.log(data);
             setServerData(data);
         })
-    }, [page,size]);
+    }, [page,size, search]);
+
     return(
         <div>
         {serverData.dtoList.map(buy=>
