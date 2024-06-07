@@ -33,13 +33,24 @@ public class CommunityController {
     private final CustomFileUtilCommunity fileUtil;
 
     // 목록조회
-    @GetMapping("/{type}/list")
-    public PageResponseDto<CommunityDto> List(@PathVariable("type") String type, PageRequestDto pageRequestDto) {
-        //예외 처리
-        if(!List.of("tip","qna","review","help").contains(type)){
-            throw new IllegalArgumentException("Invalid list type : " + type);
-        }
-        return communityService.list(pageRequestDto,type);
+    @GetMapping("/tip/list")
+    public PageResponseDto<CommunityDto> ListTip(PageRequestDto pageRequestDto) {
+        return communityService.listTip(pageRequestDto);
+    }
+
+    @GetMapping("/qna/list")
+    public PageResponseDto<CommunityDto> ListQna(PageRequestDto pageRequestDto) {
+        return communityService.listQna(pageRequestDto);
+    }
+
+    @GetMapping("/review/list")
+    public PageResponseDto<CommunityDto> ListReview(PageRequestDto pageRequestDto) {
+        return communityService.listReview(pageRequestDto);
+    }
+
+    @GetMapping("/help/list")
+    public PageResponseDto<CommunityDto> ListHelp(PageRequestDto pageRequestDto) {
+        return communityService.listHelp(pageRequestDto);
     }
     
     // 상세조회

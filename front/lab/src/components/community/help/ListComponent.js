@@ -1,5 +1,5 @@
 import SearchComponent from "../../../components/common/SearchComponent";
-import useCustomTip from "../../../hooks/useCustomTip";
+import useCustomHelp from "../../../hooks/useCustomHelp";
 import { getListHelp } from "../../../api/communityApi";
 import { useEffect, useState } from "react";
 import PageComponent from "../../common/PageComponent";
@@ -20,7 +20,7 @@ const initState = {
 }
 
 const ListComponent = () => {
-  const {page, size, moveToList, moveToRead} = useCustomTip();
+  const {page, size, moveToList, moveToRead} = useCustomHelp();
   const [serverData, setServerData] = useState(initState);
   useEffect(()=>{
     getListHelp({page,size}).then(data=>{

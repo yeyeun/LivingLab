@@ -1,15 +1,15 @@
 import { useRef, useState } from "react";
-import { postAddTip } from "../../../api/communityApi";
+import { postAddHelp } from "../../../api/communityApi";
 import ResultModal from "../../common/ResultModal";
-import useCustomTip from "../../../hooks/useCustomTip";
+import useCustomHelp from "../../../hooks/useCustomHelp";
 
 const initState = {
     user_id: 'iamuser',
-    type: '1', //자취TIP 게시판은 1
+    type: '4', //도움요청 게시판은 4
     title: '',
     content: '',
     commHit: 0,
-    commCategory: '',
+    commCategory: '1', //도움요청 게시판은 세부 카테고리 없으므로 1로 값 고정
     nickname: '김유저',
     files: [],
 };
@@ -17,20 +17,15 @@ const initState = {
 const AddComponent = () => {
     const [result, setResult] = useState(null);
     const [addResultModal, setAddResultModal] = useState(null);
-    const [ tip, setTip ] = useState({...initState});
-    const { moveToList } = useCustomTip(); //목록으로 이동하기
+    const [ help, setHelp ] = useState({...initState});
+    const { moveToList } = useCustomHelp(); //목록으로 이동하기
     const uploadRef = useRef();
-    const handleChangeTip = (e) => {
-        tip[e.target.name] = e.target.value;
-        setTip({...tip});
+    const handleChangeHelp = (e) => {
+        help[e.target.name] = e.target.value;
+        setHelp({...help});
     }
     const handleClickAdd = (e) => {
-        // 카테고리 선택 유효성 검사
-        if (!tip.commCategory) {
-            setAddResultModal("카테고리를 선택해주세요");
-            return;
-        }
-        if (!tip.title || !tip.content){
+        if (!help.title || !help.content){
             setAddResultModal("제목과 내용을 입력해주세요");
             return;
         }
@@ -40,18 +35,18 @@ const AddComponent = () => {
             formData.append("files",files[i]);
         }
         //파일이 아닌 데이터를 formData에 추가
-        formData.append("user_id", tip.user_id);
-        formData.append("type",tip.type);
-        formData.append("title", tip.title);
-        formData.append("content", tip.content);
-        formData.append("commHit", tip.commHit);
-        formData.append("commCategory",tip.commCategory);
-        formData.append("nickname", tip.nickname);
+        formData.append("user_id", help.user_id);
+        formData.append("type",help.type);
+        formData.append("title", help.title);
+        formData.append("content", help.content);
+        formData.append("commHit", help.commHit);
+        formData.append("commCategory",help.commCategory);
+        formData.append("nickname", help.nickname);
 
         // for (const x of formData.entries()){
         //     console.log(x);
         // }
-        postAddTip(formData);
+        postAddHelp(formData);
         setResult("게시글이 등록되었습니다");
     }
     const closeModal = () => {
@@ -70,31 +65,18 @@ const AddComponent = () => {
                         <ResultModal title={'알림'} content={`${addResultModal}`}
                         callbackFn={() => setAddResultModal(null)}/>
                         ) : <></>}
-                        <div className="sm:col-span-3">
-                            <label for="commCategory" className="block font-medium leading-6 text-gray-900">카테고리</label>
-                            <div className="mt-2">
-                                <select id="commCategory" name="commCategory" value={tip.commCategory} onChange={handleChangeTip}
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
-                                    <option value='' selected disabled hidden>==카테고리 선택==</option>
-                                    <option value='1'>부동산</option>
-                                    <option value='2'>인테리어</option>
-                                    <option value='3'>할인정보</option>
-                                    <option value='4'>기타</option>
-                                </select>
-                            </div>
-                        </div>
                         <div className="col-span-full">
                             <label for="title" className="block font-medium leading-6 text-gray-900">제목</label>
                             <div className="mt-2">
-                                <input type={'text'} name="title" id="title" value={tip.title} onChange={handleChangeTip} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"/>
+                                <input type={'text'} name="title" id="title" value={help.title} onChange={handleChangeHelp} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"/>
                             </div>
                         </div>
                         <div className="col-span-full">
                             <label for="content" className="block font-medium leading-6 text-gray-900">내용</label>
                             <div className="mt-2">
-                                <textarea id="content" name="content" value={tip.content} onChange={handleChangeTip} rows="6"
+                                <textarea id="content" name="content" value={help.content} onChange={handleChangeHelp} rows="6"
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
-                                    {tip.content}
+                                    {help.content}
                                 </textarea>
                             </div>
                         </div>

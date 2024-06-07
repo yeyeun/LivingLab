@@ -25,26 +25,66 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final ModelMapper modelMapper;
 
-    public PageResponseDto<CommunityDto> list(PageRequestDto pageRequestDto, String type) { // 커뮤니티 게시글 목록 가져오기(페이징 처리, 이미지 포함)
+    public PageResponseDto<CommunityDto> listTip(PageRequestDto pageRequestDto) { // 커뮤니티 게시글 목록 가져오기(페이징 처리, 이미지 포함)
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
                 Sort.by("commNo").descending());
-        Page<Community> result;
-        if(type=="tip"){
-            result = communityRepository.selectTipList(pageable);
-        }
-        else if(type=="qna"){
-            result = communityRepository.selectQnaList(pageable);
-        }
-        else if(type=="review"){
-            result = communityRepository.selectReviewList(pageable);
-        }
-        else{
-            result = communityRepository.selectHelpList(pageable);
-        }
+        Page<Community> result = communityRepository.selectTipList(pageable);
+        List<CommunityDto> dtoList = result.getContent().stream()
+        .map(tip-> modelMapper.map(tip, CommunityDto.class)).collect(Collectors.toList());
 
+        long totalCount = result.getTotalElements();
+        PageResponseDto<CommunityDto> responseDto = PageResponseDto.<CommunityDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+        return responseDto;
+    }
 
+    public PageResponseDto<CommunityDto> listQna(PageRequestDto pageRequestDto) { // 커뮤니티 게시글 목록 가져오기(페이징 처리, 이미지 포함)
+        Pageable pageable = PageRequest.of(
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("commNo").descending());
+        Page<Community> result = communityRepository.selectQnaList(pageable);
+        List<CommunityDto> dtoList = result.getContent().stream()
+        .map(tip-> modelMapper.map(tip, CommunityDto.class)).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<CommunityDto> responseDto = PageResponseDto.<CommunityDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+        return responseDto;
+    }
+
+    public PageResponseDto<CommunityDto> listReview(PageRequestDto pageRequestDto) { // 커뮤니티 게시글 목록 가져오기(페이징 처리, 이미지 포함)
+        Pageable pageable = PageRequest.of(
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("commNo").descending());
+        Page<Community> result = communityRepository.selectReviewList(pageable);
+        List<CommunityDto> dtoList = result.getContent().stream()
+        .map(tip-> modelMapper.map(tip, CommunityDto.class)).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<CommunityDto> responseDto = PageResponseDto.<CommunityDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+        return responseDto;
+    }
+
+    public PageResponseDto<CommunityDto> listHelp(PageRequestDto pageRequestDto) { // 커뮤니티 게시글 목록 가져오기(페이징 처리, 이미지 포함)
+        Pageable pageable = PageRequest.of(
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("commNo").descending());
+        Page<Community> result = communityRepository.selectHelpList(pageable);
         List<CommunityDto> dtoList = result.getContent().stream()
         .map(tip-> modelMapper.map(tip, CommunityDto.class)).collect(Collectors.toList());
 

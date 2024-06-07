@@ -2,8 +2,8 @@ import heartEmpty from "../../../resources/images/heart_empty.png";
 import replyIcon from "../../../resources/images/reply.png";
 import CommentComponent from "../../common/CommentComponent";
 import { useEffect, useState } from "react";
-import { API_SERVER_HOST, getOneTip } from "../../../api/communityApi";
-import useCustomTip from "../../../hooks/useCustomTip";
+import { API_SERVER_HOST, getOneHelp } from "../../../api/communityApi";
+import useCustomHelp from "../../../hooks/useCustomHelp";
 
 const initState = {
     commNo: 0,
@@ -17,13 +17,13 @@ const initState = {
 const host = API_SERVER_HOST;
 
 const ReadComponent = ({commNo}) => {
-    const [tip, setTip] = useState(initState)
-    const { moveToList, moveToModify } = useCustomTip()
+    const [help, setHelp] = useState(initState)
+    const { moveToList, moveToModify } = useCustomHelp()
 
     useEffect(() => {
-        getOneTip(commNo).then(data => {
+        getOneHelp(commNo).then(data => {
             console.log(data)
-            setTip(data)
+            setHelp(data)
         })
     }, [commNo])
 
@@ -35,38 +35,35 @@ return(
 
                 <div className="mb-2">
                     <span className="text-slate-900 text-base bg-teal-200 rounded-3xl px-2 pt-0.5 pb-1">
-                        {tip.commCategory === '1' && '부동산'}
-                        {tip.commCategory === '2' && '인테리어'}
-                        {tip.commCategory === '3' && '할인정보'}
-                        {tip.commCategory === '4' && '기타'}
+                        도움요청
                     </span>
                 </div>
-                <h1 className="text-gray-900 font-bold text-3xl">{tip.title}</h1>
+                <h1 className="text-gray-900 font-bold text-3xl">{help.title}</h1>
                 <div className="py-5 text-sm font-regular text-gray-900 flex">
                     <p className="mr-3 flex flex-row items-center">
-                      <p className="ml-1">{tip.nickname}</p>
+                      <p className="ml-1">{help.nickname}</p>
                     </p>
                     <p className="mr-3 flex flex-row items-center">
                       <p className="ml-1">2024-06-02</p>
                     </p>
                     <p className="ml-auto mr-2 flex flex-row">
-                        <img src={heartEmpty} width="20" alt="..."></img><span className="mx-1">{tip.commHit}</span>
+                        <img src={heartEmpty} width="20" alt="..."></img><span className="mx-1">{help.commHit}</span>
                         <img src={replyIcon} width="20" alt="..."></img><span className="mx-1">0</span>
                     </p>
                 </div>
                 <hr></hr>
 
-                {tip.uploadFileNames.map((imgFile, i) =>
+                {help.uploadFileNames.map((imgFile, i) =>
                     <img
-                        alt="tip"
+                        alt="help"
                         key={i}
                         width={600}
-                        src={`${host}/api/community/tip/display/${imgFile}`}
+                        src={`${host}/api/community/help/display/${imgFile}`}
                         className="my-3"/>
                 )}
 
                 <p className="text-base leading-8 my-5">
-                    {tip.content.split('\n').map((line) => {
+                    {help.content.split('\n').map((line) => {
                         return(
                             <span>{line}<br/></span>
                         );
