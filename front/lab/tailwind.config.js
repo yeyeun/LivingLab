@@ -7,6 +7,10 @@ module.exports = {
         NotoSansKR : ["Noto Sans KR", "sans-serif"],
         Jua : ["Jua", "sans-serif"]
       },
+      colors : {
+        'mainColor' : '#6AC5B7',
+        'subColor' : '#89540A'
+      }
     },
   },
   plugins: [],

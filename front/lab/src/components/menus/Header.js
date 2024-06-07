@@ -69,7 +69,7 @@ const Header = () => {
               </Link>
             </li>
             <li className="pr-10">
-              <Link to={'/community/tip'} className={getLinkClass('/community')}>
+              <Link to={'/community'} className={getLinkClass('/community')}>
                 커뮤니티
               </Link>
             </li>

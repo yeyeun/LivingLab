@@ -1,7 +1,7 @@
 const ResultModal = ({ title, content, callbackFn }) => {
   return (
     <div
-      className={`fixed top-0 left-0 z-[1055] flex h-full w-full justify-center bg-black bg-opacity-20`}
+      className={`fixed top-0 left-0 z-[1055] flex h-full w-full items-center justify-center bg-black bg-opacity-20`}
       onClick={() => {
         if (callbackFn) {
           callbackFn();
@@ -9,25 +9,25 @@ const ResultModal = ({ title, content, callbackFn }) => {
       }}
     >
       <div
-        className="absolute bg-white shadow dark:bg-gray-700 opacity-100 w-1/4 rounded mt-0
-        mb-10 px-6 min-w-[600]x"
+        className="relative bg-white shadow dark:bg-gray-700 opacity-100 w-1/4 rounded-md px-6 min-w-[300px] flex flex-col items-center"
+        onClick={(e) => e.stopPropagation()} // Prevent closing modal on inner click
       >
-        <div className="justify-center bg-warming-400 mt-6 mb-6 text-2xl border-b-4 border-gray-500">
+        <div className="w-full text-center bg-warming-400 mt-6 mb-6 pb-2 text-xl border-b-2 border-gray-500">
           {title}
         </div>
-        <div className="text-4xl border-orange-400 border-b-4 pt-4 pb-4">
+        <div className="w-full text-center text-xl pt-4 pb-4">
           {content}
         </div>
-        <div className="justify-end flex">
+        <div className="w-full flex justify-center">
           <button
-            className="rounded bg-blue-500 mt-4 mb-4 px-6 pt-4 text-lg text-white"
+            className="rounded bg-mainColor mt-4 mb-4 px-6 py-2 text-lg text-white hover:bg-teal-600"
             onClick={() => {
               if (callbackFn) {
                 callbackFn();
               }
             }}
           >
-            Close Modal
+            닫기
           </button>
         </div>
       </div>
