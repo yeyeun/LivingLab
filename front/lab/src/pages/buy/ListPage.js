@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ListComponent from '../../components/buy/ListComponent';
 import LocationComponent from '../../components/common/location/LocationComponent';
 //import MoveMarkerComponent from '../../components/common/location/MoveLocationComponent';
@@ -21,8 +22,9 @@ const ListPage = () => {
       </div>
       <div className="m-auto bg-slate-200 w-2/5 rounded-md px-10 py-4">
         <SearchComponent onSearch={handleSearch} />
+        <SearchComponent onSearch={handleSearch} />
         <SelectComponent />
-        <ListComponent search={search}/>
+        <ListComponent search={search} />
       </div>
     </>
   );

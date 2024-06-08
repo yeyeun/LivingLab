@@ -19,6 +19,7 @@ import com.mlp.lab.repository.BuyRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +56,8 @@ public class BuyService {
         return responseDto;
     }
 
-    public PageResponseDto<BuyDto> searchList(PageRequestDto pageRequestDto, String search) { // 검색된 목록 가져오기(페이징 처리, 이미지 포함)
+    public PageResponseDto<BuyDto> searchList(PageRequestDto pageRequestDto, String search) { // 검색된 목록 가져오기(페이징 처리, 이미지
+                                                                                              // 포함)
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
@@ -92,9 +94,9 @@ public class BuyService {
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
                 Sort.by("buyNo").descending());
-        
+
         Page<Object[]> result = buyRepository.selectList(pageable);
-        
+
         switch (sort) {
             case "최신순":
                 result = buyRepository.newList(pageable);
@@ -102,12 +104,12 @@ public class BuyService {
 
             case "마감임박순":
                 result = buyRepository.deadLineList(pageable);
-            break;
+                break;
             // case "거리순":
-                
-            //     break;
+
+            // break;
             // case "좋아요순":
-                
+
             // break;
             default:
                 break;
@@ -148,8 +150,7 @@ public class BuyService {
         return buyDto;
     }
 
-    
-    public void modify(BuyDto buyDto) { //수정하기
+    public void modify(BuyDto buyDto) { // 수정하기
         // 1.조회
         Optional<Buy> result = buyRepository.findById(buyDto.getBuyNo().intValue());
         Buy buy = result.orElseThrow();

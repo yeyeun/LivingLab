@@ -24,7 +24,6 @@ import com.mlp.lab.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-
 @Log4j2
 @RestController
 @RequestMapping("/api/buy")
@@ -34,9 +33,10 @@ public class BuyController {
     private final CustomFileUtil fileUtil;
 
     @GetMapping("/list") // 목록조회
-    public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "search") String search) {
+    public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search) {
         PageResponseDto<BuyDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
-        if(search == null || search.isEmpty()){
+        if (search == null || search.isEmpty()) {
             result = buyService.list(pageRequestDto);
         } else {
             result = buyService.searchList(pageRequestDto, search);
@@ -44,9 +44,9 @@ public class BuyController {
         return result;
     }
 
-    @GetMapping("/sort")    //선택된 정렬순으로 조회
+    @GetMapping("/sort") // 선택된 정렬순으로 조회
     public PageResponseDto<BuyDto> sort(PageRequestDto pageRequestDto, @PathVariable(value = "sort") String sort) {
-        if(sort == null){
+        if (sort == null) {
             return buyService.list(pageRequestDto);
         } else {
             return buyService.sortList(pageRequestDto, sort);
@@ -59,10 +59,10 @@ public class BuyController {
     }
 
     @GetMapping("/display/{fileName}") // 이미지 출력
+    @GetMapping("/display/{fileName}") // 이미지 출력
     public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);
     }
-    
 
     @PostMapping("/add") // 작성(이미지 포함)
     public void add(BuyDto buyDto) {
@@ -93,7 +93,7 @@ public class BuyController {
         if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
             uploadedFileNames.addAll(newUploadFileNames);
         }
-        
+
         buyService.modify(buyDto);
 
         if (oldFileNames != null && oldFileNames.size() > 0) {
