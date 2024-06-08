@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ListComponent from '../../components/buy/ListComponent';
 import LocationComponent from '../../components/common/location/LocationComponent';
 //import MoveMarkerComponent from '../../components/common/location/MoveLocationComponent';

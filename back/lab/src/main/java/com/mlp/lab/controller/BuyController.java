@@ -59,7 +59,6 @@ public class BuyController {
     }
 
     @GetMapping("/display/{fileName}") // 이미지 출력
-    @GetMapping("/display/{fileName}") // 이미지 출력
     public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);
     }
