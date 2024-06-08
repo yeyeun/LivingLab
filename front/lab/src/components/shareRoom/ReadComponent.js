@@ -1,6 +1,7 @@
 import image from '../../resources/images/room.jpg';
 import React,{ useEffect, useState } from "react"
 import { getOne } from "../../api/shareRoomApi"
+import useCustomMove from "../../hooks/useCustomMove"
 
 const initState = {
     roomNo: 0,
@@ -13,7 +14,8 @@ const initState = {
 
 const ReadComponent = ({roomNo}) => {
     const [shareRoom, setShareRoom] = useState(initState)
-    
+    const { moveToModify } = useCustomMove()
+
     useEffect(() => {
         getOne(roomNo).then(data => {
             console.log(data)
@@ -58,6 +60,14 @@ const ReadComponent = ({roomNo}) => {
                         <div class="w-20 h-8 ml-auto bg-gray-200 rounded-full">
                             문의하기
                         </div>
+                    </div>
+                    <div className="flex justify-end p-4">
+                        <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-gray-400" onClick={() => moveToModify(roomNo)}>
+                            Modify
+                        </button>
+                        <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-red-400" onClick={() => moveToModify(roomNo)}>
+                            Delete
+                        </button>
                     </div>
                 </div>
             </div>

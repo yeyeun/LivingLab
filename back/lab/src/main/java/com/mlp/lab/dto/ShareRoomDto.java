@@ -1,6 +1,10 @@
 package com.mlp.lab.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -28,7 +32,10 @@ public class ShareRoomDto { // 화면에서 받을 데이터
     private String rentStartDate;
     private String rentEndDate;
 
+    @Builder.Default
+    private List<MultipartFile> files = new ArrayList<>(); 
 
-
+    @Builder.Default
+    private List<String> uploadFileNames = new ArrayList<>(); 
 
 }

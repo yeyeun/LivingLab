@@ -45,10 +45,41 @@ public class ShareRoomService {
         return responseDTO;
     }
 
+    public void add(ShareRoomDto shareRoomDto) { // 룸쉐어 등록(이미지 포함)
+        ShareRoom shareRoom = ShareRoom.DtoToEntity(shareRoomDto);
+        shareRoomRepository.save(shareRoom);
+    }
+
     public ShareRoomDto get(Integer roomNo){
         Optional<ShareRoom> result = shareRoomRepository.findById(roomNo);
         ShareRoom shareRoom = result.orElseThrow();
         ShareRoomDto shareRoomDto = modelMapper.map(shareRoom, ShareRoomDto.class);
         return shareRoomDto;
+    }
+
+    public void modify(ShareRoomDto shareRoomDto) { //수정하기
+        // 조회
+        Optional<ShareRoom> result = shareRoomRepository.findById(shareRoomDto.getRoomNo().intValue());
+        ShareRoom shareRoom = result.orElseThrow();
+
+        // 수정
+        shareRoom.setTitle(shareRoomDto.getTitle());
+        shareRoom.setContent(shareRoomDto.getContent());
+        shareRoom.setRentFee(shareRoomDto.getRentFee());
+        shareRoom.setParking(shareRoomDto.getParking());
+        shareRoom.setLocation(shareRoomDto.getLocation());
+        shareRoom.setRentStartDate(shareRoomDto.getRentStartDate());
+        shareRoom.setRentEndDate(shareRoomDto.getRentEndDate());
+        shareRoom.setOption1(shareRoomDto.getOption1());
+
+        // 파일들 삭제
+        shareRoom.clearList();
+        List<String> uploadFileNames = shareRoomDto.getUploadFileNames();
+        if (uploadFileNames != null && uploadFileNames.size() > 0) {
+            uploadFileNames.stream().forEach(uploadName -> {
+                shareRoom.addImageString(uploadName);
+            });
+        }
+        shareRoomRepository.save(shareRoom);
     }
 }

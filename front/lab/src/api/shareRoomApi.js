@@ -15,3 +15,8 @@ export const getOne = async (roomNo) =>{
     return res.data;
 }
 
+export const postAdd = async (shareRoom) => {
+    const header = { headers: { "Content-Type": "multipart/form-data" } };
+    const res = await axios.post(`${prefix}/add`, shareRoom, header);
+    return res.data;
+};
