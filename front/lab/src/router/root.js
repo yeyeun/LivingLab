@@ -10,7 +10,6 @@ import shareRoomRouter from './shareRoomRouter';
 import communityRouter from './communityRouter';
 import myPageRouter from './myPage/allRouter';
 
-
 const Loading = <div>Loading...</div>; // 컴포넌트의 처리가 끝나지 않은 경우 화면에 'Loading...' 메시지 출력
 const Main = lazy(() => import('../pages/MainPage'));
 const BuyIndex = lazy(() => import('../pages/buy/IndexPage')); // 공동구매 페이지
