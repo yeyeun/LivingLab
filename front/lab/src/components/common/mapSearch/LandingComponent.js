@@ -13,7 +13,7 @@ function LandingComponent() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setPlace(InputText);
-    setInputText('');
+    setInputText(InputText);
   };
 
   return (

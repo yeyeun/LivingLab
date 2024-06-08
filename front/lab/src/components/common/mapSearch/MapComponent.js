@@ -87,7 +87,7 @@ const MapComponent = ({ searchPlace }) => {
       <div
         id="myMap"
         style={{
-          width: '400px',
+          width: '500px',
           height: '400px',
           // position: 'absolute',
         }}
