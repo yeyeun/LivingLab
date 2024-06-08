@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +24,6 @@ import com.mlp.lab.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-
 @Log4j2
 @RestController
 @RequestMapping("/api/buy")
@@ -33,8 +33,24 @@ public class BuyController {
     private final CustomFileUtil fileUtil;
 
     @GetMapping("/list") // 목록조회
-    public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto) {
-        return buyService.list(pageRequestDto);
+    public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search) {
+        PageResponseDto<BuyDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
+        if (search == null || search.isEmpty()) {
+            result = buyService.list(pageRequestDto);
+        } else {
+            result = buyService.searchList(pageRequestDto, search);
+        }
+        return result;
+    }
+
+    @GetMapping("/sort") // 선택된 정렬순으로 조회
+    public PageResponseDto<BuyDto> sort(PageRequestDto pageRequestDto, @PathVariable(value = "sort") String sort) {
+        if (sort == null) {
+            return buyService.list(pageRequestDto);
+        } else {
+            return buyService.sortList(pageRequestDto, sort);
+        }
     }
 
     @GetMapping("/read/{buyNo}") // 상세조회
@@ -42,11 +58,10 @@ public class BuyController {
         return buyService.read(buyNo);
     }
 
-    @GetMapping("/display/{fileName}") // 목록조회
+    @GetMapping("/display/{fileName}") // 이미지 출력
     public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);
     }
-    
 
     @PostMapping("/add") // 작성(이미지 포함)
     public void add(BuyDto buyDto) {
@@ -77,7 +92,7 @@ public class BuyController {
         if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
             uploadedFileNames.addAll(newUploadFileNames);
         }
-        
+
         buyService.modify(buyDto);
 
         if (oldFileNames != null && oldFileNames.size() > 0) {
