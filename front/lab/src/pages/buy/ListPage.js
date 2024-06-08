@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ListComponent from '../../components/buy/ListComponent';
 import LocationComponent from '../../components/common/location/LocationComponent';
 //import MoveMarkerComponent from '../../components/common/location/MoveLocationComponent';
@@ -7,9 +7,14 @@ import SelectComponent from '../../components/common/SelectComponent';
 
 const ListPage = () => {
   const [search, setsearch] = useState('');
+  const [sort, setsort] = useState('');
 
   const handleSearch = (query) => {
     setsearch(query);
+  };
+
+  const handleSort = (query) => {
+    setsort(query);
   };
 
   return (
@@ -21,8 +26,8 @@ const ListPage = () => {
       </div>
       <div className="m-auto bg-slate-200 w-2/5 rounded-md px-10 py-4">
         <SearchComponent onSearch={handleSearch} />
-        <SelectComponent />
-        <ListComponent search={search}/>
+        <SelectComponent onSort={handleSort}/>
+        <ListComponent search={search} sort={sort} />
       </div>
     </>
   );
