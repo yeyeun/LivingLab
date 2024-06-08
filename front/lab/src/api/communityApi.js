@@ -20,6 +20,12 @@ export const getOneTip = async(commNo) => {
     return res.data;
 }
 
+export const modifyTip = async(commNo, tip) => {
+    const header = {headers:{"Content-Type":"multipart/form-data"}};
+    const res = await axios.post(`${prefix}/tip/add/${commNo}`, tip, header);
+    return res.data;
+}
+
 // ******질문 게시판******
 export const postAddQna = async(tip) => {
     const header = {headers:{"Content-Type":"multipart/form-data"}};
