@@ -19,14 +19,13 @@ import com.mlp.lab.repository.BuyRepository;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Service
 @RequiredArgsConstructor
 public class BuyService {
     private final BuyRepository buyRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto) { 
+    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
@@ -56,8 +55,8 @@ public class BuyService {
         return responseDto;
     }
 
-    // 검색된 목록 가져오기(페이징 처리, 이미지 포함) 
-    public PageResponseDto<BuyDto> searchList(PageRequestDto pageRequestDto, String search) {                                                                                   
+    // 검색된 목록 가져오기(페이징 처리, 이미지 포함)
+    public PageResponseDto<BuyDto> searchList(PageRequestDto pageRequestDto, String search) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
@@ -88,7 +87,7 @@ public class BuyService {
     }
 
     // 선택된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> sortList(PageRequestDto pageRequestDto, String sort) { 
+    public PageResponseDto<BuyDto> sortList(PageRequestDto pageRequestDto, String sort) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
@@ -137,14 +136,64 @@ public class BuyService {
         return responseDto;
     }
 
+    // 검색 + 선택된 목록 가져오기(페이징 처리, 이미지 포함)
+    public PageResponseDto<BuyDto> searchSortList(PageRequestDto pageRequestDto, String search, String sort) {
+        Pageable pageable = PageRequest.of(
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("buyNo").descending());
+
+        Page<Object[]> result = buyRepository.selectList(pageable);
+
+        switch (sort) {
+            case "최신순":
+                result = buyRepository.searchNewList(search, pageable);
+                break;
+
+            case "마감임박순":
+                result = buyRepository.searchDeadLineList(search, pageable);
+                break;
+            // case "거리순":
+
+            // break;
+            // case "좋아요순":
+
+            // break;
+            default:
+                break;
+        }
+
+        List<BuyDto> dtoList = result.get().map(arr -> {
+            Buy buy = (Buy) arr[0];
+            BuyImage buyImage = (BuyImage) arr[1];
+
+            BuyDto buyDto = BuyDto.builder()
+                    .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
+                    .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
+
+            String imageStr = buyImage.getFileName();
+            buyDto.setUploadFileNames(List.of(imageStr));
+            return buyDto;
+        }).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<BuyDto> responseDto = PageResponseDto.<BuyDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+        return responseDto;
+    }
+
     // 공동구매 등록(이미지 포함)
-    public void add(BuyDto buyDto) { 
+    public void add(BuyDto buyDto) {
         Buy buy = Buy.DtoToEntity(buyDto);
         buyRepository.save(buy);
     }
 
     // 공동구매 조회
-    public BuyDto read(int buyNo) { 
+    public BuyDto read(int buyNo) {
         Optional<Buy> result = buyRepository.findById(buyNo);
         Buy buy = result.orElseThrow();
         BuyDto buyDto = buy.entityToDto(buy);
@@ -152,7 +201,7 @@ public class BuyService {
     }
 
     // 수정하기(이미지 포함)
-    public void modify(BuyDto buyDto) { 
+    public void modify(BuyDto buyDto) {
         // 조회
         Optional<Buy> result = buyRepository.findById(buyDto.getBuyNo().intValue());
         Buy buy = result.orElseThrow();
