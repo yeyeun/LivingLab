@@ -28,7 +28,6 @@ const SearchComponent = ({ onSearch }) => {
           id="simple-search"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-teal-300 block w-full ps-10 p-2"
           placeholder="검색할 키워드를 입력하세요"
-          required
           value={inputValue}
           onChange={handleChange}
         />

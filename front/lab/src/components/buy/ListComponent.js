@@ -1,4 +1,3 @@
-import image from '../../resources/images/defaultImage.jpg';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
 import { useEffect, useState } from 'react';

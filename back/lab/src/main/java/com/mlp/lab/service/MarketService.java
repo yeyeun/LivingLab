@@ -55,6 +55,36 @@ public class MarketService {
         return responseDTO;
     }
 
+    public PageResponseDto<MarketDto> searchList(PageRequestDto pageRequestDto, String search){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage()-1,
+            pageRequestDto.getSize(),
+            Sort.by("marketNo").descending());
+        
+        Page<Object[]> result = marketRepository.selectSearchList(search, pageable);
+        List<MarketDto> dtoList = result.get().map(arr -> {
+            Market market = (Market) arr[0];
+            MarketImage marketImage = (MarketImage) arr[1];
+            
+            MarketDto marketDto = MarketDto.builder()
+                    .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
+                    .location(market.getLocation()).max(market.getMax()).current(market.getCurrent())
+                    .deadline(market.getDeadline()).nickname(market.getNickname()).build();
+
+            String imageStr = marketImage.getFileName();
+            marketDto.setUploadFileNames(List.of(imageStr));
+            return marketDto;
+        }).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<MarketDto> responseDTO = PageResponseDto.<MarketDto>withAll()
+            .dtoList(dtoList)
+            .pageRequestDto(pageRequestDto)
+            .totalCount(totalCount)
+            .build();
+        return responseDTO;
+    }
+
      public void add(MarketDto marketDto) { // 동네장터 등록(이미지 포함)
         Market market = Market.DtoToEntity(marketDto);
         marketRepository.save(market);

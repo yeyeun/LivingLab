@@ -32,9 +32,8 @@ public class BuyController {
     private final BuyService buyService;
     private final CustomFileUtil fileUtil;
 
-    @GetMapping("/list") // 목록조회
-    public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto,
-            @RequestParam(required = false, value = "search") String search) {
+    @GetMapping("/list") // 목록조회(검색기능 포함)
+    public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "search") String search) {
         PageResponseDto<BuyDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
         if (search == null || search.isEmpty()) {
             result = buyService.list(pageRequestDto);

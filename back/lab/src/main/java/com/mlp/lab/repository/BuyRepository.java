@@ -2,7 +2,6 @@ package com.mlp.lab.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,7 +15,7 @@ public interface BuyRepository extends JpaRepository<Buy, Integer> {
     @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false")
     Page<Object[]> selectList(Pageable pageable);
 
-    // 검색어 기준 정렬
+    // 검색어 기준 정렬(글 제목에서만 검색)
     @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false and b.title like %:title%")
     Page<Object[]> selectSearchList(String title, Pageable pageable);
 

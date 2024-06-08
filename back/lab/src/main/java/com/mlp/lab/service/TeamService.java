@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class TeamService {
     private final TeamRepository teamRepository;
 
+    // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto){
         Pageable pageable = PageRequest.of(
             pageRequestDto.getPage()-1,
@@ -31,6 +32,37 @@ public class TeamService {
             Sort.by("teamNo").descending());
          
         Page<Object[]> result = teamRepository.selectList(pageable);
+        List<TeamDto> dtoList = result.get().map(arr -> {
+            Team team = (Team) arr[0];
+            TeamImage teamImage = (TeamImage) arr[1];
+
+            TeamDto teamDto = TeamDto.builder()
+                    .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
+                    .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
+                    .deadline(team.getDeadline()).nickname(team.getNickname()).build();
+
+            String imageStr = teamImage.getFileName();
+            teamDto.setUploadFileNames(List.of(imageStr));
+            return teamDto;
+        }).collect(Collectors.toList());     
+            
+        long totalCount = result.getTotalElements();
+        PageResponseDto<TeamDto> responseDTO = PageResponseDto.<TeamDto>withAll()
+            .dtoList(dtoList)
+            .pageRequestDto(pageRequestDto)
+            .totalCount(totalCount)
+            .build();
+        return responseDTO;
+    }
+
+    // 검색된 목록 가져오기(페이징 처리, 이미지   
+    public PageResponseDto<TeamDto> searchList(PageRequestDto pageRequestDto, String search){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage()-1,
+            pageRequestDto.getSize(),
+            Sort.by("teamNo").descending());
+         
+        Page<Object[]> result = teamRepository.selectSearchList(search, pageable);
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
             TeamImage teamImage = (TeamImage) arr[1];
