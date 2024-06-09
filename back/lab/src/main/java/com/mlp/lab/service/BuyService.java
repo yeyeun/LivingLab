@@ -25,131 +25,43 @@ public class BuyService {
     private final BuyRepository buyRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto) {
+    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
                 Sort.by("buyNo").descending());
-
-        Page<Object[]> result = buyRepository.selectList(pageable);
-        List<BuyDto> dtoList = result.get().map(arr -> {
-            Buy buy = (Buy) arr[0];
-            BuyImage buyImage = (BuyImage) arr[1];
-
-            BuyDto buyDto = BuyDto.builder()
-                    .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
-                    .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
-
-            String imageStr = buyImage.getFileName();
-            buyDto.setUploadFileNames(List.of(imageStr));
-            return buyDto;
-        }).collect(Collectors.toList());
-
-        long totalCount = result.getTotalElements();
-        PageResponseDto<BuyDto> responseDto = PageResponseDto.<BuyDto>withAll()
-                .dtoList(dtoList)
-                .pageRequestDto(pageRequestDto)
-                .totalCount(totalCount)
-                .build();
-        return responseDto;
-    }
-
-    // 검색된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> searchList(PageRequestDto pageRequestDto, String search) {
-        Pageable pageable = PageRequest.of(
-                pageRequestDto.getPage() - 1,
-                pageRequestDto.getSize(),
-                Sort.by("buyNo").descending());
-
-        Page<Object[]> result = buyRepository.selectSearchList(search, pageable);
-        List<BuyDto> dtoList = result.get().map(arr -> {
-            Buy buy = (Buy) arr[0];
-            BuyImage buyImage = (BuyImage) arr[1];
-
-            BuyDto buyDto = BuyDto.builder()
-                    .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
-                    .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
-
-            String imageStr = buyImage.getFileName();
-            buyDto.setUploadFileNames(List.of(imageStr));
-            return buyDto;
-        }).collect(Collectors.toList());
-
-        long totalCount = result.getTotalElements();
-        PageResponseDto<BuyDto> responseDto = PageResponseDto.<BuyDto>withAll()
-                .dtoList(dtoList)
-                .pageRequestDto(pageRequestDto)
-                .totalCount(totalCount)
-                .build();
-        return responseDto;
-    }
-
-    // 선택된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> sortList(PageRequestDto pageRequestDto, String sort) {
-        Pageable pageable = PageRequest.of(
-                pageRequestDto.getPage() - 1,
-                pageRequestDto.getSize(),
-                Sort.by("buyNo").descending());
-
-        Page<Object[]> result = buyRepository.selectList(pageable);
-        if(sort.equals("최신순")){
-            result = buyRepository.newList(pageable);
+        Page<Object[]> result = null;
+        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
+            result = buyRepository.selectList(pageable);
+        } else if (search != null && !search.isEmpty()) { // 검색
+            result = buyRepository.selectSearchList(search, pageable);
+        } else if (sort != null && !sort.isEmpty()) { // 정렬
+            if(sort.equals("최신순")){
+                result = buyRepository.newList(pageable);
+            }
+            if(sort.equals("마감임박순")){
+                result = buyRepository.deadLineList(pageable);
+            }
+            // if(sort.equals("거리순")){
+            //     result = 
+            // }
+            // if(sort.equals("좋아요순")){
+            //     result = 
+            // }
+        } else if (search != null && sort != null) { // 검색&&정렬 둘다
+            if(sort.equals("최신순")){
+                result = buyRepository.searchNewList(sort, pageable);
+            }
+            if(sort.equals("마감임박순")){
+                result = buyRepository.searchDeadLineList(sort, pageable);
+            }
+            // if(sort.equals("거리순")){
+            //     result = 
+            // }
+            // if(sort.equals("좋아요순")){
+            //     result = 
+            // }
         }
-        if(sort.equals("마감임박순")){
-            result = buyRepository.deadLineList(pageable);
-        }
-        // if(sort.equals("거리순")){
-        //     result = 
-        // }
-        // if(sort.equals("좋아요순")){
-        //     result = 
-        // }
-        List<BuyDto> dtoList = result.get().map(arr -> {
-            Buy buy = (Buy) arr[0];
-            BuyImage buyImage = (BuyImage) arr[1];
-
-            BuyDto buyDto = BuyDto.builder()
-                    .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
-                    .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
-
-            String imageStr = buyImage.getFileName();
-            buyDto.setUploadFileNames(List.of(imageStr));
-            return buyDto;
-        }).collect(Collectors.toList());
-
-        long totalCount = result.getTotalElements();
-        PageResponseDto<BuyDto> responseDto = PageResponseDto.<BuyDto>withAll()
-                .dtoList(dtoList)
-                .pageRequestDto(pageRequestDto)
-                .totalCount(totalCount)
-                .build();
-        return responseDto;
-    }
-
-    // 검색 + 선택된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> searchSortList(PageRequestDto pageRequestDto, String search, String sort) {
-        Pageable pageable = PageRequest.of(
-                pageRequestDto.getPage() - 1,
-                pageRequestDto.getSize(),
-                Sort.by("buyNo").descending());
-
-        Page<Object[]> result = buyRepository.selectList(pageable);
-        if(sort.equals("최신순")){
-            result = buyRepository.searchNewList(sort, pageable);
-        }
-        if(sort.equals("마감임박순")){
-            result = buyRepository.searchDeadLineList(sort, pageable);
-        }
-        // if(sort.equals("거리순")){
-        //     result = 
-        // }
-        // if(sort.equals("좋아요순")){
-        //     result = 
-        // }
-
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];
             BuyImage buyImage = (BuyImage) arr[1];
