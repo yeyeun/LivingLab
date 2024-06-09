@@ -25,13 +25,44 @@ public class TeamService {
     private final TeamRepository teamRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto){
+    public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto, String search, String sort){
         Pageable pageable = PageRequest.of(
             pageRequestDto.getPage()-1,
             pageRequestDto.getSize(),
             Sort.by("teamNo").descending());
          
-        Page<Object[]> result = teamRepository.selectList(pageable);
+            Page<Object[]> result = null;
+            if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
+                result = teamRepository.selectList(pageable);
+            } else if (search != null && !search.isEmpty()) { // 검색
+                result = teamRepository.selectSearchList(search, pageable);
+            } else if (sort != null && !sort.isEmpty()) { // 정렬
+                if(sort.equals("최신순")){
+                    result = teamRepository.newList(pageable);
+                }
+                if(sort.equals("마감임박순")){
+                    result = teamRepository.deadLineList(pageable);
+                }
+                // if(sort.equals("거리순")){
+                //     result = 
+                // }
+                // if(sort.equals("좋아요순")){
+                //     result = 
+                // }
+            } else if (search != null && sort != null) { // 검색&&정렬 둘다
+                if(sort.equals("최신순")){
+                    result = teamRepository.searchNewList(sort, pageable);
+                }
+                if(sort.equals("마감임박순")){
+                    result = teamRepository.searchDeadLineList(sort, pageable);
+                }
+                // if(sort.equals("거리순")){
+                //     result = 
+                // }
+                // if(sort.equals("좋아요순")){
+                //     result = 
+                // }
+            }
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
             TeamImage teamImage = (TeamImage) arr[1];

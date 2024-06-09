@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.mlp.lab.dto.BuyDto;
-import com.mlp.lab.dto.PageRequestDto;
-import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.service.BuyService;
 
 import lombok.extern.log4j.Log4j2;
@@ -19,13 +17,6 @@ import lombok.extern.log4j.Log4j2;
 public class BuyServiceTest {
     @Autowired
     private BuyService buyService;
-
-    @Test
-    public void testList() {
-        PageRequestDto pageRequestDto = PageRequestDto.builder().build();
-        PageResponseDto<BuyDto> result = buyService.list(pageRequestDto);
-        result.getDtoList().forEach(dto -> log.info(dto));
-    }
 
     @Test
     public void testADD() {

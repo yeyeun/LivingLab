@@ -36,17 +36,7 @@ public class MarketController {
     public PageResponseDto<MarketDto> List(PageRequestDto pageRequestDto,
             @RequestParam(required = false, value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort) {
-        PageResponseDto<MarketDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
-        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) {   // 페이지 클릭 시
-            result = marketService.list(pageRequestDto);
-        } else if (search != null && !search.isEmpty()) { // 검색
-            result = marketService.searchList(pageRequestDto, search);
-        } else if (sort != null && !sort.isEmpty()) { // 정렬
-            result = marketService.sortList(pageRequestDto, sort);
-        } else if (search != null && sort != null) { // 검색&&정렬 둘다
-            result = marketService.searchSortList(pageRequestDto, search, sort);
-        }
-        return result;
+        return marketService.list(pageRequestDto, search, sort);
     }
 
     @GetMapping("/read/{marketNo}") // 상세조회

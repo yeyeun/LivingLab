@@ -34,17 +34,7 @@ public class TeamController {
     public PageResponseDto<TeamDto> List(PageRequestDto pageRequestDto,
             @RequestParam(required = false, value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort) {
-        PageResponseDto<TeamDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
-        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) {   // 페이지 클릭 시
-            result = teamService.list(pageRequestDto);
-        } else if (search != null && !search.isEmpty()) { // 검색
-            result = teamService.searchList(pageRequestDto, search);
-        } else if (sort != null && !sort.isEmpty()) { // 정렬
-            result = teamService.sortList(pageRequestDto, sort);
-        } else if (search != null && sort != null) { // 검색&&정렬 둘다
-            result = teamService.searchSortList(pageRequestDto, search, sort);
-        }
-        return result;
+        return teamService.list(pageRequestDto, search, sort);
     }
 
     @GetMapping("/read/{teamNo}") // 상세조회
