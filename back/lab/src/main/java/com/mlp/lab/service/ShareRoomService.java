@@ -57,6 +57,10 @@ public class ShareRoomService {
         return shareRoomDto;
     }
 
+    public void remove(Integer roomNo){
+        shareRoomRepository.deleteById(roomNo);
+    }
+
     public void modify(ShareRoomDto shareRoomDto) { //수정하기
         // 조회
         Optional<ShareRoom> result = shareRoomRepository.findById(shareRoomDto.getRoomNo().intValue());

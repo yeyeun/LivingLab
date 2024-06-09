@@ -1,6 +1,6 @@
 import image from '../../resources/images/room.jpg';
 import React,{ useEffect, useState } from "react"
-import { getOne } from "../../api/shareRoomApi"
+import { getOne,deleteOne } from "../../api/shareRoomApi"
 import useCustomMove from "../../hooks/useCustomMove"
 
 const initState = {
@@ -12,9 +12,12 @@ const initState = {
     location: ''
 }
 
+
+
 const ReadComponent = ({roomNo}) => {
     const [shareRoom, setShareRoom] = useState(initState)
-    const { moveToModify } = useCustomMove()
+    const { moveToModify,moveToList } = useCustomMove()
+    const [result, setResult] = useState(null)
 
     useEffect(() => {
         getOne(roomNo).then(data => {
@@ -22,6 +25,15 @@ const ReadComponent = ({roomNo}) => {
             setShareRoom(data)
         })
     }, [roomNo])
+    
+    const handleClickDelete = () => {
+    
+        deleteOne(roomNo).then(result => {
+        console.log("delete result : " +result)
+        setResult('Deleted')
+        moveToList()
+        })
+    }
 
     return(
         <div class="flex flex-col w-3/4 gap-5 p-2 mx-auto bg-white shadow-lg select-none sm:p-4 sm:h-96 rounded-2xl sm:flex-row ">            
@@ -65,7 +77,7 @@ const ReadComponent = ({roomNo}) => {
                         <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-gray-400" onClick={() => moveToModify(roomNo)}>
                             Modify
                         </button>
-                        <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-red-400" onClick={() => moveToModify(roomNo)}>
+                        <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-red-400" onClick={handleClickDelete}>
                             Delete
                         </button>
                     </div>
