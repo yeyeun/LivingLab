@@ -32,25 +32,20 @@ public class BuyController {
     private final BuyService buyService;
     private final CustomFileUtil fileUtil;
 
-    @GetMapping("/list") // 목록조회
+    @GetMapping("/list") // 목록조회(검색, 정렬 기능 포함)
     public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto,
-            @RequestParam(required = false, value = "search") String search) {
+            @RequestParam(required = false, value = "search") String search, @RequestParam(required = false, value = "sort") String sort) {
         PageResponseDto<BuyDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
-        if (search == null || search.isEmpty()) {
+        if (search == null && sort == null) {   //페이지 클릭 시
             result = buyService.list(pageRequestDto);
-        } else {
+        } else if(search != null && sort == null){  //검색만 할 경우
             result = buyService.searchList(pageRequestDto, search);
-        }
+        } else if(search == null && sort != null){  //정렬만 할 경우
+            result = buyService.sortList(pageRequestDto, sort);
+        } else if(search != null && sort != null){    //검색&&정렬 둘다
+            result = buyService.searchSortList(pageRequestDto, search, sort);
+        } 
         return result;
-    }
-
-    @GetMapping("/sort") // 선택된 정렬순으로 조회
-    public PageResponseDto<BuyDto> sort(PageRequestDto pageRequestDto, @PathVariable(value = "sort") String sort) {
-        if (sort == null) {
-            return buyService.list(pageRequestDto);
-        } else {
-            return buyService.sortList(pageRequestDto, sort);
-        }
     }
 
     @GetMapping("/read/{buyNo}") // 상세조회

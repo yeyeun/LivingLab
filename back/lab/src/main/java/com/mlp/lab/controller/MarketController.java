@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
@@ -33,9 +34,15 @@ public class MarketController {
     private final MarketService marketService;
     private final CustomFileUtil fileUtil;
 
-    @GetMapping("/list")
-    public PageResponseDto<MarketDto> List(PageRequestDto pageRequestDto){
-        return marketService.list(pageRequestDto);
+    @GetMapping("/list")    // 목록조회(검색기능 포함)
+    public PageResponseDto<MarketDto> List(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "search") String search){
+        PageResponseDto<MarketDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
+        if (search == null || search.isEmpty()) {
+            result = marketService.list(pageRequestDto);
+        } else {
+            result = marketService.searchList(pageRequestDto, search);
+        }
+        return result;
     }
 
      @GetMapping("/read/{marketNo}") // 상세조회
