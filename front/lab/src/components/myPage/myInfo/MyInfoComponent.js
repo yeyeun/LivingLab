@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getUser } from '../../api/userApi';
+import { getUser } from '../../../api/userApi';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import Profile_Img from '../../resources/images/profile_img.png';
+import Profile_Img from '../../../resources/images/profile_img.png';
 
 const initState = {
   id: 0,
