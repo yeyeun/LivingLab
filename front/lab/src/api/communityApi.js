@@ -9,9 +9,9 @@ export const postAddTip = async(tip) => {
     return res.data;
 }
 
-export const getListTip = async(pageParam) => {
+export const getListTip = async(pageParam, search) => {
     const {page, size} = pageParam
-    const res =await axios.get(`${prefix}/tip/list`, {params:{page:page, size:size}})
+    const res =await axios.get(`${prefix}/tip/list`, {params:{page:page, size:size, search: search}})
     return res.data
 }
 
