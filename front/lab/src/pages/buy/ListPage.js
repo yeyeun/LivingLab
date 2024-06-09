@@ -6,10 +6,10 @@ import SearchComponent from '../../components/common/SearchComponent';
 import SelectComponent from '../../components/common/SelectComponent';
 
 const ListPage = () => {
-  const [search, setsearch] = useState('');
+  const [search, setSearch] = useState('');
 
   const handleSearch = (query) => {
-    setsearch(query);
+    setSearch(query);
   };
 
   return (

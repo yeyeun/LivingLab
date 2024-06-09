@@ -18,8 +18,7 @@ import com.mlp.lab.entity.BuyImage;
 import com.mlp.lab.repository.BuyRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
@@ -146,7 +145,7 @@ public class BuyService {
     public BuyDto read(int buyNo) { // 공동구매 조회
         Optional<Buy> result = buyRepository.findById(buyNo);
         Buy buy = result.orElseThrow();
-        BuyDto buyDto = buy.entityToDto(buy);
+        BuyDto buyDto = Buy.entityToDto(buy);
         return buyDto;
     }
 

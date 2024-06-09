@@ -1,9 +1,13 @@
 import React from 'react';
+import axios from 'axios';
+import { getUser, fetchUserProfileImage } from '../../api/userApi';
+import Profile_Img from '../../resources/images/profile_img.png';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Logo from '../../resources/images/logo1.png';
 import { logout } from '../../slices/loginSlice';
 import { useDispatch } from 'react-redux';
+import { useState, useCallback, useEffect } from 'react';
 import useCustomLogin from '../../hooks/useCustomLogin';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart, faComments, faMessage, faHouse, faFilePen, faRightToBracket, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
@@ -122,7 +126,7 @@ const Header = () => {
             </div>
           ) : (
             // 로그인 상태
-            <div>
+            <div className="relative flex items-center">
               <button
                 type="button"
                 className="border border-gray-700 bg-gray-700 text-white 
@@ -139,7 +143,6 @@ const Header = () => {
                   </div>
                 </Link>
               </button>
-
               <button
                 type="button"
                 className="border border-gray-700 bg-gray-700 text-white 
