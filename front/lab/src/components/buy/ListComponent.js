@@ -1,4 +1,3 @@
-import image from '../../resources/images/defaultImage.jpg';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
 import { useEffect, useState } from 'react';
@@ -21,7 +20,7 @@ const initState = {
 
 const host = API_SERVER_HOST;
 
-const ListComponent = ({ search }) => {
+const ListComponent = ({ search, sort }) => {
   const { page, size, moveToList, moveToRead } = useCustomMove();
   const [serverData, setServerData] = useState(initState);
 
@@ -32,7 +31,7 @@ const ListComponent = ({ search }) => {
   };
 
   useEffect(() => {
-    getList({ page, size }, search).then((data) => {
+    getList({ page, size }, search, sort).then((data) => {
       // 데이터에 모집 상태 추가
       const updatedData = {
         ...data,
@@ -44,7 +43,7 @@ const ListComponent = ({ search }) => {
       console.log(updatedData);
       setServerData(updatedData);
     });
-  }, [page, size, search]);
+  }, [page, size, search, sort]);
 
   return (
     <div>

@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.ResponseDto;
@@ -31,9 +32,15 @@ public class TeamController {
     private final TeamService teamService;
     private final CustomFileUtil fileUtil;
 
-    @GetMapping("/list")    // 목록조회
-    public PageResponseDto<TeamDto> List(PageRequestDto pageRequestDto){
-        return teamService.list(pageRequestDto);
+    @GetMapping("/list")    // 목록조회(검색기능 포함)
+    public PageResponseDto<TeamDto> List(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "search") String search){
+        PageResponseDto<TeamDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
+        if (search == null || search.isEmpty()) {
+            result = teamService.list(pageRequestDto);
+        } else {
+            result = teamService.searchList(pageRequestDto, search);
+        }
+        return result;
     }
 
     @GetMapping("/read/{teamNo}")   // 상세조회
