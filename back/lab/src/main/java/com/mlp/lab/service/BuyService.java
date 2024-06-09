@@ -94,25 +94,18 @@ public class BuyService {
                 Sort.by("buyNo").descending());
 
         Page<Object[]> result = buyRepository.selectList(pageable);
-
-        switch (sort) {
-            case "최신순":
-                result = buyRepository.newList(pageable);
-                break;
-
-            case "마감임박순":
-                result = buyRepository.deadLineList(pageable);
-                break;
-            // case "거리순":
-
-            // break;
-            // case "좋아요순":
-
-            // break;
-            default:
-                break;
+        if(sort.equals("최신순")){
+            result = buyRepository.newList(pageable);
         }
-
+        if(sort.equals("마감임박순")){
+            result = buyRepository.deadLineList(pageable);
+        }
+        // if(sort.equals("거리순")){
+        //     result = 
+        // }
+        // if(sort.equals("좋아요순")){
+        //     result = 
+        // }
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];
             BuyImage buyImage = (BuyImage) arr[1];
@@ -144,24 +137,18 @@ public class BuyService {
                 Sort.by("buyNo").descending());
 
         Page<Object[]> result = buyRepository.selectList(pageable);
-
-        switch (sort) {
-            case "최신순":
-                result = buyRepository.searchNewList(search, pageable);
-                break;
-
-            case "마감임박순":
-                result = buyRepository.searchDeadLineList(search, pageable);
-                break;
-            // case "거리순":
-
-            // break;
-            // case "좋아요순":
-
-            // break;
-            default:
-                break;
+        if(sort.equals("최신순")){
+            result = buyRepository.searchNewList(sort, pageable);
         }
+        if(sort.equals("마감임박순")){
+            result = buyRepository.searchDeadLineList(sort, pageable);
+        }
+        // if(sort.equals("거리순")){
+        //     result = 
+        // }
+        // if(sort.equals("좋아요순")){
+        //     result = 
+        // }
 
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];

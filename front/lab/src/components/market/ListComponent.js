@@ -20,7 +20,7 @@ const initState = {
 
 const host = API_SERVER_HOST
 
-const ListComponent = ({ search }) => {
+const ListComponent = ({ search, sort }) => {
     const { page, size, moveToList, moveToRead } = useCustomMove();
     const [serverData, setServerData] = useState(initState);
 
@@ -31,7 +31,7 @@ const ListComponent = ({ search }) => {
     };
 
     useEffect(() => {
-        getList({ page, size }, search).then(data => {
+        getList({ page, size }, search, sort).then(data => {
             const updatedData = {
                 ...data,
                 dtoList: data.dtoList.map((buy) => ({
@@ -42,10 +42,10 @@ const ListComponent = ({ search }) => {
             console.log(updatedData);
             setServerData(updatedData);
         })
-    }, [page, size, search]);
+    }, [page, size, search, sort]);
     return (
         <div>
-            {serverData.dtoList.map(market =>
+            {(serverData.dtoList).map(market =>
                 <div key={market.marketNo} className="w-full mb-4" onClick={() => moveToRead(market.marketNo)}>
                     <div className="flex flex-col justify-center items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                         <img className="object-cover w-full h-96 md:h-auto md:w-48 md:rounded-none" src={`${host}/api/market/display/${market.uploadFileNames[0]}`} alt="..." />
