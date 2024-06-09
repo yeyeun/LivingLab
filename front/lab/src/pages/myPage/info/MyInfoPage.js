@@ -1,4 +1,4 @@
-import MyInfoComponent from '../../../components/myPage/MyInfoComponent';
+import MyInfoComponent from '../../../components/myPage/myInfo/MyInfoComponent';
 import { useParams } from 'react-router-dom';
 
 const MyInfoPage = () => {

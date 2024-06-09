@@ -1,4 +1,4 @@
-import MyInfoModifyComponent from '../../../components/myPage/MyInfoModifyComponent';
+import MyInfoModifyComponent from '../../../components/myPage/myInfo/MyInfoModifyComponent';
 import { useParams } from 'react-router-dom';
 
 const MyInfoModifyPage = () => {

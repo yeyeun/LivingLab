@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import BasicLayout from '../../layouts/BasicLayout';
-import { getUser, fetchUserProfileImage } from '../../api/userApi';
+import { getUser } from '../../api/userApi';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 import Profile_Img from '../../resources/images/profile_img.png';
@@ -23,7 +23,6 @@ const IndexPage = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(initState);
-  const [profileImage, setProfileImage] = useState('');
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
 
   const ino = loginInfo.id;

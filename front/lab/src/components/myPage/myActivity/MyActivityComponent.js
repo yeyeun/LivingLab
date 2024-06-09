@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getUser } from '../../api/userApi';
+import { getUser } from '../../../api/userApi';
 import { Link } from 'react-router-dom';
 
 const initState = {
@@ -15,7 +15,7 @@ const initState = {
   addr: '',
 };
 
-const MyChatComponent = (props) => {
+const MyActivityComponent = (props) => {
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
 
@@ -34,13 +34,13 @@ const MyChatComponent = (props) => {
         <div className="flex flex-nowrap">
           <div className="mx-auto">
             <Link to={'/buy'} className="main-headline">
-              공동구매
+              <div className="mb-3">공동구매</div>
               <div className="myPage-box"></div>
             </Link>
           </div>
           <div className="mx-auto">
             <Link to={'/team'} className="main-headline">
-              동네모임
+              <div className="mb-3">동네모임</div>
               <div className="myPage-box"></div>
             </Link>
           </div>
@@ -49,13 +49,13 @@ const MyChatComponent = (props) => {
         <div className="flex flex-nowrap">
           <div className="mx-auto">
             <Link to={'/market'} className="main-headline">
-              동네장터
+              <div className="mb-3">동네장터</div>
               <div className="myPage-box"></div>
             </Link>
           </div>
           <div className="mx-auto">
             <Link to={'/shareRoom'} className="main-headline">
-              자취방쉐어
+              <div className="mb-3">자취방쉐어</div>
               <div className="myPage-box"></div>
             </Link>
           </div>
@@ -64,13 +64,13 @@ const MyChatComponent = (props) => {
         <div className="flex flex-nowrap">
           <div className="mx-auto">
             <Link to={'/community'} className="main-headline">
-              커뮤니티
+              <div className="mb-3">커뮤니티</div>
               <div className="myPage-box"></div>
             </Link>
           </div>
           <div className="mx-auto">
             <Link to={'/comment'} className="main-headline">
-              댓글 모음
+              <div className="mb-3">댓글 모음</div>
               <div className="myPage-box"></div>
             </Link>
           </div>
@@ -79,13 +79,13 @@ const MyChatComponent = (props) => {
         <div className="flex flex-nowrap">
           <div className="mx-auto">
             <Link to={'/like'} className="main-headline">
-              좋아요 모음
+              <div className="mb-3">좋아요 모음</div>
               <div className="myPage-box"></div>
             </Link>
           </div>
           <div className="mx-auto">
             <Link to={'/bookmark'} className="main-headline">
-              즐겨찾기 모음
+              <div className="mb-3">즐겨찾기 모음</div>
               <div className="myPage-box"></div>
             </Link>
           </div>
@@ -94,4 +94,4 @@ const MyChatComponent = (props) => {
     </div>
   );
 };
-export default MyChatComponent;
+export default MyActivityComponent;
