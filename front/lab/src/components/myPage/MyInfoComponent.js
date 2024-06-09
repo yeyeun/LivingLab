@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
+import axios from 'axios';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getUser } from '../../api/userApi';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import Profile_Img from '../../resources/images/profile_img.png';
 
 const initState = {
   id: 0,
@@ -14,21 +17,46 @@ const initState = {
   pwdCheck: '',
   addr: '',
   detailAddr: '',
+  profileImage: '',
 };
 
 const MyInfoComponent = ({ id }) => {
+  const location = useLocation(); // 회원정보 수정에서 넘어온 상태값
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
-
   const ino = loginInfo.id;
 
   useEffect(() => {
     getUser(ino).then((data) => {
-      //console.log('계정의 id값 : ' + ino);
-      //console.log(data);
+      fetchUserProfileImage(data.email);
       setUser(data);
     });
   }, [ino]);
+
+  //프로필 사진 읽어오는 함수
+  const fetchUserProfileImage = async (email) => {
+    try {
+      const res = await axios.get(`http://localhost:8282/api/user/userProfileImage?email=${email}`, {
+        responseType: 'arraybuffer', // 바이너리 데이터로 응답받기
+      });
+
+      // 받은 바이너리 데이터 처리
+      const blob = new Blob([res.data], { type: 'image/png' });
+      const imageUrl = URL.createObjectURL(blob);
+      setUser((prev) => ({
+        ...prev, // 이전 상태를 복사해야 이미지 삭제하고 다시 변경했을 대 바로 적용됨
+        profileImage: imageUrl, // 이미지 데이터 추가
+      }));
+      console.log('프로필 사진 읽기 최종 성공');
+    } catch (error) {
+      console.error('프로필 이미지가 없습니다', error);
+      // 오류가 발생하면 대체 이미지를 사용하도록 설정
+      setUser((prev) => ({
+        ...prev,
+        profileImage: Profile_Img,
+      }));
+    }
+  };
 
   return (
     <div>
@@ -43,6 +71,12 @@ const MyInfoComponent = ({ id }) => {
       </div>
 
       <div className="p-4 bg-gray-50">
+        <div className="flex justify-center">
+          <div className="w-1/3 p-3 text-left font-bold">프로필 사진</div>
+          <div className="relative mb-4 flex w-full items-stretch">
+            <img src={user.profileImage ? user.profileImage : Profile_Img} alt="프로필이미지" className="rounded-full size-40 mx-auto" />
+          </div>
+        </div>
         <div className="flex justify-center">
           <div className="w-1/3 p-3 text-left font-bold">아이디</div>
           <div className="relative mb-4 flex w-full items-stretch">
