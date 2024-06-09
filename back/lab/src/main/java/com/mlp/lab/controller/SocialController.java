@@ -49,20 +49,5 @@ public class SocialController {
     return claims;
   }
 
-  @PutMapping("/api/user/modify")
-  public Map<String, String> modifyUser(@RequestBody UserDto userDto) {
-    log.info("---------------------userInfo modify-------------------");
-
-    userService.modifyUserInfo(userDto);
-
-    return Map.of("result", "userInfo modified");
-  }
-
-  // 회원정보 조회
-  // @GetMapping("/api/user/{id}")
-  // public UserDto get(@PathVariable(name = "id") Long id) {
-  // return userService.get(id);
-  // }
-
 }
 // JSON 데이터 받으려면 @RequestBody 사용

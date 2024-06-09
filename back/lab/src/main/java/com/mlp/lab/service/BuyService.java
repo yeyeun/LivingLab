@@ -183,7 +183,7 @@ public class BuyService {
     public BuyDto read(int buyNo) {
         Optional<Buy> result = buyRepository.findById(buyNo);
         Buy buy = result.orElseThrow();
-        BuyDto buyDto = buy.entityToDto(buy);
+        BuyDto buyDto = Buy.entityToDto(buy);
         return buyDto;
     }
 
