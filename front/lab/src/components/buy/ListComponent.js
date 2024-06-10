@@ -21,7 +21,7 @@ const initState = {
 const host = API_SERVER_HOST;
 
 const ListComponent = ({ search, sort }) => {
-  const { page, size, moveToList, moveToRead } = useCustomMove();
+  const { page, size, moveToList, moveToRead, moveToAdd } = useCustomMove();
   const [serverData, setServerData] = useState(initState);
 
   const checkDeadline = (deadline) => {
@@ -47,6 +47,7 @@ const ListComponent = ({ search, sort }) => {
 
   return (
     <div>
+      <button onClick={() => moveToAdd()}>글 작성</button>
       {serverData.dtoList.map((buy) => (
         <div key={buy.buyNo} className="w-full mb-4" onClick={() => moveToRead(buy.buyNo)}>
           <div className="flex flex-col justify-center items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
