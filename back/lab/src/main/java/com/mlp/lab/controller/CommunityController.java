@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
@@ -21,7 +23,6 @@ import com.mlp.lab.util.CustomFileUtilCommunity;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
 
 @Log4j2
 @RestController
@@ -33,46 +34,50 @@ public class CommunityController {
 
     // 목록조회
     @GetMapping("/tip/list")
-    public PageResponseDto<CommunityDto> ListTip(PageRequestDto pageRequestDto) {
-        return communityService.listTip(pageRequestDto);
+    public PageResponseDto<CommunityDto> ListTip(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search) {
+        return communityService.listTip(pageRequestDto, search);
     }
 
     @GetMapping("/qna/list")
-    public PageResponseDto<CommunityDto> ListQna(PageRequestDto pageRequestDto) {
-        return communityService.listQna(pageRequestDto);
+    public PageResponseDto<CommunityDto> ListQna(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search) {
+        return communityService.listQna(pageRequestDto, search);
     }
 
     @GetMapping("/review/list")
-    public PageResponseDto<CommunityDto> ListReview(PageRequestDto pageRequestDto) {
-        return communityService.listReview(pageRequestDto);
+    public PageResponseDto<CommunityDto> ListReview(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search) {
+        return communityService.listReview(pageRequestDto, search);
     }
 
     @GetMapping("/help/list")
-    public PageResponseDto<CommunityDto> ListHelp(PageRequestDto pageRequestDto) {
-        return communityService.listHelp(pageRequestDto);
+    public PageResponseDto<CommunityDto> ListHelp(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search) {
+        return communityService.listHelp(pageRequestDto, search);
     }
-    
+
     // 상세조회
-    @GetMapping(value={"/tip/read/{commNo}","/qna/read/{commNo}","/review/read/{commNo}","/help/read/{commNo}"})
+    @GetMapping(value = { "/tip/read/{commNo}", "/qna/read/{commNo}", "/review/read/{commNo}", "/help/read/{commNo}" })
     public CommunityDto read(@PathVariable(name = "commNo") int commNo) {
         return communityService.read(commNo);
     }
 
     // 사진조회
-    @GetMapping(value={"/tip/display/{fileName}","/qna/display/{fileName}","/review/display/{fileName}","/help/display/{fileName}"})
+    @GetMapping(value = { "/tip/display/{fileName}", "/qna/display/{fileName}", "/review/display/{fileName}",
+            "/help/display/{fileName}" })
     public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);
     }
 
-    // 글 작성 (이미지 포함)
-    @PostMapping(value={"/tip/add","/qna/add","/review/add","/help/add"})
+    // 글 작성(이미지 포함)
+    @PostMapping(value = { "/tip/add", "/qna/add", "/review/add", "/help/add" })
     public void add(CommunityDto communityDto) {
         List<MultipartFile> files = communityDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
-        if(uploadFileNames == null || uploadFileNames.isEmpty()){
+        if (uploadFileNames == null || uploadFileNames.isEmpty()) {
             communityDto.setFlag(false);
-        }
-        else{
+        } else {
             communityDto.setFlag(true);
         }
         communityDto.setUploadFileNames(uploadFileNames);
@@ -127,5 +132,4 @@ public class CommunityController {
         }
     }
 
-    
 }
