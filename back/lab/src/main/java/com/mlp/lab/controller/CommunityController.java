@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -81,14 +82,12 @@ public class CommunityController {
             communityDto.setFlag(true);
         }
         communityDto.setUploadFileNames(uploadFileNames);
-        log.info("===========community add : " + communityDto);
         communityService.add(communityDto);
     }
 
     // 글 수정 (이미지 포함)
     @PutMapping(value={"/tip/modify/{commNo}","/qna/modify/{commNo}","/review/modify/{commNo}","/help/modify/{commNo}"})
     public void modify(@PathVariable(name = "commNo") Long commNo, CommunityDto communityDto) {
-        log.info("========DTO" + communityDto);
         communityDto.setCommNo(commNo);
         CommunityDto oldDto = communityService.read(commNo.intValue());
 
@@ -112,11 +111,9 @@ public class CommunityController {
 
         // 이미지 여부에 따라 flag 설정
         if ((uploadedFileNames == null || uploadedFileNames.isEmpty()) && (files == null || files.isEmpty())) {
-            log.info("이미지 없음========");
             communityDto.setFlag(false);
         }
         else{
-            log.info("이미지 있음========");
             communityDto.setFlag(true);
         }
 
@@ -130,6 +127,16 @@ public class CommunityController {
             // 파일 삭제
             fileUtil.deleteFiles(removeFiles);
         }
+    }
+
+    // 글 삭제 (이미지 포함)
+    @DeleteMapping(value={"/tip/delete/{commNo}","/qna/delete/{commNo}","/review/delete/{commNo}","/help/delete/{commNo}"})
+    public void delete(@PathVariable(name = "commNo") int commNo) {
+        List<String> uploadFileNames = communityService.read(commNo).getUploadFileNames();
+        if(uploadFileNames != null && uploadFileNames.size()>0){
+            fileUtil.deleteFiles(uploadFileNames);
+        }
+        communityService.delete(commNo);
     }
 
 }
