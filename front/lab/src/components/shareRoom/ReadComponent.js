@@ -1,25 +1,39 @@
 import image from '../../resources/images/room.jpg';
 import React,{ useEffect, useState } from "react"
-import { getOne } from "../../api/shareRoomApi"
+import { getOne,deleteOne } from "../../api/shareRoomApi"
+import useRoomCustomMove from "../../hooks/useRoomCustomMove"
 
 const initState = {
     roomNo: 0,
     title: '',
-    monthlyRent: 0,
+    rentFee: 0,
     parking: '',
     option1: '',
-    location: ''
+    location: '',
+    uploadFileNames: []
 }
 
 const ReadComponent = ({roomNo}) => {
-    const [shareRoom, setShareRoom] = useState(initState)
-    
+    const [shareRoom , setShareRoom] = useState(initState)
+    const { moveToModify , moveToList } = useRoomCustomMove()
+    const [result, setResult] = useState(null)
+
     useEffect(() => {
         getOne(roomNo).then(data => {
             console.log(data)
             setShareRoom(data)
         })
     }, [roomNo])
+    
+    const handleClickDelete = () => {
+    
+        deleteOne(roomNo).then(result => {
+        console.log("delete result : " +result)
+        setResult('Deleted')
+        moveToList()
+        })
+
+    }
 
     return(
         <div class="flex flex-col w-3/4 gap-5 p-2 mx-auto bg-white shadow-lg select-none sm:p-4 sm:h-96 rounded-2xl sm:flex-row ">            
@@ -34,7 +48,7 @@ const ReadComponent = ({roomNo}) => {
                                 <div class="pt-6 pb-3 pl-2 flex">
                                     <div class="font-bold text-gray-900 flex-none text-lg">월세</div>
                                     <div class="grow"></div>
-                                    <div class="text-gray-700 sm:col-span-2 flex-none">{shareRoom.monthlyRent}</div>
+                                    <div class="text-gray-700 sm:col-span-2 flex-none">{shareRoom.rentFee}</div>
                                 </div>
                                 <div class="py-3 pl-2 flex">
                                     <div class="font-bold text-gray-900 flex-none text-lg">주차</div>
@@ -58,6 +72,14 @@ const ReadComponent = ({roomNo}) => {
                         <div class="w-20 h-8 ml-auto bg-gray-200 rounded-full">
                             문의하기
                         </div>
+                    </div>
+                    <div className="flex justify-end p-4">
+                        <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-gray-400" onClick={() => moveToModify(roomNo)}>
+                            Modify
+                        </button>
+                        <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-red-400" onClick={handleClickDelete}>
+                            Delete
+                        </button>
                     </div>
                 </div>
             </div>

@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.mlp.lab.dto.PageRequestDto;
-import com.mlp.lab.dto.PageResponseDto;
+import com.mlp.lab.dto.RoomPageRequestDto;
+import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.dto.ShareRoomDto;
 import com.mlp.lab.entity.ShareRoom;
 
@@ -25,10 +25,10 @@ public class ShareRoomService {
     private final ModelMapper modelMapper;
     private final ShareRoomRepository shareRoomRepository;
 
-    public PageResponseDto<ShareRoomDto> list(PageRequestDto pageRequestDto){
+    public RoomPageResponseDto<ShareRoomDto> list(RoomPageRequestDto roomPageRequestDto){
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
+            roomPageRequestDto.getPage()-1,
+            roomPageRequestDto.getSize(),
             Sort.by("roomNo").descending());
          
         Page<ShareRoom> result = shareRoomRepository.findAll(pageable);
@@ -37,12 +37,17 @@ public class ShareRoomService {
             .collect(Collectors.toList());     
             
         long totalCount = result.getTotalElements();
-        PageResponseDto<ShareRoomDto> responseDTO = PageResponseDto.<ShareRoomDto>withAll()
+        RoomPageResponseDto<ShareRoomDto> responseDTO = RoomPageResponseDto.<ShareRoomDto>withAll()
             .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
+            .roomPageRequestDto(roomPageRequestDto)
             .totalCount(totalCount)
             .build();
         return responseDTO;
+    }
+
+    public void add(ShareRoomDto shareRoomDto) { // 룸쉐어 등록(이미지 포함)
+        ShareRoom shareRoom = ShareRoom.DtoToEntity(shareRoomDto);
+        shareRoomRepository.save(shareRoom);
     }
 
     public ShareRoomDto get(Integer roomNo){
@@ -50,5 +55,35 @@ public class ShareRoomService {
         ShareRoom shareRoom = result.orElseThrow();
         ShareRoomDto shareRoomDto = modelMapper.map(shareRoom, ShareRoomDto.class);
         return shareRoomDto;
+    }
+
+    public void remove(Integer roomNo){
+        shareRoomRepository.deleteById(roomNo);
+    }
+
+    public void modify(ShareRoomDto shareRoomDto) { //수정하기
+        // 조회
+        Optional<ShareRoom> result = shareRoomRepository.findById(shareRoomDto.getRoomNo().intValue());
+        ShareRoom shareRoom = result.orElseThrow();
+
+        // 수정
+        shareRoom.setTitle(shareRoomDto.getTitle());
+        shareRoom.setContent(shareRoomDto.getContent());
+        shareRoom.setRentFee(shareRoomDto.getRentFee());
+        shareRoom.setParking(shareRoomDto.getParking());
+        shareRoom.setLocation(shareRoomDto.getLocation());
+        shareRoom.setRentStartDate(shareRoomDto.getRentStartDate());
+        shareRoom.setRentEndDate(shareRoomDto.getRentEndDate());
+        shareRoom.setOption1(shareRoomDto.getOption1());
+
+        // 파일들 삭제
+        shareRoom.clearList();
+        List<String> uploadFileNames = shareRoomDto.getUploadFileNames();
+        if (uploadFileNames != null && uploadFileNames.size() > 0) {
+            uploadFileNames.stream().forEach(uploadName -> {
+                shareRoom.addImageString(uploadName);
+            });
+        }
+        shareRoomRepository.save(shareRoom);
     }
 }
