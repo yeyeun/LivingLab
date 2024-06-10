@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +49,11 @@ public class ShareRoomController {
     @GetMapping("/read/{roomNo}")
     public ShareRoomDto read(@PathVariable(name = "roomNo") Integer roomNo) {
         return shareRoomService.get(roomNo);
+    }
+
+    @GetMapping("/display/{fileName}") // 이미지 출력
+    public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
+        return fileUtil.getFile(fileName);
     }
 
     @PostMapping("/add") // 작성(이미지 포함)
