@@ -1,7 +1,7 @@
 import image from '../../resources/images/room.jpg';
 import React,{ useEffect, useState } from "react"
 import { getOne,deleteOne } from "../../api/shareRoomApi"
-import useCustomMove from "../../hooks/useCustomMove"
+import useRoomCustomMove from "../../hooks/useRoomCustomMove"
 
 const initState = {
     roomNo: 0,
@@ -9,14 +9,13 @@ const initState = {
     rentFee: 0,
     parking: '',
     option1: '',
-    location: ''
+    location: '',
+    uploadFileNames: []
 }
 
-
-
 const ReadComponent = ({roomNo}) => {
-    const [shareRoom, setShareRoom] = useState(initState)
-    const { moveToModify,moveToList } = useCustomMove()
+    const [shareRoom , setShareRoom] = useState(initState)
+    const { moveToModify , moveToList } = useRoomCustomMove()
     const [result, setResult] = useState(null)
 
     useEffect(() => {
@@ -33,6 +32,7 @@ const ReadComponent = ({roomNo}) => {
         setResult('Deleted')
         moveToList()
         })
+
     }
 
     return(

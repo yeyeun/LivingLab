@@ -51,14 +51,17 @@ public class ShareRoomController {
 
     @PostMapping("/add") // 작성(이미지 포함)
     public void add(ShareRoomDto shareRoomDto) {
-        log.info("add : " + shareRoomDto);
-        log.info("add : " + shareRoomDto);
-        log.info("add : " + shareRoomDto);
         List<MultipartFile> files = shareRoomDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
+        if(uploadFileNames == null || uploadFileNames.isEmpty()){
+            shareRoomDto.setFlag(false);
+        }
+        else{
+            shareRoomDto.setFlag(true);
+        }
         shareRoomDto.setUploadFileNames(uploadFileNames);
+        log.info("===========community add : " + shareRoomDto);
         shareRoomService.add(shareRoomDto);
-
     }
 
     @PutMapping("/modify/{roomNo}")

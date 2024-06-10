@@ -41,6 +41,7 @@ public class ShareRoom {
     private String roomImage;
     private String rentStartDate;
     private String rentEndDate;
+    private boolean flag;
 
     @ElementCollection
     @Builder.Default

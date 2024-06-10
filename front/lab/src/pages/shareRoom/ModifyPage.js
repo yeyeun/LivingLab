@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
-import AddComponent from '../../components/shareRoom/AddComponent';
+import ModifyComponent from '../../components/shareRoom/ModifyComponent';
 
 const ModifyPage = () => {
   return (
-    <AddComponent/>
+    <ModifyComponent/>
   );
 };
 

@@ -35,6 +35,7 @@ const useRoomCustomMove = () => {
 
   const moveToModify = (num) => {
     console.log(queryDefault);
+    console.log("what is num"+num);
     navigate({ pathname: `../modify/${num}`, search: queryDefault }); // 수정시에 기존의 쿼리문자열을 유지하기 위해
   };
 
@@ -43,7 +44,12 @@ const useRoomCustomMove = () => {
     navigate({ pathname: `../read/${num}`, search: queryDefault });
   };
 
-  return { moveToList, moveToModify, moveToRead, page, size };
+  const moveToAdd = () => {
+    console.log(queryDefault);
+    navigate({ pathname: `../add`, search: queryDefault });
+  }
+
+  return { moveToList, moveToModify, moveToRead, moveToAdd, page, size };
 };
 export default useRoomCustomMove;
 // 네비게이션 관련 커스텀 훅

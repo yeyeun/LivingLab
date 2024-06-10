@@ -77,7 +77,7 @@ const Header = () => {
         </div>
         {/* right section */}
         <div className="relative flex items-center">
-          {!loginState.email ? (
+          {!loginState.nickname ? (
             // 비로그인 상태
             <div>
               <button

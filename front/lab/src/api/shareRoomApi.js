@@ -15,6 +15,12 @@ export const getOne = async (roomNo) => {
   return res.data;
 }
 
+export const modify = async(roomNo) => {
+  const header = {headers:{"Content-Type":"multipart/form-data"}};
+  const res = await axios.post(`${prefix}/add/${roomNo}`, header);
+  return res.data;
+}
+
 export const postAdd = async (shareRoom) => {
     const header = { headers: { "Content-Type": "multipart/form-data" } };
     const res = await axios.post(`${prefix}/add`, shareRoom, header);
@@ -23,7 +29,6 @@ export const postAdd = async (shareRoom) => {
 
 export const deleteOne = async (roomNo) => {
   const res =await axios.delete(`${prefix}/${roomNo}`)
-  //const res = await axios.delete(`${prefix}/${tno}` )
   console.log('deleting ', res.data)
   return res.data
 

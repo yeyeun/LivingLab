@@ -1,7 +1,7 @@
 import image from '../../resources/images/room.jpg';
 import { useEffect, useState } from "react";
 import { getList } from "../../api/shareRoomApi"
-import useCustomMove from "../../hooks/useCustomMove";
+import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PageComponent from "../common/PageComponent";
 import SearchComponent from '../../components/common/SearchComponent';
 
@@ -22,7 +22,7 @@ const initState = {
 }
 
 const ListComponent = () => {
-  const { page, size, moveToList, moveToRead ,moveToAdd} = useCustomMove();
+  const { page , size , moveToList , moveToRead , moveToAdd } = useRoomCustomMove();
   const [serverData, setServerData] = useState(initState);
   useEffect(() => {
     getList({ page, size }).then(data => {

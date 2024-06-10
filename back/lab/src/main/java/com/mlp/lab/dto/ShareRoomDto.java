@@ -31,6 +31,7 @@ public class ShareRoomDto { // 화면에서 받을 데이터
     private String roomImage;
     private String rentStartDate;
     private String rentEndDate;
+    private boolean flag;
 
     @Builder.Default
     private List<MultipartFile> files = new ArrayList<>(); 
