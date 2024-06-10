@@ -37,11 +37,8 @@ const ListComponent = () => {
       <div className='h-1/2 items-center'>
         <SearchComponent />
       </div>
-      {/* <div className='pl-12'>  
-      <SelectComponent/>
-    </div>   */}
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 py-10 max-w-7xl items-center mx-auto">
-        {serverData.dtoList.map((shareRoom) =>
+        {serverData.dtoList.map((shareRoom) =>(
           <div class="mx-12 overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-60 md:w-80">
             <div className="block w-full h-full" onClick={() => moveToRead(shareRoom.roomNo)}>
               <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} class="object-cover w-full max-h-40" />
@@ -57,7 +54,7 @@ const ListComponent = () => {
               </div>
             </div>
           </div>
-        )}
+        ))}
         <div className="flex justify-end p-4">
           <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-gray-400" onClick={() => moveToAdd()}>
             Add

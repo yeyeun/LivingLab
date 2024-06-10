@@ -80,6 +80,7 @@ const AddComponent = () => {
         formData.append("content", shareRoom.content);
         formData.append("rentFee", shareRoom.rentFee);
         formData.append("parking", shareRoom.parking);
+        formData.append("location", shareRoom.location);
         formData.append("option1", shareRoom.option1);
 
         postAdd(formData);
@@ -111,6 +112,34 @@ const AddComponent = () => {
                     <div className="w-1/5 p-6 text-right font-bold">content</div>
                     <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
                         name="content" type={'text'} value={shareRoom.content} onChange={handleChangeShareRoom}></input>
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="w-1/5 p-6 text-right font-bold">rentFee</div>
+                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+                        name="rentFee" type={'number'} value={shareRoom.rentFee} onChange={handleChangeShareRoom}></input>
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="w-1/5 p-6 text-right font-bold">parking</div>
+                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+                        name="parking" type={'text'} value={shareRoom.parking} onChange={handleChangeShareRoom}></input>
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="w-1/5 p-6 text-right font-bold">option1</div>
+                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+                        name="option1" type={'text'} value={shareRoom.option1} onChange={handleChangeShareRoom}></input>
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="w-1/5 p-6 text-right font-bold">location</div>
+                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+                        name="location" type={'text'} value={shareRoom.location} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
             <div className="flex justify-center">
