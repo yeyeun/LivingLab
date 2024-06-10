@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,6 @@ import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
-import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.service.CommunityService;
 import com.mlp.lab.util.CustomFileUtilCommunity;
 
@@ -82,31 +82,41 @@ public class CommunityController {
             communityDto.setFlag(true);
         }
         communityDto.setUploadFileNames(uploadFileNames);
-        log.info("===========community add : " + communityDto);
         communityService.add(communityDto);
     }
 
-    @PutMapping(value = { "/tip/modify/{commNo}", "/qna/modify/{commNo}", "/review/modify/{commNo}",
-            "/help/modify/{commNo}" }) // 수정
-    public ResponseDto<CommunityDto> modify(@PathVariable(name = "commNo") Long commNo, CommunityDto communityDto) {
+    // 글 수정 (이미지 포함)
+    @PutMapping(value={"/tip/modify/{commNo}","/qna/modify/{commNo}","/review/modify/{commNo}","/help/modify/{commNo}"})
+    public void modify(@PathVariable(name = "commNo") Long commNo, CommunityDto communityDto) {
         communityDto.setCommNo(commNo);
         CommunityDto oldDto = communityService.read(commNo.intValue());
+
         // 기존 파일들(데이터베이스에 저장된 파일 이름)
-
         List<String> oldFileNames = oldDto.getUploadFileNames();
+
         // 새로 업로드해야 하는 파일들
-
         List<MultipartFile> files = communityDto.getFiles();
+
         // 새로 업로드된 파일 이름들
-
         List<String> newUploadFileNames = fileUtil.saveFiles(files);
-        // 변화가 없이 유지되는 파일들
 
+        // 수정된 기존 파일들 (DB에 저장된 파일 이름과 동일한지, 삭제된게 있는지 확인해야함)
         List<String> uploadedFileNames = communityDto.getUploadFileNames();
+        
         // 유지되는 파일들 + 새로 업로드된 파일 이름들이 저장해야하는 파일 목록
         if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
             uploadedFileNames.addAll(newUploadFileNames);
         }
+
+
+        // 이미지 여부에 따라 flag 설정
+        if ((uploadedFileNames == null || uploadedFileNames.isEmpty()) && (files == null || files.isEmpty())) {
+            communityDto.setFlag(false);
+        }
+        else{
+            communityDto.setFlag(true);
+        }
+
 
         communityService.modify(communityDto);
 
@@ -117,7 +127,16 @@ public class CommunityController {
             // 파일 삭제
             fileUtil.deleteFiles(removeFiles);
         }
-        return ResponseDto.setSuccessData("수정되었습니다.", communityDto);
+    }
+
+    // 글 삭제 (이미지 포함)
+    @DeleteMapping(value={"/tip/delete/{commNo}","/qna/delete/{commNo}","/review/delete/{commNo}","/help/delete/{commNo}"})
+    public void delete(@PathVariable(name = "commNo") int commNo) {
+        List<String> uploadFileNames = communityService.read(commNo).getUploadFileNames();
+        if(uploadFileNames != null && uploadFileNames.size()>0){
+            fileUtil.deleteFiles(uploadFileNames);
+        }
+        communityService.delete(commNo);
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
@@ -142,6 +143,7 @@ public class CommunityService {
         community.setTitle(communityDto.getTitle());
         community.setContent(communityDto.getContent());
         community.setCommCategory(communityDto.getCommCategory());
+        community.setFlag(communityDto.isFlag());
 
         // 파일들 삭제
         community.clearList();
@@ -152,6 +154,11 @@ public class CommunityService {
             });
         }
         communityRepository.save(community);
+    }
+
+    @Transactional //DB 작업이 성공적으로 완료될때만 실제 DB에 반영
+    public void delete(int commNo) {
+        communityRepository.deleteById(commNo);
     }
 
 }

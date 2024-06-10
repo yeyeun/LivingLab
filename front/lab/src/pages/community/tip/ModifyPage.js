@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import ModifyComponenet from "../../../components/community/tip/ModifyComponenet";
+import ModifyComponent from "../../../components/community/tip/ModifyComponent";
 
 const ModifyPage = () => {
   const {commNo} = useParams();
@@ -11,7 +11,7 @@ const ModifyPage = () => {
             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
               <div className="overflow-hidden">
                 <div className="text-xl font-semibold pl-2 my-2 border-l-4 border-teal-300">자취 TIP 공유</div>
-                <ModifyComponenet commNo={commNo}/>
+                <ModifyComponent commNo={commNo}/>
               </div>
             </div>
           </div>
