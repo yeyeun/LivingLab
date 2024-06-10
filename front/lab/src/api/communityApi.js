@@ -27,7 +27,7 @@ export const modifyTip = async(commNo, tip) => {
 }
 
 export const deleteTip = async(commNo) => {
-    const res = await axios.get(`${prefix}/tip/delete/${commNo}`);
+    const res = await axios.delete(`${prefix}/tip/delete/${commNo}`);
     return res.data;
 }
 
