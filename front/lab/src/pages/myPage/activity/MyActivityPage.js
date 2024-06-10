@@ -1,4 +1,4 @@
-import MyActivityComponent from '../../../components/myPage/MyActivityComponent';
+import MyActivityComponent from '../../../components/myPage/myActivity/MyActivityComponent';
 import { useParams } from 'react-router-dom';
 
 const MyActivityPage = () => {

@@ -22,16 +22,21 @@ const initState = {
 const ListComponent = () => {
   const {page, size, moveToList, moveToRead} = useCustomQna();
   const [serverData, setServerData] = useState(initState);
+  const [search, setSearch] = useState('');
   useEffect(()=>{
-    getListQna({page,size}).then(data=>{
+    getListQna({page,size}, search).then(data=>{
           console.log(data);
           setServerData(data);
       })
-  }, [page,size]);
+  }, [page,size, search]);
 
+  const handleSearch = (query) => {
+    setSearch(query);
+  };
+  
     return(
       <>
-      <SearchComponent/>
+      <SearchComponent onSearch={handleSearch}/>
       <table className="min-w-full text-center text-lg font-light text-surface dark:text-white">
         <thead className="text-base border-b-2 border-neutral-500 font-semibold dark:border-white/10">
           <tr>

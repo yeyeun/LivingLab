@@ -22,12 +22,13 @@ const initState = {
 const ListComponent = () => {
   const {page, size, moveToList, moveToRead} = useCustomReview();
   const [serverData, setServerData] = useState(initState);
+  const [search, setSearch] = useState('');
   useEffect(()=>{
-    getListReview({page,size}).then(data=>{
+    getListReview({page,size}, search).then(data=>{
           console.log(data);
           setServerData(data);
       })
-  }, [page,size]);
+  }, [page,size, search]);
 
     return(
       <>

@@ -1,13 +1,13 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { modifyUser, getUser } from '../../api/userApi';
+import { modifyUser, getUser } from '../../../api/userApi';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Profile_Img from '../../resources/images/profile_img.png';
+import Profile_Img from '../../../resources/images/profile_img.png';
 import { Link } from 'react-router-dom';
 //import useCustomMove from '../../hooks/useCustomMove';
 //import useCustomLogin from '../../hooks/useCustomLogin';
-import PostComponent from '../common/PostComponent';
+import PostComponent from '../../common/PostComponent';
 
 const initState = {
   id: '',

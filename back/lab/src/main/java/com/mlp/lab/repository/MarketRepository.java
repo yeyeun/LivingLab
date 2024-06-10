@@ -23,4 +23,12 @@ public interface MarketRepository extends JpaRepository<Market,Integer>{
     // 마감임박순
     @Query("select m, mi from Market m left join m.imageList mi where mi.ord = 0 and m.flag = false order by m.deadline asc")
     Page<Object[]> deadLineList(Pageable pageable);
+
+    // 검색 + 최신순
+    @Query("select m, mi from Market m left join m.imageList mi where mi.ord = 0 and m.flag = false and m.title like %:title% order by m.createdDate desc")
+    Page<Object[]> searchNewList(String title, Pageable pageable);
+
+    // 검색 + 마감임박순
+    @Query("select m, mi from Market m left join m.imageList mi where mi.ord = 0 and m.flag = false and m.title like %:title% order by m.deadline asc")
+    Page<Object[]> searchDeadLineList(String title, Pageable pageable);
 }

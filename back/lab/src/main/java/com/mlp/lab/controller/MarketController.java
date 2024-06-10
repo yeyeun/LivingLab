@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
@@ -25,7 +24,6 @@ import com.mlp.lab.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-
 @Log4j2
 @RestController
 @RequestMapping("/api/market")
@@ -34,18 +32,14 @@ public class MarketController {
     private final MarketService marketService;
     private final CustomFileUtil fileUtil;
 
-    @GetMapping("/list")    // 목록조회(검색기능 포함)
-    public PageResponseDto<MarketDto> List(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "search") String search){
-        PageResponseDto<MarketDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
-        if (search == null || search.isEmpty()) {
-            result = marketService.list(pageRequestDto);
-        } else {
-            result = marketService.searchList(pageRequestDto, search);
-        }
-        return result;
+    @GetMapping("/list") // 목록조회(검색, 정렬 기능 포함)
+    public PageResponseDto<MarketDto> List(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort) {
+        return marketService.list(pageRequestDto, search, sort);
     }
 
-     @GetMapping("/read/{marketNo}") // 상세조회
+    @GetMapping("/read/{marketNo}") // 상세조회
     public MarketDto read(@PathVariable(name = "marketNo") int marketNo) {
         return marketService.read(marketNo);
     }
@@ -55,7 +49,7 @@ public class MarketController {
         return fileUtil.getFile(fileName);
     }
 
-    @PostMapping("/add")    //작성(이미지 포함)
+    @PostMapping("/add") // 작성(이미지 포함)
     public void add(MarketDto marketDto) {
         log.info("add : " + marketDto);
         List<MultipartFile> files = marketDto.getFiles();
@@ -84,7 +78,7 @@ public class MarketController {
         if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
             uploadedFileNames.addAll(newUploadFileNames);
         }
-        
+
         marketService.modify(marketDto);
 
         if (oldFileNames != null && oldFileNames.size() > 0) {
