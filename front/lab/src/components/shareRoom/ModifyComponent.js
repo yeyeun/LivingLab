@@ -60,7 +60,7 @@ const ModifyComponent = ({ roomNo }) => {
 
     const closeModal = () => {
         setResult(null);
-        //moveToRead();
+        moveToRead();
     }
 
     return (

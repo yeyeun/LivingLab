@@ -1,7 +1,8 @@
 import image from '../../resources/images/room.jpg';
-import React,{ useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { getOne,deleteOne } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove"
+import useCustomMove from '../../hooks/useCustomMove';
 
 const initState = {
     roomNo: 0,

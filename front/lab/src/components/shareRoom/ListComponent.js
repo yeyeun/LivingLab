@@ -1,12 +1,13 @@
 import image from '../../resources/images/room.jpg';
 import { useEffect, useState } from "react";
-import { getList } from "../../api/shareRoomApi"
+import { API_SERVER_HOST,getList } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PageComponent from "../common/PageComponent";
 import SearchComponent from '../../components/common/SearchComponent';
 
 import SelectComponent from '../../components/common/SelectComponent';
 
+const host = API_SERVER_HOST;
 
 const initState = {
   dtoList: [], //한 페이지에 불러오는 게시물 갯수
@@ -43,7 +44,7 @@ const ListComponent = () => {
         {serverData.dtoList.map((shareRoom) =>
           <div class="mx-12 overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-60 md:w-80">
             <div className="block w-full h-full" onClick={() => moveToRead(shareRoom.roomNo)}>
-              <img alt="..." src={image} class="object-cover w-full max-h-40" />
+              <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} class="object-cover w-full max-h-40" />
               <div class="w-full p-4 bg-white">
                 <p class="font-medium text-indigo-500 text-md">
                 </p>
