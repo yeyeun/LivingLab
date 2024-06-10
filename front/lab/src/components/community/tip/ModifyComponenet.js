@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { modifyTip, getOneTip } from "../../../api/communityApi";
+import { modifyTip, getOneTip, API_SERVER_HOST } from "../../../api/communityApi";
 import ResultModal from "../../common/ResultModal";
 import useCustomTip from "../../../hooks/useCustomTip";
 
@@ -12,7 +12,10 @@ const initState = {
     commCategory: '',
     nickname: '김유저',
     files: [],
+    uploadFileNames: []
 };
+
+const host = API_SERVER_HOST;
 
 const ModifyComponenet = ({commNo}) => {
     const [result, setResult] = useState(null);
@@ -63,6 +66,13 @@ const ModifyComponenet = ({commNo}) => {
         moveToRead();
     }
 
+    const handleRemoveImage = (index) => {
+        const newUploadFileNames = tip.uploadFileNames.filter((_, i) => i !== index);
+        console.log("index:",index);
+        setTip({ ...tip, uploadFileNames: newUploadFileNames });
+        console.log("newUploadFileNames : ", newUploadFileNames);
+    }
+
     return(
         <div>
             <div className="space-y-12 text-base">
@@ -101,8 +111,18 @@ const ModifyComponenet = ({commNo}) => {
                                 </textarea>
                             </div>
                         </div>
-                        <div className="col-span-3">
-                            <label for="about" className="block text-sm font-medium leading-6 text-gray-900">사진 업로드</label>
+                        <div className="col-span-full">
+                            {tip.uploadFileNames.map((imgFile, i) =>
+                            <div key={i} className="relative inline-block">
+                                <img alt="tip" src={`${host}/api/community/tip/display/${imgFile}`} className="my-3 w-36"/>
+                                <button type="button"
+                                        onClick={() => handleRemoveImage(i)}
+                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                        aria-label="Remove image">
+                                        X
+                                    </button>
+                            </div>
+                            )}
                             <div className="mt-2">
                                 <input ref={uploadRef} type={'file'} multiple={true} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
                                 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-700 hover:file:bg-violet-100"/>
