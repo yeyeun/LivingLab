@@ -119,6 +119,7 @@ public class CommunityService {
         community.setTitle(communityDto.getTitle());
         community.setContent(communityDto.getContent());
         community.setCommCategory(communityDto.getCommCategory());
+        community.setFlag(communityDto.isFlag());
 
         // 파일들 삭제
         community.clearList();

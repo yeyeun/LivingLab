@@ -27,6 +27,24 @@ const AddComponent = () => {
         setReview({ ...review });
     }
 
+    //이미지 리스트에서 X버튼 눌렀을때
+    const handleRemoveImage = (index) => {
+        setPreviewFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+        updateFileInput(index);
+    };
+    
+    // 입력된 파일 업데이트
+    const updateFileInput = (removeIndex) => {
+        const dataTransfer = new DataTransfer();
+        const files = Array.from(uploadRef.current.files);
+        files.forEach((file, index) => {
+            if (index !== removeIndex) { //removeIndex와 일치하지 않는 파일만 dataTransfer에 추가
+                dataTransfer.items.add(file);
+            }
+        });
+        uploadRef.current.files = dataTransfer.files; //제거된 파일 반영
+    };
+
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
         const nonImageFiles = files.filter(file => !file.type.startsWith('image/'));
@@ -119,22 +137,27 @@ const AddComponent = () => {
                                 </textarea>
                             </div>
                         </div>
-                        <div className="col-span-3">
-                            <label htmlFor="fileUpload" className="block text-sm font-medium leading-6 text-gray-900">사진 업로드</label>
-                            <div className="mt-2">
-                                <input ref={uploadRef} type="file" multiple onChange={handleFileChange} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
-                                    file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-700 hover:file:bg-violet-100" />
-                            </div>
-                            {previewFiles.length > 0 && (
-                                <div className="mt-2 space-y-2">
-                                    {previewFiles.map((file, index) => (
-                                        <div key={index} className="flex items-center space-x-2">
-                                            <img src={file.url} alt={file.name} className="w-16 h-16 object-cover rounded" />
-                                            <span className="text-sm text-gray-700">{file.name}</span>
-                                        </div>
-                                    ))}
+                        <div className="col-span-full">
+                            <div className="flex flex-wrap items-start">
+                                {previewFiles.map((file, index) => (
+                                    <div key={index} className="relative inline-block">
+                                        <img src={file.url} alt={file.name} className="my-3 mx-1 w-36 h-36 object-cover" />
+                                        <button type="button"
+                                            onClick={() => handleRemoveImage(index)}
+                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                            aria-label="Remove image">
+                                            X
+                                        </button>
+                                    </div>
+                                ))}
+                                <div className="relative inline-block my-3 mx-1 w-36 h-36 border-2 border-gray-300 border-dashed rounded-md items-center justify-center cursor-pointer">
+                                    <input ref={uploadRef} id="file-upload" type={'file'} multiple={true} onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+                                    <label htmlFor="file-upload" className="text-gray-500 text-4xl flex items-center justify-center h-full w-full">
+                                        +
+                                    </label>
                                 </div>
-                            )}
+                            </div>
+
                         </div>
                     </div>
                 </div>
