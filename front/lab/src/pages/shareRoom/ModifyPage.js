@@ -1,9 +1,10 @@
+import { useParams } from 'react-router-dom';
+import ModifyComponent from '../../components/shareRoom/ModifyComponent';
+
 const ModifyPage = () => {
-    return(
-        <div>
-            자취방쉐어 글 수정 페이지
-        </div>
-    ); 
-}
+  return (
+    <ModifyComponent/>
+  );
+};
 
 export default ModifyPage;
