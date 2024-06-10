@@ -26,11 +26,16 @@ const ChatWindow = ({ chat }) => {
       <div className="flex items-center justify-between p-4 bg-teal-500 text-white">
         <div className="flex items-center">
           <img src="https://via.placeholder.com/40" alt="Profile" className="rounded-full w-10 h-10" />
-          <span className="ml-2 text-lg font-bold">Username</span>
+          <span className="ml-2 text-lg font-bold">{chat.name}</span>
         </div>
         <div className="text-lg">Direct</div>
       </div>
-      <ChatMessage messages={messages} />
+      <div className="flex-1 overflow-y-auto p-4">
+        {messages.map((message) => (
+          <ChatMessage key={message.id} message={message} />
+        ))}
+      </div>
+      {/* <ChatMessage messages={messages} /> */}
       <ChatInput onSend={handleSend} />
     </div>
   );
