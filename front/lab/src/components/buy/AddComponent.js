@@ -5,6 +5,7 @@ import ResultModal from '../common/ResultModal';
 import PostComponent from '../common/PostComponent';
 import { modifyUser, getUser } from './../../api/userApi';
 import { useSelector } from 'react-redux';
+import iconNext from '../../resources/images/icon-next.png';
 
 const initState = {
   email: '',
@@ -13,7 +14,7 @@ const initState = {
   location: '',
   content: '',
   buyCategory: '',
-  max: 0,
+  max: 2,
   current: 1,
   deadline: '',
   buyHit: 0,
@@ -21,12 +22,11 @@ const initState = {
 };
 const AddComponent = () => {
   const { moveToList } = useCustomMove();
-  const [postImage, setPostImage] = useState(null);
-  const [postImageFile, setPostImageFile] = useState(null); // 이미지 파일 상태 추가
+  const [postImageFiles, setPostImageFiles] = useState([]); // 이미지 파일 프리뷰
   const [buy, setBuy] = useState({ ...initState });
   const [result, setResult] = useState(null);
   const [addResultModal, setAddResultModal] = useState(null);
-  const imgRef = useRef(null);
+  const imgRef = useRef();
 
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
@@ -37,22 +37,44 @@ const AddComponent = () => {
     });
   }, [ino]);
 
-  const handleImageChange = (event) => {
+  const handleImageChange = (e) => {
     // 이미지 변경
-    const file = event.target.files[0];
-    if (file) {
-      setPostImage(URL.createObjectURL(file));
-      setPostImageFile(file);
+    const files = Array.from(e.target.files);
+    const nonImageFiles = files.filter(file => !file.type.startsWith('image/'));
+
+    if (nonImageFiles.length > 0) {
+        setAddResultModal("이미지 파일만 등록 가능합니다");
+        imgRef.current.value = "";
+        setPostImageFiles([]);
+        return;
     }
+
+    const imagePreviews = files.map(file => ({
+        url: URL.createObjectURL(file),
+        name: file.name
+    }));
+
+    setPostImageFiles(imagePreviews);
   };
-  const handleRemoveImage = () => {
+
+  const handleRemoveImage = (index) => {
     // 이미지 제거
-    setPostImage(null);
-    setPostImageFile(null);
-    if (imgRef.current) {
-      imgRef.current.value = null;
-    }
+    setPostImageFiles(postFiles => postFiles.filter((_, i) => i !== index));
+    updateFileInput(index);
   };
+  
+  const updateFileInput = (removeIndex) => {
+    // 입력된 파일 업데이트
+    const dataTransfer = new DataTransfer();
+    const files = Array.from(imgRef.current.files);
+    files.forEach((file, index) => {
+      if (index !== removeIndex) { //removeIndex와 일치하지 않는 파일만 dataTransfer에 추가
+        dataTransfer.items.add(file);
+      }
+    });
+    imgRef.current.files = dataTransfer.files; //제거된 파일 반영
+  };
+
   const handleChangeBuy = (e) => {
     const { name, value } = e.target;
     setBuy((prev) => ({ ...prev, [name]: value }));
@@ -66,13 +88,13 @@ const AddComponent = () => {
       setAddResultModal('제목과 내용을 입력해주세요');
       return;
     }
-    if (!postImageFile) {
+    if (!postImageFiles) {
       setAddResultModal('이미지를 등록해주세요');
       return;
     }
     const formData = new FormData();
-    if (postImageFile) {
-      formData.append('files', postImageFile);
+    if (postImageFiles) {
+      formData.append('files', postImageFiles);
     }
     formData.append('user_id', user.email);
     formData.append('nickname', user.nickname);
@@ -96,81 +118,92 @@ const AddComponent = () => {
     setBuy((prev) => ({ ...prev, location: address }));
   };
 
+  const handleInputValidation = (e) => {
+    const value = e.target.value;
+    if (value !== "" && (isNaN(value) || value < 2)) {
+      e.target.value = Math.max(2, value);
+    }
+    handleChangeBuy(e);
+  };
+
   return (
     <div>
-      <div className="team-category-container">공동구매 | 글 작성</div>
-      <div className="detail-container">
-        <div>
-          <div className="image-upload">
-            {!postImage ? (
-              <>
-                <label className="thumbnail-label" htmlFor="thumbnail">
-                  이미지 첨부
-                </label>
-                <input className="thumbnail-input" type="file" accept="image/*" id="thumbnail" ref={imgRef} onChange={handleImageChange} />
-              </>
-            ) : (
-              <div className="image-preview-container">
-                <img src={postImage} alt="미리보기" className="image-preview" />
-                <button className="remove-image-button" onClick={handleRemoveImage}>
-                  &times;
-                </button>
-              </div>
-            )}
-          </div>
-          <div className="add-container"></div>
-          <div className="add-container">
-            <select id="buyCategory" name="buyCategory" className="select px-2" value={buy.buyCategory} onChange={handleChangeBuy}>
-              <option disabled hidden value="">
-                카테고리 선택
-              </option>
-              <option value="1">배달음식</option>
-              <option value="2">생필품</option>
-              <option value="3">식료품</option>
-              <option value="4">가구/가전</option>
-              <option value="5">기타</option>
-            </select>
-            <div className="flex justify-end w-1/2">
-              <input type="number" name="max" id="max" value={buy.max} onChange={handleChangeBuy} className="input-text p-2 max-person" placeholder="인원" />
-              <input
-                type="date"
-                required
-                aria-required="true"
-                data-placeholder="마감일"
-                name="deadline"
-                id="deadline"
-                value={buy.deadline}
-                onChange={handleChangeBuy}
-                className="date-picker p-2"
-              />
+      <div className="flex items-center w-1/2 mx-auto text-xl font-semibold pl-2 border-l-4 border-teal-300">
+        공동구매 <img src={iconNext} className="w-7 mx-2" alt="Next Icon" /> 글 작성
+      </div>
+      <div className="grid grid-cols-8 gap-3 w-1/2 mx-auto mt-2 p-2 text-xl shadow-set mb-5">
+        <div className="col-start-3 col-span-4 mt-2 bg-red-200">
+          
+          {postImageFiles.map((file, index) => (
+            <div key={index} className="relative inline-block">
+              <img src={file.url} alt={file.name} className="my-3 mx-1 w-36 h-36 object-cover" />
+              <button type="button" onClick={() => handleRemoveImage(index)}
+              className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center" aria-label="Remove image">
+              X
+              </button>
             </div>
+          ))}
+          <div className="relative inline-block my-3 mx-1 w-36 h-36 border-2 border-gray-300 border-dashed rounded-md items-center justify-center cursor-pointer">
+            <input ref={imgRef} id="file-upload" type={'file'} multiple={true} onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+            <label htmlFor="file-upload" className="text-gray-500 text-4xl flex items-center justify-center h-full w-full">
+            +
+            </label>
           </div>
-          <input type="text" name="title" id="title" value={buy.title} onChange={handleChangeBuy} placeholder="제목을 입력하세요." className="input-text p-2" />
 
-          <div className="input-text p-2">
-            <div className="justify-end w-full">
+        </div>
+        <div className="col-start-2 col-span-2 bg-red-200">
+          <label htmlFor="buyCategory" className="block text-sm font-medium text-gray-700 mb-1 pl-2">
+            카테고리
+          </label>
+          <select id="buyCategory" name="buyCategory" 
+            className="w-full pl-2 h-9 rounded-md border border-stone-400 text-base" 
+            value={buy.buyCategory} 
+            onChange={handleChangeBuy}
+          >
+            <option disabled hidden value="">카테고리 선택</option>
+            <option value="1">배달음식</option>
+            <option value="2">생필품</option>
+            <option value="3">식료품</option>
+            <option value="4">가구/가전</option>
+            <option value="5">기타</option>
+          </select>
+        </div>
+        <div className="col-start-5 col-span-1 bg-red-200">
+          <label htmlFor="max" className="block text-sm font-medium text-gray-700 mb-1 pl-2">모집인원</label>
+          <input type="number" name="max" id="max" value={buy.max} min="2" step="1" onInput={handleInputValidation}
+          onChange={handleChangeBuy} className="w-full h-9 pl-2 rounded-md border border-stone-400 text-base"/>
+        </div>
+        <div className="col-start-6 col-span-2 bg-red-200">
+          <label htmlFor="deadline" className="block text-sm font-medium text-gray-700 mb-1 pl-2">공동구매 마감시간</label>
+          <input type="datetime-local" required aria-required="true" name="deadline" id="deadline"
+          value={buy.deadline} onChange={handleChangeBuy} className="w-full h-9 rounded-md border border-stone-400 text-base"/>
+        </div>
+        <div className="col-start-2 col-span-6 bg-red-200">
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1 pl-2">제목</label>
+          <input type="text" name="title" id="title" value={buy.title} onChange={handleChangeBuy} 
+          placeholder="제목을 입력하세요" className="w-full h-9 pl-2 rounded-md border border-stone-400 placeholder:text-base pb-1"/>
+        </div>
+        <div className="col-start-2 col-span-6 bg-red-200">
+          <label className="block text-sm font-medium text-gray-700 mb-1 pl-2">거래 장소</label>
+          <div className="flex">
+            <div className="w-1/5 text-base">
               <PostComponent setAddress={setAddress}></PostComponent>
             </div>
-            <input
-              className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
-              name="addr"
-              type={'text'}
-              placeholder="주소(우편번호 및 도로명 검색)"
-              value={buy.location}
-            />
-          </div>
-
-          <textarea name="content" id="content" value={buy.content} onChange={handleChangeBuy} placeholder="내용을 입력하세요." className="input-textarea p-2"></textarea>
-          <div className="detail-footer text-center">
-            <div></div>
-            <div>
-              <button className="button-part mr-3" onClick={handleClickAdd}>
-                등록하기
-              </button>
-              <button className="button-return" onClick={() => moveToList()}>
-                목록
-              </button>
+            <div className="w-4/5 pl-1">
+              <input className="w-full h-10 pl-2 rounded-md border border-stone-400 placeholder:text-base pb-1" name="addr" type="text"
+              placeholder="주소(우편번호 및 도로명 검색)" value={buy.location}/>
             </div>
+          </div>
+        </div>
+        <div className="col-start-2 col-span-6 bg-red-200">
+          <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1 pl-2">내용</label>
+          <textarea name="content" id="content" value={buy.content} rows="6" onChange={handleChangeBuy} placeholder="내용을 입력하세요"
+          className="w-full pl-2 rounded-md border border-stone-400 placeholder:text-base pb-1"></textarea>
+        </div>
+        <div className="col-start-6 col-span-2 mb-3">
+          <div className="flex">
+            <button className="text-base text-white bg-mainColor p-2 rounded-md w-1/2 mr-2 hover:bg-emerald-600" onClick={handleClickAdd}>등록하기</button>
+            <button className="text-base text-white bg-slate-300 p-2 rounded-md w-1/2 hover:bg-slate-400" onClick={() => moveToList()}>목록</button>
           </div>
         </div>
         {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
