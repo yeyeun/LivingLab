@@ -42,6 +42,11 @@ public class TeamController {
         return teamService.read(teamNo);
     }
 
+    @GetMapping("/delete/{teamNo}") // 삭제
+    public void remove(@PathVariable(name = "teamNo") Long teamNo) {
+        teamService.remove(teamNo.intValue());
+    }
+
     @GetMapping("/display/{fileName}") // 목록조회
     public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);

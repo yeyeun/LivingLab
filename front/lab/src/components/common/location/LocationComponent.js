@@ -55,10 +55,15 @@ const LocationComponent = () => {
         setAddress(result[0].address);
       }
 
+<<<<<<< HEAD
       console.log(result[0].address.address_name);
       user.location = result[0].address.address_name;
       setUser({...user});
       console.log(user);
+=======
+      user.location = result[0].address.address_name;
+      setUser({ ...user });
+>>>>>>> develop
       modifyUser(user); // 상태값 변경된 거 DB에 반영
     };
 
@@ -75,6 +80,7 @@ const LocationComponent = () => {
   const handleLocation = () => {
     getAddress(); // 실시간 위치 주소 받아옴
 
+<<<<<<< HEAD
     // console.log(user); // location 빈값 나옴
     // modifyUser(user); // 상태값 변경된 거 DB에 반영
     // console.log(ino);
@@ -83,6 +89,8 @@ const LocationComponent = () => {
     //   console.log(data);
     // });
 
+=======
+>>>>>>> develop
     if (isOpen === false) setIsOpen(true);
     else setIsOpen(false);
   };
