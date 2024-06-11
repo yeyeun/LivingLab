@@ -34,18 +34,9 @@ public class BuyController {
 
     @GetMapping("/list") // 목록조회(검색, 정렬 기능 포함)
     public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto,
-            @RequestParam(required = false, value = "search") String search, @RequestParam(required = false, value = "sort") String sort) {
-        PageResponseDto<BuyDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
-        if (search == null && sort == null) {   //페이지 클릭 시
-            result = buyService.list(pageRequestDto);
-        } else if(search != null && sort == null){  //검색만 할 경우
-            result = buyService.searchList(pageRequestDto, search);
-        } else if(search == null && sort != null){  //정렬만 할 경우
-            result = buyService.sortList(pageRequestDto, sort);
-        } else if(search != null && sort != null){    //검색&&정렬 둘다
-            result = buyService.searchSortList(pageRequestDto, search, sort);
-        } 
-        return result;
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort) {
+        return buyService.list(pageRequestDto, search, sort);
     }
 
     @GetMapping("/read/{buyNo}") // 상세조회

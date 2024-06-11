@@ -9,9 +9,9 @@ export const postAddTip = async(tip) => {
     return res.data;
 }
 
-export const getListTip = async(pageParam) => {
+export const getListTip = async(pageParam, search) => {
     const {page, size} = pageParam
-    const res =await axios.get(`${prefix}/tip/list`, {params:{page:page, size:size}})
+    const res =await axios.get(`${prefix}/tip/list`, {params:{page:page, size:size, search: search}})
     return res.data
 }
 
@@ -22,14 +22,19 @@ export const getOneTip = async(commNo) => {
 
 export const modifyTip = async(commNo, tip) => {
     const header = {headers:{"Content-Type":"multipart/form-data"}};
-    const res = await axios.post(`${prefix}/tip/add/${commNo}`, tip, header);
+    const res = await axios.put(`${prefix}/tip/modify/${commNo}`, tip, header);
+    return res.data;
+}
+
+export const deleteTip = async(commNo) => {
+    const res = await axios.delete(`${prefix}/tip/delete/${commNo}`);
     return res.data;
 }
 
 // ******질문 게시판******
-export const postAddQna = async(tip) => {
+export const postAddQna = async(qna) => {
     const header = {headers:{"Content-Type":"multipart/form-data"}};
-    const res = await axios.post(`${prefix}/qna/add`, tip, header);
+    const res = await axios.post(`${prefix}/qna/add`, qna, header);
     return res.data;
 }
 
@@ -44,10 +49,16 @@ export const getOneQna = async(commNo) => {
     return res.data;
 }
 
-// ******리뷰 게시판******
-export const postAddReview = async(tip) => {
+export const modifyQna = async(commNo, qna) => {
     const header = {headers:{"Content-Type":"multipart/form-data"}};
-    const res = await axios.post(`${prefix}/review/add`, tip, header);
+    const res = await axios.put(`${prefix}/qna/modify/${commNo}`, qna, header);
+    return res.data;
+}
+
+// ******리뷰 게시판******
+export const postAddReview = async(review) => {
+    const header = {headers:{"Content-Type":"multipart/form-data"}};
+    const res = await axios.post(`${prefix}/review/add`, review, header);
     return res.data;
 }
 
@@ -62,10 +73,16 @@ export const getOneReview = async(commNo) => {
     return res.data;
 }
 
-// ******도움요청 게시판******
-export const postAddHelp = async(tip) => {
+export const modifyReview = async(commNo, review) => {
     const header = {headers:{"Content-Type":"multipart/form-data"}};
-    const res = await axios.post(`${prefix}/help/add`, tip, header);
+    const res = await axios.put(`${prefix}/review/modify/${commNo}`, review, header);
+    return res.data;
+}
+
+// ******도움요청 게시판******
+export const postAddHelp = async(help) => {
+    const header = {headers:{"Content-Type":"multipart/form-data"}};
+    const res = await axios.post(`${prefix}/help/add`, help, header);
     return res.data;
 }
 
@@ -77,5 +94,11 @@ export const getListHelp = async(pageParam) => {
 
 export const getOneHelp = async(commNo) => {
     const res = await axios.get(`${prefix}/help/read/${commNo}`);
+    return res.data;
+}
+
+export const modifyHelp = async(commNo, help) => {
+    const header = {headers:{"Content-Type":"multipart/form-data"}};
+    const res = await axios.put(`${prefix}/help/modify/${commNo}`, help, header);
     return res.data;
 }
