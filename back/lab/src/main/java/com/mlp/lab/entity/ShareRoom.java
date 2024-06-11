@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
-import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.ShareRoomDto;
 
 import jakarta.persistence.ElementCollection;
@@ -19,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -26,6 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "shareroom")
+@ToString(exclude = "imageList")
 public class ShareRoom {
     @Id // 기본키 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -40,17 +40,15 @@ const ListComponent = ({ search, sort }) => {
           recruit: checkDeadline(buy.deadline),
         })),
       };
-      console.log(updatedData);
       setServerData(updatedData);
     });
   }, [page, size, search, sort]);
 
   return (
     <div>
-      <button onClick={() => moveToAdd()}>글 작성</button>
       {serverData.dtoList.map((buy) => (
         <div key={buy.buyNo} className="w-full mb-4" onClick={() => moveToRead(buy.buyNo)}>
-          <div className="flex flex-col justify-center items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+          <div className="flex flex-col items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
             <img className="object-cover w-full h-96 md:h-auto md:w-48 md:rounded-none" src={`${host}/api/buy/display/${buy.uploadFileNames[0]}`} alt="..." />
             <div className="flex flex-col p-4 mx-5 leading-normal">
               <div className="mb-2 inline-flex">
@@ -67,13 +65,11 @@ const ListComponent = ({ search, sort }) => {
                 </div>
                 <div className="text-base">{buy.recruit}</div>
               </div>
-              <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{buy.title}</h5>
+              <div className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{buy.title}</div>
+              <div className="mb-2 text-lg  tracking-tight text-gray-900 dark:text-white">{buy.nickname}</div>
               <div className="mb-3 text-base text-gray-700 dark:text-gray-400">
                 <img src={mapIcon} alt="..." className="w-3 inline" />
                 &ensp;{buy.location}
-              </div>
-              <div className="mb-3 text-base text-gray-700 dark:text-gray-400">
-                <div className="float-right">{buy.user_id}</div>
               </div>
             </div>
           </div>
