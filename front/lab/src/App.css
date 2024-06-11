@@ -132,6 +132,10 @@
   border-radius: 1rem;
 }
 
+.shadow-set{
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .detail-box {
   width: 90%;
   margin: 5px auto;

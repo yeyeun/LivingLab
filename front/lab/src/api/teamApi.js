@@ -12,3 +12,9 @@ export const getList = async (pageParam, search, sort) => {
   const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size, search: search, sort: sort }});
   return res.data;
 };
+
+export const postAddTeam = async(team) => {
+  const header = {headers:{"Content-Type":"multipart/form-data"}};
+  const res = await axios.post(`${prefix}/add`, team, header);
+  return res.data;
+}
