@@ -34,7 +34,28 @@ const ModifyComponent = ({ roomNo }) => {
         shareRoom[e.target.name] = e.target.value
         setShareRoom({ ...shareRoom })
     }
+   
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        const nonImageFiles = files.filter(file => !file.type.startsWith('image/'));
+
+        if (nonImageFiles.length > 0) {
+            setAddResultModal("이미지 파일만 등록 가능합니다");
+            uploadRef.current.value = ""; // Clear the file input
+            setPreviewFiles([]);
+            return;
+        }
+
+        const imagePreviews = files.map(file => ({
+            url: URL.createObjectURL(file),
+            name: file.name
+        }));
+
+        setPreviewFiles(imagePreviews);
+    }
+
     const handleClickModify = (e) => {
+        
         //유효성 검사
         if (!shareRoom.title || !shareRoom.userId) {
             setAddResultModal("제목과 내용을 입력해주세요");
@@ -93,7 +114,7 @@ const ModifyComponent = ({ roomNo }) => {
                 <label for="about" className="block text-sm font-medium leading-6 text-gray-900">사진 업로드</label>
                 <div className="mt-2">
                     <input ref={uploadRef} type={'file'} multiple={true} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
-                                file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-700 hover:file:bg-violet-100"/>
+                        file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-700 hover:file:bg-violet-100"/>
                 </div>
             </div>
             <div className="flex justify-end">

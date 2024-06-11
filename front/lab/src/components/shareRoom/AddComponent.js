@@ -1,22 +1,26 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { postAdd } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import { useSelector } from 'react-redux';
+import PostComponent from "../common/PostComponent";
 
 
 
 const AddComponent = () => {
-    
+
     const [addResultModal, setAddResultModal] = useState(null);
     const [result, setResult] = useState(null);
     const [previewFiles, setPreviewFiles] = useState([]);
     const { moveToList } = useRoomCustomMove()
     const uploadRef = useRef();
+    const [address, setAddress] = React.useState('');
+    const [popup, setPopup] = React.useState(false);
 
     const loginState = useSelector((state) => state.loginSlice);
 
     const [userId, setUserId] = useState(loginState.id);
+
 
     const initState = {
         roomNo: 0,
@@ -26,7 +30,7 @@ const AddComponent = () => {
         option1: '',
         location: '',
         files: [],
-        userId:userId,
+        userId: userId,
         uploadFileNames: []
     }
     const [shareRoom, setShareRoom] = useState({ ...initState })
@@ -57,7 +61,6 @@ const AddComponent = () => {
     }
 
     const handleClickAdd = (e) => {
-        //const loginState = useSelector((state) => state.loginSlice);
 
         if (!shareRoom.title || !shareRoom.content) {
             setAddResultModal("제목과 내용을 입력해주세요");
@@ -66,6 +69,9 @@ const AddComponent = () => {
 
         const files = uploadRef.current.files;
         const formData = new FormData();
+        
+        const combinedAddress = `${address} ${document.querySelector('[name="detailAddr"]').value}`;
+        formData.append("location", combinedAddress);
 
         for (let i = 0; i < files.length; i++) {
             formData.append("files", files[i]);
@@ -92,52 +98,66 @@ const AddComponent = () => {
 
     return (
 
-        <div className="border-2 border-sky-200 mt-10 m-2 p-4">
+        <div className="border-2 max-w-[750px]  mx-auto border-sky-200 mt-10 m-2 p-4">
             {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
             {addResultModal && (
                 <ResultModal title={'알림'} content={`${addResultModal}`} callbackFn={() => setAddResultModal(null)} />
             )}
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">TITLE</div>
-                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+                    <div className="w-full p-3 text-left font-bold">제목</div>
+                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
                         name="title" type={'text'} value={shareRoom.title} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">content</div>
-                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+                    <div className="w-full p-3 text-left font-bold">내용</div>
+                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
                         name="content" type={'text'} value={shareRoom.content} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">rentFee</div>
-                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+                    <div className="w-full p-3 text-left font-bold">월세</div>
+                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
                         name="rentFee" type={'number'} value={shareRoom.rentFee} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">parking</div>
-                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+                    <div className="w-full p-3 text-left font-bold">주차가능여부</div>
+                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
                         name="parking" type={'text'} value={shareRoom.parking} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">option1</div>
-                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+                    <div className="w-full p-3 text-left font-bold">옵션</div>
+                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
                         name="option1" type={'text'} value={shareRoom.option1} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">location</div>
-                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="location" type={'text'} value={shareRoom.location} onChange={handleChangeShareRoom}></input>
-                </div>
+            <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                <div className="w-full p-3 text-left font-bold">주소</div>
+                <button
+                    className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
+                    onClick={() => {
+                        setPopup(!popup);
+                    }}
+                >
+                    🔍︎ 주소 검색
+                </button>
+                {popup && <PostComponent address={address} setAddress={setAddress}></PostComponent>}
+                <input
+                    className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
+                    name="addr"
+                    type={'text'}
+                    placeholder="주소"
+                    required={true}
+                    value={address}
+                ></input>
+                <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input>
             </div>
             <div className="col-span-3">
                 <label htmlFor="fileUpload" className="block text-sm font-medium leading-6 text-gray-900">사진 업로드</label>
