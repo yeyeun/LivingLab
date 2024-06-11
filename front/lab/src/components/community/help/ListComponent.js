@@ -1,4 +1,5 @@
-import SearchComponent from "../../../components/common/SearchComponent";
+import SearchComponent from "../SearchComponent";
+import SelectComponent from "../SelectComponent";
 import useCustomHelp from "../../../hooks/useCustomHelp";
 import { getListHelp } from "../../../api/communityApi";
 import { useEffect, useState } from "react";
@@ -23,19 +24,25 @@ const ListComponent = () => {
   const {page, size, moveToList, moveToRead} = useCustomHelp();
   const [serverData, setServerData] = useState(initState);
   const [search, setSearch] = useState('');
+  const [sort, setSort] = useState('');
   useEffect(()=>{
-    getListHelp({page,size}, search).then(data=>{
+    getListHelp({page,size}, search, sort).then(data=>{
           console.log(data);
           setServerData(data);
       })
-  }, [page,size, search]);
+  }, [page,size, search, sort]);
 
   const handleSearch = (query) => {
     setSearch(query);
   };
 
+  const handleSort = (query) => {
+    setSort(query);
+  };
+
     return(
       <>
+      <SelectComponent onSort={handleSort} />
       <SearchComponent onSearch={handleSearch}/>
       <table className="min-w-full text-center text-lg font-light text-surface dark:text-white">
         <thead className="text-base border-b-2 border-neutral-500 font-semibold dark:border-white/10">

@@ -9,9 +9,9 @@ export const postAddTip = async(tip) => {
     return res.data;
 }
 
-export const getListTip = async(pageParam, search) => {
+export const getListTip = async(pageParam, search, sort) => {
     const {page, size} = pageParam
-    const res =await axios.get(`${prefix}/tip/list`, {params:{page:page, size:size, search: search}})
+    const res =await axios.get(`${prefix}/tip/list`, {params:{page:page, size:size, search: search, sort: sort}})
     return res.data
 }
 
@@ -38,9 +38,9 @@ export const postAddQna = async(qna) => {
     return res.data;
 }
 
-export const getListQna = async(pageParam) => {
+export const getListQna = async(pageParam, search, sort) => {
     const {page, size} = pageParam
-    const res =await axios.get(`${prefix}/qna/list`, {params:{page:page, size:size}})
+    const res =await axios.get(`${prefix}/qna/list`, {params:{page:page, size:size, search: search, sort: sort}})
     return res.data
 }
 
@@ -62,9 +62,9 @@ export const postAddReview = async(review) => {
     return res.data;
 }
 
-export const getListReview = async(pageParam) => {
+export const getListReview = async(pageParam, search, sort) => {
     const {page, size} = pageParam
-    const res =await axios.get(`${prefix}/review/list`, {params:{page:page, size:size}})
+    const res =await axios.get(`${prefix}/review/list`, {params:{page:page, size:size, search: search, sort: sort}})
     return res.data
 }
 
