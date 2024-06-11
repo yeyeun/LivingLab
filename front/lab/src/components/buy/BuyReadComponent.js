@@ -6,6 +6,7 @@ import LandingComponent from '../common/mapSearch/LandingComponent';
 import ModalComponent from '../common/ModalComponent';
 import { modifyUser, getUser } from './../../api/userApi';
 import { useSelector } from 'react-redux';
+import ResultModal from '../common/ResultModal';
 
 const initState = {
   buyNo: 0,
