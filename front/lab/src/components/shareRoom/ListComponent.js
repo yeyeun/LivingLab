@@ -38,7 +38,18 @@ const ListComponent = () => {
       <div className='h-1/2 items-center'>
         <SearchComponent />
       </div>
-      <div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 py-10 max-w-7xl items-center mx-auto">
+      <div className=' '>
+      {!loginState.id ? (
+            <>
+
+            </>
+          ) : (
+            <div className="max-w-7xl min-w-[1280px]">
+              <button type="button" class="float-right inline-block rounded bg-teal-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-teal-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none" onClick={() => moveToAdd()}>글쓰기</button>
+            </div>
+          )}
+      </div>
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 py-10 max-w-7xl min-w-[1280px] items-center mx-auto">
         {serverData.dtoList.map((shareRoom) => (
           <div class="mx-12 overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-60 md:w-80">
             <div className="block w-full h-full" onClick={() => moveToRead(shareRoom.roomNo)}>
@@ -57,17 +68,6 @@ const ListComponent = () => {
           </div>
         ))}
         <div className="flex justify-end p-4">
-          {!loginState.id ? (
-            <>
-
-            </>
-          ) : (
-            <>
-              <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-gray-400" onClick={() => moveToAdd()}>
-                Add
-              </button>
-            </>
-          )}
         </div>
       </div>
       <PageComponent serverData={serverData} movePage={moveToList} />
