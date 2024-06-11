@@ -2,25 +2,34 @@ import { useRef, useState } from "react";
 import { postAdd } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
+import { useSelector } from 'react-redux';
 
-const initState = {
-    roomNo: 0,
-    title: '',
-    rentFee: 0,
-    parking: '',
-    option1: '',
-    location: '',
-    files: [],
-    uploadFileNames: []
-}
+
 
 const AddComponent = () => {
-    const [shareRoom, setShareRoom] = useState({ ...initState })
+    
     const [addResultModal, setAddResultModal] = useState(null);
     const [result, setResult] = useState(null);
     const [previewFiles, setPreviewFiles] = useState([]);
     const { moveToList } = useRoomCustomMove()
     const uploadRef = useRef();
+
+    const loginState = useSelector((state) => state.loginSlice);
+
+    const [userId, setUserId] = useState(loginState.id);
+
+    const initState = {
+        roomNo: 0,
+        title: '',
+        rentFee: 0,
+        parking: '',
+        option1: '',
+        location: '',
+        files: [],
+        userId:userId,
+        uploadFileNames: []
+    }
+    const [shareRoom, setShareRoom] = useState({ ...initState })
 
 
     const handleChangeShareRoom = (e) => {
@@ -47,20 +56,8 @@ const AddComponent = () => {
         setPreviewFiles(imagePreviews);
     }
 
-    // const handleClickAdd = () => {
-    //     const files = uploadRef.current.files;
-
-    //     console.log(shareRoom)
-    //     postAdd(shareRoom).then(result => {
-    //         setResult(result.ROOMNO);
-    //         setShareRoom({ ...initState })
-    //         moveToList()
-    //     }).catch(e => {
-    //         console.error(e)
-    //     })
-    // }
-
     const handleClickAdd = (e) => {
+        //const loginState = useSelector((state) => state.loginSlice);
 
         if (!shareRoom.title || !shareRoom.content) {
             setAddResultModal("제목과 내용을 입력해주세요");
@@ -140,13 +137,6 @@ const AddComponent = () => {
                     <div className="w-1/5 p-6 text-right font-bold">location</div>
                     <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
                         name="location" type={'text'} value={shareRoom.location} onChange={handleChangeShareRoom}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">userId</div>
-                    <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="userId" type={'text'} value={shareRoom.userId} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
             <div className="col-span-3">
