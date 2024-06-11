@@ -1,16 +1,18 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { postAddQna } from "../../../api/communityApi";
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import ResultModal from "../../common/ResultModal";
 import useCustomQna from "../../../hooks/useCustomQna";
 
 const initState = {
-    user_id: 'iamuser',
+    user_id: '',
     type: '2', //질문게시판은 2
     title: '',
     content: '',
     commHit: 0,
     commCategory: '',
-    nickname: '김유저',
+    nickname: '',
     files: [],
 };
 
@@ -21,6 +23,17 @@ const AddComponent = () => {
     const [previewFiles, setPreviewFiles] = useState([]);
     const { moveToList } = useCustomQna(); //목록으로 이동하기
     const uploadRef = useRef();
+    const loginInfo = useSelector((state) => state.loginSlice);
+    const id = loginInfo?.email;
+    const nickname = loginInfo?.nickname;
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // id가 없으면 로그인 화면으로 이동 -> 주소창으로 접근하는걸 방지
+        if (!id) {
+            navigate('/user/login'); // 로그인 경로로 이동
+        }
+    }, [id, navigate]);
 
     const handleChangeQna = (e) => {
         qna[e.target.name] = e.target.value;
@@ -83,13 +96,13 @@ const AddComponent = () => {
         }
         
         // 파일이 아닌 데이터를 formData에 추가
-        formData.append("user_id", qna.user_id);
+        formData.append("user_id", id);
+        formData.append("nickname", nickname);
         formData.append("type", qna.type);
         formData.append("title", qna.title);
         formData.append("content", qna.content);
         formData.append("commHit", qna.commHit);
         formData.append("commCategory", qna.commCategory);
-        formData.append("nickname", qna.nickname);
 
         postAddQna(formData);
         setResult("게시글이 등록되었습니다");
