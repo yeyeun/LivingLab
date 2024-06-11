@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
@@ -23,9 +22,7 @@ import com.mlp.lab.service.CommunityService;
 import com.mlp.lab.util.CustomFileUtilCommunity;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
 @RestController
 @RequestMapping("/api/community")
 @RequiredArgsConstructor

@@ -182,9 +182,7 @@ public class CommunityService {
         return responseDto;
     }
 
-    public PageResponseDto<CommunityDto> listHelp(PageRequestDto pageRequestDto, String search) { // 커뮤니티 게시글 목록
-                                                                                                  // 가져오기(페이징 처리, 이미지
-                                                                                                  // 포함)
+    public PageResponseDto<CommunityDto> listHelp(PageRequestDto pageRequestDto, String search) { 
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
