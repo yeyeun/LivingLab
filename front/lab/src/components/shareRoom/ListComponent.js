@@ -1,9 +1,9 @@
-import image from '../../resources/images/room.jpg';
 import { useEffect, useState } from "react";
-import { API_SERVER_HOST,getList } from "../../api/shareRoomApi"
+import { API_SERVER_HOST, getList } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PageComponent from "../common/PageComponent";
 import SearchComponent from '../../components/common/SearchComponent';
+import { useSelector } from 'react-redux';
 
 import SelectComponent from '../../components/common/SelectComponent';
 
@@ -23,8 +23,9 @@ const initState = {
 }
 
 const ListComponent = () => {
-  const { page , size , moveToList , moveToRead , moveToAdd } = useRoomCustomMove();
+  const { page, size, moveToList, moveToRead, moveToAdd } = useRoomCustomMove();
   const [serverData, setServerData] = useState(initState);
+  const loginState = useSelector((state) => state.loginSlice);
   useEffect(() => {
     getList({ page, size }).then(data => {
       console.log(data);
@@ -38,7 +39,7 @@ const ListComponent = () => {
         <SearchComponent />
       </div>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 py-10 max-w-7xl items-center mx-auto">
-        {serverData.dtoList.map((shareRoom) =>(
+        {serverData.dtoList.map((shareRoom) => (
           <div class="mx-12 overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-60 md:w-80">
             <div className="block w-full h-full" onClick={() => moveToRead(shareRoom.roomNo)}>
               <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} class="object-cover w-full max-h-40" />
@@ -56,9 +57,17 @@ const ListComponent = () => {
           </div>
         ))}
         <div className="flex justify-end p-4">
-          <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-gray-400" onClick={() => moveToAdd()}>
-            Add
-          </button>
+          {!loginState.id ? (
+            <>
+
+            </>
+          ) : (
+            <>
+              <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-gray-400" onClick={() => moveToAdd()}>
+                Add
+              </button>
+            </>
+          )}
         </div>
       </div>
       <PageComponent serverData={serverData} movePage={moveToList} />

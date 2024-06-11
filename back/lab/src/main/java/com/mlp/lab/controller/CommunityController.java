@@ -131,8 +131,7 @@ public class CommunityController {
     }
 
     // 글 삭제 (이미지 포함)
-    @DeleteMapping(value = { "/tip/delete/{commNo}", "/qna/delete/{commNo}", "/review/delete/{commNo}",
-            "/help/delete/{commNo}" })
+    @DeleteMapping("/delete/{commNo}")
     public void delete(@PathVariable(name = "commNo") int commNo) {
         List<String> uploadFileNames = communityService.read(commNo).getUploadFileNames();
         if (uploadFileNames != null && uploadFileNames.size() > 0) {
