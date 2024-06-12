@@ -6,7 +6,6 @@ export const getList = async (pageParam) => {
   const { page, size } = pageParam;
   const res = await axios.get(`${prefix}/list`, { params: { page: page, size: size } });
   return res.data;
-
 };
 
 export const getOne = async (roomNo) => {
@@ -15,9 +14,9 @@ export const getOne = async (roomNo) => {
   return res.data;
 }
 
-export const modify = async(roomNo) => {
+export const modify = async(roomNo,shareRoom) => {
   const header = {headers:{"Content-Type":"multipart/form-data"}};
-  const res = await axios.post(`${prefix}/add/${roomNo}`, header);
+  const res = await axios.put(`${prefix}/modify/${roomNo}`,shareRoom, header);
   return res.data;
 }
 

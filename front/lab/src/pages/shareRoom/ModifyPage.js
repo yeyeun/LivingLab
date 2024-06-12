@@ -2,8 +2,9 @@ import { useParams } from 'react-router-dom';
 import ModifyComponent from '../../components/shareRoom/ModifyComponent';
 
 const ModifyPage = () => {
+  const {roomNo} = useParams();
   return (
-    <ModifyComponent/>
+    <ModifyComponent roomNo={roomNo}/>
   );
 };
 
