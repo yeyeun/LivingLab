@@ -21,11 +21,11 @@ public class APILoginFailHandler implements AuthenticationFailureHandler {
 
     Gson gson = new Gson();
 
-    String jsonStr = gson.toJson(Map.of("error", "ERROR_LOGIN"));
+    String jsonStr = gson.toJson(Map.of("error", "ERROR_LOGIN")); // 로그인 실패 에러메시지
 
-    response.setContentType("application/json");
+    response.setContentType("application/json"); // json 문자열 만듦
     PrintWriter printWriter = response.getWriter();
-    printWriter.println(jsonStr);
+    printWriter.println(jsonStr); // 에러메시지 출력
     printWriter.close();
 
   }

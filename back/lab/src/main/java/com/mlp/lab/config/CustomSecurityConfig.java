@@ -15,10 +15,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-//import com.mlp.lab.security.filter.JWTCheckFilter;
+import com.mlp.lab.security.filter.JWTCheckFilter;
 import com.mlp.lab.security.handler.APILoginFailHandler;
 import com.mlp.lab.security.handler.APILoginSuccessHandler;
-// import com.mlp.lab.security.handler.CustomAccessDeniedHandler;
+import com.mlp.lab.security.handler.CustomAccessDeniedHandler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,20 +26,19 @@ import lombok.extern.log4j.Log4j2;
 @Configuration
 @Log4j2
 @RequiredArgsConstructor
-@EnableMethodSecurity
+@EnableMethodSecurity // 시큐리티 설정 : @PreAuthorize를 통한 접근 권한 처리
 public class CustomSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     log.info("-----------------------security config------------------------------");
-
     // CORS 설정
     http.cors(httpSecurityCorsConfigurer -> {
       httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
     });
 
+    // 세션 안 만들게 하는 설정
     http.sessionManagement(httpSecuritySessionManagementConfigurer -> {
       httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER);
-      // 세션 안 만들게 하는 것
     });
 
     // CSRF 설정
