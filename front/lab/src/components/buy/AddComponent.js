@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import useCustomMove from '../../hooks/useCustomMove';
 import { postAddBuy } from '../../api/buyApi';
 import ResultModal from '../common/ResultModal';
+import PostComponent from '../common/PostComponent';
+
 
 const initState = {
     user_id: 'exampleUserId',
@@ -26,25 +28,25 @@ const AddComponent = () => {
     const [addResultModal, setAddResultModal] = useState(null);
     const imgRef = useRef(null);
 
-    const handleImageChange = (event) => {
+    const handleImageChange = (event) => { // 이미지 변경
         const file = event.target.files[0];
         if (file) {
             setPostImage(URL.createObjectURL(file));
-            setPostImageFile(file); 
+            setPostImageFile(file);
         }
     };
 
-    const handleRemoveImage = () => {
+    const handleRemoveImage = () => { // 이미지 제거
         setPostImage(null);
-        setPostImageFile(null); 
+        setPostImageFile(null);
         if (imgRef.current) {
             imgRef.current.value = null;
         }
     };
 
     const handleChangeBuy = (e) => {
-        buy[e.target.name] = e.target.value;
-        setBuy({ ...buy });
+        const { name, value } = e.target;
+        setBuy(prev => ({ ...prev, [name]: value }));
     };
 
     const handleClickAdd = async () => {
@@ -63,7 +65,7 @@ const AddComponent = () => {
 
         const formData = new FormData();
         if (postImageFile) {
-            formData.append("files", postImageFile); 
+            formData.append("files", postImageFile);
         }
 
         formData.append("user_id", buy.user_id);
@@ -79,12 +81,15 @@ const AddComponent = () => {
 
         postAddBuy(formData);
         setResult("게시글이 등록되었습니다");
+    }
 
-        }
+    const closeModal = () => {
+        setResult(null);
+        moveToList();
+    };
 
-        const closeModal = () => {
-            setResult(null);
-            moveToList();
+    const setAddress = (address) => {
+        setBuy(prev => ({ ...prev, location: address }));
     };
 
     return (
@@ -139,8 +144,15 @@ const AddComponent = () => {
                     </div>
                     <input type="text" name="title" id="title" value={buy.title} onChange={handleChangeBuy} placeholder="제목을 입력하세요." className="input-text p-2" />
                     <div className="add-container">
-                        <div className="detail-box p-2">주소 찾기 클릭!</div>
-                        <button className="button-part ml-2" onClick={handleClickAdd}>주소 찾기</button>
+                        <input
+                            className="detail-input"
+                            name="addr"
+                            type="text"
+                            placeholder="주소(우편번호 및 도로명 검색)"
+                            value={buy.location}
+                            readOnly // 추가
+                        />
+                        <PostComponent setAddress={setAddress} /> {/* setAddress 함수를 전달 */}
                     </div>
                     <textarea name="content" id="content" value={buy.content} onChange={handleChangeBuy} placeholder="내용을 입력하세요." className="input-textarea p-2"></textarea>
                     <div className="detail-footer text-center">

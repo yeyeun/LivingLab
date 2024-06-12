@@ -58,17 +58,59 @@
   border-width: 2px;
 }
 
-.main-slide {
-  width: 1250px;
+.main-slide-container {
+  position: relative;
+  width: 1150px;
   height: auto;
   margin: 30px auto;
 }
 
+.main-slide {
+  overflow: hidden;
+  width: 380px;
+  height: 271px;
+  border-width: 1px;
+}
+
+.slider .slick-list {
+  margin: 0 -20px;
+}
+
+.latestPost-container {
+  display: flex;
+  font-size: 16px;
+  padding: 6px;
+}
+
+.latestPost-type {
+  font-weight: 800;
+  color:#000000;
+}
+
+.latestPost-title {
+}
+
+.latestPost-hit {
+  margin: auto 12px auto auto;
+}
+
+.lastestPost-list {
+  margin: auto 0;
+  overflow:hidden;
+}
+
+.latestPost-hr {
+  width: 94%;
+  margin: 0 auto;
+  
+}
+
+
 .main-container {
   display: flex;
   justify-content: space-between;
-  width: 1250px;
-  margin: 30px auto;
+  width: 1150px;
+  margin: 20px auto 30px auto;
 }
 
 .main-headline {
@@ -77,27 +119,32 @@
 }
 
 .main-item {
-  width: 600px;
+  width: 560px;
   height: 320px;
   border-radius: 8px;
   border-color: rgb(196, 196, 196);
   border-width: 1px;
+  margin-top: 8px;
 }
 
 .main-item2 {
-  width: 750px;
-  height: 370px;
+  width: 620px;
+  height: 371px;
   border-radius: 8px;
   border-color: rgb(196, 196, 196);
   border-width: 1px;
+  margin-top: 8px;
+
 }
 
 .main-item3 {
-  width: 450px;
-  height: 370px;
+  width: 500px;
+  height: 371px;
   border-radius: 8px;
   border-color: rgb(196, 196, 196);
   border-width: 1px;
+  margin-top: 8px;
+
 }
 
 .myPage-box {
@@ -157,8 +204,9 @@
 
 .image-upload {
   display: flex;
-  align-items: center;   /* 세로축 중앙 정렬 */
-  justify-content: center; 
+  align-items: center;
+  /* 세로축 중앙 정렬 */
+  justify-content: center;
   background-color: #ffffff;
   margin: 20px auto;
   width: 450px;
@@ -226,7 +274,7 @@
 
 .button-return {
   width: 70px;
-  height: 45px;
+  height: 44px;
   font-size: 21px;
   border-radius: 6px;
   background-color: hsl(217, 15%, 83%);
@@ -348,7 +396,7 @@
 
 .add-container {
   display: flex;
-  margin:  auto;
+  margin: auto;
   align-items: center;
   justify-content: space-between;
   width: 90%;
@@ -435,7 +483,8 @@ select option:disabled {
 }
 
 .image-preview {
-  width: 100%; /* 원하는 크기로 설정 */
+  width: 100%;
+  /* 원하는 크기로 설정 */
   height: auto;
   border-radius: 8px;
 }
