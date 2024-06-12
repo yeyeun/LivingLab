@@ -5,6 +5,7 @@ import { API_SERVER_HOST, getList } from '../../api/buyApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import PageComponent from '../common/PageComponent';
 
+
 const initState = {
   dtoList: [], //한 페이지에 불러오는 게시물 갯수
   pageNumList: [],

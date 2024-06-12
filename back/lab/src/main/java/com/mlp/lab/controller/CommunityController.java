@@ -137,4 +137,9 @@ public class CommunityController {
         communityService.delete(commNo);
     }
 
+    // 메인페이지 커뮤니티 최신 글
+    @GetMapping("/latest")
+    public List<CommunityDto> getLatestPosts() {
+        return communityService.getLatestPosts();
+    }
 }
