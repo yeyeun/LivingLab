@@ -83,7 +83,6 @@ const AddComponent = () => {
         formData.append("content", shareRoom.content);
         formData.append("rentFee", shareRoom.rentFee);
         formData.append("parking", shareRoom.parking);
-        formData.append("location", shareRoom.location);
         formData.append("option1", shareRoom.option1);
 
         postAdd(formData);
