@@ -4,16 +4,21 @@ import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.mlp.lab.security.APILoginSuccessHandler;
+//import com.mlp.lab.security.filter.JWTCheckFilter;
+import com.mlp.lab.security.handler.APILoginFailHandler;
+import com.mlp.lab.security.handler.APILoginSuccessHandler;
+// import com.mlp.lab.security.handler.CustomAccessDeniedHandler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +26,7 @@ import lombok.extern.log4j.Log4j2;
 @Configuration
 @Log4j2
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class CustomSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,11 +45,21 @@ public class CustomSecurityConfig {
     // CSRF 설정
     http.csrf(httpSecurityCsrfCorsConfigurer -> httpSecurityCsrfCorsConfigurer.disable());
 
+    // 로그인을 어떤 경로로 할지 설정
     http.formLogin(config -> {
       config.loginPage("/api/user/login");
       config.successHandler(new APILoginSuccessHandler());
       // config.failureHandler(new APILoginFailHandler());
     });
+
+    // JWT 체크(추가 혹은 필요없으면 주석처리,삭제)
+    // http.addFilterBefore(new JWTCheckFilter(),
+    // UsernamePasswordAuthenticationFilter.class);
+
+    // (추가 혹은 필요없으면 주석처리,삭제)
+    // http.exceptionHandling(config -> {
+    // config.accessDeniedHandler(new CustomAccessDeniedHandler());
+    // });
 
     return http.build();
   }
@@ -61,8 +77,10 @@ public class CustomSecurityConfig {
     CorsConfiguration configuration = new CorsConfiguration();
 
     configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-    configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+    configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT",
+        "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("Authorization",
+        "Cache-Control", "Content-Type"));
     configuration.setAllowCredentials(true);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

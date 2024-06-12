@@ -1,4 +1,4 @@
-package com.mlp.lab.security;
+package com.mlp.lab.security.handler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.google.gson.Gson;
-import com.mlp.lab.dto.MemberDto;
+import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.util.JWTUtil;
 
 import jakarta.servlet.ServletException;
@@ -28,9 +28,9 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
     log.info(authentication);
     log.info("-------------------------------------");
 
-    MemberDto memberDTO = (MemberDto) authentication.getPrincipal();
+    UserDto userDto = (UserDto) authentication.getPrincipal();
 
-    Map<String, Object> claims = memberDTO.getClaims();
+    Map<String, Object> claims = userDto.getClaims();
 
     String accessToken = JWTUtil.generateToken(claims, 10); // 10분, 지금 사용할 수 있는 거
     String refreshToken = JWTUtil.generateToken(claims, 60 * 24); // 교환권

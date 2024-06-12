@@ -18,16 +18,13 @@ const kakaoLink = getKakaoLoginLink(); // 카카오 로그인 링크
 
 function LoginComponent(props) {
   const [loginParam, setLoginParam] = useState({ ...initState });
-
   const dispatch = useDispatch();
+  const { moveToLogin, moveToPath } = useCustomLogin();
 
   const handleChange = (e) => {
     loginParam[e.target.name] = e.target.value;
-
     setLoginParam({ ...loginParam });
   };
-
-  const { moveToLogin, moveToPath } = useCustomLogin();
 
   const handleClickLogin = (e) => {
     dispatch(login(loginParam));
