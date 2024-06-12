@@ -58,9 +58,6 @@ public class UserController {
             return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
         }
 
-        // List<MultipartFile> files = userDto.getFiles(); // 서버에 저장
-        // List<String> uploadFileNames = fileUtil.saveFiles(files); // DB에 저장
-        // userDto.setUploadFileNames(uploadFileNames);
         userService.add(userDto);
 
         return ResponseDto.setSuccess("회원가입 완료");

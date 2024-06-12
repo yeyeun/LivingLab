@@ -15,10 +15,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-//import com.mlp.lab.security.filter.JWTCheckFilter;
+import com.mlp.lab.security.filter.JWTCheckFilter;
 import com.mlp.lab.security.handler.APILoginFailHandler;
 import com.mlp.lab.security.handler.APILoginSuccessHandler;
-// import com.mlp.lab.security.handler.CustomAccessDeniedHandler;
+import com.mlp.lab.security.handler.CustomAccessDeniedHandler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,40 +26,38 @@ import lombok.extern.log4j.Log4j2;
 @Configuration
 @Log4j2
 @RequiredArgsConstructor
-@EnableMethodSecurity
+@EnableMethodSecurity // 시큐리티 설정 : @PreAuthorize를 통한 접근 권한 처리
 public class CustomSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     log.info("-----------------------security config------------------------------");
-
     // CORS 설정
     http.cors(httpSecurityCorsConfigurer -> {
       httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
     });
 
+    // 세션 안 만들게 하는 설정
     http.sessionManagement(httpSecuritySessionManagementConfigurer -> {
       httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER);
-      // 세션 안 만들게 하는 것
     });
 
     // CSRF 설정
     http.csrf(httpSecurityCsrfCorsConfigurer -> httpSecurityCsrfCorsConfigurer.disable());
 
-    // 로그인을 어떤 경로로 할지 설정
     http.formLogin(config -> {
-      config.loginPage("/api/user/login");
-      config.successHandler(new APILoginSuccessHandler());
-      // config.failureHandler(new APILoginFailHandler());
+      config.loginPage("/api/user/login"); // 어떤 경로로 로그인을 할지 설정
+      config.successHandler(new APILoginSuccessHandler()); // 로그인 성공 후, 처리를 Success핸들러로 설정
+      config.failureHandler(new APILoginFailHandler()); // 로그인 실패
     });
 
-    // JWT 체크(추가 혹은 필요없으면 주석처리,삭제)
-    // http.addFilterBefore(new JWTCheckFilter(),
-    // UsernamePasswordAuthenticationFilter.class);
+    // JWT 체크
+    http.addFilterBefore(new JWTCheckFilter(),
+        UsernamePasswordAuthenticationFilter.class);
 
-    // (추가 혹은 필요없으면 주석처리,삭제)
-    // http.exceptionHandling(config -> {
-    // config.accessDeniedHandler(new CustomAccessDeniedHandler());
-    // });
+    // 권한 접근 제한 시 CustomAccessDeniedHandler 이용 설정
+    http.exceptionHandling(config -> {
+      config.accessDeniedHandler(new CustomAccessDeniedHandler());
+    });
 
     return http.build();
   }
