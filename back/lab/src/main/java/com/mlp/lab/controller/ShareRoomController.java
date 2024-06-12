@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.ShareRoomDto;
-import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.service.ShareRoomService;
@@ -91,6 +90,7 @@ public class ShareRoomController {
             uploadedFileNames.addAll(newUploadFileNames);
         }
         shareRoomService.modify(shareRoomDto);
+        
         if (oldFileNames != null && oldFileNames.size() > 0) {
             List<String> removeFiles = oldFileNames
                     .stream()
