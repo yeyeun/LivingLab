@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getLatest } from '../../api/communityApi';
 
 function LatestPostComponent() {
@@ -19,6 +20,57 @@ function LatestPostComponent() {
     fetchLatestPosts();
   }, []);
 
+  const typeColor = (type) => {
+    switch (type) {
+      case '1':
+        return 'type1';
+      case '2':
+        return 'type2';
+      case '3':
+        return 'type3';
+      case '4':
+        return 'type4';
+      default:
+        return '';
+    }
+  };
+
+  const toCommunity = (type) => {
+    switch (type) {
+      case '1':
+        return '/community/tip/list';
+      case '2':
+        return '/community/qna/list';
+      case '3':
+        return '/community/review/list';
+      case '4':
+        return '/community/help/list';
+      default:
+        return '#';
+    }
+  };
+
+  const toRead = (type, commNo) => {
+    let typePath = '';
+    switch (type) {
+      case '1':
+        typePath = 'tip';
+        break;
+      case '2':
+        typePath = 'qna';
+        break;
+      case '3':
+        typePath = 'review';
+        break;
+      case '4':
+        typePath = 'help';
+        break;
+      default:
+        typePath = '';
+    }
+    return `/community/${typePath}/read/${commNo}?page=1&size=10`;
+  };
+
   return (
     <div className='latestPost-list '>
       <ul className='latestPost-list'>
@@ -26,15 +78,17 @@ function LatestPostComponent() {
           <li key={post.commNo}>
             <div className="latestPost-container">
               <div className='w-1/5 ml-3'>
-                <span className="latestPost-type"> 
+                <Link to={toCommunity(post.type)} className={`latestPost-type ${typeColor(post.type)}`}>
                   {post.type === '1' && '자취TIP공유'}
                   {post.type === '2' && '질문게시판'}
                   {post.type === '3' && '리뷰게시판'}
                   {post.type === '4' && '도움요청'}
-                </span>
+                </Link>
               </div>
               <div>
-                <span>{post.title}</span>
+                <Link to={toRead(post.type, post.commNo)} >
+                  <span>{post.title}</span>
+                </Link>
               </div>
               <span className="latestPost-hit ">{post.commHit}</span>
             </div>

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
@@ -23,9 +22,7 @@ import com.mlp.lab.service.CommunityService;
 import com.mlp.lab.util.CustomFileUtilCommunity;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
 @RestController
 @RequestMapping("/api/community")
 @RequiredArgsConstructor
@@ -36,20 +33,23 @@ public class CommunityController {
     // 목록조회
     @GetMapping("/tip/list")
     public PageResponseDto<CommunityDto> ListTip(PageRequestDto pageRequestDto,
-            @RequestParam(required = false, value = "search") String search) {
-        return communityService.listTip(pageRequestDto, search);
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort) {
+        return communityService.listTip(pageRequestDto, search, sort);
     }
 
     @GetMapping("/qna/list")
     public PageResponseDto<CommunityDto> ListQna(PageRequestDto pageRequestDto,
-            @RequestParam(required = false, value = "search") String search) {
-        return communityService.listQna(pageRequestDto, search);
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort) {
+        return communityService.listQna(pageRequestDto, search, sort);
     }
 
     @GetMapping("/review/list")
     public PageResponseDto<CommunityDto> ListReview(PageRequestDto pageRequestDto,
-            @RequestParam(required = false, value = "search") String search) {
-        return communityService.listReview(pageRequestDto, search);
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort) {
+        return communityService.listReview(pageRequestDto, search, sort);
     }
 
     @GetMapping("/help/list")
@@ -86,7 +86,8 @@ public class CommunityController {
     }
 
     // 글 수정 (이미지 포함)
-    @PutMapping(value={"/tip/modify/{commNo}","/qna/modify/{commNo}","/review/modify/{commNo}","/help/modify/{commNo}"})
+    @PutMapping(value = { "/tip/modify/{commNo}", "/qna/modify/{commNo}", "/review/modify/{commNo}",
+            "/help/modify/{commNo}" })
     public void modify(@PathVariable(name = "commNo") Long commNo, CommunityDto communityDto) {
         communityDto.setCommNo(commNo);
         CommunityDto oldDto = communityService.read(commNo.intValue());
@@ -102,21 +103,18 @@ public class CommunityController {
 
         // 수정된 기존 파일들 (DB에 저장된 파일 이름과 동일한지, 삭제된게 있는지 확인해야함)
         List<String> uploadedFileNames = communityDto.getUploadFileNames();
-        
+
         // 유지되는 파일들 + 새로 업로드된 파일 이름들이 저장해야하는 파일 목록
         if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
             uploadedFileNames.addAll(newUploadFileNames);
         }
 
-
         // 이미지 여부에 따라 flag 설정
         if ((uploadedFileNames == null || uploadedFileNames.isEmpty()) && (files == null || files.isEmpty())) {
             communityDto.setFlag(false);
-        }
-        else{
+        } else {
             communityDto.setFlag(true);
         }
-
 
         communityService.modify(communityDto);
 
@@ -130,10 +128,10 @@ public class CommunityController {
     }
 
     // 글 삭제 (이미지 포함)
-    @DeleteMapping(value={"/tip/delete/{commNo}","/qna/delete/{commNo}","/review/delete/{commNo}","/help/delete/{commNo}"})
+    @DeleteMapping("/delete/{commNo}")
     public void delete(@PathVariable(name = "commNo") int commNo) {
         List<String> uploadFileNames = communityService.read(commNo).getUploadFileNames();
-        if(uploadFileNames != null && uploadFileNames.size()>0){
+        if (uploadFileNames != null && uploadFileNames.size() > 0) {
             fileUtil.deleteFiles(uploadFileNames);
         }
         communityService.delete(commNo);

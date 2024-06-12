@@ -36,7 +36,7 @@ const MainPage = () => {
 
       <BasicLayout>
         
-        <div className="main-container-top mb-5">
+        <div className="main-container-top mt-10 mb-5">
           <img className="main-image" src={Main} alt="MainImage" />
         </div>
 

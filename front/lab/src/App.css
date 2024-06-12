@@ -83,7 +83,7 @@
 }
 
 .latestPost-type {
-  font-weight: 800;
+  font-weight: 700;
   color:#000000;
 }
 
@@ -105,6 +105,21 @@
   
 }
 
+.type1 {
+  color: rgb(87, 206, 200); /* 자취TIP공유의 색상 */
+}
+
+.type2 {
+  color: rgb(74, 101, 175); /* 질문게시판의 색상 */
+}
+
+.type3 {
+  color: rgb(238, 134, 120); /* 리뷰게시판의 색상 */
+}
+
+.type4 {
+  color: rgb(168, 118, 71); /* 도움요청의 색상 */
+}
 
 .main-container {
   display: flex;
@@ -177,6 +192,10 @@
   background-color: white;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
+}
+
+.shadow-set{
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .detail-box {
