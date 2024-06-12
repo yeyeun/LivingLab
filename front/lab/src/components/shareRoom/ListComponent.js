@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { API_SERVER_HOST, getList } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PageComponent from "../common/PageComponent";
-import SearchComponent from '../../components/common/SearchComponent';
 import { useSelector } from 'react-redux';
 
-import SelectComponent from '../../components/common/SelectComponent';
+
 
 const host = API_SERVER_HOST;
 
@@ -22,22 +21,22 @@ const initState = {
   current: 0
 }
 
-const ListComponent = () => {
+const ListComponent = ({ search }) => {
   const { page, size, moveToList, moveToRead, moveToAdd } = useRoomCustomMove();
   const [serverData, setServerData] = useState(initState);
   const loginState = useSelector((state) => state.loginSlice);
+
   useEffect(() => {
-    getList({ page, size }).then(data => {
+    getList({ page, size },search).then(data => {
       console.log(data);
       setServerData(data);
     })
-  }, [page, size]);
+  }, [page, size ,search]);
+
+
   return (
 
     <>
-      <div className='h-1/2 items-center'>
-        <SearchComponent />
-      </div>
       <div className=' '>
       {!loginState.id ? (
             <>
@@ -61,7 +60,7 @@ const ListComponent = () => {
                   {shareRoom.title}
                 </p>
                 <p class="font-light text-gray-400 text-md">
-                  {shareRoom.rentFee}
+                  월세 : {(shareRoom.rentFee / 10000).toFixed(1)} 만원
                 </p>
               </div>
             </div>

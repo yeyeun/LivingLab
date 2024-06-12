@@ -1,7 +1,8 @@
-import { useRef, useState, useEffect } from "react";
+import React,{ useRef, useState, useEffect } from "react";
 import { modify,getOne } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
+import PostComponent from "../common/PostComponent";
 
 
 const initState = {
@@ -23,6 +24,8 @@ const ModifyComponent = ({ roomNo }) => {
     const [previewFiles, setPreviewFiles] = useState([]);
     const { moveToRead } = useRoomCustomMove();
     const uploadRef = useRef();
+    const [address, setAddress] = React.useState('');
+    const [popup, setPopup] = React.useState(false);
 
     useEffect(() => {
         getOne(roomNo).then(data => {
@@ -65,6 +68,10 @@ const ModifyComponent = ({ roomNo }) => {
         }
         const files = uploadRef.current.files;
         const formData = new FormData();
+        
+        const combinedAddress = `${address} ${document.querySelector('[name="detailAddr"]').value}`;
+        formData.append("location", combinedAddress);
+
         for (let i = 0; i < files.length; i++) {
             formData.append("files", files[i]);
         }
@@ -128,6 +135,27 @@ const ModifyComponent = ({ roomNo }) => {
                     <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
                         name="option1" type={'text'} value={shareRoom.option1} onChange={handleChangeShareRoom}></input>
                 </div>
+            </div>
+            <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                <div className="w-full p-3 text-left font-bold">주소</div>
+                <button
+                    className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
+                    onClick={() => {
+                        setPopup(!popup);
+                    }}
+                >
+                    🔍︎ 주소 검색
+                </button>
+                {popup && <PostComponent address={address} setAddress={setAddress}></PostComponent>}
+                <input
+                    className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
+                    name="addr"
+                    type={'text'}
+                    placeholder="주소"
+                    required={true}
+                    value={address}
+                ></input>
+                <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input>
             </div>
             <div className="col-span-3">
             <label htmlFor="fileUpload" className="block text-sm font-medium leading-6 text-gray-900">사진 업로드</label>
