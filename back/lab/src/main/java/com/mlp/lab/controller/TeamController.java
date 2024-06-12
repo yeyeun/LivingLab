@@ -19,7 +19,7 @@ import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.dto.TeamDto;
 import com.mlp.lab.service.TeamService;
-import com.mlp.lab.util.CustomFileUtil;
+import com.mlp.lab.util.CustomFileUtilTeam;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
-    private final CustomFileUtil fileUtil;
+    private final CustomFileUtilTeam fileUtil;
 
     @GetMapping("/list") // 목록조회(검색기능 포함)
     public PageResponseDto<TeamDto> List(PageRequestDto pageRequestDto,
