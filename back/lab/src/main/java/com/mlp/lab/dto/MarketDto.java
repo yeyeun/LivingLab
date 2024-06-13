@@ -31,12 +31,12 @@ public class MarketDto { // 동네장터 화면에서 받을 데이터
     private Integer current;
     private String location;
     private Character marketHit;
-    private String marketImage;
     private String nickname;
-
-     @Builder.Default
-    private List<MultipartFile> files = new ArrayList<>(); 
+    private boolean flag; // true:마감 / false:모집중
 
     @Builder.Default
-    private List<String> uploadFileNames = new ArrayList<>(); 
+    private List<MultipartFile> files = new ArrayList<>(); // 서버에 저장되는 실제 파일 데이터
+
+    @Builder.Default
+    private List<String> uploadFileNames = new ArrayList<>(); // 데이터베이스에 저장될 파일 이름
 }

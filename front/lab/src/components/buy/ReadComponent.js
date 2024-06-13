@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { API_SERVER_HOST, deleteOne, getOne } from '../../api/marketApi';
+import { API_SERVER_HOST, deleteOne, getOne } from '../../api/buyApi';
 import { useSelector } from 'react-redux';
 import Slider from "react-slick";
 import useCustomMove from '../../hooks/useCustomMove';
@@ -12,11 +12,11 @@ import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_full.png';
 
 const initState = {
-    marketNo: 0,
+    buyNo: 0,
     title: '',
     location: '',
     content: '',
-    marketCategory: '',
+    buyCategory: '',
     max: 0,
     current: 0,
     deadline: '',
@@ -26,8 +26,8 @@ const initState = {
 
 const host = API_SERVER_HOST;
 
-const ReadComponent = ({ marketNo }) => {
-    const [market, setMarket] = useState(initState);
+const ReadComponent = ({ buyNo }) => {
+    const [buy, setBuy] = useState(initState);
     const { moveToList, moveToModify } = useCustomMove();
     const loginInfo = useSelector((state) => state.loginSlice);
     const id = loginInfo?.email;
@@ -45,11 +45,11 @@ const ReadComponent = ({ marketNo }) => {
     };
   
     useEffect(() => {
-      getOne(marketNo).then((data) => {
+      getOne(buyNo).then((data) => {
         console.log(data);
-        setMarket(data);
+        setBuy(data);
       });
-    }, [marketNo]);
+    }, [buyNo]);
   
     const [showModal, setShowModal] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -69,8 +69,8 @@ const ReadComponent = ({ marketNo }) => {
     };
 
     const handleConfirm = () => {
+      deleteOne(buyNo);
       setShowConfirm(false);
-      deleteOne(marketNo);
       moveToList();
     };
 
@@ -109,62 +109,62 @@ const ReadComponent = ({ marketNo }) => {
         <div className="bg-slate-100 w-2/5 mx-auto p-4 rounded-lg">
             <div className="flex justify-between items-center">
                 <span className="text-left font-semibold ml-2 items-center flex">
-                  {market.flag? '모집 마감':'모집 중'}<img src={iconNext} alt="..." className="w-7 inline"/>
+                  {buy.flag? '모집 마감':'모집 중'}<img src={iconNext} alt="..." className="w-7 inline"/>
                 </span>
-                <span className="text-right text-base">{formatDeadline(market.deadline)}
+                <span className="text-right text-base">{formatDeadline(buy.deadline)}
                 </span>
             </div>
             <div className="grid grid-cols-10 w-full mx-auto mt-4 mb-1 text-xl bg-white">
                 <div className="col-start-9 col-span-2 ml-5 mt-4 text-right flex justify-center">
-                  <img src={emptyheart} alt="..." className="w-7 mr-3 inline"/>{market.marketHit}
+                  <img src={emptyheart} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
                 </div> 
                 <div className="col-start-3 col-span-6 h-72 mt-3 mb-10">
-                  {market.uploadFileNames.length > 0? (
+                  {buy.uploadFileNames.length > 0? (
                     <Slider {...settings}>
-                    {market.uploadFileNames.map((imgFile, i) =>
-                      <img alt="market" key={i} src={`${host}/api/market/display/${imgFile}`} className="object-contain w-full h-72"/>
+                    {buy.uploadFileNames.map((imgFile, i) =>
+                      <img alt="buy" key={i} src={`${host}/api/buy/display/${imgFile}`} className="object-contain w-full h-72"/>
                     )}
                     </Slider>
                   )
                   :
                   (
-                    <img alt="market" src={`${host}/api/market/display/default.png`} className="object-contain w-full h-72"/>
+                    <img alt="buy" src={`${host}/api/buy/display/default.png`} className="object-contain w-full h-72"/>
                   )}
                 </div>
                 <div className="col-start-2 col-span-3 text-base">
                   <span className="text-base rounded-3xl text-slate-700 text-center py-1 px-3 mr-2 bg-blue-100 border-blue-300 border">
-                    {market.marketCategory === '1' && '구매'}
-                    {market.marketCategory === '2' && '판매'}
-                    {market.marketCategory === '3' && '교환'}
-                    {market.marketCategory === '4' && '나눔'}
-                    {market.marketCategory === '5' && '기타'}
+                    {buy.buyCategory === '1' && '배달음식'}
+                    {buy.buyCategory === '2' && '생필품'}
+                    {buy.buyCategory === '3' && '식료품'}
+                    {buy.buyCategory === '4' && '가구/가전'}
+                    {buy.buyCategory === '5' && '기타'}
                   </span>
                   <span className="text-base rounded-3xl text-slate-700 text-center py-1 px-3 bg-neutral-100 border-neutral-300 border">
-                    <img src={userIcon} alt="..." className="w-3 inline mb-1" />&ensp;{market.current} / {market.max}
+                    <img src={userIcon} alt="..." className="w-3 inline mb-1" />&ensp;{buy.current} / {buy.max}
                   </span>
                 </div>
 
                 <div className="col-start-2 col-span-6 text-slate-700 text-2xl my-5">
-                  {market.title}
+                  {buy.title}
                 </div>
                 <div className="col-start-2 col-span-6 text-base">
-                  <img src={mapIcon} alt="..." className="w-5 inline" />&ensp;{market.location}
+                  <img src={mapIcon} alt="..." className="w-5 inline" />&ensp;{buy.location}
                 </div>
                 <div className="col-start-2 col-span-8"></div>
                 <div className="col-start-8 col-span-2 text-right text-base">
-                  {market.nickname}
+                  {buy.nickname}
                 </div>
                 <div className="col-start-2 col-span-8 my-5 border-t-4 py-4">
-                  {market.content}
+                  {buy.content}
                 </div>
                 <div className="col-start-2 col-span-8 h-80">
-                  <MapComponent location={market.location} />
+                  <MapComponent location={buy.location} />
                 </div>
                 <div className="col-start-6 col-span-4 my-6">
                   <div className="flex">
-                    {id === market.user_id? (
+                    {id === buy.user_id? (
                     <>
-                    <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/2 mr-2 hover:bg-red-500" onClick={() => moveToModify(marketNo)}>수정하기</button>
+                    <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/2 mr-2 hover:bg-red-500" onClick={() => moveToModify(buyNo)}>수정하기</button>
                     <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 mr-2 hover:bg-slate-500" onClick={handleDeleteClick}>삭제하기</button>
                     <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>목록</button>
                     </>
