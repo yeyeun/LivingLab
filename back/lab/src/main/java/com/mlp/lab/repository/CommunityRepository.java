@@ -1,9 +1,12 @@
 package com.mlp.lab.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 
 import com.mlp.lab.entity.Community;
 
@@ -51,4 +54,8 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
 
     @Query("select c from Community c where c.type = '4' and c.title like %:title%")
     Page<Community> helpSearchList(Pageable pageable, String title);
+
+    @Query("select c from Community c order by c.createdDate desc")
+    List<Community> latestList();
 }
+

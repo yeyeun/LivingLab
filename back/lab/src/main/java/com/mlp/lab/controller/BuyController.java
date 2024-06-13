@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.hibernate.mapping.Map;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,9 @@ public class BuyController {
     private final BuyService buyService;
     private final CustomFileUtil fileUtil;
 
+    // 권한 설정 테스트
+    // @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    /////////////////////////////////////////////////////////
     @GetMapping("/list") // 목록조회(검색, 정렬 기능 포함)
     public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto,
             @RequestParam(required = false, value = "search") String search,

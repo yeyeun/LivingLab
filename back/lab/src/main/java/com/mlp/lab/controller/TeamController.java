@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.ResponseDto;
@@ -92,4 +93,5 @@ public class TeamController {
         }
         return ResponseDto.setSuccessData("수정되었습니다.", teamDto);
     }
+
 }

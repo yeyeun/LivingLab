@@ -1,11 +1,11 @@
 package com.mlp.lab.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.ShareRoomDto;
-import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.service.ShareRoomService;
@@ -34,9 +34,11 @@ public class ShareRoomController {
     private final ShareRoomService shareRoomService;
     private final CustomFileUtil fileUtil;
 
+
     @GetMapping("/list")
-    public RoomPageResponseDto<ShareRoomDto> List(RoomPageRequestDto roomPageRequestDto) {
-        return shareRoomService.list(roomPageRequestDto);
+    public RoomPageResponseDto<ShareRoomDto> List(RoomPageRequestDto roomPageRequestDto,
+     @RequestParam(required = false, value = "search") String search){
+        return shareRoomService.list(roomPageRequestDto,search);
     }
 
     @DeleteMapping("/{roomNo}")
@@ -91,6 +93,7 @@ public class ShareRoomController {
             uploadedFileNames.addAll(newUploadFileNames);
         }
         shareRoomService.modify(shareRoomDto);
+        
         if (oldFileNames != null && oldFileNames.size() > 0) {
             List<String> removeFiles = oldFileNames
                     .stream()
