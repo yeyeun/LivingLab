@@ -6,6 +6,7 @@ import SearchComponent from '../../components/common/SearchComponent';
 const ListPage = () => {
   const [search, setSearch] = useState('');
 
+  // ?search={}으로 받은 값으로 검색
   const handleSearch = (query) => {
     setSearch(query);
   };
