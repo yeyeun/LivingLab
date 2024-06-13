@@ -1,0 +1,559 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 홈 화면 상단 */
+.main-container-top {
+  display: flex;
+}
+
+.main-image {
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+}
+
+.main-profile {
+  width: 400px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 2rem;
+  border-color: aquamarine;
+  border-width: 2px;
+}
+
+.main-slide-container {
+  position: relative;
+  width: 1150px;
+  height: auto;
+  margin: 30px auto;
+}
+
+.main-slide {
+  overflow: hidden;
+  width: 380px;
+  height: 271px;
+  border-width: 1px;
+}
+
+.slider .slick-list {
+  margin: 0 -20px;
+}
+
+.latestPost-container {
+  display: flex;
+  font-size: 16px;
+  padding: 6px;
+}
+
+.latestPost-type {
+  font-weight: 700;
+  color:#000000;
+}
+
+.latestPost-title {
+}
+
+.latestPost-hit {
+  margin: auto 12px auto auto;
+}
+
+.lastestPost-list {
+  margin: auto 0;
+  overflow:hidden;
+}
+
+.latestPost-hr {
+  width: 94%;
+  margin: 0 auto;
+  
+}
+
+.type1 {
+  color: rgb(87, 206, 200); /* 자취TIP공유의 색상 */
+}
+
+.type2 {
+  color: rgb(74, 101, 175); /* 질문게시판의 색상 */
+}
+
+.type3 {
+  color: rgb(238, 134, 120); /* 리뷰게시판의 색상 */
+}
+
+.type4 {
+  color: rgb(168, 118, 71); /* 도움요청의 색상 */
+}
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  width: 1150px;
+  margin: 20px auto 30px auto;
+}
+
+.main-headline {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.main-item {
+  width: 560px;
+  height: 320px;
+  border-radius: 8px;
+  border-color: rgb(196, 196, 196);
+  border-width: 1px;
+  margin-top: 8px;
+}
+
+.main-item2 {
+  width: 620px;
+  height: 371px;
+  border-radius: 8px;
+  border-color: rgb(196, 196, 196);
+  border-width: 1px;
+  margin-top: 8px;
+
+}
+
+.main-item3 {
+  width: 500px;
+  height: 371px;
+  border-radius: 8px;
+  border-color: rgb(196, 196, 196);
+  border-width: 1px;
+  margin-top: 8px;
+
+}
+
+.myPage-box {
+  width: 340px;
+  height: 220px;
+  border-radius: 8px;
+  border-color: rgb(196, 196, 196);
+  border-width: 1px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
+.header-active {
+  font-weight: 700;
+  color: #6ac5b7;
+}
+
+.color-wood {
+  color: #7e5835;
+}
+
+.detail-container {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  gap: 1.25rem;
+  padding: 0.5rem;
+  margin: 0 auto;
+  background-color: white;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+}
+
+.shadow-set{
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.detail-box {
+  width: 90%;
+  margin: 5px auto;
+  background-color: #e5e7eb;
+  border-radius: 1rem;
+}
+
+.detail-content {
+  width: 90%;
+  height: 13rem;
+  margin: 20px auto;
+  background-color: #e5e7eb;
+  border-radius: 1rem;
+}
+
+.detail-footer {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.image-upload {
+  display: flex;
+  align-items: center;
+  /* 세로축 중앙 정렬 */
+  justify-content: center;
+  background-color: #ffffff;
+  margin: 20px auto;
+  width: 450px;
+  height: 300px;
+  border-color: #e5e7eb;
+  border-width: 1px;
+}
+
+.tag-button {
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-right: 0.75rem;
+  padding: 0.125rem 0.625rem;
+  border: 1px solid #000000;
+  border-radius: 1rem;
+  font-size: 20px;
+}
+
+.team-category-container {
+  margin: 0 auto;
+  width: 40%;
+}
+
+.team-category {
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  height: 50px;
+  gap: 1.25rem;
+  padding: 0.55rem;
+  margin: 10px 0;
+  background-color: #ffffff;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  text-align: center;
+  font-size: 24px;
+}
+
+.map-container {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.map-draw {
+  display: flex;
+  width: 100%;
+  height: 300px;
+  margin: 5px auto;
+  border-color: #e5e7eb;
+  border-width: 1px;
+  overflow: hidden;
+  align-items: center;
+}
+
+.button-part {
+  width: 120px;
+  height: 44px;
+  font-size: 21px;
+  border-radius: 6px;
+  background-color: hsl(196, 78%, 61%);
+  color: #ffffff;
+}
+
+.button-return {
+  width: 70px;
+  height: 44px;
+  font-size: 21px;
+  border-radius: 6px;
+  background-color: hsl(217, 15%, 83%);
+  color: #ffffff;
+}
+
+.modal-header {
+  padding: 20px;
+  font-size: 22px;
+  border-radius: 5px 5px 0 0;
+  background-color: #ade1f0;
+}
+
+.modal-body {
+  padding: 10px 20px;
+  font-size: 20px;
+}
+
+.modal-footer {
+  margin-bottom: 10px;
+  padding: 15px 0;
+  font-size: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* 모달 오버레이 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+/* 모달 내용 */
+.modal-content {
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  position: relative;
+  width: 80%;
+  max-width: 500px;
+  z-index: 2;
+}
+
+/* 닫기 버튼 스타일 */
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.modal-profile-container {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.modal-profile-box {
+  width: 70px;
+  height: 70px;
+  margin: 10px;
+  border-radius: 50%;
+  border-width: 1px;
+  border-color: #d1d1d1;
+  overflow: hidden;
+}
+
+.modal-profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-profile-name {
+  margin: 15px;
+}
+
+.modal-button-enter {
+  width: 150px;
+  height: 50px;
+  border-radius: 24px;
+  background-color: hsl(196, 78%, 61%);
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.modal-button-exit {
+  width: 150px;
+  height: 50px;
+  border-radius: 24px;
+  background-color: hsl(217, 15%, 83%);
+  font-weight: 500;
+}
+
+.input-text {
+  display: block;
+  width: 90%;
+  margin: 5px auto;
+  background-color: #e5e7eb;
+  border-radius: 1rem;
+}
+
+.input-textarea {
+  display: block;
+  width: 90%;
+  height: 13rem;
+  margin: 20px auto;
+  background-color: #e5e7eb;
+  border-radius: 1rem;
+}
+
+.add-container {
+  display: flex;
+  margin: auto;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+}
+
+.select {
+  width: 170px;
+  margin: 5px 0;
+  height: 44px;
+  background-color: #e5e7eb;
+  border-radius: 1rem;
+}
+
+.date-picker {
+  width: 170px;
+  margin: 5px 0 5px 8px;
+  background-color: #e5e7eb;
+  border-radius: 1rem;
+}
+
+.max-person {
+  width: 80px;
+  margin: 5px 0;
+  background-color: #e5e7eb;
+  border-radius: 1rem;
+}
+
+
+
+input[type="date"]:focus:before,
+input[type="date"]:valid:before {
+  display: none;
+}
+
+input[type='date']::before {
+  content: attr(data-placeholder);
+}
+
+input[type="date"]:not(:focus):invalid {
+
+  &::-webkit-datetime-edit-text,
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-year-field {
+    -webkit-appearance: none;
+    display: none;
+  }
+}
+
+input[type="date"] {
+  position: relative;
+}
+
+input[data-placeholder]::before {
+  position: absolute;
+  width: 70%;
+  color: #a0a7b3
+}
+
+select option:disabled {
+  color: #a0a7b3;
+}
+
+.thumbnail-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  font-weight: bold;
+  font-size: 25px;
+  color: #6ac5b7;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+}
+
+.thumbnail-input[type="file"] {
+  display: none;
+}
+
+.image-preview-container {
+  position: relative;
+  display: inline-block;
+}
+
+.image-preview {
+  width: 100%;
+  /* 원하는 크기로 설정 */
+  height: auto;
+  border-radius: 8px;
+}
+
+.remove-image-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.remove-image-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+
+/* MapComponent.js */
+/* 키워드 주소 검색 후 리스트 나열  */
+#result-list {
+  margin-left: 30px;
+  width: 40%;
+  height: 400px;
+  overflow: auto;
+}
+
+#result-one {
+  display: flex;
+}
+
+#pagination {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+#pagination a {
+  color: black;
+  font-size: 20px;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+#pagination a.on {
+  color: lightblue;
+  font-weight: bold;
+}
