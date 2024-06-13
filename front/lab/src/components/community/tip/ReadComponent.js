@@ -2,7 +2,8 @@ import heartEmpty from "../../../resources/images/heart_empty.png";
 import replyIcon from "../../../resources/images/reply.png";
 import CommentComponent from "../../common/CommentComponent";
 import { useEffect, useState } from "react";
-import { API_SERVER_HOST, getOneTip, deleteTip } from "../../../api/communityApi";
+import { useSelector } from 'react-redux';
+import { API_SERVER_HOST, getOneTip, deleteOne } from "../../../api/communityApi";
 import useCustomTip from "../../../hooks/useCustomTip";
 import ResultModal from "../../common/ResultModal";
 
@@ -19,8 +20,10 @@ const host = API_SERVER_HOST;
 
 const ReadComponent = ({commNo}) => {
     const [result, setResult] = useState(null);
-    const [tip, setTip] = useState(initState)
-    const { moveToList, moveToModify } = useCustomTip()
+    const [tip, setTip] = useState(initState);
+    const { moveToList, moveToModify } = useCustomTip();
+    const loginInfo = useSelector((state) => state.loginSlice);
+    const id = loginInfo?.email;
 
     useEffect(() => {
         getOneTip(commNo).then(data => {
@@ -30,7 +33,7 @@ const ReadComponent = ({commNo}) => {
     }, [commNo])
 
     const handleClickDelete = (e) => {
-        deleteTip(commNo);
+        deleteOne(commNo);
         setResult("게시글이 삭제되었습니다");
     }
 
@@ -86,8 +89,16 @@ return(
                 </p>
                 <hr></hr>
                 <div className="flex justify-center space-x-2 mt-4">
+                    { id === tip.user_id?
+                    (
+                    <>
                     <button type="button" className="bg-gray-400 text-white rounded-md text-sm px-1 py-0.5 hover:bg-gray-500 ml-1" onClick={() => moveToModify(commNo)}>수정하기</button>
                     <button type="button" className="bg-gray-400 text-white rounded-md text-sm px-1 py-0.5 hover:bg-gray-500 ml-1" onClick={handleClickDelete}>삭제하기</button>
+                    </>
+                    )
+                    :
+                    (<></>)
+                    }
                     <button type="button" className="bg-gray-400 text-white rounded-md text-sm px-1 py-0.5 hover:bg-gray-500 ml-1" onClick={() => moveToList()}>목록으로 이동</button>
                 </div>
                 <div>

@@ -1,4 +1,4 @@
-import SearchComponent from "../../../components/common/SearchComponent";
+import SearchComponent from "../SearchComponent";
 import useCustomHelp from "../../../hooks/useCustomHelp";
 import { getListHelp } from "../../../api/communityApi";
 import { useEffect, useState } from "react";
@@ -23,6 +23,7 @@ const ListComponent = () => {
   const {page, size, moveToList, moveToRead} = useCustomHelp();
   const [serverData, setServerData] = useState(initState);
   const [search, setSearch] = useState('');
+  const [sort, setSort] = useState('');
   useEffect(()=>{
     getListHelp({page,size}, search).then(data=>{
           console.log(data);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
+
 const PostComponent = ({ setAddress }) => {
   const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
   const open = useDaumPostcodePopup(scriptUrl);
@@ -28,7 +29,7 @@ const PostComponent = ({ setAddress }) => {
 
   return (
     <div>
-      <button onClick={handleClick} className="rounded p-2 w-2/6 bg-gray-500 text-xm text-white" type="button">
+      <button onClick={handleClick} className="rounded p-2 w-full bg-gray-500 text-xm text-white hover:bg-gray-600" type="button">
         🔍︎ 주소 검색
       </button>
     </div>

@@ -53,13 +53,11 @@ public class UserController {
         if (userService.findByEmail(userDto.getEmail()) != null) {
             return ResponseDto.setFailed("이미 존재하는 아이디입니다.");
         }
-        // if (!userDto.getPwd().equals(userDto.getPwdCheck())) {
-        // return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
-        // }
 
-        List<MultipartFile> files = userDto.getFiles(); // 서버에 저장
-        List<String> uploadFileNames = fileUtil.saveFiles(files); // DB에 저장
-        userDto.setUploadFileNames(uploadFileNames);
+        if (!userDto.getPwd().equals(userDto.getPwdCheck())) {
+            return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
+        }
+
         userService.add(userDto);
 
         return ResponseDto.setSuccess("회원가입 완료");
