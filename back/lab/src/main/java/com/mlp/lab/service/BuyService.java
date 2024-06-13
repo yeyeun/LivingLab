@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,9 @@ import lombok.RequiredArgsConstructor;
 public class BuyService {
     private final BuyRepository buyRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort) {
         Pageable pageable = PageRequest.of(
@@ -36,30 +41,30 @@ public class BuyService {
         } else if (search != null && !search.isEmpty()) { // 검색
             result = buyRepository.selectSearchList(search, pageable);
         } else if (sort != null && !sort.isEmpty()) { // 정렬
-            if(sort.equals("최신순")){
+            if (sort.equals("최신순")) {
                 result = buyRepository.newList(pageable);
             }
-            if(sort.equals("마감임박순")){
+            if (sort.equals("마감임박순")) {
                 result = buyRepository.deadLineList(pageable);
             }
             // if(sort.equals("거리순")){
-            //     result = 
+            // result =
             // }
             // if(sort.equals("좋아요순")){
-            //     result = 
+            // result =
             // }
         } else if (search != null && sort != null) { // 검색&정렬 둘다
-            if(sort.equals("최신순")){
+            if (sort.equals("최신순")) {
                 result = buyRepository.searchNewList(sort, pageable);
             }
-            if(sort.equals("마감임박순")){
+            if (sort.equals("마감임박순")) {
                 result = buyRepository.searchDeadLineList(sort, pageable);
             }
             // if(sort.equals("거리순")){
-            //     result = 
+            // result =
             // }
             // if(sort.equals("좋아요순")){
-            //     result = 
+            // result =
             // }
         }
         List<BuyDto> dtoList = result.get().map(arr -> {
@@ -98,8 +103,8 @@ public class BuyService {
         BuyDto buyDto = Buy.entityToDto(buy);
         return buyDto;
     }
-    
-    //삭제하기
+
+    // 삭제하기
     public void remove(int buyNo) {
         buyRepository.deleteById(buyNo);
     }
@@ -127,4 +132,35 @@ public class BuyService {
         }
         buyRepository.save(buy);
     }
+
+    public List<BuyDto> getLatestBuy() {
+        Pageable pageable = PageRequest.of(0, 8, Sort.by("buyNo").descending());
+        Page<Object[]> result = null; 
+    
+        result = buyRepository.latestBuyList(pageable);
+    
+        List<BuyDto> dtoList = result.getContent().stream().map(arr -> {
+            Buy buy = (Buy) arr[0];
+            BuyImage buyImage = (BuyImage) arr[1];
+    
+            BuyDto buyDto = BuyDto.builder()
+                    .buyNo(buy.getBuyNo())
+                    .title(buy.getTitle())
+                    .buyCategory(buy.getBuyCategory())
+                    .location(buy.getLocation())
+                    .max(buy.getMax())
+                    .current(buy.getCurrent())
+                    .deadline(buy.getDeadline())
+                    .nickname(buy.getNickname())
+                    .build();
+    
+            String imageStr = buyImage.getFileName();
+            buyDto.setUploadFileNames(List.of(imageStr));
+            return buyDto;
+        }).collect(Collectors.toList());
+    
+        return dtoList;
+    }
+    
+
 }

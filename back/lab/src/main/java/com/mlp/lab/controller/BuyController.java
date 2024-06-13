@@ -96,4 +96,9 @@ public class BuyController {
         }
         return ResponseDto.setSuccessData("수정되었습니다.", buyDto);
     }
+
+    @GetMapping("/latest")
+    public List<BuyDto> getLatestBuyList() {
+        return buyService.getLatestBuy();
+    }
 }

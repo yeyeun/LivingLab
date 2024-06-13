@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getLatest } from '../../api/communityApi';
+import { getLatestComm } from '../../api/communityApi';
 
-function LatestPostComponent() {
+const CommunityPostComponent = () => {
   const [latestPosts, setLatestPosts] = useState([]);
 
   useEffect(() => {
     const fetchLatestPosts = async () => {
       try {
-        const pageParam = { page: 1, size: 8 }; // 페이지네이션 파라미터 추가
-        const posts = await getLatest(pageParam);
-        console.log('Fetched latest posts:', posts); // 콘솔 출력 추가
+        const pageParam = { page: 1, size: 8 }; 
+        const posts = await getLatestComm(pageParam);
+        console.log('Success:', posts);
         setLatestPosts(posts);
       } catch (error) {
-        console.error('Error fetching latest posts:', error);
+        console.error('Error :', error);
       }
     };
 
@@ -74,23 +74,23 @@ function LatestPostComponent() {
   return (
     <div className='latestPost-list '>
       <ul className='latestPost-list'>
-        {latestPosts.map((post, index) => (
-          <li key={post.commNo}>
+        {latestPosts.map((comm, index) => (
+          <li key={comm.commNo}>
             <div className="latestPost-container">
               <div className='w-1/5 ml-3'>
-                <Link to={toCommunity(post.type)} className={`latestPost-type ${typeColor(post.type)}`}>
-                  {post.type === '1' && '자취TIP공유'}
-                  {post.type === '2' && '질문게시판'}
-                  {post.type === '3' && '리뷰게시판'}
-                  {post.type === '4' && '도움요청'}
+                <Link to={toCommunity(comm.type)} className={`latestPost-type ${typeColor(comm.type)}`}>
+                  {comm.type === '1' && '자취TIP공유'}
+                  {comm.type === '2' && '질문게시판'}
+                  {comm.type === '3' && '리뷰게시판'}
+                  {comm.type === '4' && '도움요청'}
                 </Link>
               </div>
               <div>
-                <Link to={toRead(post.type, post.commNo)} >
-                  <span>{post.title}</span>
+                <Link to={toRead(comm.type, comm.commNo)} >
+                  <span className='latestPost-title'>{comm.title}</span>
                 </Link>
               </div>
-              <span className="latestPost-hit ">{post.commHit}</span>
+              <span className="latestPost-hit ">{comm.commHit}</span>
             </div>
             {index !== latestPosts.length - 1 && <hr className="latestPost-hr"></hr>}
           </li>
@@ -100,4 +100,4 @@ function LatestPostComponent() {
   );
 };
 
-export default LatestPostComponent;
+export default CommunityPostComponent;

@@ -1,11 +1,14 @@
 package com.mlp.lab.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.mlp.lab.entity.Buy;
+import com.mlp.lab.entity.Community;
 
 //Buy Entity의 기본키(PK) 타입인 Integer를 인자로 전달
 public interface BuyRepository extends JpaRepository<Buy, Integer> {
@@ -34,4 +37,12 @@ public interface BuyRepository extends JpaRepository<Buy, Integer> {
     // 검색 + 마감임박순
     @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false and b.title like %:title% order by b.deadline asc")
     Page<Object[]> searchDeadLineList(String title, Pageable pageable);
+
+    // // 메인에 표기할 최신순
+    // @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false order by b.createdDate desc")
+    // List<Object[]> latestBuyList();
+
+    @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false order by b.createdDate desc")
+    Page<Object[]> latestBuyList(Pageable pageable);
+    
 }
