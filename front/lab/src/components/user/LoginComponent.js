@@ -8,6 +8,8 @@ import HorizonLine from '../../util/HorizontalLine';
 import KakaoLoginComponent from './KakaoLoginComponent';
 import { getKakaoLoginLink } from '../../api/kakaoApi';
 import useCustomLogin from '../../hooks/useCustomLogin';
+import { loginPost } from '../../api/userApi';
+
 
 const initState = {
   email: '',
@@ -29,12 +31,23 @@ function LoginComponent(props) {
 
   const { moveToLogin, moveToPath } = useCustomLogin();
 
-  const handleClickLogin = (e) => {
-    dispatch(login(loginParam));
-    alert('로그인 되었습니다!');
-    moveToPath('/');
 
-    //dispatch(loginPostAsync(loginParam));
+  const handleClickLogin = (e) => {
+    
+    loginPost(loginParam).then((userInfo) => {
+      console.log('----------------------------');
+      console.log(userInfo);
+      dispatch(login(userInfo));
+
+      // 로그인 후 메인으로
+      if (userInfo != null) {  //성공
+        alert("성공");
+        moveToPath('/');
+      } else {
+        alert("실패");
+        moveToPath('/user/login');  //실패
+      }
+    });
   };
 
   return (
@@ -75,9 +88,9 @@ function LoginComponent(props) {
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
             <div className="w-full flex justify-center font-bold">
-              <button className="rounded p-2 w-full bg-black text-xl text-white" onClick={handleClickLogin}>
-                로그인
-              </button>
+                <button className="rounded p-2 w-full bg-black text-xl text-white" onClick={handleClickLogin}>
+                  로그인
+                </button>
             </div>
           </div>
         </div>
