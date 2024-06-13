@@ -30,11 +30,31 @@ function LoginComponent(props) {
   const { moveToLogin, moveToPath } = useCustomLogin();
 
   const handleClickLogin = (e) => {
-    dispatch(login(loginParam));
-    alert('로그인 되었습니다!');
-    moveToPath('/');
+    //dispatch(login(loginParam));
 
-    //dispatch(loginPostAsync(loginParam));
+    dispatch(loginPostAsync(loginParam)).then((data) => {
+      console.log('after unwrap...');
+      console.log(data);
+      if (data.error) {
+        alert('이메일과 패스워드를 다시 확인하세요');
+      } else {
+        alert('로그인 성공');
+        moveToPath('/');
+      }
+    }); // 비동기 호출
+
+    // dispatch(loginPostAsync(loginParam))
+    //   .unwrap()
+    //   .then((data) => {
+    //     console.log('after unwrap...');
+    //     console.log(data);
+    //     if (data.error) {
+    //       alert('이메일과 패스워드를 다시 확인하세요');
+    //     } else {
+    //       alert('로그인 성공');
+    //       moveToPath('/');
+    //     }
+    //   }); // 비동기 호출
   };
 
   return (
