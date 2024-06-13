@@ -35,7 +35,6 @@ const ListComponent = ({ search }) => {
 
 
   return (
-
     <>
       <div className=' '>
       {!loginState.id ? (
