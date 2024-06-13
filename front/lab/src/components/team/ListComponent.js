@@ -5,6 +5,7 @@ import { API_SERVER_HOST, getList } from '../../api/teamApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import PageComponent from '../common/PageComponent';
 import nolist from "../../resources/images/nolist2.png"
+import heart from "../../resources/images/heart_full.png"
 
 const initState = {
   dtoList: [], //한 페이지에 불러오는 게시물 갯수
@@ -76,7 +77,7 @@ const ListComponent = ({ search, sort }) => {
     <div>
           {serverData.dtoList.length > 0 ? (
             serverData.dtoList.map(team =>
-            <div key={team.teamNo} className="w-full mb-4" onClick={() => moveToRead(team.teamNo)}>
+            <div key={team.teamNo} className="w-full mb-4 cursor-pointer" onClick={() => moveToRead(team.teamNo)}>
               <div className="flex flex-col items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                 <div className="w-60 h-48">
                   <img className="w-full h-full object-cover rounded-none border-2" src={`${host}/api/team/display/${team.uploadFileNames[0]}`} alt="..." />
@@ -93,6 +94,9 @@ const ListComponent = ({ search, sort }) => {
                     <div className="bg-white text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl border border-gray-900 dark:bg-gray-700 dark:text-gray-300">
                       <img src={userIcon} alt="..." className="w-3 inline" />&ensp;{team.current} / {team.max}
                     </div>
+                    <div className="text-gray-800 text-sm font-medium ml-auto">
+                    <img src={heart} alt="..." className="w-4 inline" />&ensp;{team.teamHit}
+                    </div>
                   </div>
                   <div className="flex justify-end w-full">
                     <div className="font-bold text-green-700 text-base">{formatDeadline(team.deadline)}</div>
@@ -102,7 +106,7 @@ const ListComponent = ({ search, sort }) => {
                   </div>
                   <div className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{team.title}</div>
                   <div className="mb-3 text-base text-gray-700 dark:text-gray-400">
-                    <img src={mapIcon} alt="..." className="w-3 inline" />&ensp;{team.location}
+                    <img src={mapIcon} alt="..." className="w-4 inline" />&ensp;{team.location}
                   </div>
                   <div className="flex justify-end mb-2 text-lg tracking-tight text-gray-900 dark:text-white">{team.nickname}</div>
                 </div>

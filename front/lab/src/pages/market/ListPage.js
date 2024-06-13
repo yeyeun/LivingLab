@@ -43,7 +43,7 @@ const ListPage = () => {
 
   return (
     <>
-      <div className="m-auto w-1/2 pb-2 text-3xl font-Jua">동네모임</div>
+      <div className="m-auto w-1/2 pb-2 text-3xl font-Jua">동네장터</div>
       <div className="m-auto w-1/2 items-center">
         <LocationComponent />
         {/* <MoveMarkerComponent /> */}

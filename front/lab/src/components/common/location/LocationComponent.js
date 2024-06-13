@@ -31,11 +31,11 @@ const LocationComponent = () => {
     navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
   }, []);
 
-  useEffect(() => {
-    getUser(ino).then((data) => {
-      setUser(data);
-    });
-  }, [ino]);
+  // useEffect(() => {
+  //   getUser(ino).then((data) => {
+  //     setUser(data);
+  //   });
+  // }, [ino]);
 
   const successHandler = (response) => {
     //console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903

@@ -45,7 +45,7 @@ public class UserController {
         if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
             return ResponseDto.setFailed("아이디와 비밀번호를 확인해주세요.");
         }
-        return ResponseDto.setSuccess("환영합니다 " + loginDto.getEmail() + " 님"); // ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
+        return ResponseDto.setSuccessData("환영합니다 " + loginDto.getEmail() + " 님", user); // ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
     }
 
     @PostMapping("/join")

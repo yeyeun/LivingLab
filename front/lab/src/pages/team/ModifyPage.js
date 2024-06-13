@@ -1,7 +1,11 @@
+import { useParams } from 'react-router-dom';
+import ModifyComponent from '../../components/team/ModifyComponent'
+
 const ModifyPage = () => {
+    const { teamNo } = useParams();
     return(
         <div>
-            동네모임 글 수정 페이지
+            <ModifyComponent teamNo={teamNo}/>
         </div>
     ); 
 }

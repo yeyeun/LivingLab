@@ -69,8 +69,8 @@ const ReadComponent = ({ teamNo }) => {
     };
 
     const handleConfirm = () => {
-      deleteOne(teamNo);
       setShowConfirm(false);
+      deleteOne(teamNo);
       moveToList();
     };
 
