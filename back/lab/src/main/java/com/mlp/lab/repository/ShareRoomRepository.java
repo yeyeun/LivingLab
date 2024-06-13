@@ -16,4 +16,9 @@ public interface ShareRoomRepository extends JpaRepository<ShareRoom,Integer>{
     // 글의 내용과 이미지를 가져옴(이미지가 삭제되지않은)
     @Query("select s, si from ShareRoom s left join s.imageList si where si.ord = 0 and s.flag = true")
     Page<Object[]> selectList(Pageable pageable);
+
+    // 검색어 기준 정렬(글 제목에서만 검색)
+    @Query("select s, si from ShareRoom s left join s.imageList si where si.ord = 0 and s.flag = true and s.title like %:title%")
+    Page<Object[]> selectSearchList(String title, Pageable pageable);
+
 }
