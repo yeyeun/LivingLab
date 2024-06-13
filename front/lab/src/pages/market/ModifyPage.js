@@ -1,7 +1,11 @@
+import { useParams } from 'react-router-dom';
+import ModifyComponent from '../../components/market/ModifyComponent'
+
 const ModifyPage = () => {
+    const { marketNo } = useParams();
     return(
         <div>
-            동네장터 글 수정 페이지
+            <ModifyComponent marketNo={marketNo}/>
         </div>
     ); 
 }

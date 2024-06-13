@@ -10,7 +10,7 @@ const ModalComponent = ({ show, onClose }) => {
         <div className="modal-overlay">
             <div className="modal-content">
                 <div className="modal-header">
-                    <span className="close-button" onClick={onClose}>&times;</span>
+                    <span className="modal-close-button" onClick={onClose}>&times;</span>
                     <h2>참여 인원(/)</h2>
                 </div>
                 <hr />

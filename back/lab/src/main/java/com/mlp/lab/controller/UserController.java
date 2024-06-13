@@ -1,14 +1,21 @@
 package com.mlp.lab.controller;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.dto.LoginDto;
@@ -16,21 +23,21 @@ import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.entity.User;
 import com.mlp.lab.service.MailService;
 import com.mlp.lab.service.UserService;
+import com.mlp.lab.util.CustomFileUtil;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @CrossOrigin(origins = "*")
 @RestController
+@Log4j2
 @RequestMapping("/api/user")
 @RequiredArgsConstructor // 초기화 되지않은 final 필드나, @NonNull 이 붙은 필드에 대해 생성자를 생성
 public class UserController {
-    // 리액트와 연동시 보통 rest api를 통해 프론트로 json 형태의 데이터를 넘겨주기 때문에 이런 식으로 데이터를 return 하는 것이
-    // 좋음
-    // REST API로 만든다면 클라이언트와 서버 간의 통신 가능
-
     // final을 붙여 생성자 생성(@Autoweird 대신)
     private final UserService userService;
     private final MailService mailService;
+    private final CustomFileUtil fileUtil;
 
     @PostMapping("/login")
     public ResponseDto<Object> login(@RequestBody LoginDto loginDto) {
@@ -38,7 +45,7 @@ public class UserController {
         if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
             return ResponseDto.setFailed("아이디와 비밀번호를 확인해주세요.");
         }
-        return ResponseDto.setSuccess("환영합니다 " + loginDto.getEmail() + " 님"); // ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
+        return ResponseDto.setSuccessData("환영합니다 " + loginDto.getEmail() + " 님", user); // ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
     }
 
     @PostMapping("/join")
@@ -49,8 +56,12 @@ public class UserController {
         // if (!userDto.getPwd().equals(userDto.getPwdCheck())) {
         // return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
         // }
-        User user = User.createMember(userDto); // 화면에서 받은 데이터를 담은 Dto를 Entity에 담아 DB에 저장
-        userService.save(user);
+
+        List<MultipartFile> files = userDto.getFiles(); // 서버에 저장
+        List<String> uploadFileNames = fileUtil.saveFiles(files); // DB에 저장
+        userDto.setUploadFileNames(uploadFileNames);
+        userService.add(userDto);
+
         return ResponseDto.setSuccess("회원가입 완료");
     }
 
@@ -70,6 +81,14 @@ public class UserController {
             return ResponseDto.setFailed("인증번호가 일치하지 않습니다.");
         }
         return ResponseDto.setSuccess(user.getName() + "님의 패스워드는 " + user.getPwd() + " 입니다.");
+    }
+
+    // 회원정보 수정
+    @PutMapping("/modify")
+    public Map<String, String> modifyUser(@RequestBody UserDto userDto) {
+        log.info("---------------------userInfo modify-------------------");
+        userService.modifyUserInfo(userDto);
+        return Map.of("result", "userInfo modified");
     }
 
     // 회원정보 조회

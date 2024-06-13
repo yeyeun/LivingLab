@@ -1,9 +1,10 @@
+import { useParams } from 'react-router-dom';
+import AddComponent from '../../components/shareRoom/AddComponent';
+
 const AddPage = () => {
-    return(
-        <div>
-            자취방쉐어 글 작성 페이지
-        </div>
-    ); 
-}
+  return (
+    <AddComponent/>
+  );
+};
 
 export default AddPage;

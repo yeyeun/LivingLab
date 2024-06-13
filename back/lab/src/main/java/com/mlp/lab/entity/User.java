@@ -39,28 +39,36 @@ public class User {
     private String name;
     private String addr;
     private String detailAddr;
+    private String location; // 실시간 위치 정보
     private String phone;
     private String nickname;
     private String profileImage;
 
     // static으로 만들어 클래스를 만들지 않아도 사용가능
-    public static User createMember(UserDto dto) { // 화면에서 dto를 통해 받은 값과 Entity를 통해 DB에 저장할 값을 지정
-        User user = new User();
-        user.setId(dto.getId());
-        user.setEmail(dto.getEmail());
-        user.setPwd(dto.getPwd());
-        user.setName(dto.getName());
-        user.setPhone(dto.getPhone());
-        user.setAddr(dto.getAddr());
-        user.setDetailAddr(dto.getDetailAddr());
-        user.setNickname(dto.getNickname());
+    public static User DtoToEntity(UserDto userDto) { // 화면에서 받은 dto를 entity로
+        ModelMapper modelMapper = new ModelMapper();
+        User user = modelMapper.map(userDto, User.class);
         return user;
     }
 
-    //// ModelMapper: 서로 다른 클래스의 값을 한 번에 복사하게 도와주는 라이브러리
-    // public static User createMember(UserDto userDto){
-    // ModelMapper modelMapper = new ModelMapper();
-    // User user = modelMapper.map(userDto, User.class);
+    public static UserDto entityToDto(User user) {
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        return userDto;
+    }
+
+    // static으로 만들어 클래스를 만들지 않아도 사용가능
+    // public static User createMember(UserDto dto) { // 화면에서 dto를 통해 받은 값과 Entity를
+    // 통해 DB에 저장할 값을 지정
+    // User user = new User();
+    // user.setId(dto.getId());
+    // user.setEmail(dto.getEmail());
+    // user.setPwd(dto.getPwd());
+    // user.setName(dto.getName());
+    // user.setPhone(dto.getPhone());
+    // user.setAddr(dto.getAddr());
+    // user.setDetailAddr(dto.getDetailAddr());
+    // user.setNickname(dto.getNickname());
     // return user;
     // }
 
@@ -81,33 +89,6 @@ public class User {
     public void userRole() {
         userRoleList.clear();
     }
-
-    // 회원정보 수정 (5개 함수)
-    public void changeName(String name) {
-        this.name = name;
-    }
-
-    public void changePhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void changeNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void changePwd(String pwd) {
-        this.pwd = pwd;
-    }
-
-    public void changeAddr(String addr) {
-        this.addr = addr;
-    }
-
-    public void changeDetailAddr(String detailAddr) {
-        this.detailAddr = detailAddr;
-    }
-
-    ///////////////////////////////////////
 
     // 소셜 권한 바꿀 때 사용 (스프링 시큐리티)
     // public void changeSocial(boolean social) {

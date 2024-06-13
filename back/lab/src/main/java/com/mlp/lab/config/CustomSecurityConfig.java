@@ -39,11 +39,11 @@ public class CustomSecurityConfig {
     // CSRF 설정
     http.csrf(httpSecurityCsrfCorsConfigurer -> httpSecurityCsrfCorsConfigurer.disable());
 
-    http.formLogin(config -> {
-      config.loginPage("/api/user/login");
-      config.successHandler(new APILoginSuccessHandler());
-      // config.failureHandler(new APILoginFailHandler());
-    });
+    // http.formLogin(config -> {
+    //   config.loginPage("/api/user/login");
+    //   config.successHandler(new APILoginSuccessHandler());
+    //   // config.failureHandler(new APILoginFailHandler());
+    // });
 
     return http.build();
   }

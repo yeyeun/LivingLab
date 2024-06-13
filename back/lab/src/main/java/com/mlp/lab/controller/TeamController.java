@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,38 +15,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
-import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.dto.TeamDto;
 import com.mlp.lab.service.TeamService;
-import com.mlp.lab.util.CustomFileUtil;
+import com.mlp.lab.util.CustomFileUtilTeam;
 
 import lombok.RequiredArgsConstructor;
-
 
 @RestController
 @RequestMapping("/api/team")
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
-    private final CustomFileUtil fileUtil;
+    private final CustomFileUtilTeam fileUtil;
 
-    @GetMapping("/list")    // 목록조회(검색기능 포함)
-    public PageResponseDto<TeamDto> List(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "search") String search){
-        PageResponseDto<TeamDto> result = new PageResponseDto<>(null, pageRequestDto, 0);
-        if (search == null || search.isEmpty()) {
-            result = teamService.list(pageRequestDto);
-        } else {
-            result = teamService.searchList(pageRequestDto, search);
-        }
-        return result;
+    @GetMapping("/list") // 목록조회(검색기능 포함)
+    public PageResponseDto<TeamDto> List(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort) {
+        return teamService.list(pageRequestDto, search, sort);
     }
 
-    @GetMapping("/read/{teamNo}")   // 상세조회
-    public TeamDto read(@PathVariable(name = "teamNo") int teamNo){
+    @GetMapping("/read/{teamNo}") // 상세조회
+    public TeamDto read(@PathVariable(name = "teamNo") int teamNo) {
         return teamService.read(teamNo);
+    }
+
+
+    // 글 삭제 (이미지 포함)
+    @DeleteMapping("/delete/{teamNo}")
+    public void delete(@PathVariable(name = "teamNo") int teamNo) {
+        List<String> uploadFileNames = teamService.read(teamNo).getUploadFileNames();
+        if (uploadFileNames != null && uploadFileNames.size() > 0) {
+            fileUtil.deleteFiles(uploadFileNames);
+        }
+        teamService.delete(teamNo);
     }
 
     @GetMapping("/display/{fileName}") // 목록조회
@@ -53,7 +58,7 @@ public class TeamController {
         return fileUtil.getFile(fileName);
     }
 
-    @PostMapping("/add")    //작성
+    @PostMapping("/add") // 작성
     public void add(TeamDto teamDto) {
         List<MultipartFile> files = teamDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
@@ -61,27 +66,28 @@ public class TeamController {
         teamService.add(teamDto);
     }
 
-    @PutMapping("/modify/{buyNo}") // 수정
-    public ResponseDto<TeamDto> modify(@PathVariable(name = "buyNo") Long teamNo, TeamDto teamDto) {
+    @PutMapping("/modify/{teamNo}") // 수정
+    public void modify(@PathVariable(name = "teamNo") Long teamNo, TeamDto teamDto) {
         teamDto.setTeamNo(teamNo);
         TeamDto oldDto = teamService.read(teamNo.intValue());
+
         // 기존 파일들(데이터베이스에 저장된 파일 이름)
-
         List<String> oldFileNames = oldDto.getUploadFileNames();
+
         // 새로 업로드해야 하는 파일들
-
         List<MultipartFile> files = teamDto.getFiles();
+
         // 새로 업로드된 파일 이름들
-
         List<String> newUploadFileNames = fileUtil.saveFiles(files);
-        // 변화가 없이 유지되는 파일들
 
+        // 변화가 없이 유지되는 파일들
         List<String> uploadedFileNames = teamDto.getUploadFileNames();
+
         // 유지되는 파일들 + 새로 업로드된 파일 이름들이 저장해야하는 파일 목록
         if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
             uploadedFileNames.addAll(newUploadFileNames);
         }
-        
+
         teamService.modify(teamDto);
 
         if (oldFileNames != null && oldFileNames.size() > 0) {
@@ -91,6 +97,6 @@ public class TeamController {
             // 파일 삭제
             fileUtil.deleteFiles(removeFiles);
         }
-        return ResponseDto.setSuccessData("수정되었습니다.", teamDto);
     }
+
 }

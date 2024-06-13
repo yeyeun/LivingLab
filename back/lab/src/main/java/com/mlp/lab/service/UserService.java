@@ -1,6 +1,7 @@
 package com.mlp.lab.service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -29,13 +30,12 @@ public class UserService {
   private final ModelMapper modelMapper;
   private final UserRepository userRepository;
 
-  // private final PasswordEncoder passwordEncoder; // 이럴 때 비밀번호는 인코딩해서
-  // 넣어줘야된다.(스프링 시큐리티)
+  // 이럴 때 비밀번호는 인코딩해서 넣어줘야된다.(스프링 시큐리티)
+  // private final PasswordEncoder passwordEncoder;
 
   // 사용자가 DB에 없다면 새로운 데이터를 추가해줘야된다.
-
-  public void save(User member) {
-    userRepository.save(member);
+  public void save(User user) {
+    userRepository.save(user);
   }
 
   public User findByEmail(String email) {
@@ -46,7 +46,13 @@ public class UserService {
     return userRepository.findByNameAndPhone(name, phone);
   }
 
-  // 마이페이지 회원정보 조회
+  // 회원가입 (등록, 이미지 포함)
+  public void add(UserDto userDto) {
+    User user = User.DtoToEntity(userDto);
+    userRepository.save(user);
+  }
+
+  // 회원정보 조회
   public UserDto get(Long id) {
     Optional<User> result = userRepository.findById(id);
     User user = result.orElseThrow();
@@ -54,27 +60,28 @@ public class UserService {
     return userDto;
   }
 
-  // 마이페이지 회원정보 수정
+  // 회원정보 수정
   public void modifyUserInfo(UserDto userDto) {
-    // 1. 회원정보 조회
+    // 1. 조회
     // Optional<User> result = userRepository.findByEmail(userDto.getEmail()); //이메일
     Optional<User> result = userRepository.findById(userDto.getId()); // 아이디로 조회
     User user = result.orElseThrow(); // throwException(예외처리)
 
-    // 2. 수정(Dto에 받은 값으로 Entiry의 데이터 수정)
-    // 이름, 휴대폰 번호, 닉네임, 비밀번호, 주소 (5개 항목 변경)
-    user.changeName(userDto.getName());
-    user.changePhone(userDto.getPhone());
-    user.changeNickname(userDto.getNickname());
-    // user.changePwd(passwordEncoder.encode(userDto.getPwd()));
-    user.changePwd(userDto.getPwd());
-    user.changeAddr(userDto.getAddr());
-    user.changeDetailAddr(userDto.getDetailAddr());
+    // 2. 수정(Dto에 받은 값으로 Entity의 데이터 수정)
+    user.setName(userDto.getName());
+    user.setPhone(userDto.getPhone());
+    user.setNickname(userDto.getNickname());
+    // user.setPwd(passwordEncoder.encode(userDto.getPwd()));
+    user.setPwd(userDto.getPwd());
+    user.setAddr(userDto.getAddr());
+    user.setDetailAddr(userDto.getDetailAddr());
+    user.setLocation(userDto.getLocation());
 
     userRepository.save(user);
   }
 
-  // 카카오 연동해서 accessToken을 이용해서 카카오api에 등록된 사용자 정보 가져오기
+  ////////////////////////////////////////////////////////////////////////////////
+  // 카카오 연동해서 accessToken을 이용해서 카카오api에 등록된 사용자 정보 가져오는 함수
   public UserDto getKakaoMember(String accessToken) {
 
     // 카카오 이메일, 닉네임
@@ -87,8 +94,7 @@ public class UserService {
 
     // 1. DB에 이메일이 있는 경우
     if (result.isPresent()) {
-      UserDto userDto = entityToDto(result.get());
-
+      UserDto userDto = User.entityToDto(result.get());
       log.info("기존 DB에 존재하는 이메일 계정 정보: " + userDto);
       return userDto;
     }
@@ -96,7 +102,7 @@ public class UserService {
     // 2. DB에 이메일이 없는 경우
     User socialUser = makeSocialUser(email, nickname); // 이메일, 닉네임 정보 받아서 entity 생성
     userRepository.save(socialUser); // DB에 저장
-    UserDto userDto = entityToDto(socialUser); // DTO로 바꿔서 전달
+    UserDto userDto = User.entityToDto(socialUser); // DTO로 바꿔서 전달
 
     return userDto;
   }
@@ -118,24 +124,7 @@ public class UserService {
     return user;
   }
 
-  // User entity를 User dto로 변환하는 entityToDto 함수
-  public UserDto entityToDto(User user) {
-    UserDto dto = new UserDto(
-        user.getId(),
-        user.getEmail(),
-        user.getPwd(),
-        // user.getPwdCheck(),
-        user.getName(),
-        user.getPhone(),
-        user.getNickname(),
-        user.getAddr(),
-        user.getDetailAddr()
-    // user.isSocial(),
-    ); // 사용자가 DB에 없다면 새로운 데이터를 추가해줘야된다.
-
-    return dto;
-  }
-
+  ///////////////////////////////////////////////////////////////////
   // 10자리의 비밀번호를 만들어주는 함수 (필수로 사용 안해도 됨)
   private String makeTempPassword() {
     StringBuffer buffer = new StringBuffer();
@@ -226,7 +215,8 @@ public class UserService {
 
     HttpHeaders headers = new org.springframework.http.HttpHeaders();
     headers.add("Authorization", "Bearer " + accessToken);
-    headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+    headers.add("Content-type",
+        "application/x-www-form-urlencoded;charset=utf-8");
 
     HttpEntity<String> entity = new HttpEntity<>(headers);
 

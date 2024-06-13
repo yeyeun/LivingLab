@@ -27,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Table(name = "team")
 @ToString(exclude = "imageList")
-public class Team extends BaseEntity{
+public class Team extends BaseTimeEntity{
     @Id //기본키 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long teamNo;
@@ -41,7 +41,7 @@ public class Team extends BaseEntity{
     private String location;
     private Character teamHit;
     private String nickname;
-    private boolean flag; // 글 삭제시 작성 기록 관리를 위해 삭제된 글 표시
+    private boolean flag; // true: 마감 / false:모집중
 
     @ElementCollection
     @Builder.Default

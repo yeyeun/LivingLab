@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
-import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.CommunityDto;
 
 import jakarta.persistence.ElementCollection;
@@ -40,7 +39,7 @@ public class Community extends BaseTimeEntity {
     private Integer commHit;
     private Character commCategory; //0:기타, 1:부동산, 2:인테리어, 3:할인정보
     private String nickname;
-    private boolean flag;
+    private boolean flag; // true: 사진있음 / false:사진없음
 
     @ElementCollection
     @Builder.Default
