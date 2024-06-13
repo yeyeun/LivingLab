@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +23,6 @@ import com.mlp.lab.util.CustomFileUtil;
 
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @RequestMapping("/api/team")
 @RequiredArgsConstructor
@@ -31,14 +30,21 @@ public class TeamController {
     private final TeamService teamService;
     private final CustomFileUtil fileUtil;
 
-    @GetMapping("/list")    // 목록조회
-    public PageResponseDto<TeamDto> List(PageRequestDto pageRequestDto){
-        return teamService.list(pageRequestDto);
+    @GetMapping("/list") // 목록조회(검색기능 포함)
+    public PageResponseDto<TeamDto> List(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort) {
+        return teamService.list(pageRequestDto, search, sort);
     }
 
-    @GetMapping("/read/{teamNo}")   // 상세조회
-    public TeamDto read(@PathVariable(name = "teamNo") int teamNo){
+    @GetMapping("/read/{teamNo}") // 상세조회
+    public TeamDto read(@PathVariable(name = "teamNo") int teamNo) {
         return teamService.read(teamNo);
+    }
+
+    @GetMapping("/delete/{teamNo}") // 삭제
+    public void remove(@PathVariable(name = "teamNo") Long teamNo) {
+        teamService.remove(teamNo.intValue());
     }
 
     @GetMapping("/display/{fileName}") // 목록조회
@@ -46,7 +52,7 @@ public class TeamController {
         return fileUtil.getFile(fileName);
     }
 
-    @PostMapping("/add")    //작성
+    @PostMapping("/add") // 작성
     public void add(TeamDto teamDto) {
         List<MultipartFile> files = teamDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
@@ -74,7 +80,7 @@ public class TeamController {
         if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
             uploadedFileNames.addAll(newUploadFileNames);
         }
-        
+
         teamService.modify(teamDto);
 
         if (oldFileNames != null && oldFileNames.size() > 0) {

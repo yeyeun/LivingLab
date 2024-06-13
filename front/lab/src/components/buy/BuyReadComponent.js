@@ -4,13 +4,17 @@ import useCustomMove from '../../hooks/useCustomMove';
 import MapComponent from '../common/MapComponent';
 import LandingComponent from '../common/mapSearch/LandingComponent';
 import ModalComponent from '../common/ModalComponent';
+import { modifyUser, getUser } from './../../api/userApi';
+import { useSelector } from 'react-redux';
+import ResultModal from '../common/ResultModal';
 
 const initState = {
   buyNo: 0,
   title: '',
   location: '',
+  nickname: '',
   content: '',
-  category: '',
+  buyCategory: '',
   max: 0,
   current: 0,
   deadline: '',
@@ -67,10 +71,11 @@ const BuyReadComponent = ({ buyNo }) => {
           </div>
           <div className="text-center my-5">
             <span className="tag-button">
-              {buy.buyCategory === '1' && '구매'}
-              {buy.buyCategory === '2' && '판매'}
-              {buy.buyCategory === '3' && '교환'}
-              {buy.buyCategory === '4' && '나눔'}
+              {buy.buyCategory === '1' && '배달음식'}
+              {buy.buyCategory === '2' && '생필품'}
+              {buy.buyCategory === '3' && '식료품'}
+              {buy.buyCategory === '4' && '가구/가전'}
+              {buy.buyCategory === '5' && '기타'}
             </span>
             <span className="tag-button">마감일 : {buy.deadline}</span>
           </div>

@@ -7,8 +7,14 @@ export const getOne = async (buyNo) => {
   return res.data;
 };
 
-export const getList = async (pageParam, search) => {
+export const getList = async (pageParam, search, sort) => {
   const { page, size } = pageParam;
-  const res = await axios.get(`${prefix}/list`, { params: { page: page, size: size, search: search } });
+  const res = await axios.get(`${prefix}/list`, { params: { page: page, size: size, search: search, sort: sort } });
   return res.data;
 };
+
+export const postAddBuy = async(buy) => {
+  const header = {headers:{"Content-Type":"multipart/form-data"}};
+  const res = await axios.post(`${prefix}/add`, buy, header);
+  return res.data;
+}
