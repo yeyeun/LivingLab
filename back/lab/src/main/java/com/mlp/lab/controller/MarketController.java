@@ -44,11 +44,6 @@ public class MarketController {
         return marketService.read(marketNo);
     }
 
-    @GetMapping("/delete/{marketNo}") // 삭제
-    public void remove(@PathVariable(name = "marketNo") Long marketNo) {
-        marketService.remove(marketNo.intValue());
-    }
-
     @GetMapping("/display/{fileName}") // 이미지 출력
     public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.ResponseDto;
@@ -41,11 +40,6 @@ public class TeamController {
     @GetMapping("/read/{teamNo}") // 상세조회
     public TeamDto read(@PathVariable(name = "teamNo") int teamNo) {
         return teamService.read(teamNo);
-    }
-
-    @GetMapping("/delete/{teamNo}") // 삭제
-    public void remove(@PathVariable(name = "teamNo") Long teamNo) {
-        teamService.remove(teamNo.intValue());
     }
 
     @GetMapping("/display/{fileName}") // 목록조회
@@ -93,5 +87,4 @@ public class TeamController {
         }
         return ResponseDto.setSuccessData("수정되었습니다.", teamDto);
     }
-
 }

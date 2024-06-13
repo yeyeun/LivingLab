@@ -1,18 +1,16 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { postAddHelp } from "../../../api/communityApi";
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import ResultModal from "../../common/ResultModal";
 import useCustomHelp from "../../../hooks/useCustomHelp";
 
 const initState = {
-    user_id: '',
+    user_id: 'iamuser',
     type: '4', //도움요청 게시판은 4
     title: '',
     content: '',
     commHit: 0,
     commCategory: '1', //도움요청 게시판은 세부 카테고리 없으므로 1로 고정
-    nickname: '',
+    nickname: '김유저',
     files: [],
 };
 
@@ -23,17 +21,6 @@ const AddComponent = () => {
     const [previewFiles, setPreviewFiles] = useState([]);
     const { moveToList } = useCustomHelp(); //목록으로 이동하기
     const uploadRef = useRef();
-    const loginInfo = useSelector((state) => state.loginSlice);
-    const id = loginInfo?.email;
-    const nickname = loginInfo?.nickname;
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        // id가 없으면 로그인 화면으로 이동 -> 주소창으로 접근하는걸 방지
-        if (!id) {
-            navigate('/user/login'); // 로그인 경로로 이동
-        }
-    }, [id, navigate]);
 
     const handleChangeHelp = (e) => {
         help[e.target.name] = e.target.value;
@@ -91,13 +78,13 @@ const AddComponent = () => {
         }
         
         // 파일이 아닌 데이터를 formData에 추가
-        formData.append("user_id", id);
-        formData.append("nickname", nickname);
+        formData.append("user_id", help.user_id);
         formData.append("type", help.type);
         formData.append("title", help.title);
         formData.append("content", help.content);
         formData.append("commHit", help.commHit);
         formData.append("commCategory", help.commCategory);
+        formData.append("nickname", help.nickname);
 
         postAddHelp(formData);
         setResult("게시글이 등록되었습니다");

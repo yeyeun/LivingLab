@@ -1,12 +1,8 @@
 package com.mlp.lab.repository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 
 import com.mlp.lab.entity.Community;
 
@@ -14,48 +10,26 @@ import com.mlp.lab.entity.Community;
 public interface CommunityRepository extends JpaRepository<Community, Integer> {
 
     @Query("select c from Community c where c.type = '1'")
-    Page<Community> tipList(Pageable pageable);
+    Page<Community> selectTipList(org.springframework.data.domain.Pageable pageable);
 
-    @Query("select c from Community c where c.type = '1' and c.title like %:title%")
-    Page<Community> tipSearchList(Pageable pageable, String title);
-
-    @Query("select c from Community c where c.type = '1' and c.commCategory = :category")
-    Page<Community> tipSelectList(Pageable pageable, Character category);
-
-    @Query("select c from Community c where c.type = '1' and c.commCategory = :category and c.title like %:title% ")
-    Page<Community> tipSearchSelectList(Pageable pageable, String title, Character category);
+    @Query("select c from Community c where c.type = '1' and c.title like %:title% order by c.createdDate desc")
+    Page<Community> tipSearchList(org.springframework.data.domain.Pageable pageable, String title);
 
     @Query("select c from Community c where c.type = '2'")
-    Page<Community> qnaList(Pageable pageable);
+    Page<Community> selectQnaList(org.springframework.data.domain.Pageable pageable);
 
-    @Query("select c from Community c where c.type = '2' and c.title like %:title%")
-    Page<Community> qnaSearchList(Pageable pageable, String title);
-
-    @Query("select c from Community c where c.type = '2' and c.commCategory = :category")
-    Page<Community> qnaSelectList(Pageable pageable, Character category);
-
-    @Query("select c from Community c where c.type = '2' and c.commCategory = :category and c.title like %:title%")
-    Page<Community> qnaSearchSelectList(Pageable pageable, String title, Character category);
+    @Query("select c from Community c where c.type = '2' and c.title like %:title% order by c.createdDate desc")
+    Page<Community> qnaSearchList(org.springframework.data.domain.Pageable pageable, String title);
 
     @Query("select c from Community c where c.type = '3'")
-    Page<Community> reviewList(Pageable pageable);
+    Page<Community> selectReviewList(org.springframework.data.domain.Pageable pageable);
 
-    @Query("select c from Community c where c.type = '3' and c.title like %:title%")
-    Page<Community> reviewSearchList(Pageable pageable, String title);
-
-    @Query("select c from Community c where c.type = '3' and c.commCategory = :category")
-    Page<Community> reviewSelectList(Pageable pageable, Character category);
-
-    @Query("select c from Community c where c.type = '3' and c.commCategory = :category and c.title like %:title%")
-    Page<Community> reviewSearchSelectList(Pageable pageable, String title, Character category);
+    @Query("select c from Community c where c.type = '3' and c.title like %:title% order by c.createdDate desc")
+    Page<Community> reviewSearchList(org.springframework.data.domain.Pageable pageable, String title);
 
     @Query("select c from Community c where c.type = '4'")
-    Page<Community> selectHelpList(Pageable pageable);
+    Page<Community> selectHelpList(org.springframework.data.domain.Pageable pageable);
 
-    @Query("select c from Community c where c.type = '4' and c.title like %:title%")
-    Page<Community> helpSearchList(Pageable pageable, String title);
-
-    @Query("select c from Community c order by c.createdDate desc")
-    List<Community> latestList();
+    @Query("select c from Community c where c.type = '4' and c.title like %:title% order by c.createdDate desc")
+    Page<Community> helpSearchList(org.springframework.data.domain.Pageable pageable, String title);
 }
-

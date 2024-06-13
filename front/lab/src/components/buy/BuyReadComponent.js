@@ -4,15 +4,11 @@ import useCustomMove from '../../hooks/useCustomMove';
 import MapComponent from '../common/MapComponent';
 import LandingComponent from '../common/mapSearch/LandingComponent';
 import ModalComponent from '../common/ModalComponent';
-import { modifyUser, getUser } from './../../api/userApi';
-import { useSelector } from 'react-redux';
-import ResultModal from '../common/ResultModal';
 
 const initState = {
   buyNo: 0,
   title: '',
   location: '',
-  nickname: '',
   content: '',
   buyCategory: '',
   max: 0,
@@ -58,7 +54,9 @@ const BuyReadComponent = ({ buyNo }) => {
   }, [buy.deadline]);
   return (
     <>
+    
       <div className="detail-container">
+        
         <div>
           <div className="flex justify-between">
             <div className="my-5 mx-5">{recruit ? <span>모집 종료</span> : <span>모집 중</span>}</div>

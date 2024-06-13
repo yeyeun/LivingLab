@@ -217,10 +217,6 @@ public class TeamService {
         return teamDto;
     }
 
-    //삭제하기
-    public void remove(int teamNo) {
-        teamRepository.deleteById(teamNo);
-    }
     
     public void modify(TeamDto teamDto) { //수정하기
         // 조회

@@ -2,6 +2,8 @@ package com.mlp.lab.dto;
 
 import java.util.Optional;
 
+import com.mlp.lab.entity.Buy;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

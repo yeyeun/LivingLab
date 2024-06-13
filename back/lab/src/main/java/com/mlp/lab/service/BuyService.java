@@ -48,7 +48,7 @@ public class BuyService {
             // if(sort.equals("좋아요순")){
             //     result = 
             // }
-        } else if (search != null && sort != null) { // 검색&정렬 둘다
+        } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if(sort.equals("최신순")){
                 result = buyRepository.searchNewList(sort, pageable);
             }
@@ -97,11 +97,6 @@ public class BuyService {
         Buy buy = result.orElseThrow();
         BuyDto buyDto = Buy.entityToDto(buy);
         return buyDto;
-    }
-    
-    //삭제하기
-    public void remove(int buyNo) {
-        buyRepository.deleteById(buyNo);
     }
 
     // 수정하기(이미지 포함)

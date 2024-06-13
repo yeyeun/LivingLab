@@ -9,9 +9,9 @@ export const postAddTip = async(tip) => {
     return res.data;
 }
 
-export const getListTip = async(pageParam, search, sort) => {
+export const getListTip = async(pageParam, search) => {
     const {page, size} = pageParam
-    const res =await axios.get(`${prefix}/tip/list`, {params:{page:page, size:size, search: search, sort: sort}})
+    const res =await axios.get(`${prefix}/tip/list`, {params:{page:page, size:size, search: search}})
     return res.data
 }
 
@@ -26,8 +26,8 @@ export const modifyTip = async(commNo, tip) => {
     return res.data;
 }
 
-export const deleteOne = async(commNo) => {
-    const res = await axios.delete(`${prefix}/delete/${commNo}`);
+export const deleteTip = async(commNo) => {
+    const res = await axios.delete(`${prefix}/tip/delete/${commNo}`);
     return res.data;
 }
 
@@ -38,9 +38,9 @@ export const postAddQna = async(qna) => {
     return res.data;
 }
 
-export const getListQna = async(pageParam, search, sort) => {
+export const getListQna = async(pageParam) => {
     const {page, size} = pageParam
-    const res =await axios.get(`${prefix}/qna/list`, {params:{page:page, size:size, search: search, sort: sort}})
+    const res =await axios.get(`${prefix}/qna/list`, {params:{page:page, size:size}})
     return res.data
 }
 
@@ -62,9 +62,9 @@ export const postAddReview = async(review) => {
     return res.data;
 }
 
-export const getListReview = async(pageParam, search, sort) => {
+export const getListReview = async(pageParam) => {
     const {page, size} = pageParam
-    const res =await axios.get(`${prefix}/review/list`, {params:{page:page, size:size, search: search, sort: sort}})
+    const res =await axios.get(`${prefix}/review/list`, {params:{page:page, size:size}})
     return res.data
 }
 
@@ -102,12 +102,3 @@ export const modifyHelp = async(commNo, help) => {
     const res = await axios.put(`${prefix}/help/modify/${commNo}`, help, header);
     return res.data;
 }
-
-// ******전체 글 보기******
-export const getLatest = async (pageParam) => {
-    const { page, size } = pageParam;
-    const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
-    return res.data;
-}
-
-

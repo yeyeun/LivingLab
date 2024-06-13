@@ -99,11 +99,6 @@ public class MarketService {
         return marketDto;
     }
 
-    //삭제하기
-    public void remove(int marketNo) {
-        marketRepository.deleteById(marketNo);
-    }
-
     public void modify(MarketDto marketDto) { //수정하기
         // 조회
         Optional<Market> result = marketRepository.findById(marketDto.getMarketNo().intValue());

@@ -2,15 +2,16 @@ package com.mlp.lab.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.log4j.Log4j2;
 import java.time.ZonedDateTime;
 import java.util.*;
 import javax.crypto.SecretKey;
 
+@Log4j2
 public class JWTUtil {
 
-  private static String key = "1234567890123456789012345678901234567890"; // 키 값
+  private static String key = "1234567890123456789012345678901234567890";
 
-  // JWT 문자열 생성 (generateToken)
   public static String generateToken(Map<String, Object> valueMap, int min) {
     SecretKey key = null;
     try {
@@ -18,7 +19,6 @@ public class JWTUtil {
     } catch (Exception e) {
       throw new RuntimeException(e.getMessage());
     }
-
     String jwtStr = Jwts.builder()
         .setHeader(Map.of("typ", "JWT"))
         .setClaims(valueMap)
@@ -29,10 +29,8 @@ public class JWTUtil {
     return jwtStr;
   }
 
-  // 유효시간을 정해 JWT 문자열 검증 (validateToken)
   public static Map<String, Object> validateToken(String token) {
     Map<String, Object> claim = null;
-
     try {
       SecretKey key = Keys.hmacShaKeyFor(JWTUtil.key.getBytes("UTF-8"));
       claim = Jwts.parserBuilder()
