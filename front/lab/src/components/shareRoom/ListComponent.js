@@ -60,7 +60,7 @@ const ListComponent = ({ search }) => {
                   월세 &nbsp; {(shareRoom.rentFee / 10000).toFixed(0)}
                 </p>
                 <p class="font-light text-gray-400 text-md">
-                  월세 : {(shareRoom.rentFee / 10000).toFixed(1)} 만원
+                  {shareRoom.rentStartDate}
                 </p>
               </div>
             </div>
