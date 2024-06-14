@@ -38,10 +38,7 @@ public interface BuyRepository extends JpaRepository<Buy, Integer> {
     @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false and b.title like %:title% order by b.deadline asc")
     Page<Object[]> searchDeadLineList(String title, Pageable pageable);
 
-    // // 메인에 표기할 최신순
-    // @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false order by b.createdDate desc")
-    // List<Object[]> latestBuyList();
-
+    // 메인에 표기할 최신순
     @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false order by b.createdDate desc")
     Page<Object[]> latestBuyList(Pageable pageable);
     

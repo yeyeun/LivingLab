@@ -18,3 +18,9 @@ export const postAddTeam = async(team) => {
   const res = await axios.post(`${prefix}/add`, team, header);
   return res.data;
 }
+
+export const getLatestTeam = async (pageParam) => {
+  const { page, size } = pageParam;
+  const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
+  return res.data;
+} 

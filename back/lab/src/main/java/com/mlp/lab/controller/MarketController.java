@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
@@ -94,5 +95,10 @@ public class MarketController {
             fileUtil.deleteFiles(removeFiles);
         }
         return ResponseDto.setSuccessData("수정되었습니다.", marketDto);
+    }
+
+    @GetMapping("/latest")
+    public List<MarketDto> getLatestMarketList() {
+        return marketService.getLatestMarket();
     }
 }

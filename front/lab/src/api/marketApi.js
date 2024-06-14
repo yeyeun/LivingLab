@@ -7,3 +7,9 @@ export const getList = async (pageParam, search, sort) => {
     const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size, search: search, sort: sort }});
     return res.data;
 };
+
+export const getLatestMarket = async (pageParam) => {
+    const { page, size } = pageParam;
+    const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
+    return res.data;
+  } 

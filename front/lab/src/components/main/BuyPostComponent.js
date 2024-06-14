@@ -33,7 +33,7 @@ const BuyPostComponent = () => {
         <>
             <ul className="main-buylist-container">
                 {latestPosts.slice(0, 4).map((buy) => (
-                    <li className="main-buylist">
+                    <li key={buy.buyNo} className="main-buylist">
                         <div className="main-buylist-image">
                             <Link to={`/buy/read/${buy.buyNo}`}>
                                 <img className="main-buylist-thumbnail" src={`${host}/api/buy/display/${buy.uploadFileNames[0]}`} alt={buy.title} />
@@ -51,7 +51,7 @@ const BuyPostComponent = () => {
             <div className="main-nextline"></div>
             <ul className="main-buylist-container">
                 {latestPosts.slice(4, 8).map((buy) => (
-                    <li className="main-buylist">
+                    <li key={buy.buyNo} className="main-buylist">
                         <div className="main-buylist-image">
                             <Link to={`/buy/read/${buy.buyNo}`} >
                                 <img className="main-buylist-thumbnail" src={`${host}/api/buy/display/${buy.uploadFileNames[0]}`} alt={buy.title} />

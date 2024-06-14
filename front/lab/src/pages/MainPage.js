@@ -6,9 +6,9 @@ import Slide2 from '../resources/images/slide_2.png';
 import Slide3 from '../resources/images/slide_3.png';
 import Slide4 from '../resources/images/slide_4.png';
 import Slide5 from '../resources/images/slide_5.png';
-import MainBuy from '../resources/images/main_buy.png'
 import CommunityPostComponent from '../components/main/CommunityPostComponent';
-import TeamPostComponent from '../components/main/BuyPostComponent';
+import TeamPostComponent from '../components/main/TeamPostComponent';
+import MarketPostComponent from '../components/main/MarketPostComponent'
 import BuyPostComponent from '../components/main/BuyPostComponent';
 
 import { Link } from 'react-router-dom';
@@ -93,7 +93,7 @@ const MainPage = () => {
               동네모임
             </Link>
             <div className="main-item overflow-hidden	" >
-              <img alt="slide_5" src={MainBuy} />
+              <TeamPostComponent />
 
             </div>
 
@@ -102,14 +102,16 @@ const MainPage = () => {
             <Link to={'/market'} className="main-headline">
               동네장터
             </Link>
-            <div className="main-item"></div>
+            <div className="main-item">
+              <MarketPostComponent />
+
+            </div>
           </div>
           <div>
             <Link to={'/shareroom'} className="main-headline">
               자취방쉐어
             </Link>
             <div className="main-item" >
-
             </div>
 
           </div>

@@ -4,15 +4,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.mlp.lab.dto.TeamDto;
+import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.TeamDto;
+import com.mlp.lab.entity.Team;
+import com.mlp.lab.entity.TeamImage;
+import com.mlp.lab.entity.Community;
 import com.mlp.lab.entity.Team;
 import com.mlp.lab.entity.TeamImage;
 import com.mlp.lab.repository.TeamRepository;
@@ -25,44 +31,44 @@ public class TeamService {
     private final TeamRepository teamRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto, String search, String sort){
+    public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto, String search, String sort) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
-            Sort.by("teamNo").descending());
-         
-            Page<Object[]> result = null;
-            if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
-                result = teamRepository.selectList(pageable);
-            } else if (search != null && !search.isEmpty()) { // 검색
-                result = teamRepository.selectSearchList(search, pageable);
-            } else if (sort != null && !sort.isEmpty()) { // 정렬
-                if(sort.equals("최신순")){
-                    result = teamRepository.newList(pageable);
-                }
-                if(sort.equals("마감임박순")){
-                    result = teamRepository.deadLineList(pageable);
-                }
-                // if(sort.equals("거리순")){
-                //     result = 
-                // }
-                // if(sort.equals("좋아요순")){
-                //     result = 
-                // }
-            } else if (search != null && sort != null) { // 검색&&정렬 둘다
-                if(sort.equals("최신순")){
-                    result = teamRepository.searchNewList(sort, pageable);
-                }
-                if(sort.equals("마감임박순")){
-                    result = teamRepository.searchDeadLineList(sort, pageable);
-                }
-                // if(sort.equals("거리순")){
-                //     result = 
-                // }
-                // if(sort.equals("좋아요순")){
-                //     result = 
-                // }
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("teamNo").descending());
+
+        Page<Object[]> result = null;
+        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
+            result = teamRepository.selectList(pageable);
+        } else if (search != null && !search.isEmpty()) { // 검색
+            result = teamRepository.selectSearchList(search, pageable);
+        } else if (sort != null && !sort.isEmpty()) { // 정렬
+            if (sort.equals("최신순")) {
+                result = teamRepository.newList(pageable);
             }
+            if (sort.equals("마감임박순")) {
+                result = teamRepository.deadLineList(pageable);
+            }
+            // if(sort.equals("거리순")){
+            // result =
+            // }
+            // if(sort.equals("좋아요순")){
+            // result =
+            // }
+        } else if (search != null && sort != null) { // 검색&&정렬 둘다
+            if (sort.equals("최신순")) {
+                result = teamRepository.searchNewList(sort, pageable);
+            }
+            if (sort.equals("마감임박순")) {
+                result = teamRepository.searchDeadLineList(sort, pageable);
+            }
+            // if(sort.equals("거리순")){
+            // result =
+            // }
+            // if(sort.equals("좋아요순")){
+            // result =
+            // }
+        }
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
             TeamImage teamImage = (TeamImage) arr[1];
@@ -75,24 +81,24 @@ public class TeamService {
             String imageStr = teamImage.getFileName();
             teamDto.setUploadFileNames(List.of(imageStr));
             return teamDto;
-        }).collect(Collectors.toList());     
-            
+        }).collect(Collectors.toList());
+
         long totalCount = result.getTotalElements();
         PageResponseDto<TeamDto> responseDTO = PageResponseDto.<TeamDto>withAll()
-            .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
-            .totalCount(totalCount)
-            .build();
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
         return responseDTO;
     }
 
     // 검색된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> searchList(PageRequestDto pageRequestDto, String search){
+    public PageResponseDto<TeamDto> searchList(PageRequestDto pageRequestDto, String search) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
-            Sort.by("teamNo").descending());
-         
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("teamNo").descending());
+
         Page<Object[]> result = teamRepository.selectSearchList(search, pageable);
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
@@ -106,36 +112,36 @@ public class TeamService {
             String imageStr = teamImage.getFileName();
             teamDto.setUploadFileNames(List.of(imageStr));
             return teamDto;
-        }).collect(Collectors.toList());     
-            
+        }).collect(Collectors.toList());
+
         long totalCount = result.getTotalElements();
         PageResponseDto<TeamDto> responseDTO = PageResponseDto.<TeamDto>withAll()
-            .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
-            .totalCount(totalCount)
-            .build();
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
         return responseDTO;
     }
 
     // 선택된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> sortList(PageRequestDto pageRequestDto, String sort){
+    public PageResponseDto<TeamDto> sortList(PageRequestDto pageRequestDto, String sort) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
-            Sort.by("teamNo").descending());
-         
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("teamNo").descending());
+
         Page<Object[]> result = teamRepository.selectList(pageable);
-        if(sort.equals("최신순")){
+        if (sort.equals("최신순")) {
             result = teamRepository.newList(pageable);
         }
-        if(sort.equals("마감임박순")){
+        if (sort.equals("마감임박순")) {
             result = teamRepository.deadLineList(pageable);
         }
         // if(sort.equals("거리순")){
-        //     result = 
+        // result =
         // }
         // if(sort.equals("좋아요순")){
-        //     result = 
+        // result =
         // }
 
         List<TeamDto> dtoList = result.get().map(arr -> {
@@ -150,36 +156,36 @@ public class TeamService {
             String imageStr = teamImage.getFileName();
             teamDto.setUploadFileNames(List.of(imageStr));
             return teamDto;
-        }).collect(Collectors.toList());     
-            
+        }).collect(Collectors.toList());
+
         long totalCount = result.getTotalElements();
         PageResponseDto<TeamDto> responseDTO = PageResponseDto.<TeamDto>withAll()
-            .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
-            .totalCount(totalCount)
-            .build();
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
         return responseDTO;
     }
 
     // 검색 + 선택된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> searchSortList(PageRequestDto pageRequestDto, String search, String sort){
+    public PageResponseDto<TeamDto> searchSortList(PageRequestDto pageRequestDto, String search, String sort) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
-            Sort.by("teamNo").descending());
-         
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("teamNo").descending());
+
         Page<Object[]> result = teamRepository.selectList(pageable);
-        if(sort.equals("최신순")){
+        if (sort.equals("최신순")) {
             result = teamRepository.searchNewList(sort, pageable);
         }
-        if(sort.equals("마감임박순")){
+        if (sort.equals("마감임박순")) {
             result = teamRepository.searchDeadLineList(sort, pageable);
         }
         // if(sort.equals("거리순")){
-        //     result = 
+        // result =
         // }
         // if(sort.equals("좋아요순")){
-        //     result = 
+        // result =
         // }
 
         List<TeamDto> dtoList = result.get().map(arr -> {
@@ -194,14 +200,14 @@ public class TeamService {
             String imageStr = teamImage.getFileName();
             teamDto.setUploadFileNames(List.of(imageStr));
             return teamDto;
-        }).collect(Collectors.toList());     
-            
+        }).collect(Collectors.toList());
+
         long totalCount = result.getTotalElements();
         PageResponseDto<TeamDto> responseDTO = PageResponseDto.<TeamDto>withAll()
-            .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
-            .totalCount(totalCount)
-            .build();
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
         return responseDTO;
     }
 
@@ -217,12 +223,12 @@ public class TeamService {
         return teamDto;
     }
 
-    //삭제하기
+    // 삭제하기
     public void remove(int teamNo) {
         teamRepository.deleteById(teamNo);
     }
-    
-    public void modify(TeamDto teamDto) { //수정하기
+
+    public void modify(TeamDto teamDto) { // 수정하기
         // 조회
         Optional<Team> result = teamRepository.findById(teamDto.getTeamNo().intValue());
         Team team = result.orElseThrow();
@@ -243,5 +249,35 @@ public class TeamService {
             });
         }
         teamRepository.save(team);
+    }
+
+    public List<TeamDto> getLatestTeam() {
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("teamNo").descending());
+        Page<Object[]> result = null;
+
+        result = teamRepository.latestTeamList(pageable);
+
+        List<TeamDto> dtoList = result.getContent().stream().map(arr -> {
+            Team team = (Team) arr[0];
+            TeamImage teamImage = (TeamImage) arr[1];
+
+            TeamDto teamDto = TeamDto.builder()
+                    .teamNo(team.getTeamNo())
+                    .title(team.getTitle())
+                    .teamCategory(team.getTeamCategory())
+                    .location(team.getLocation())
+                    .max(team.getMax())
+                    .current(team.getCurrent())
+                    .deadline(team.getDeadline())
+                    .nickname(team.getNickname())
+                    .content(team.getContent())
+                    .build();
+
+            String imageStr = teamImage.getFileName();
+            teamDto.setUploadFileNames(List.of(imageStr));
+            return teamDto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
     }
 }

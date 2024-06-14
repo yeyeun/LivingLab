@@ -133,6 +133,7 @@ public class BuyService {
         buyRepository.save(buy);
     }
 
+    // 메인에 표기할 최신순
     public List<BuyDto> getLatestBuy() {
         Pageable pageable = PageRequest.of(0, 8, Sort.by("buyNo").descending());
         Page<Object[]> result = null; 
