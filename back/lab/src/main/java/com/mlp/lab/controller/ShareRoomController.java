@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.ShareRoomDto;
-import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.service.ShareRoomService;
@@ -60,10 +59,9 @@ public class ShareRoomController {
     public void add(ShareRoomDto shareRoomDto) {
         List<MultipartFile> files = shareRoomDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
-        if(uploadFileNames == null || uploadFileNames.isEmpty()){
+        if (uploadFileNames == null || uploadFileNames.isEmpty()) {
             shareRoomDto.setFlag(false);
-        }
-        else{
+        } else {
             shareRoomDto.setFlag(true);
         }
         shareRoomDto.setUploadFileNames(uploadFileNames);

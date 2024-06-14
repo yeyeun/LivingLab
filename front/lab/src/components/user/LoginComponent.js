@@ -15,11 +15,9 @@ const initState = {
   pwd: '',
 };
 
-const kakaoLink = getKakaoLoginLink(); // 카카오 로그인 링크
-
 function LoginComponent(props) {
   const [loginParam, setLoginParam] = useState({ ...initState });
-
+  const { moveToLogin, moveToPath } = useCustomLogin();
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -27,8 +25,6 @@ function LoginComponent(props) {
 
     setLoginParam({ ...loginParam });
   };
-
-  const { moveToLogin, moveToPath } = useCustomLogin();
 
   const handleClickLogin = (e) => {
     loginPost(loginParam).then((userInfo) => {
@@ -116,16 +112,6 @@ function LoginComponent(props) {
             </div>
           </div>
         </div>
-
-        {/* <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full justify-center">
-            <div className="w-full flex justify-center font-bold">
-              <button className="rounded p-2 w-full bg-yellow-300 text-xl text-white">
-                <Link to={kakaoLink}>KAKAO LOGIN</Link>
-              </button>
-            </div>
-          </div>
-        </div> */}
 
         <KakaoLoginComponent />
 
