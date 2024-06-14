@@ -14,6 +14,9 @@ module.exports = {
       gridTemplateColumns: {
         'custom': '586px minmax(0px, 1fr) minmax(0px, 1fr)'
       },
+      spacing: {
+        '2.5': '0.625rem', // 10px
+      }
     },
   },
   plugins: [],
