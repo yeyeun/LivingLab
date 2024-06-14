@@ -57,13 +57,13 @@ public class UserController {
         if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
             return null;
         }
-
-        User responseUser = new User();
-        responseUser.setEmail(user.getEmail());
-        responseUser.setAddr(user.getAddr());
-        responseUser.setDetailAddr(user.getDetailAddr());
-        responseUser.setNickname(user.getNickname());
-        return responseUser; // ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
+        // User responseUser = new User();
+        // responseUser.setId(user.getId()); //아이디
+        // responseUser.setEmail(user.getEmail());
+        // responseUser.setAddr(user.getAddr());
+        // responseUser.setDetailAddr(user.getDetailAddr());
+        // responseUser.setNickname(user.getNickname());
+        return user; // // 로그인 정보 그대로 다 준다
     }
 
     @PostMapping("/join")
