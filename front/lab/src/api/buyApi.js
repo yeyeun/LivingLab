@@ -29,3 +29,11 @@ export const deleteOne = async(buyNo) => {
   const res = await axios.delete(`${prefix}/delete/${buyNo}`);
   return res.data;
 }
+
+// ******공동구매 최신 글 보기******
+
+export const getLatestBuy = async (pageParam) => {
+  const { page, size } = pageParam;
+  const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
+  return res.data;
+} 

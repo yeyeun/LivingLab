@@ -99,4 +99,8 @@ public class MarketController {
         }
     }
 
+    @GetMapping("/latest")
+    public List<MarketDto> getLatestMarketList() {
+        return marketService.getLatestMarket();
+    }
 }
