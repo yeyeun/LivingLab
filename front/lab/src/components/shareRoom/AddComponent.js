@@ -4,6 +4,8 @@ import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import { useSelector } from 'react-redux';
 import PostComponent from "../common/PostComponent";
+import Image1 from '../../resources/images/radio1.svg';
+import Image2 from '../../resources/images/radio2.svg';
 
 
 
@@ -16,7 +18,7 @@ const AddComponent = () => {
     const uploadRef = useRef();
     const [address, setAddress] = React.useState('');
     const [popup, setPopup] = React.useState(false);
-
+    const [checkedRadio, setCheckedRadio] = useState(null);
     const loginState = useSelector((state) => state.loginSlice);
 
     const [userId, setUserId] = useState(loginState.id);
@@ -98,108 +100,70 @@ const AddComponent = () => {
 
 
     return (
+        <div id="full" className="w-[1200px] h-full mx-auto bg-cyan-300">
+            <div id="title-area" className="pt-[80px] pb-[64px]">
+                <h1 className="text-5xl text-gray-900 leading-3 font-bold text-center tracking-tighter">
+                    자취방쉐어
+                </h1>
+            </div>
+            <div id="main-area" className="w-full bg-green-300">
+                <section id="info" className="">
+                    <header className="flex items-end justify-between mb-4">
+                        <h1 className="text-xl text-gray-900 leading-8 font-bold ">방 정보</h1>
+                    </header>
+                    <table id="select-info" className="w-full border-t-2 border-gray-900">
+                        <colgroup>
+                            <col className="w-[150px]"></col>
+                            <col></col>
+                        </colgroup>
+                        <tbody>
+                            <tr className="border-b border-neutral-200">
+                                <th className="pl-5 text-left align-middle bg-neutral-200">
+                                    <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
+                                        제목
+                                    </h1>
+                                </th>
+                                <td className="align-middle px-4 py-5 border-l border-neutral-200">
+                                    <div className="flex items-start justify-start w-full">
+                                        <div className="flex-none w-auto">
+                                            <div className="flex w-full pt-0 pb-0">
+                                                <div className="flex-grow flex flex-wrap justify-start mt-[-20px] ml-[-16px]">
+                                                    <label className="mt-5 ml-4 flex-none flex items-start justify-start max-w-full pt-0 pb-0">
+                                                        <input className="flex-none w-6 h-6 m-0 border-0 rounded-full appearance-none cursor-pointer"
+                                                        type="radio" 
+                                                        name="parking"
+                                                        value="O"
+                                                        checked={shareRoom.parking === 'O'}
+                                                        onChange={handleChangeShareRoom}
+                                                        style={{ backgroundImage: shareRoom.parking === 'O' ? `url(${Image2})` : `url(${Image1})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}></input>
+                                                        <p>가능</p>
+                                                    </label>
+                                                    <label className="mt-5 ml-4 flex-none flex items-start justify-start max-w-full pt-0 pb-0">
+                                                    <input className="flex-none w-6 h-6 m-0 border-0 rounded-full appearance-none cursor-pointer"
+                                                        type="radio" 
+                                                        name="parking"
+                                                        value="X"
+                                                        checked={shareRoom.parking === 'X'}
+                                                        onChange={handleChangeShareRoom}
+                                                        style={{ backgroundImage: shareRoom.parking === 'X' ? `url(${Image2})` : `url(${Image1})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}></input>
+                                                        <p>불가능</p>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section id="photo" className="">
 
-        <div className="border-2 max-w-[750px]  mx-auto border-sky-200 mt-10 m-2 p-4">
-            {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
-            {addResultModal && (
-                <ResultModal title={'알림'} content={`${addResultModal}`} callbackFn={() => setAddResultModal(null)} />
-            )}
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-full p-3 text-left font-bold">제목</div>
-                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="title" type={'text'} value={shareRoom.title} onChange={handleChangeShareRoom}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-full p-3 text-left font-bold">내용</div>
-                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="content" type={'text'} value={shareRoom.content} onChange={handleChangeShareRoom}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-full p-3 text-left font-bold">월세</div>
-                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="rentFee" type={'number'} value={shareRoom.rentFee} onChange={handleChangeShareRoom}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-full p-3 text-left font-bold">주차가능여부</div>
-                    <input className="ml-10 mr-5"
-                        name="parking" type={'radio'} value="O" checked={shareRoom.parking === 'O'} onChange={handleChangeShareRoom}></input>
-                        <label for="O">가능</label><br></br>
-                    <input className="ml-10 mr-5"
-                        name="parking" type={'radio'} value="X" checked={shareRoom.parking === 'X'} onChange={handleChangeShareRoom}></input>
-                        <label for="X">불가능</label>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-full p-3 text-left font-bold">옵션</div>
-                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="option1" type={'text'} value={shareRoom.option1} onChange={handleChangeShareRoom}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-full p-3 text-left font-bold">언제부터</div>
-                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="rentStartDate" type={'date'} value={shareRoom.rentStartDate} onChange={handleChangeShareRoom}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-full p-3 text-left font-bold">언제까지</div>
-                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="rentEndDate" type={'date'} value={shareRoom.rentEndDate} onChange={handleChangeShareRoom}></input>
-                </div>
-            </div>
-            <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                <div className="w-full p-3 text-left font-bold">주소</div>
-                <button
-                    className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
-                    onClick={() => {
-                        setPopup(!popup);
-                    }}
-                >
-                    🔍︎ 주소 검색
-                </button>
-                {popup && <PostComponent address={address} setAddress={setAddress}></PostComponent>}
-                <input
-                    className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                    name="addr"
-                    type={'text'}
-                    placeholder="주소"
-                    required={true}
-                    value={address}
-                ></input>
-                <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input>
-            </div>
-            <div className="col-span-3">
-                <label htmlFor="fileUpload" className="block text-sm font-medium leading-6 text-gray-900">사진 업로드</label>
-                <div className="mt-2">
-                    <input ref={uploadRef} type="file" multiple onChange={handleFileChange} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
-                                    file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-700 hover:file:bg-violet-100" />
-                </div>
-                {previewFiles.length > 0 && (
-                    <div className="mt-2 space-y-2">
-                        {previewFiles.map((file, index) => (
-                            <div key={index} className="flex items-center space-x-2">
-                                <img src={file.url} alt={file.name} className="w-16 h-16 object-cover rounded" />
-                                <span className="text-sm text-gray-700">{file.name}</span>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-            <div className="flex justify-end">
-                <div className="relative mb-4 flex p-4 flex-wrap items-stretch">
-                    <button type="button" className="rounded p-4 w-36 bg-blue-500 text-xl text-white"
-                        onClick={handleClickAdd}>ADD</button>
-                </div>
+                </section>
             </div>
         </div>
     );
