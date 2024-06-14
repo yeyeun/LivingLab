@@ -1,4 +1,5 @@
-import SearchComponent from "../../../components/common/SearchComponent";
+import SearchComponent from "../SearchComponent";
+import SelectComponent from "../SelectComponent"
 import useCustomQna from "../../../hooks/useCustomQna";
 import { getListQna } from "../../../api/communityApi";
 import { useEffect, useState } from "react";
@@ -20,23 +21,31 @@ const initState = {
 }
 
 const ListComponent = () => {
-  const {page, size, moveToList, moveToRead} = useCustomQna();
+  const { page, size, moveToList, moveToRead } = useCustomQna();
   const [serverData, setServerData] = useState(initState);
   const [search, setSearch] = useState('');
-  useEffect(()=>{
-    getListQna({page,size}, search).then(data=>{
-          console.log(data);
-          setServerData(data);
-      })
-  }, [page,size, search]);
+  const [sort, setSort] = useState('');
+  useEffect(() => {
+    getListQna({ page, size }, search, sort).then(data => {
+      console.log(data);
+      setServerData(data);
+    })
+  }, [page, size, search, sort]);
 
   const handleSearch = (query) => {
     setSearch(query);
   };
-  
-    return(
-      <>
-      <SearchComponent onSearch={handleSearch}/>
+
+  const handleSort = (query) => {
+    setSort(query);
+  };
+
+  return (
+    <>
+      <div className="flex justify-center items-center w-full my-5">
+        <SelectComponent onSort={handleSort} />
+        <SearchComponent onSearch={handleSearch} />
+      </div>
       <table className="min-w-full text-center text-lg font-light text-surface dark:text-white">
         <thead className="text-base border-b-2 border-neutral-500 font-semibold dark:border-white/10">
           <tr>
@@ -48,42 +57,42 @@ const ListComponent = () => {
           </tr>
         </thead>
         <tbody>
-        {serverData.dtoList.length>0? (
-        serverData.dtoList.map(qna=>
-            <tr
-              className="border-b border-neutral-200 transition duration-300 ease-in-out hover:bg-neutral-100 hover:cursor-pointer"
-              onClick={()=>moveToRead(qna.commNo)}>
-              <td className="whitespace-nowrap py-4">
-                {qna.commCategory === '1' && '부동산'}
-                {qna.commCategory === '2' && '인테리어'}
-                {qna.commCategory === '3' && '할인정보'}
-                {qna.commCategory === '4' && '기타'}
-              </td>
-              <td className="whitespace-nowrap py-4">{qna.commHit}</td>
-              <td className="whitespace-nowrap py-4">
-                {qna.title}
-                {qna.flag && (
+          {serverData.dtoList.length > 0 ? (
+            serverData.dtoList.map(qna =>
+              <tr
+                className="border-b border-neutral-200 transition duration-300 ease-in-out hover:bg-neutral-100 hover:cursor-pointer"
+                onClick={() => moveToRead(qna.commNo)}>
+                <td className="whitespace-nowrap py-4">
+                  {qna.commCategory === '1' && '부동산'}
+                  {qna.commCategory === '2' && '인테리어'}
+                  {qna.commCategory === '3' && '할인정보'}
+                  {qna.commCategory === '4' && '기타'}
+                </td>
+                <td className="whitespace-nowrap py-4">{qna.commHit}</td>
+                <td className="whitespace-nowrap py-4">
+                  {qna.title}
+                  {qna.flag && (
                     <img src={flagIcon} alt="Flag Icon" className="inline-block ml-2 w-5 h-5" />
                   )}
-              </td>
-              <td className="whitespace-nowrap py-4">{qna.regDate}</td>
-              <td className="whitespace-nowrap py-4">{qna.nickname}</td>
-            </tr>
-        ))
-        :
-        (
-          <tr>
-            <td colSpan="5" className="py-4">
-              등록된 게시물이 없습니다
-              <img src={nolist} width={60} alt="..." className="mx-auto mt-3"/>
-            </td>
-          </tr>
-        )}
-          </tbody>
-          </table>
-          <PageComponent serverData={serverData} movePage={moveToList}/>
-      </>
-    );
+                </td>
+                <td className="whitespace-nowrap py-4">{qna.regDate}</td>
+                <td className="whitespace-nowrap py-4">{qna.nickname}</td>
+              </tr>
+            ))
+            :
+            (
+              <tr>
+                <td colSpan="5" className="py-4">
+                  등록된 게시물이 없습니다
+                  <img src={nolist} width={60} alt="..." className="mx-auto mt-3" />
+                </td>
+              </tr>
+            )}
+        </tbody>
+      </table>
+      <PageComponent serverData={serverData} movePage={moveToList} />
+    </>
+  );
 
 }
 

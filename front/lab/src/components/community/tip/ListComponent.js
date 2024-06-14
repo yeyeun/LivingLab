@@ -42,8 +42,10 @@ const ListComponent = () => {
 
   return (
     <>
-      <SelectComponent onSort={handleSort} />
-      <SearchComponent onSearch={handleSearch} />
+      <div className="flex justify-center items-center w-full my-5">
+        <SelectComponent onSort={handleSort} />
+        <SearchComponent onSearch={handleSearch} />
+      </div>
       <table className="min-w-full text-center text-lg font-light text-surface dark:text-white">
         <thead className="text-base border-b-2 border-neutral-500 font-semibold dark:border-white/10">
           <tr>

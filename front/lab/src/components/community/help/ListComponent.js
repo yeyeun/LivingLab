@@ -37,13 +37,14 @@ const ListComponent = () => {
 
     return(
       <>
-      <SearchComponent onSearch={handleSearch}/>
+      <div className="ml-96 my-5">
+        <SearchComponent onSearch={handleSearch}/>
+      </div>
       <table className="min-w-full text-center text-lg font-light text-surface dark:text-white">
         <thead className="text-base border-b-2 border-neutral-500 font-semibold dark:border-white/10">
           <tr>
-            <th scope="col" className="w-2/12 py-4">카테고리</th>
             <th scope="col" className="w-1/12 py-4">좋아요수</th>
-            <th scope="col" className="w-6/12 py-4">제목</th>
+            <th scope="col" className="w-8/12 py-4">제목</th>
             <th scope="col" className="w-1/12 py-4">날짜</th>
             <th scope="col" className="w-2/12 py-4">작성자</th>
           </tr>
@@ -54,12 +55,6 @@ const ListComponent = () => {
             <tr
               className="border-b border-neutral-200 transition duration-300 ease-in-out hover:bg-neutral-100 hover:cursor-pointer"
               onClick={()=>moveToRead(help.commNo)}>
-              <td className="whitespace-nowrap py-4">
-                {help.commCategory === '1' && '부동산'}
-                {help.commCategory === '2' && '인테리어'}
-                {help.commCategory === '3' && '할인정보'}
-                {help.commCategory === '4' && '기타'}
-              </td>
               <td className="whitespace-nowrap py-4">{help.commHit}</td>
               <td className="whitespace-nowrap py-4">
                 {help.title}
