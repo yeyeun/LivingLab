@@ -99,4 +99,8 @@ public class BuyController {
         }
     }
 
+    @GetMapping("/latest")
+    public List<BuyDto> getLatestBuyList() {
+        return buyService.getLatestBuy();
+    }
 }

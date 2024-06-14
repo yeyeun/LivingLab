@@ -139,7 +139,7 @@ public class CommunityController {
 
     // 메인페이지 커뮤니티 최신 글
     @GetMapping("/latest")
-    public List<CommunityDto> getLatestPosts() {
-        return communityService.getLatestPosts();
+    public List<CommunityDto> getLatestCommList() {
+        return communityService.getLatestComm();
     }
 }
