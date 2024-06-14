@@ -18,9 +18,10 @@ const initState = {
   max: 2,
   current: 1,
   deadline: '',
-  teamHit: 0,
+  teamHit: '0',
   files: [],
 };
+
 const AddComponent = () => {
   const { moveToList } = useCustomMove();
   const [postImageFiles, setPostImageFiles] = useState([]); // 이미지 파일 프리뷰
@@ -101,10 +102,13 @@ const AddComponent = () => {
       setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
       return;
     }
+
+    const files = imgRef.current.files;
     const formData = new FormData();
-    if (postImageFiles) {
-      formData.append('files', postImageFiles);
+    for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
     }
+
     formData.append('user_id', user.email);
     formData.append('nickname', user.nickname);
     formData.append('title', team.title);
@@ -119,8 +123,8 @@ const AddComponent = () => {
     for (const x of formData.entries()) {
       console.log(x);
      };
-    //postAddTeam(formData);
-    //setResult('게시글이 등록되었습니다');
+    postAddTeam(formData);
+    setResult('게시글이 등록되었습니다');
   };
   const closeModal = () => {
     setResult(null);

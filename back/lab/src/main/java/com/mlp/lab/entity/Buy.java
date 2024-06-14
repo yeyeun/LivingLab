@@ -19,15 +19,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
 @Data
 @Entity
-@Builder // 빌터 패턴으로 객체 생성
+@Builder //빌터 패턴으로 객체 생성
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "buy")
 @ToString(exclude = "imageList")
-public class Buy extends BaseEntity {
-    @Id // 기본키 설정
+public class Buy extends BaseTimeEntity{
+    @Id //기본키 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long buyNo;
     private String user_id;
@@ -40,7 +41,7 @@ public class Buy extends BaseEntity {
     private String location;
     private Character buyHit;
     private String nickname;
-    private boolean flag; // 글 삭제시 작성 기록 관리를 위해 삭제된 글 표시
+    private boolean flag; // true: 마감 / false:모집중
 
     @ElementCollection
     @Builder.Default
@@ -52,8 +53,8 @@ public class Buy extends BaseEntity {
     }
 
     public void addImageString(String fileName) { // 파일 추가
-        BuyImage productImage = BuyImage.builder().fileName(fileName).build();
-        addImage(productImage);
+        BuyImage temaImage = BuyImage.builder().fileName(fileName).build();
+        addImage(temaImage);
     }
 
     public void clearList() {
@@ -88,5 +89,4 @@ public class Buy extends BaseEntity {
         buyDto.setUploadFileNames(fileNameList);
         return buyDto;
     }
-
 }

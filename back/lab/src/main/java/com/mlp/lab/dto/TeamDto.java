@@ -31,8 +31,8 @@ public class TeamDto { // 동네모임 화면에서 받을 데이터
     private Integer current;
     private String location;
     private Character teamHit;
-    private String teamImage;
     private String nickname;
+    private boolean flag; // true:마감 / false:모집중
 
     @Builder.Default
     private List<MultipartFile> files = new ArrayList<>(); // 서버에 저장되는 실제 파일 데이터
