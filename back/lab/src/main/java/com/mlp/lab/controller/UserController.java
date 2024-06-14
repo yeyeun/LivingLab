@@ -40,6 +40,16 @@ public class UserController {
     private final MailService mailService;
     private final CustomFileUtil fileUtil;
 
+    // @PostMapping("/login")
+    // public ResponseDto<Object> login(@RequestBody LoginDto loginDto) {
+    // User user = userService.findByEmail(loginDto.getEmail());
+    // if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
+    // return ResponseDto.setFailed("아이디와 비밀번호를 확인해주세요.");
+    // }
+    // return ResponseDto.setSuccessData("환영합니다 " + loginDto.getEmail() + " 님",
+    // user); // ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
+    // }
+
     @PostMapping("/login")
     @ResponseBody
     public User login(@RequestBody LoginDto loginDto) {
@@ -47,6 +57,7 @@ public class UserController {
         if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
             return null;
         }
+
         User responseUser = new User();
         responseUser.setEmail(user.getEmail());
         responseUser.setAddr(user.getAddr());
@@ -98,6 +109,7 @@ public class UserController {
 
     // 회원정보 조회
     @GetMapping("/{id}")
+    @ResponseBody
     public UserDto get(@PathVariable(name = "id") Long id) {
         return userService.get(id);
     }
