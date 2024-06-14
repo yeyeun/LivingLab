@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
@@ -66,14 +67,19 @@ public class TeamService {
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
             TeamImage teamImage = (TeamImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
 
             TeamDto teamDto = TeamDto.builder()
                     .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
                     .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
-                    .deadline(team.getDeadline()).nickname(team.getNickname()).build();
-
-            String imageStr = teamImage.getFileName();
-            teamDto.setUploadFileNames(List.of(imageStr));
+                    .deadline(team.getDeadline()).nickname(team.getNickname()).teamHit(team.getTeamHit()).build();
+            
+            if(teamImage != null){
+                String imageStr = teamImage.getFileName();
+                teamDto.setUploadFileNames(List.of(imageStr));
+            }else{
+                teamDto.setUploadFileNames(List.of(defaultImageStr));
+            }
             return teamDto;
         }).collect(Collectors.toList());     
             
@@ -97,14 +103,19 @@ public class TeamService {
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
             TeamImage teamImage = (TeamImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
 
             TeamDto teamDto = TeamDto.builder()
                     .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
                     .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
                     .deadline(team.getDeadline()).nickname(team.getNickname()).build();
 
-            String imageStr = teamImage.getFileName();
-            teamDto.setUploadFileNames(List.of(imageStr));
+            if(teamImage != null){
+                String imageStr = teamImage.getFileName();
+                teamDto.setUploadFileNames(List.of(imageStr));
+            }else{
+                teamDto.setUploadFileNames(List.of(defaultImageStr));
+            }
             return teamDto;
         }).collect(Collectors.toList());     
             
@@ -141,14 +152,19 @@ public class TeamService {
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
             TeamImage teamImage = (TeamImage) arr[1];
-
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+            
             TeamDto teamDto = TeamDto.builder()
                     .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
                     .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
                     .deadline(team.getDeadline()).nickname(team.getNickname()).build();
 
-            String imageStr = teamImage.getFileName();
-            teamDto.setUploadFileNames(List.of(imageStr));
+            if(teamImage != null){
+                String imageStr = teamImage.getFileName();
+                teamDto.setUploadFileNames(List.of(imageStr));
+            }else{
+                teamDto.setUploadFileNames(List.of(defaultImageStr));
+            }
             return teamDto;
         }).collect(Collectors.toList());     
             
@@ -185,14 +201,19 @@ public class TeamService {
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
             TeamImage teamImage = (TeamImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
 
             TeamDto teamDto = TeamDto.builder()
                     .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
                     .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
                     .deadline(team.getDeadline()).nickname(team.getNickname()).build();
 
-            String imageStr = teamImage.getFileName();
-            teamDto.setUploadFileNames(List.of(imageStr));
+            if(teamImage != null){
+                String imageStr = teamImage.getFileName();
+                teamDto.setUploadFileNames(List.of(imageStr));
+            }else{
+                teamDto.setUploadFileNames(List.of(defaultImageStr));
+            }                    
             return teamDto;
         }).collect(Collectors.toList());     
             
@@ -217,8 +238,8 @@ public class TeamService {
         return teamDto;
     }
 
-    //삭제하기
-    public void remove(int teamNo) {
+    @Transactional // DB 작업이 성공적으로 완료될때만 실제 DB에 반영
+    public void delete(int teamNo) {
         teamRepository.deleteById(teamNo);
     }
     

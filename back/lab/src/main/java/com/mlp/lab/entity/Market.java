@@ -19,6 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
 @Data
 @Entity
 @Builder //빌터 패턴으로 객체 생성
@@ -26,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Table(name = "market")
 @ToString(exclude = "imageList")
-public class Market extends BaseEntity{
+public class Market extends BaseTimeEntity{
     @Id //기본키 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long marketNo;
@@ -38,9 +39,9 @@ public class Market extends BaseEntity{
     private Integer max;
     private Integer current;
     private String location;
-    private Character MarketHit;
+    private Character marketHit;
     private String nickname;
-    private boolean flag;
+    private boolean flag; // true: 마감 / false:모집중
 
     @ElementCollection
     @Builder.Default
@@ -52,8 +53,8 @@ public class Market extends BaseEntity{
     }
 
     public void addImageString(String fileName) { // 파일 추가
-        MarketImage productImage = MarketImage.builder().fileName(fileName).build();
-        addImage(productImage);
+        MarketImage temaImage = MarketImage.builder().fileName(fileName).build();
+        addImage(temaImage);
     }
 
     public void clearList() {
@@ -88,5 +89,4 @@ public class Market extends BaseEntity{
         marketDto.setUploadFileNames(fileNameList);
         return marketDto;
     }
-
 }

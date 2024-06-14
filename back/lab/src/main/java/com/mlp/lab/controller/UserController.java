@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,14 +40,30 @@ public class UserController {
     private final MailService mailService;
     private final CustomFileUtil fileUtil;
 
+    // @PostMapping("/login")
+    // public ResponseDto<Object> login(@RequestBody LoginDto loginDto) {
+    // User user = userService.findByEmail(loginDto.getEmail());
+    // if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
+    // return ResponseDto.setFailed("아이디와 비밀번호를 확인해주세요.");
+    // }
+    // return ResponseDto.setSuccessData("환영합니다 " + loginDto.getEmail() + " 님",
+    // user); // ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
+    // }
+
     @PostMapping("/login")
-    public ResponseDto<Object> login(@RequestBody LoginDto loginDto) {
+    @ResponseBody
+    public User login(@RequestBody LoginDto loginDto) {
         User user = userService.findByEmail(loginDto.getEmail());
         if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
-            return ResponseDto.setFailed("아이디와 비밀번호를 확인해주세요.");
+            return null;
         }
-        return ResponseDto.setSuccessData("환영합니다 " + loginDto.getEmail() + " 님", user); // ResponseDto에 메세지와 데이터를 담아서
-                                                                                        // 화면(리액트)로 전달
+
+        User responseUser = new User();
+        responseUser.setEmail(user.getEmail());
+        responseUser.setAddr(user.getAddr());
+        responseUser.setDetailAddr(user.getDetailAddr());
+        responseUser.setNickname(user.getNickname());
+        return responseUser; // ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
     }
 
     @PostMapping("/join")
@@ -94,6 +111,7 @@ public class UserController {
 
     // 회원정보 조회
     @GetMapping("/{id}")
+    @ResponseBody
     public UserDto get(@PathVariable(name = "id") Long id) {
         return userService.get(id);
     }

@@ -9,10 +9,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
+import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.entity.Market;
 import com.mlp.lab.entity.MarketImage;
 import com.mlp.lab.repository.MarketRepository;
@@ -30,53 +31,58 @@ public class MarketService {
             pageRequestDto.getPage()-1,
             pageRequestDto.getSize(),
             Sort.by("marketNo").descending());
-        
-        Page<Object[]> result = null;
-        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) {   // 페이지 클릭 시
-            result = marketRepository.selectList(pageable);
-        } else if (search != null && !search.isEmpty()) { // 검색
-            result = marketRepository.selectSearchList(search, pageable);
-        } else if (sort != null && !sort.isEmpty()) { // 정렬
-            if(sort.equals("최신순")){
-                result = marketRepository.newList(pageable);
+         
+            Page<Object[]> result = null;
+            if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
+                result = marketRepository.selectList(pageable);
+            } else if (search != null && !search.isEmpty()) { // 검색
+                result = marketRepository.selectSearchList(search, pageable);
+            } else if (sort != null && !sort.isEmpty()) { // 정렬
+                if(sort.equals("최신순")){
+                    result = marketRepository.newList(pageable);
+                }
+                if(sort.equals("마감임박순")){
+                    result = marketRepository.deadLineList(pageable);
+                }
+                // if(sort.equals("거리순")){
+                //     result = 
+                // }
+                // if(sort.equals("좋아요순")){
+                //     result = 
+                // }
+            } else if (search != null && sort != null) { // 검색&&정렬 둘다
+                if(sort.equals("최신순")){
+                    result = marketRepository.searchNewList(sort, pageable);
+                }
+                if(sort.equals("마감임박순")){
+                    result = marketRepository.searchDeadLineList(sort, pageable);
+                }
+                // if(sort.equals("거리순")){
+                //     result = 
+                // }
+                // if(sort.equals("좋아요순")){
+                //     result = 
+                // }
             }
-            if(sort.equals("마감임박순")){
-                result = marketRepository.deadLineList(pageable);
-            }
-            // if(sort.equals("거리순")){
-            //     result = 
-            // }
-            // if(sort.equals("좋아요순")){
-            //     result = 
-            // }
-        } else if (search != null && sort != null) { // 검색&&정렬 둘다
-            if(sort.equals("최신순")){
-                result = marketRepository.searchNewList(sort, pageable);
-            }
-            if(sort.equals("마감임박순")){
-                result = marketRepository.searchDeadLineList(sort, pageable);
-            }
-            // if(sort.equals("거리순")){
-            //     result = 
-            // }
-            // if(sort.equals("좋아요순")){
-            //     result = 
-            // }
-        }
         List<MarketDto> dtoList = result.get().map(arr -> {
             Market market = (Market) arr[0];
             MarketImage marketImage = (MarketImage) arr[1];
-            
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+
             MarketDto marketDto = MarketDto.builder()
                     .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
                     .location(market.getLocation()).max(market.getMax()).current(market.getCurrent())
-                    .deadline(market.getDeadline()).nickname(market.getNickname()).build();
-
-            String imageStr = marketImage.getFileName();
-            marketDto.setUploadFileNames(List.of(imageStr));
+                    .deadline(market.getDeadline()).nickname(market.getNickname()).marketHit(market.getMarketHit()).build();
+            
+            if(marketImage != null){
+                String imageStr = marketImage.getFileName();
+                marketDto.setUploadFileNames(List.of(imageStr));
+            }else{
+                marketDto.setUploadFileNames(List.of(defaultImageStr));
+            }
             return marketDto;
-        }).collect(Collectors.toList());
-
+        }).collect(Collectors.toList());     
+            
         long totalCount = result.getTotalElements();
         PageResponseDto<MarketDto> responseDTO = PageResponseDto.<MarketDto>withAll()
             .dtoList(dtoList)
@@ -86,8 +92,141 @@ public class MarketService {
         return responseDTO;
     }
 
-    // 동네장터 등록(이미지 포함)
-    public void add(MarketDto marketDto) { 
+    // 검색된 목록 가져오기(페이징 처리, 이미지 포함)
+    public PageResponseDto<MarketDto> searchList(PageRequestDto pageRequestDto, String search){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage()-1,
+            pageRequestDto.getSize(),
+            Sort.by("marketNo").descending());
+         
+        Page<Object[]> result = marketRepository.selectSearchList(search, pageable);
+        List<MarketDto> dtoList = result.get().map(arr -> {
+            Market market = (Market) arr[0];
+            MarketImage marketImage = (MarketImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+
+            MarketDto marketDto = MarketDto.builder()
+                    .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
+                    .location(market.getLocation()).max(market.getMax()).current(market.getCurrent())
+                    .deadline(market.getDeadline()).nickname(market.getNickname()).build();
+
+            if(marketImage != null){
+                String imageStr = marketImage.getFileName();
+                marketDto.setUploadFileNames(List.of(imageStr));
+            }else{
+                marketDto.setUploadFileNames(List.of(defaultImageStr));
+            }
+            return marketDto;
+        }).collect(Collectors.toList());     
+            
+        long totalCount = result.getTotalElements();
+        PageResponseDto<MarketDto> responseDTO = PageResponseDto.<MarketDto>withAll()
+            .dtoList(dtoList)
+            .pageRequestDto(pageRequestDto)
+            .totalCount(totalCount)
+            .build();
+        return responseDTO;
+    }
+
+    // 선택된 목록 가져오기(페이징 처리, 이미지 포함)
+    public PageResponseDto<MarketDto> sortList(PageRequestDto pageRequestDto, String sort){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage()-1,
+            pageRequestDto.getSize(),
+            Sort.by("marketNo").descending());
+         
+        Page<Object[]> result = marketRepository.selectList(pageable);
+        if(sort.equals("최신순")){
+            result = marketRepository.newList(pageable);
+        }
+        if(sort.equals("마감임박순")){
+            result = marketRepository.deadLineList(pageable);
+        }
+        // if(sort.equals("거리순")){
+        //     result = 
+        // }
+        // if(sort.equals("좋아요순")){
+        //     result = 
+        // }
+
+        List<MarketDto> dtoList = result.get().map(arr -> {
+            Market market = (Market) arr[0];
+            MarketImage marketImage = (MarketImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+            
+            MarketDto marketDto = MarketDto.builder()
+                    .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
+                    .location(market.getLocation()).max(market.getMax()).current(market.getCurrent())
+                    .deadline(market.getDeadline()).nickname(market.getNickname()).build();
+
+            if(marketImage != null){
+                String imageStr = marketImage.getFileName();
+                marketDto.setUploadFileNames(List.of(imageStr));
+            }else{
+                marketDto.setUploadFileNames(List.of(defaultImageStr));
+            }
+            return marketDto;
+        }).collect(Collectors.toList());     
+            
+        long totalCount = result.getTotalElements();
+        PageResponseDto<MarketDto> responseDTO = PageResponseDto.<MarketDto>withAll()
+            .dtoList(dtoList)
+            .pageRequestDto(pageRequestDto)
+            .totalCount(totalCount)
+            .build();
+        return responseDTO;
+    }
+
+    // 검색 + 선택된 목록 가져오기(페이징 처리, 이미지 포함)
+    public PageResponseDto<MarketDto> searchSortList(PageRequestDto pageRequestDto, String search, String sort){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage()-1,
+            pageRequestDto.getSize(),
+            Sort.by("marketNo").descending());
+         
+        Page<Object[]> result = marketRepository.selectList(pageable);
+        if(sort.equals("최신순")){
+            result = marketRepository.searchNewList(sort, pageable);
+        }
+        if(sort.equals("마감임박순")){
+            result = marketRepository.searchDeadLineList(sort, pageable);
+        }
+        // if(sort.equals("거리순")){
+        //     result = 
+        // }
+        // if(sort.equals("좋아요순")){
+        //     result = 
+        // }
+
+        List<MarketDto> dtoList = result.get().map(arr -> {
+            Market market = (Market) arr[0];
+            MarketImage marketImage = (MarketImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+
+            MarketDto marketDto = MarketDto.builder()
+                    .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
+                    .location(market.getLocation()).max(market.getMax()).current(market.getCurrent())
+                    .deadline(market.getDeadline()).nickname(market.getNickname()).build();
+
+            if(marketImage != null){
+                String imageStr = marketImage.getFileName();
+                marketDto.setUploadFileNames(List.of(imageStr));
+            }else{
+                marketDto.setUploadFileNames(List.of(defaultImageStr));
+            }                    
+            return marketDto;
+        }).collect(Collectors.toList());     
+            
+        long totalCount = result.getTotalElements();
+        PageResponseDto<MarketDto> responseDTO = PageResponseDto.<MarketDto>withAll()
+            .dtoList(dtoList)
+            .pageRequestDto(pageRequestDto)
+            .totalCount(totalCount)
+            .build();
+        return responseDTO;
+    }
+
+    public void add(MarketDto marketDto) { // 동네장터 등록(이미지 포함)
         Market market = Market.DtoToEntity(marketDto);
         marketRepository.save(market);
     }
@@ -99,11 +238,11 @@ public class MarketService {
         return marketDto;
     }
 
-    //삭제하기
-    public void remove(int marketNo) {
+    @Transactional // DB 작업이 성공적으로 완료될때만 실제 DB에 반영
+    public void delete(int marketNo) {
         marketRepository.deleteById(marketNo);
     }
-
+    
     public void modify(MarketDto marketDto) { //수정하기
         // 조회
         Optional<Market> result = marketRepository.findById(marketDto.getMarketNo().intValue());

@@ -27,6 +27,7 @@ public class UserDto { // 마이페이지 화면에서 받을 데이터
     private String addr;
     private String detailAddr;
     private String location; // 실시간 위치정보 추가
+    private String message;
 
     @Builder.Default
     private List<MultipartFile> files = new ArrayList<>(); // 서버에 저장되는 실제 파일 데이터
@@ -47,7 +48,7 @@ public class UserDto { // 마이페이지 화면에서 받을 데이터
         dataMap.put("nickname", nickname);
         dataMap.put("addr", addr);
         dataMap.put("detailAddr", detailAddr);
-        // dataMap.put("location", location);
+        dataMap.put("location", location);
         // dataMap.put("social", social);
         // dataMap.put("roleNames", roleNames);
 

@@ -8,17 +8,16 @@ import HorizonLine from '../../util/HorizontalLine';
 import KakaoLoginComponent from './KakaoLoginComponent';
 import { getKakaoLoginLink } from '../../api/kakaoApi';
 import useCustomLogin from '../../hooks/useCustomLogin';
+import { loginPost } from '../../api/userApi';
 
 const initState = {
   email: '',
   pwd: '',
 };
 
-const kakaoLink = getKakaoLoginLink(); // 카카오 로그인 링크
-
 function LoginComponent(props) {
   const [loginParam, setLoginParam] = useState({ ...initState });
-
+  const { moveToLogin, moveToPath } = useCustomLogin();
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -27,34 +26,22 @@ function LoginComponent(props) {
     setLoginParam({ ...loginParam });
   };
 
-  const { moveToLogin, moveToPath } = useCustomLogin();
-
   const handleClickLogin = (e) => {
-    //dispatch(login(loginParam));
+    loginPost(loginParam).then((userInfo) => {
+      console.log('----------------------------');
+      console.log(userInfo);
+      dispatch(login(userInfo));
 
-    dispatch(loginPostAsync(loginParam)).then((data) => {
-      console.log('after unwrap...');
-      console.log(data);
-      if (data.error) {
-        alert('이메일과 패스워드를 다시 확인하세요');
-      } else {
-        alert('로그인 성공');
+      // 로그인 후 메인으로
+      if (userInfo.email != null) {
+        //성공
+        alert('로그인 되었습니다.');
         moveToPath('/');
+      } else {
+        alert('이메일 혹은 비밀번호를 다시 한번 확인해주세요');
+        moveToLogin(); // 실패
       }
-    }); // 비동기 호출
-
-    // dispatch(loginPostAsync(loginParam))
-    //   .unwrap()
-    //   .then((data) => {
-    //     console.log('after unwrap...');
-    //     console.log(data);
-    //     if (data.error) {
-    //       alert('이메일과 패스워드를 다시 확인하세요');
-    //     } else {
-    //       alert('로그인 성공');
-    //       moveToPath('/');
-    //     }
-    //   }); // 비동기 호출
+    });
   };
 
   return (
@@ -125,16 +112,6 @@ function LoginComponent(props) {
             </div>
           </div>
         </div>
-
-        {/* <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full justify-center">
-            <div className="w-full flex justify-center font-bold">
-              <button className="rounded p-2 w-full bg-yellow-300 text-xl text-white">
-                <Link to={kakaoLink}>KAKAO LOGIN</Link>
-              </button>
-            </div>
-          </div>
-        </div> */}
 
         <KakaoLoginComponent />
 
