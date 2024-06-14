@@ -69,7 +69,7 @@ const AddComponent = () => {
 
         const files = uploadRef.current.files;
         const formData = new FormData();
-        
+
         const combinedAddress = `${address} ${document.querySelector('[name="detailAddr"]').value}`;
         formData.append("location", combinedAddress);
 
@@ -84,6 +84,8 @@ const AddComponent = () => {
         formData.append("rentFee", shareRoom.rentFee);
         formData.append("parking", shareRoom.parking);
         formData.append("option1", shareRoom.option1);
+        formData.append("rentEndDate", shareRoom.rentEndDate);
+        formData.append("rentStartDate", shareRoom.rentStartDate);
 
         postAdd(formData);
         setResult("게시글이 등록되었습니다");
@@ -126,8 +128,12 @@ const AddComponent = () => {
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-full p-3 text-left font-bold">주차가능여부</div>
-                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="parking" type={'text'} value={shareRoom.parking} onChange={handleChangeShareRoom}></input>
+                    <input className="ml-10 mr-5"
+                        name="parking" type={'radio'} value="O" checked={shareRoom.parking === 'O'} onChange={handleChangeShareRoom}></input>
+                        <label for="O">가능</label><br></br>
+                    <input className="ml-10 mr-5"
+                        name="parking" type={'radio'} value="X" checked={shareRoom.parking === 'X'} onChange={handleChangeShareRoom}></input>
+                        <label for="X">불가능</label>
                 </div>
             </div>
             <div className="flex justify-center">
@@ -135,6 +141,20 @@ const AddComponent = () => {
                     <div className="w-full p-3 text-left font-bold">옵션</div>
                     <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
                         name="option1" type={'text'} value={shareRoom.option1} onChange={handleChangeShareRoom}></input>
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="w-full p-3 text-left font-bold">언제부터</div>
+                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
+                        name="rentStartDate" type={'date'} value={shareRoom.rentStartDate} onChange={handleChangeShareRoom}></input>
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="w-full p-3 text-left font-bold">언제까지</div>
+                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
+                        name="rentEndDate" type={'date'} value={shareRoom.rentEndDate} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
             <div className="relative mb-4 flex w-full flex-wrap items-stretch">
