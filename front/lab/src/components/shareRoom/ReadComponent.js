@@ -68,7 +68,7 @@ const ReadComponent = ({ roomNo }) => {
                 <div id="grid2" className="w-[1200px] mx-auto grid grid-cols-[780px_360px] gap-x-10 gap-y-0 p-2.5">
                     <div id="text-area" className="w-[780px] h-[1000px] col-span-1 ">
                         <div id="box" className="flex items-center mb-10 p-8 border border-gray-200 rounded-sm bg-gray-50">
-                            <h1 className="flex-none ml-1 text-black text-base leading-6 font-bold"> 이것은 제목 입니다. </h1>
+                            <h1 className="flex-none ml-1 text-black text-base leading-6 font-bold"> {shareRoom.title} </h1>
                         </div>
                         <div id="main-container" className="grid gap-y-28">
                             <section id="price">
@@ -78,18 +78,25 @@ const ReadComponent = ({ roomNo }) => {
                                 <ul>
                                     <li className="grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 pb-4">
                                         <div>
-                                            <h1 className="text-gray-900 text-base leading-6 font-bold">비용</h1>
+                                            <h1 className="text-gray-900 text-base leading-6 font-bold">금액</h1>
                                         </div>
-                                        <div>
-                                            <p className="text-base leading-6 font-medium">5만원 / 주</p>
-                                        </div>
+                                        {(shareRoom.rentFee % 10000) === 0 ? (
+                                            <div>
+                                                <p className="text-base leading-6 font-medium">{(shareRoom.rentFee / 10000).toFixed(0)}&nbsp; 만원</p>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <p className="text-base leading-6 font-medium">{(shareRoom.rentFee / 10000).toFixed(1)}&nbsp; 만원</p>
+                                            </div>
+                                        )}
+
                                     </li>
                                     <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
                                         <div>
                                             <h1 className="text-gray-900 text-base leading-6 font-bold">주차가능여부</h1>
                                         </div>
                                         <div>
-                                            <p className="text-base leading-6 font-medium">O</p>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.parking}</p>
                                         </div>
                                     </li>
                                     <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
@@ -97,7 +104,7 @@ const ReadComponent = ({ roomNo }) => {
                                             <h1 className="text-gray-900 text-base leading-6 font-bold">주소</h1>
                                         </div>
                                         <div>
-                                            <p className="text-base leading-6 font-medium">경기도 성남시 분당구 판교로 225번길 38</p>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.location}</p>
                                         </div>
                                     </li>
                                     <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
@@ -105,15 +112,15 @@ const ReadComponent = ({ roomNo }) => {
                                             <h1 className="text-gray-900 text-base leading-6 font-bold">시작일</h1>
                                         </div>
                                         <div>
-                                            <p className="text-base leading-6 font-medium">2024년 6월 4일</p>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.rentStartDate}</p>
                                         </div>
-                                    </li>                                    
+                                    </li>
                                     <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
                                         <div>
                                             <h1 className="text-gray-900 text-base leading-6 font-bold">종료일</h1>
                                         </div>
                                         <div>
-                                            <p className="text-base leading-6 font-medium">2024년 6월 29일</p>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.rentEndDate}</p>
                                         </div>
                                     </li>
                                     <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
@@ -121,7 +128,7 @@ const ReadComponent = ({ roomNo }) => {
                                             <h1 className="text-gray-900 text-base leading-6 font-bold">옵션</h1>
                                         </div>
                                         <div>
-                                            <p className="text-base leading-6 font-medium">세탁기,냉장고,티비,벽걸이 에어컨,도시가스</p>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.option1}</p>
                                         </div>
                                     </li>
                                 </ul>
@@ -131,7 +138,7 @@ const ReadComponent = ({ roomNo }) => {
                                     <h1 className="text-black text-2xl leading-tight tracking-tighter font-bold">위치</h1>
                                 </div>
                                 <div id="loc-title" className="mb-6">
-                                    <p className="flex-none mr-4 text-gray-900 text-base leading-6 font-normal">주소가 어쩌구 저쩌구</p>
+                                    <p className="flex-none mr-4 text-gray-900 text-base leading-6 font-normal">{shareRoom.location}</p>
                                 </div>
                                 <div id="zeedo">
 
@@ -143,28 +150,7 @@ const ReadComponent = ({ roomNo }) => {
                         <div id="content-container" className="sticky top-24">
                             <div id="inner-content" className="w-90 p-8 bg-white shadow-md border border-gray-300 rounded-sm relative">
                                 <p className="flex-none text-gray-900 text-base leading-6 font-normal">
-                                
-                                
-                                안녕하세요
-
-                                이름은 코어빌이고 위치는 판교 쪽에 있습니다.
-
-                                위치가 약간 먼데 어자피 요번에 새로 지은 의료과학대 덕분에 그렇게 먼 것은 아닌것 같습니다.
-
-                                방이 상당히 넓고 두명이서 지내도 괜찮을 정도입니다.
-
-                                한가지 장점이라면 도시가스가 들어온다는 겂니다.
-
-                                가격은 1주일에 5만원이구요
-
-                                에어콘, 세탁기, 냉장고,티비 등은 기본으로 제공한다고 합니다.
-
-                                전체적으로는 많이 깔끔한 편입니다.
-
-                                인테리어 벽지도 방마다 다르게 해서 뭐랄까 방만큼은 상당히 괜찮습니다.
-
-
-
+                                {shareRoom.content}
                                 </p>
                                 <div id="buttons" className="flex items-center w-full mt-8">
                                     <div>
@@ -181,6 +167,19 @@ const ReadComponent = ({ roomNo }) => {
                             </div>
                         </div>
                     </aside>
+                    <div>
+                    {loginState.id === shareRoom.userId && (
+                            <>
+                                <button type="button" className="ml-5 float-right inline-block rounded bg-blue-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none" onClick={handleClickDelete}>
+                                    삭제하기
+                                </button>
+                                <button type="button" className="float-right inline-block rounded bg-teal-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-teal-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none" onClick={() => moveToModify(roomNo)}>
+                                    수정하기
+                                </button>
+
+                            </>
+                        )}
+                    </div>    
                 </div>
             </div>
         </div>

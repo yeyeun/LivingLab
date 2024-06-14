@@ -1,5 +1,5 @@
-import React,{ useRef, useState, useEffect } from "react";
-import { modify,getOne } from "../../api/shareRoomApi";
+import React, { useRef, useState, useEffect } from "react";
+import { modify, getOne } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PostComponent from "../common/PostComponent";
@@ -39,7 +39,7 @@ const ModifyComponent = ({ roomNo }) => {
         shareRoom[e.target.name] = e.target.value
         setShareRoom({ ...shareRoom });
     }
-   
+
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
         const nonImageFiles = files.filter(file => !file.type.startsWith('image/'));
@@ -60,7 +60,7 @@ const ModifyComponent = ({ roomNo }) => {
     }
 
     const handleClickModify = (e) => {
-        
+
         //유효성 검사
         if (!shareRoom.title || !shareRoom.userId) {
             setAddResultModal("제목과 내용을 입력해주세요");
@@ -68,7 +68,7 @@ const ModifyComponent = ({ roomNo }) => {
         }
         const files = uploadRef.current.files;
         const formData = new FormData();
-        
+
         const combinedAddress = `${address} ${document.querySelector('[name="detailAddr"]').value}`;
         formData.append("location", combinedAddress);
 
@@ -81,10 +81,12 @@ const ModifyComponent = ({ roomNo }) => {
         formData.append("rentFee", shareRoom.rentFee);
         formData.append("parking", shareRoom.parking);
         formData.append("option1", shareRoom.option1);
+        formData.append("rentStartDate", shareRoom.rentStartDate);
+        formData.append("rentEndDate", shareRoom.rentEndDate);
         formData.append("uploadFileNames", shareRoom.uploadFileNames);
 
         console.log(formData);
-        modify(roomNo,formData);
+        modify(roomNo, formData);
         setResult("게시글이 수정되었습니다");
     }
 
@@ -124,16 +126,36 @@ const ModifyComponent = ({ roomNo }) => {
             </div>
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-full p-3 text-left font-bold">주차가능여부</div>
+                    <div className="w-full p-3 text-left font-bold">옵션</div>
                     <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="parking" type={'text'} value={shareRoom.parking} onChange={handleChangeShareRoom}></input>
+                        name="option1" type={'text'} value={shareRoom.option1} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-full p-3 text-left font-bold">옵션</div>
+                    <div className="w-full p-3 text-left font-bold">주차가능여부</div>
+                    <input className=""
+                        name="parking" type={'radio'} value="O" checked={shareRoom.parking === 'O'} onChange={handleChangeShareRoom}>
+                    </input>
+                    <div className="pl-3 pr-5">가능</div>
+                    <input className=""
+                        name="parking" type={'radio'} value="X" checked={shareRoom.parking === 'X'} onChange={handleChangeShareRoom}>
+                    </input>
+                    <div className="pl-3">불가능</div>
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="w-full p-3 text-left font-bold">임대 시작일</div>
                     <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-                        name="option1" type={'text'} value={shareRoom.option1} onChange={handleChangeShareRoom}></input>
+                        name="option1" type={'date'} value={shareRoom.rentStartDate} onChange={handleChangeShareRoom}></input>
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="w-full p-3 text-left font-bold">임대 종료일</div>
+                    <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
+                        name="option1" type={'date'} value={shareRoom.rentEndDate} onChange={handleChangeShareRoom}></input>
                 </div>
             </div>
             <div className="relative mb-4 flex w-full flex-wrap items-stretch">
@@ -158,7 +180,7 @@ const ModifyComponent = ({ roomNo }) => {
                 <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input>
             </div>
             <div className="col-span-3">
-            <label htmlFor="fileUpload" className="block text-sm font-medium leading-6 text-gray-900">사진 업로드</label>
+                <label htmlFor="fileUpload" className="block text-sm font-medium leading-6 text-gray-900">사진 업로드</label>
                 <div className="mt-2">
                     <input ref={uploadRef} type="file" multiple onChange={handleFileChange} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
                                     file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-700 hover:file:bg-violet-100" />

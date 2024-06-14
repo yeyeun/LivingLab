@@ -56,11 +56,20 @@ const ListComponent = ({ search }) => {
                 <p class="text-gray-900 text-xs leading-5 font-normal">
                   {shareRoom.option1}
                 </p>
+                {(shareRoom.rentFee % 10000) === 0 ? (
                 <p class="mb-2 text-xl font-medium text-gray-800">
-                  월세 &nbsp; {(shareRoom.rentFee / 10000).toFixed(0)}
+                  금액 &nbsp; {(shareRoom.rentFee / 10000).toFixed(0)} &nbsp; 만원
                 </p>
-                <p class="font-light text-gray-400 text-md">
-                  {shareRoom.rentStartDate}
+                ) : (
+                <p class="mb-2 text-xl font-medium text-gray-800">
+                  금액 &nbsp; {(shareRoom.rentFee / 10000).toFixed(1)} &nbsp; 만원
+                </p>
+                )}
+                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
+                  {shareRoom.rentStartDate} &nbsp; 부터
+                </p>
+                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
+                  {shareRoom.rentEndDate} &nbsp; 까지
                 </p>
               </div>
             </div>
