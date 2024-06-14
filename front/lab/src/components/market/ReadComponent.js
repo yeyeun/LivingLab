@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Slider from "react-slick";
 import useCustomMove from '../../hooks/useCustomMove';
 import ModalComponent from '../common/ModalComponent';
-import ConfirmationModal from '../common/ConfirmationModal';
+import ResultModal from '../common/ResultModal';
 import MapComponent from '../common/MapComponent';
 import iconNext from '../../resources/images/icon-next.png';
 import userIcon from '../../resources/images/user.png';
@@ -52,8 +52,7 @@ const ReadComponent = ({ marketNo }) => {
     }, [marketNo]);
   
     const [showModal, setShowModal] = useState(false);
-    const [showConfirm, setShowConfirm] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
+    const [result, setResult] = useState(null);
   
     const handleOpenModal = () => {
       setShowModal(true);
@@ -63,20 +62,15 @@ const ReadComponent = ({ marketNo }) => {
       setShowModal(false);
     };
 
-    const handleDeleteClick = () => {
-      setModalMessage('삭제하시겠습니까?');
-      setShowConfirm(true);
-    };
-
-    const handleConfirm = () => {
-      setShowConfirm(false);
+    const handleClickDelete = (e) => {
       deleteOne(marketNo);
-      moveToList();
-    };
+      setResult("게시글이 삭제되었습니다");
+    }
 
-    const handleCancel = () => {
-      setShowConfirm(false);
-    };
+    const closeModal = () => {
+      setResult(null);
+      moveToList();
+    }
 
     //날짜 포맷 설정
     const formatDeadline = (deadline) => {
@@ -165,7 +159,7 @@ const ReadComponent = ({ marketNo }) => {
                     {id === market.user_id? (
                     <>
                     <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/2 mr-2 hover:bg-red-500" onClick={() => moveToModify(marketNo)}>수정하기</button>
-                    <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 mr-2 hover:bg-slate-500" onClick={handleDeleteClick}>삭제하기</button>
+                    <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 mr-2 hover:bg-slate-500" onClick={handleClickDelete}>삭제하기</button>
                     <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>목록</button>
                     </>
                     ) : (
@@ -178,7 +172,7 @@ const ReadComponent = ({ marketNo }) => {
                   </div>
                 </div>
                 <ModalComponent show={showModal} onClose={handleCloseModal} />
-                <ConfirmationModal show={showConfirm} message={modalMessage} onConfirm={handleConfirm} onCancel={handleCancel} />
+                {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
             </div>
         </div>
     );
