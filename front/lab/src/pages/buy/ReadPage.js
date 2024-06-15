@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
-import BuyReadComponent from '../../components/buy/BuyReadComponent';
+import ReadComponent from '../../components/buy/ReadComponent';
 
 const ReadPage = () => {
   const { buyNo } = useParams();
   return (
     <div>
-      <BuyReadComponent buyNo={buyNo} />
+      <ReadComponent buyNo={buyNo} />
     </div>
   );
 };

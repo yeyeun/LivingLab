@@ -161,4 +161,16 @@ public class CommunityService {
         communityRepository.deleteById(commNo);
     }
 
+    // 메인페이지 커뮤니티 최신 글
+    public List<CommunityDto> getLatestComm() {
+        List<Community> latestPosts = communityRepository.latestCommList().stream()
+                .limit(10)
+                .collect(Collectors.toList());
+
+        return latestPosts.stream()
+                .map(post -> modelMapper.map(post, CommunityDto.class))
+                .collect(Collectors.toList());
+    }
+                
+
 }

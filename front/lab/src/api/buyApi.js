@@ -9,7 +9,7 @@ export const getOne = async (buyNo) => {
 
 export const getList = async (pageParam, search, sort) => {
   const { page, size } = pageParam;
-  const res = await axios.get(`${prefix}/list`, { params: { page: page, size: size, search: search, sort: sort } });
+  const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size, search: search, sort: sort }});
   return res.data;
 };
 
@@ -18,3 +18,22 @@ export const postAddBuy = async(buy) => {
   const res = await axios.post(`${prefix}/add`, buy, header);
   return res.data;
 }
+
+export const modify = async(buyNo, buy) => {
+  const header = {headers:{"Content-Type":"multipart/form-data"}};
+  const res = await axios.put(`${prefix}/modify/${buyNo}`, buy, header);
+  return res.data;
+}
+
+export const deleteOne = async(buyNo) => {
+  const res = await axios.delete(`${prefix}/delete/${buyNo}`);
+  return res.data;
+}
+
+// ******공동구매 최신 글 보기******
+
+export const getLatestBuy = async (pageParam) => {
+  const { page, size } = pageParam;
+  const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
+  return res.data;
+} 

@@ -30,6 +30,9 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
     @Query("select c from Community c where c.type = '4'")
     Page<Community> selectHelpList(org.springframework.data.domain.Pageable pageable);
 
-    @Query("select c from Community c where c.type = '4' and c.title like %:title% order by c.createdDate desc")
-    Page<Community> helpSearchList(org.springframework.data.domain.Pageable pageable, String title);
+    @Query("select c from Community c where c.type = '4' and c.title like %:title%")
+    Page<Community> helpSearchList(Pageable pageable, String title);
+
+    @Query("select c from Community c order by c.createdDate desc")
+    List<Community> latestCommList();
 }

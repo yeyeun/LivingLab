@@ -102,3 +102,12 @@ export const modifyHelp = async(commNo, help) => {
     const res = await axios.put(`${prefix}/help/modify/${commNo}`, help, header);
     return res.data;
 }
+
+// ******커뮤니티 최신 글 보기******
+export const getLatestComm = async (pageParam) => {
+    const { page, size } = pageParam;
+    const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
+    return res.data;
+}
+
+

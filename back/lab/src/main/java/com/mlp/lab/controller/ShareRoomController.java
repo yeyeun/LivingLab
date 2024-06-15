@@ -62,10 +62,9 @@ public class ShareRoomController {
     public void add(ShareRoomDto shareRoomDto) {
         List<MultipartFile> files = shareRoomDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
-        if(uploadFileNames == null || uploadFileNames.isEmpty()){
+        if (uploadFileNames == null || uploadFileNames.isEmpty()) {
             shareRoomDto.setFlag(false);
-        }
-        else{
+        } else {
             shareRoomDto.setFlag(true);
         }
         shareRoomDto.setUploadFileNames(uploadFileNames);
