@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { API_SERVER_HOST, getOne, deleteOne } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove"
 import { useSelector } from 'react-redux';
-import MapComponent from "../common/MapComponent";
+import MapComponent2 from "../common/MapComponent2";
 
 const host = API_SERVER_HOST;
 
@@ -142,7 +142,9 @@ const ReadComponent = ({ roomNo }) => {
                                     <p className="flex-none mr-4 text-gray-900 text-base leading-6 font-normal">{shareRoom.location}</p>
                                 </div>
                                 <div id="zeedo">
-                                    <MapComponent location={shareRoom.location}/>
+                                    <div className="col-start-2 col-span-8 h-80">
+                                        <MapComponent2 location={shareRoom.location}/>
+                                    </div>
                                 </div>
                             </section>
                         </div>
@@ -168,7 +170,7 @@ const ReadComponent = ({ roomNo }) => {
                             </div>
                         </div>
                     </aside>
-                    <div>
+                    <div className="mt-[100px]">
                     {loginState.id === shareRoom.userId && (
                             <>
                                 <button type="button" className="ml-5 float-right inline-block rounded bg-blue-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none" onClick={handleClickDelete}>

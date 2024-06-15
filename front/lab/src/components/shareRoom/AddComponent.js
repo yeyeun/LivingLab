@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
-import { postAdd } from "../../api/shareRoomApi";
+import { postAddShareRoom } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import { useSelector } from 'react-redux';
-import PostComponent from "../common/PostComponent";
+import PostComponent2 from "../common/PostComponent2";
 import Image1 from '../../resources/images/radio1.svg';
 import Image2 from '../../resources/images/radio2.svg';
+import iconEdit from '../../resources/images/iconEdit.png'
 
 
 
@@ -13,16 +14,15 @@ const AddComponent = () => {
 
     const [addResultModal, setAddResultModal] = useState(null);
     const [result, setResult] = useState(null);
-    const [previewFiles, setPreviewFiles] = useState([]);
     const [postImageFiles, setPostImageFiles] = useState([]); // 이미지 파일 프리뷰
     const { moveToList } = useRoomCustomMove()
-    const [address, setAddress] = React.useState('');
-    const [popup, setPopup] = React.useState(false);
-    const [checkedRadio, setCheckedRadio] = useState(null);
     const loginState = useSelector((state) => state.loginSlice);
     const imgRef = useRef();
-
     const [userId, setUserId] = useState(loginState.id);
+
+    const setAddress = (address) => {
+        setShareRoom((prev) => ({ ...prev, location: address }));
+      };
 
     const handleImageChange = (e) => {
         // 이미지 변경
@@ -81,25 +81,6 @@ const AddComponent = () => {
         setShareRoom({ ...shareRoom })
     }
 
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        const nonImageFiles = files.filter(file => !file.type.startsWith('image/'));
-
-        if (nonImageFiles.length > 0) {
-            setAddResultModal("이미지 파일만 등록 가능합니다");
-            imgRef.current.value = ""; // Clear the file input
-            setPreviewFiles([]);
-            return;
-        }
-
-        const imagePreviews = files.map(file => ({
-            url: URL.createObjectURL(file),
-            name: file.name
-        }));
-
-        setPreviewFiles(imagePreviews);
-    }
-
     const handleClickAdd = (e) => {
 
         if (!shareRoom.title || !shareRoom.content) {
@@ -109,9 +90,6 @@ const AddComponent = () => {
 
         const files = imgRef.current.files;
         const formData = new FormData();
-
-        const combinedAddress = `${address} ${document.querySelector('[name="detailAddr"]').value}`;
-        formData.append("location", combinedAddress);
 
         for (let i = 0; i < files.length; i++) {
             formData.append("files", files[i]);
@@ -126,8 +104,8 @@ const AddComponent = () => {
         formData.append("option1", shareRoom.option1);
         formData.append("rentEndDate", shareRoom.rentEndDate);
         formData.append("rentStartDate", shareRoom.rentStartDate);
-
-        postAdd(formData);
+        formData.append("location", shareRoom.location);
+        postAddShareRoom(formData);
         setResult("게시글이 등록되었습니다");
     }
 
@@ -145,7 +123,7 @@ const AddComponent = () => {
             )}
             <div id="title-area" className="pt-[80px] pb-[64px]">
                 <h1 className="text-5xl text-gray-900 leading-3 font-bold text-center tracking-tighter">
-                    자취방쉐어
+                    자취방 등록
                 </h1>
             </div>
             <div id="main-area" className="w-full">
@@ -325,7 +303,17 @@ const AddComponent = () => {
                                             <div className="flex-grow flex flex-wrap justify-start">
                                                 <div className="">
                                                     <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                                                        <button
+                                                        <div className="flex">
+                                                            <div className="w-full pl-1">
+                                                                <input className="w-full h-full text-gray-700 text-base leading-6 font-normal px-4 border border-gray-300 rounded-sm bg-white transition-all duration-150 ease-out select-none" name="address" type="text"
+                                                                    placeholder="주소(우편번호 및 도로명 검색)" value={shareRoom.location} />
+                                                            </div>
+                                                            <div className="w-1/5 text-base">
+                                                                <PostComponent2 setAddress={setAddress}></PostComponent2>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* <button
                                                             className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
                                                             onClick={() => {
                                                                 setPopup(!popup);
@@ -342,7 +330,7 @@ const AddComponent = () => {
                                                             required={true}
                                                             value={address}
                                                         ></input>
-                                                        <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input>
+                                                        <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input> */}
                                                     </div>
                                                 </div>
                                             </div>
