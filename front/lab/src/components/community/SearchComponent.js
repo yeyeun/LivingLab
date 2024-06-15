@@ -13,7 +13,7 @@ const SearchComponent = ({ onSearch }) => {
   };
 
   return (
-    <form id="two" className="flex items-center" onSubmit={handleSubmit}>
+    <form className="flex items-center" onSubmit={handleSubmit}>
     <label htmlFor="simple-search" className="sr-only">
       Search
     </label>

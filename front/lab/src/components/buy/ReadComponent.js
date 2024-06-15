@@ -9,7 +9,8 @@ import MapComponent from '../common/MapComponent';
 import iconNext from '../../resources/images/icon-next.png';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
-import emptyheart from '../../resources/images/heart_full.png';
+import fullheart from '../../resources/images/heart_full.png';
+import emptyheart from '../../resources/images/heart_empty.png';
 
 const initState = {
     buyNo: 0,
@@ -21,6 +22,7 @@ const initState = {
     current: 0,
     deadline: '',
     flag:'',
+    buyHit: 0,
     uploadFileNames: [],
 };
 
@@ -46,7 +48,7 @@ const ReadComponent = ({ buyNo }) => {
   
     useEffect(() => {
       getOne(buyNo).then((data) => {
-        console.log(data);
+        console.log("getOne : ",data);
         setBuy(data);
       });
     }, [buyNo]);

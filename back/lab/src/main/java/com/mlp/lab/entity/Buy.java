@@ -6,12 +6,14 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.BuyDto;
+import com.mlp.lab.entity.like.LikeBuy;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +48,9 @@ public class Buy extends BaseTimeEntity{
     @ElementCollection
     @Builder.Default
     private List<BuyImage> imageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "buy")
+    private List<LikeBuy> likeBuys;
 
     public void addImage(BuyImage image) { // 이미지 추가
         image.setOrd(this.imageList.size());
