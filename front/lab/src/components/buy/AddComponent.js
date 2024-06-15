@@ -30,14 +30,6 @@ const AddComponent = () => {
   const [addResultModal, setAddResultModal] = useState(null);
   const imgRef = useRef();
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setPostImage(URL.createObjectURL(file));
-            setPostImageFile(file); 
-        }
-    };
-
   const handleImageChange = (e) => {
     // 이미지 변경
     const files = Array.from(e.target.files);
@@ -130,10 +122,6 @@ const AddComponent = () => {
     moveToList();
   };
 
-    const handleChangeBuy = (e) => {
-        buy[e.target.name] = e.target.value;
-        setBuy({ ...buy });
-    };
 
   const handleInputValidation = (e) => {
     const value = e.target.value;
