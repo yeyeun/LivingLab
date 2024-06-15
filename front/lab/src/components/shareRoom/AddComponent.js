@@ -111,16 +111,95 @@ const AddComponent = () => {
                     <header className="flex items-end justify-between mb-4">
                         <h1 className="text-xl text-gray-900 leading-8 font-bold ">방 정보</h1>
                     </header>
-                    <table id="select-info" className="w-full border-t-2 border-gray-900">
+                    <table id="select-info" className="w-full border-t-2 border-gray-900 border-collapse">
                         <colgroup>
                             <col className="w-[150px]"></col>
                             <col></col>
                         </colgroup>
                         <tbody>
                             <tr className="border-b border-neutral-200">
-                                <th className="pl-5 text-left align-middle bg-neutral-200">
+                                <th className="pl-5 text-left align-middle bg-neutral-100">
                                     <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
                                         제목
+                                    </h1>
+                                </th>
+                                <td className="align-middle px-4 py-5 border-l border-neutral-200">
+                                    <div className="w-auto">
+                                        <div className="w-full flex">
+                                            <div className="flex-grow flex flex-wrap justify-start">
+                                                <div className="">
+                                                    <input type="text" value={shareRoom.title} onChange={handleChangeShareRoom} name="title" className="w-full h-full text-gray-900 text-sm leading-6 font-normal px-4 border border-gray-200 rounded-sm bg-white select-none">
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr className="border-b border-neutral-200">
+                                <th className="pl-5 text-left align-middle bg-neutral-100">
+                                    <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
+                                        상세설명
+                                    </h1>
+                                </th>
+                                <td className="align-middle px-4 py-5 border-l border-neutral-200">
+                                    <div className="w-auto">
+                                        <div className="w-full flex">
+                                            <div className="flex-grow flex flex-wrap justify-start">
+                                                <label className="flex flex-col w-full h-48 py-2.5 px-4 relative">
+                                                    <div className="flex-grow flex items-start w-full h-full">
+                                                        <textarea row="3" value={shareRoom.content} onChange={handleChangeShareRoom} name="content" className="py-2.5 px-4 text-gray-900 text-sm leading-6 font-normal border-0 bg-transparent absolute inset-0.5 select-none resize-none z-10">
+                                                        </textarea>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr className="border-b border-neutral-200">
+                                <th className="pl-5 text-left align-middle bg-neutral-100">
+                                    <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
+                                        금액
+                                    </h1>
+                                </th>
+                                <td className="align-middle px-4 py-5 border-l border-neutral-200">
+                                    <div className="w-[120px]">
+                                        <div className="w-full flex">
+                                            <div className="flex-grow flex flex-wrap justify-start">
+                                                <div className="block w-full h-11 relative">
+                                                    <input type="text" value={shareRoom.rentFee} onChange={handleChangeShareRoom} name="rentFee" className="w-full h-full text-gray-900 text-sm leading-6 font-normal px-9 border border-gray-200 rounded-sm bg-white select-none">
+                                                    </input>
+                                                    <p className="text-gray-900 text-sm leading-6 font-normal whitespace-nowrap absolute top-1/4 right-4 pointer-events-none select-none">원</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr className="border-b border-neutral-200">
+                                <th className="pl-5 text-left align-middle bg-neutral-100">
+                                    <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
+                                        옵션
+                                    </h1>
+                                </th>
+                                <td className="align-middle px-4 py-5 border-l border-neutral-200">
+                                    <div className="w-auto">
+                                        <div className="w-full flex">
+                                            <div className="flex-grow flex flex-wrap justify-start">
+                                                <div className="">
+                                                    <input type="text" value={shareRoom.option1} onChange={handleChangeShareRoom} name="option1" className="w-full h-full text-gray-900 text-sm leading-6 font-normal px-4 border border-gray-200 rounded-sm bg-white select-none">
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr className="border-b border-neutral-200">
+                                <th className="pl-5 text-left align-middle bg-neutral-100">
+                                    <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
+                                        주차
                                     </h1>
                                 </th>
                                 <td className="align-middle px-4 py-5 border-l border-neutral-200">
@@ -136,7 +215,7 @@ const AddComponent = () => {
                                                         checked={shareRoom.parking === 'O'}
                                                         onChange={handleChangeShareRoom}
                                                         style={{ backgroundImage: shareRoom.parking === 'O' ? `url(${Image2})` : `url(${Image1})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}></input>
-                                                        <p>가능</p>
+                                                        <p className="pl-1 text-black text-sm leading-6 select-none cursor-pointer">가능</p>
                                                     </label>
                                                     <label className="mt-5 ml-4 flex-none flex items-start justify-start max-w-full pt-0 pb-0">
                                                     <input className="flex-none w-6 h-6 m-0 border-0 rounded-full appearance-none cursor-pointer"
@@ -146,7 +225,7 @@ const AddComponent = () => {
                                                         checked={shareRoom.parking === 'X'}
                                                         onChange={handleChangeShareRoom}
                                                         style={{ backgroundImage: shareRoom.parking === 'X' ? `url(${Image2})` : `url(${Image1})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}></input>
-                                                        <p>불가능</p>
+                                                        <p className="pl-1 text-black text-sm leading-6 select-none cursor-pointer">불가능</p>
                                                     </label>
                                                 </div>
                                             </div>
@@ -154,15 +233,69 @@ const AddComponent = () => {
                                     </div>
                                 </td>
                             </tr>
-                            <tr></tr>
-                            <tr></tr>
-                            <tr></tr>
-                            <tr></tr>
+                            <tr className="border-b border-neutral-200">
+                                <th className="pl-5 text-left align-middle bg-neutral-100">
+                                    <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
+                                        시작일
+                                    </h1>
+                                </th>
+                                <td className="align-middle px-4 py-5 border-l border-neutral-200">
+                                    <div className="w-auto">
+                                        <div className="w-full flex">
+                                            <div className="flex-grow flex flex-wrap justify-start">
+                                                <div className="">
+                                                    <input type="date" value={shareRoom.rentStartDate} onChange={handleChangeShareRoom} name="rentStartDate" className="w-full h-full text-gray-900 text-sm leading-6 font-normal px-4 border border-gray-200 rounded-sm bg-white select-none">
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr className="border-b border-neutral-200">
+                                <th className="pl-5 text-left align-middle bg-neutral-100">
+                                    <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
+                                        종료일
+                                    </h1>
+                                </th>
+                                <td className="align-middle px-4 py-5 border-l border-neutral-200">
+                                    <div className="w-auto">
+                                        <div className="w-full flex">
+                                            <div className="flex-grow flex flex-wrap justify-start">
+                                                <div className="">
+                                                    <input type="date" value={shareRoom.rentEndDate} onChange={handleChangeShareRoom} name="rentEndDate" className="w-full h-full text-gray-900 text-sm leading-6 font-normal px-4 border border-gray-200 rounded-sm bg-white select-none">
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </section>
-                <section id="photo" className="">
+                <section id="photo" className="mt-12">
+                    <header className="flex items-end justify-between mb-4">
+                        <h1 className="text-xl text-gray-900 leading-8 font-bold ">사진 등록</h1>
+                    </header>
+                    <table id="select-info" className="w-full border-t-2 border-gray-900 border-collapse">
+                        <colgroup>
+                            <col className="w-[150px]"></col>
+                            <col></col>
+                        </colgroup>
+                        <tbody>
+                            <tr className="border-b border-neutral-200">
+                                <th className="pl-5 text-left align-middle bg-neutral-100">
+                                    <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
+                                        방 사진
+                                    </h1>
+                                </th>
+                                <td className="align-middle px-4 py-5 border-l border-neutral-200">
 
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </section>
             </div>
         </div>
