@@ -12,6 +12,10 @@ import MarketPostComponent from '../components/main/MarketPostComponent'
 import BuyPostComponent from '../components/main/BuyPostComponent';
 
 import { Link } from 'react-router-dom';
+import React from "react";
+import Slider from "react-slick";
+
+
 
 const MainPage = () => {
 
@@ -30,6 +34,7 @@ const MainPage = () => {
 
   return (
     <div>
+
       <BasicLayout>
 
         <div className="main-container-top mt-10 mb-5">

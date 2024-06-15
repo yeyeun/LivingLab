@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import useCustomMove from '../../hooks/useCustomMove';
 import { postAddBuy } from '../../api/buyApi';
 import ResultModal from '../common/ResultModal';
@@ -29,6 +29,15 @@ const AddComponent = () => {
   const [result, setResult] = useState(null);
   const [addResultModal, setAddResultModal] = useState(null);
   const imgRef = useRef();
+
+  const [user, setUser] = useState(initState);
+  const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
+  const ino = loginInfo.id;
+  useEffect(() => {
+    getUser(ino).then((data) => {
+      setUser(data);
+    });
+  }, [ino]);
 
   const handleImageChange = (e) => {
     // 이미지 변경
@@ -122,6 +131,9 @@ const AddComponent = () => {
     moveToList();
   };
 
+  const setAddress = (address) => {
+    setBuy((prev) => ({ ...prev, location: address }));
+  };
 
   const handleInputValidation = (e) => {
     const value = e.target.value;
