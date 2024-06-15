@@ -29,3 +29,9 @@ export const deleteOne = async(marketNo) => {
   const res = await axios.delete(`${prefix}/delete/${marketNo}`);
   return res.data;
 }
+
+export const getLatestMarket = async (pageParam) => {
+    const { page, size } = pageParam;
+    const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
+    return res.data;
+  } 

@@ -245,8 +245,8 @@ public class CommunityService {
     }
 
     // 메인페이지 커뮤니티 최신 글
-    public List<CommunityDto> getLatestPosts() {
-        List<Community> latestPosts = communityRepository.latestList().stream()
+    public List<CommunityDto> getLatestComm() {
+        List<Community> latestPosts = communityRepository.latestCommList().stream()
                 .limit(10)
                 .collect(Collectors.toList());
 

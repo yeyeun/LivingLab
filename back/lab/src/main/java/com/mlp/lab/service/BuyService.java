@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BuyService {
     private final BuyRepository buyRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort){
@@ -265,4 +270,36 @@ public class BuyService {
         }
         buyRepository.save(buy);
     }
+
+    // 메인에 표기할 최신순
+    public List<BuyDto> getLatestBuy() {
+        Pageable pageable = PageRequest.of(0, 8, Sort.by("buyNo").descending());
+        Page<Object[]> result = null; 
+    
+        result = buyRepository.latestBuyList(pageable);
+    
+        List<BuyDto> dtoList = result.getContent().stream().map(arr -> {
+            Buy buy = (Buy) arr[0];
+            BuyImage buyImage = (BuyImage) arr[1];
+    
+            BuyDto buyDto = BuyDto.builder()
+                    .buyNo(buy.getBuyNo())
+                    .title(buy.getTitle())
+                    .buyCategory(buy.getBuyCategory())
+                    .location(buy.getLocation())
+                    .max(buy.getMax())
+                    .current(buy.getCurrent())
+                    .deadline(buy.getDeadline())
+                    .nickname(buy.getNickname())
+                    .build();
+    
+            String imageStr = buyImage.getFileName();
+            buyDto.setUploadFileNames(List.of(imageStr));
+            return buyDto;
+        }).collect(Collectors.toList());
+    
+        return dtoList;
+    }
+    
+
 }

@@ -99,4 +99,10 @@ public class TeamController {
         }
     }
 
+    @GetMapping("/latest")
+    public List<TeamDto> getLatestTeamList() {
+        return teamService.getLatestTeam();
+    }
+
+
 }

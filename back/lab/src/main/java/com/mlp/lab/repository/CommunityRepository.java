@@ -56,6 +56,6 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
     Page<Community> helpSearchList(Pageable pageable, String title);
 
     @Query("select c from Community c order by c.createdDate desc")
-    List<Community> latestList();
+    List<Community> latestCommList();
 }
 

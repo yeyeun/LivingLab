@@ -29,3 +29,9 @@ export const deleteOne = async(teamNo) => {
   const res = await axios.delete(`${prefix}/delete/${teamNo}`);
   return res.data;
 }
+
+export const getLatestTeam = async (pageParam) => {
+  const { page, size } = pageParam;
+  const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
+  return res.data;
+} 
