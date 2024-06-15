@@ -2,6 +2,7 @@ package com.mlp.lab.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mlp.lab.dto.like.LikeBuyDto;
 import com.mlp.lab.entity.like.LikeBuy;
@@ -19,5 +20,10 @@ public class LikeService {
         LikeBuy likeBuy = modelMapper.map(likeBuyDto, LikeBuy.class);
         System.out.println("likeBuy==========="+likeBuy);
         likeBuyRepository.save(likeBuy);
+    }
+
+    @Transactional
+    public void delete(long likeNo) {
+        likeBuyRepository.deleteById(likeNo);
     }
 }

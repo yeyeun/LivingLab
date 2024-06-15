@@ -142,7 +142,7 @@ const ReadComponent = ({ teamNo }) => {
                 <div className="col-start-2 col-span-6 text-slate-700 text-2xl my-5">
                   {team.title}
                 </div>
-                <div className="col-start-2 col-span-6 text-base">
+                <div className="col-start-2 col-span-8 text-base">
                   <img src={mapIcon} alt="..." className="w-5 inline" />&ensp;{team.location}
                 </div>
                 <div className="col-start-2 col-span-8"></div>
