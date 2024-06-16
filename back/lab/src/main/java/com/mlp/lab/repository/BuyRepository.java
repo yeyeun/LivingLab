@@ -1,14 +1,11 @@
 package com.mlp.lab.repository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.mlp.lab.entity.Buy;
-import com.mlp.lab.entity.Community;
 
 //Buy Entity의 기본키(PK) 타입인 Integer를 인자로 전달
 public interface BuyRepository extends JpaRepository<Buy, Integer> {

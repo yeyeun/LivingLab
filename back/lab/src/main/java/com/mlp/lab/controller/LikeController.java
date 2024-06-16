@@ -19,13 +19,13 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/buy")
-    public void likePost(@RequestBody LikeBuyDto likeBuyDto){
-       likeService.add(likeBuyDto);
+    public void likeBuy(@RequestBody LikeBuyDto likeBuyDto){
+       likeService.addBuy(likeBuyDto);
     }
     
     @DeleteMapping("/buy/{likeNo}")
-    public void unlikePost(@PathVariable(name = "likeNo") long likeNo){
-        likeService.delete(likeNo);
+    public void unlikeBuy(@PathVariable(name = "likeNo") long likeNo){
+        likeService.deleteBuy(likeNo);
     }
-    
+
 }

@@ -11,19 +11,19 @@ import com.mlp.lab.repository.like.LikeBuyRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class LikeService {
     private final ModelMapper modelMapper;
     private final LikeBuyRepository likeBuyRepository;
 
-    public void add(LikeBuyDto likeBuyDto){
+    public void addBuy(LikeBuyDto likeBuyDto){
         LikeBuy likeBuy = modelMapper.map(likeBuyDto, LikeBuy.class);
-        System.out.println("likeBuy==========="+likeBuy);
         likeBuyRepository.save(likeBuy);
     }
 
-    @Transactional
-    public void delete(long likeNo) {
+    public void deleteBuy(long likeNo) {
         likeBuyRepository.deleteById(likeNo);
     }
+
 }

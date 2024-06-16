@@ -30,6 +30,11 @@ export const deleteOne = async(buyNo) => {
   return res.data;
 }
 
+export const increaseLike = async(buyNo) => {
+  const res = await axios.put(`${prefix}/increase/${buyNo}`);
+  return res.data;
+}
+
 // ******공동구매 최신 글 보기******
 
 export const getLatestBuy = async (pageParam) => {

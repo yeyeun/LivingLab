@@ -18,7 +18,7 @@ const initState = {
   max: 2,
   current: 1,
   deadline: '',
-  teamHit: '0',
+  teamHit: 0,
   files: [],
 };
 

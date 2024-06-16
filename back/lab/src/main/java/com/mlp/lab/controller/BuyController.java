@@ -66,6 +66,11 @@ public class BuyController {
         buyService.add(buyDto);
     }
 
+    @PutMapping("/increase/{buyNo}") // 좋아요 +1
+    public void increase(@PathVariable(name = "buyNo") Long buyNo) {
+        buyService.increase(buyNo);
+    }
+
     @PutMapping("/modify/{buyNo}") // 수정
     public void modify(@PathVariable(name = "buyNo") Long buyNo, BuyDto buyDto) {
         buyDto.setBuyNo(buyNo);
@@ -98,6 +103,8 @@ public class BuyController {
             fileUtil.deleteFiles(removeFiles);
         }
     }
+
+
 
     @GetMapping("/latest")
     public List<BuyDto> getLatestBuyList() {

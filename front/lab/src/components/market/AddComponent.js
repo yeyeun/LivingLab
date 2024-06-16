@@ -18,7 +18,7 @@ const initState = {
   max: 2,
   current: 1,
   deadline: '',
-  marketHit: '0',
+  marketHit: 0,
   files: [],
 };
 

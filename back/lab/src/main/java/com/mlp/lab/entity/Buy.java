@@ -41,7 +41,7 @@ public class Buy extends BaseTimeEntity{
     private Integer max;
     private Integer current;
     private String location;
-    private Character buyHit;
+    private Integer buyHit;
     private String nickname;
     private boolean flag; // true: 마감 / false:모집중
 

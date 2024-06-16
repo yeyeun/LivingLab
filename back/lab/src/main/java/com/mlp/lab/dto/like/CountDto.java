@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikeBuyDto {
-    private Long likeNo;
-    private Long id;
-    private Long buyNo;
+public class CountDto {
+    private int count; //좋아요 총 갯수
 }
