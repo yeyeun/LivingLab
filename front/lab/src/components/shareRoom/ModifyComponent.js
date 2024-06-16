@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { modify, getOne, API_SERVER_HOST } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
-import PostComponent2 from "../common/PostComponent2";
+import PostComponentForRoom from "../common/PostComponentForRoom";
 import Image1 from '../../resources/images/radio1.svg';
 import Image2 from '../../resources/images/radio2.svg';
 
@@ -315,7 +315,7 @@ const ModifyComponent = ({ roomNo }) => {
                                                                     placeholder="주소(우편번호 및 도로명 검색)" value={shareRoom.location} />
                                                             </div>
                                                             <div className="w-1/5 text-base">
-                                                                <PostComponent2 setAddress={setAddress}></PostComponent2>
+                                                                <PostComponentForRoom setAddress={setAddress}></PostComponentForRoom>
                                                             </div>
                                                         </div>
                                                     </div>

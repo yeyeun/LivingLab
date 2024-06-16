@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { API_SERVER_HOST, getOne, deleteOne } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove"
 import { useSelector } from 'react-redux';
-import MapComponent2 from "../common/MapComponent2";
+import MapComponentForRoom from "../common/MapComponentForRoom";
 
 const host = API_SERVER_HOST;
 
@@ -143,7 +143,7 @@ const ReadComponent = ({ roomNo }) => {
                                 </div>
                                 <div id="zeedo">
                                     <div className="col-start-2 col-span-8 h-80">
-                                        <MapComponent2 location={shareRoom.location}/>
+                                        <MapComponentForRoom location={shareRoom.location}/>
                                     </div>
                                 </div>
                             </section>

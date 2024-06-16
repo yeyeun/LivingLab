@@ -3,7 +3,7 @@ import { postAddShareRoom } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import { useSelector } from 'react-redux';
-import PostComponent2 from "../common/PostComponent2";
+import PostComponentForRoom from "../common/PostComponentForRoom";
 import Image1 from '../../resources/images/radio1.svg';
 import Image2 from '../../resources/images/radio2.svg';
 import iconEdit from '../../resources/images/iconEdit.png'
@@ -309,7 +309,7 @@ const AddComponent = () => {
                                                                     placeholder="주소(우편번호 및 도로명 검색)" value={shareRoom.location} />
                                                             </div>
                                                             <div className="w-1/5 text-base">
-                                                                <PostComponent2 setAddress={setAddress}></PostComponent2>
+                                                                <PostComponentForRoom setAddress={setAddress}></PostComponentForRoom>
                                                             </div>
                                                         </div>
 
