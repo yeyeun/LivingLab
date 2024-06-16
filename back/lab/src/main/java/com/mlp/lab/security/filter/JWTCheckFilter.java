@@ -60,7 +60,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
       // JWT 토큰에서 사용자에 대한 정보(권한 포함) 꺼냄
       String email = (String) claims.get("email");
       String pwd = (String) claims.get("pwd");
-      String pwdCheck = (String) claims.get("pwdCheck");
+      // String pwdCheck = (String) claims.get("pwdCheck");
       String name = (String) claims.get("name");
       String phone = (String) claims.get("phone");
       String nickname = (String) claims.get("nickname");
@@ -68,7 +68,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
       Boolean social = (Boolean) claims.get("social");
       List<String> roleNames = (List<String>) claims.get("roleNames");
 
-      MemberDto memberDto = new MemberDto(email, pwd, pwdCheck, name, phone, nickname, addr, social.booleanValue(),
+      MemberDto memberDto = new MemberDto(email, pwd, name, phone, nickname, addr, social.booleanValue(),
           roleNames);
 
       log.info("-----------------------------------");

@@ -56,8 +56,8 @@ public class UserDto { // 마이페이지 화면에서 받을 데이터
         dataMap.put("detailAddr", detailAddr);
         dataMap.put("profileImage", profileImage);
         dataMap.put("location", location);
-        dataMap.put("social", social);
-        dataMap.put("roleNames", roleNames);
+        // dataMap.put("social", social);
+        // dataMap.put("roleNames", roleNames);
 
         return dataMap;
     }

@@ -39,12 +39,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         // user.getId(),
         user.getEmail(),
         user.getPwd(),
-        user.getPwdCheck(),
+        // user.getPwdCheck(),
         user.getName(),
         user.getPhone(),
         user.getNickname(),
         user.getAddr(),
-        user.isSocial(),
+        user.getSocial(), //isSocial에서 수정 -> 정운
         user.getUserRoleList()
             .stream()
             .map(userRole -> userRole.name()).collect(Collectors.toList()));

@@ -118,7 +118,7 @@ public class UserService {
         // .pwd(tempPassword)
         // .pwd(passwordEncoder.encode(tempPassword))
         .nickname(nickname)
-        .role(UserRole.USER) // USER로 권한 설정
+        // .role(UserRole.USER) // USER로 권한 설정
         .social(true) // 소셜 계정 true
         .build();
 

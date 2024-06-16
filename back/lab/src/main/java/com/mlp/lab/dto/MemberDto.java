@@ -30,7 +30,7 @@ public class MemberDto extends User {
   // 시큐리티가 사용하는 타입에 맞춰서 dto를 만들었다.
   // dto가 생성자가 있는데 시큐리티는 객체로 권한을 가져야한다. (SimpleGrantedAuthority)
   // (SimpleGrantedAuthority) : 문자열로 권한을 맞춰줌
-  public MemberDto(String email, String pwd, String pwdCheck, String name, String phone, String nickname,
+  public MemberDto(String email, String pwd, String name, String phone, String nickname,
       String addr, boolean social, List<String> roleNames) {
 
     super(
@@ -41,7 +41,7 @@ public class MemberDto extends User {
     // this.id = id;
     this.email = email;
     this.pwd = pwd;
-    this.pwdCheck = pwdCheck;
+    // this.pwdCheck = pwdCheck;
     this.name = name;
     this.phone = phone;
     this.nickname = nickname;

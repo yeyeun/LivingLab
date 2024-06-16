@@ -24,7 +24,6 @@ spring:
           writetimeout: 5000
 
           
-
   jpa:
     hibernate:
       ddl-auto: update

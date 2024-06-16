@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.UserDto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,30 +28,48 @@ import lombok.ToString;
 @Builder
 @Getter
 @Setter
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user") // db 테이블명과 맞춰야함
 @ToString(exclude = "userRoleList")
 public class User {
-    @Id // 기본키(PK) 설정
+    @Id //기본키(PK) 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "email", nullable = false, length = 100)
     private String email;
-    private String pwd;
-    private String pwdCheck;
-    private String name;
-    private String addr;
-    private String detailAddr;
-    private String location; // 실시간 위치 정보
-    private String phone;
-    private String nickname;
-    private String profileImage; // 프로필 사진
-    private boolean social;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role; // 역할 부여
+    @Column(name = "pwd", nullable = false, length = 100)
+    private String pwd;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "addr")
+    private String addr;
+
+    @Column(name = "detail_addr")
+    private String detailAddr;
+
+    @Column(name = "location")
+    private String location; // 실시간 위치 정보
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "nickname")
+    private String nickname;
+
+    @Column(name = "profile_image")
+    private String profileImage; // 프로필 사진
+
+    @Column(name = "social")
+    private Boolean social;
+
+    // @Enumerated(EnumType.STRING)
+    // private UserRole role; // 역할 부여
 
     ////////////////////////////////////////////////////////////////////////////
     // 스프링 시큐리티 쓸 때 활용
@@ -100,7 +119,7 @@ public class User {
         user.setAddr(dto.getAddr());
         user.setDetailAddr(dto.getDetailAddr());
         user.setNickname(dto.getNickname());
-        user.setRole(UserRole.USER);
+        // user.setRole(UserRole.USER);
         return user;
     }
 

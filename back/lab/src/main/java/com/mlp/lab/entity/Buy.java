@@ -7,11 +7,15 @@ import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.BuyDto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,20 +32,44 @@ import lombok.ToString;
 @Table(name = "buy")
 @ToString(exclude = "imageList")
 public class Buy extends BaseTimeEntity{
-    @Id //기본키 설정
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "buy_no")
     private Long buyNo;
-    private String user_id;
+
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
+
+    @Column(name = "content")
     private String content;
+
+    @Column(name = "deadline")
     private String deadline;
+
+    @Column(name = "buy_category")
     private Character buyCategory;
+
+    @Column(name = "max")
     private Integer max;
+
+    @Column(name = "current")
     private Integer current;
+
+    @Column(name = "location")
     private String location;
+
+    @Column(name = "buy_hit")
     private Character buyHit;
+
+    @Column(name = "nickname")
     private String nickname;
+
+    @Column(name = "flag")
     private boolean flag; // true: 마감 / false:모집중
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private User user;
 
     @ElementCollection
     @Builder.Default
