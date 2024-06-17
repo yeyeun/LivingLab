@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import useCustomMove from '../../hooks/useCustomMove';
 import ModalComponent from '../common/ModalComponent';
-import ConfirmationModal from '../common/ConfirmationModal';
 import MapComponent from '../common/MapComponent';
 import iconNext from '../../resources/images/icon-next.png';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_full.png';
+import ResultModal from "../common/ResultModal";
 import PartComponent from './PartComponent';
 
 const initState = {
@@ -28,6 +28,7 @@ const initState = {
 const host = API_SERVER_HOST;
 
 const ReadComponent = ({ teamNo }) => {
+  const [result, setResult] = useState(null);
   const [team, setTeam] = useState(initState);
   const { moveToList, moveToModify } = useCustomMove();
   const loginInfo = useSelector((state) => state.loginSlice);
@@ -53,8 +54,6 @@ const ReadComponent = ({ teamNo }) => {
   }, [teamNo]);
 
   const [showModal, setShowModal] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -64,19 +63,14 @@ const ReadComponent = ({ teamNo }) => {
     setShowModal(false);
   };
 
-  const handleDeleteClick = () => {
-    setModalMessage('삭제하시겠습니까?');
-    setShowConfirm(true);
-  };
-
-  const handleConfirm = () => {
+  const handleClickDelete = (e) => {
     deleteOne(teamNo);
-    setShowConfirm(false);
-    moveToList();
+    setResult("게시글이 삭제되었습니다");
   };
-
-  const handleCancel = () => {
-    setShowConfirm(false);
+  
+  const closeModal = () => {
+    setResult(null);
+    moveToList();
   };
 
   //날짜 포맷 설정
@@ -106,7 +100,7 @@ const ReadComponent = ({ teamNo }) => {
 
   return (
     <>
-      <div className="bg-slate-100 w-2/5 ml-auto p-4 rounded-lg">
+      <div className="bg-slate-100 w-2/5 mx-auto p-4 rounded-lg">
         <div className="flex justify-between items-center">
           <span className="text-left font-semibold ml-2 items-center flex">
             {team.flag ? '모집 마감' : '모집 중'}
@@ -155,35 +149,51 @@ const ReadComponent = ({ teamNo }) => {
           <div className="col-start-2 col-span-8 h-80">
             <MapComponent location={team.location} />
           </div>
-          <div className="col-start-6 col-span-4 my-6">
-            <div className="flex">
-              {id === team.user_id ? (
-                <>
-                  <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/2 mr-2 hover:bg-red-500" onClick={() => moveToModify(teamNo)}>
+          {/* <div className="col-start-2 col-span-8 my-6">
+            <div className="flex justify-between space-x-4"> */}
+          {id === team.user_id ? (
+            <>
+              <div className="col-start-2 col-span-8 my-6">
+                <div className="flex justify-between space-x-4">
+                  {/* <div className="flex"> */}
+                  {/* <div className="flex mr-auto"> */}
+                  <button className="text-base text-white bg-orange-400 p-2 rounded-md w-1/4 mr-2 hover:bg-red-500" onClick={() => moveToModify(teamNo)}>
                     수정하기
                   </button>
-                  <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 mr-2 hover:bg-slate-500" onClick={handleDeleteClick}>
+                  <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/4 mr-2 hover:bg-slate-500" onClick={handleClickDelete}>
                     삭제하기
                   </button>
-                  <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>
+                  {/* </div> */}
+
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/4 mr-2 hover:bg-blue-500" onClick={handleOpenModal}>
+                    참여하기
+                  </button>
+                  <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/4 hover:bg-slate-500" onClick={() => moveToList()}>
                     목록
                   </button>
-                </>
-              ) : (
-                <>
+                  {/* </div> */}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="col-start-6 col-span-4 my-6">
+                <div className="flex justify-between space-x-4">
                   <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500" onClick={handleOpenModal}>
                     참여하기
                   </button>
                   <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>
                     목록
                   </button>
-                </>
-              )}
-            </div>
-          </div>
+                </div>
+              </div>
+            </>
+          )}
+          {/* </div>
+          </div> */}
 
           <ModalComponent show={showModal} onClose={handleCloseModal} />
-          <ConfirmationModal show={showConfirm} message={modalMessage} onConfirm={handleConfirm} onCancel={handleCancel} />
+          {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
         </div>
       </div>
     </>

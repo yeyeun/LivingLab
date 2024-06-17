@@ -1,8 +1,35 @@
+import { useEffect, useState } from 'react';
 import ProfileComponent from '../common/ProfileComponent';
+import { useDispatch, useSelector } from 'react-redux';
+import { API_SERVER_HOST, deleteOne, getOne } from '../../api/teamApi';
+import { getPartUsers, postAddPart, removePart } from '../../api/partApi';
+import useCustomLogin from './../../hooks/useCustomLogin';
 
-const initState = {};
+const initState = {
+  teamNo: 0,
+  nickname: '',
+};
 
 const PartComponent = ({ teamNo }) => {
+  const [part, setPart] = useState([]);
+  const [serverData, setServerData] = useState([]);
+
+  const { isLogin, loginState } = useCustomLogin();
+
+  const loginInfo = useSelector((state) => state.loginSlice);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getPartUsers(teamNo).then((data) => {
+      setPart(data);
+      // console.log(data);
+      // console.log(data[0].nickname);
+      // console.log(data[1].nickname);
+      // console.log(data[2].nickname);
+    });
+  }, [teamNo]);
+
   return (
     <div className="bg-slate-100 w-1/5 p-4 ml-10 mr-20 rounded-lg h-30">
       <div className>
@@ -13,9 +40,11 @@ const PartComponent = ({ teamNo }) => {
           <hr />
           <div className>
             <div>
-              <ProfileComponent />
-              <ProfileComponent />
-              <ProfileComponent />
+              {part.map((partUser) => (
+                <div key={partUser.pino}>
+                  <div>{partUser.nickname}</div>
+                </div>
+              ))}
             </div>
           </div>
 

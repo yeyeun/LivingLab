@@ -54,7 +54,7 @@ public class TeamController {
     }
 
     @GetMapping("/display/{fileName}") // 목록조회
-    public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
+    public ResponseEntity<Resource> displayImage(@PathVariable(name="fileName") String fileName) {
         return fileUtil.getFile(fileName);
     }
 

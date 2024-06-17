@@ -39,7 +39,7 @@ public class Market extends BaseTimeEntity{
     private Integer max;
     private Integer current;
     private String location;
-    private Character marketHit;
+    private Integer marketHit;
     private String nickname;
     private boolean flag; // true: 마감 / false:모집중
 
