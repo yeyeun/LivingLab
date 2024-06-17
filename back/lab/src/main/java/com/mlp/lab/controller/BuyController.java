@@ -42,7 +42,6 @@ public class BuyController {
         return buyService.read(buyNo);
     }
 
-
     // 글 삭제 (이미지 포함)
     @DeleteMapping("/delete/{buyNo}")
     public void delete(@PathVariable(name = "buyNo") int buyNo) {
@@ -54,7 +53,7 @@ public class BuyController {
     }
 
     @GetMapping("/display/{fileName}") // 목록조회
-    public ResponseEntity<Resource> displayImage(@PathVariable(name="fileName") String fileName) {
+    public ResponseEntity<Resource> displayImage(@PathVariable(name = "fileName") String fileName) {
         return fileUtil.getFile(fileName);
     }
 
