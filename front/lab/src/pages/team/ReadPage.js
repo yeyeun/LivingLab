@@ -8,9 +8,8 @@ const ReadPage = () => {
     <>
       <div className="flex justify-center">
         <ReadComponent teamNo={teamNo} />
-        <PartComponent teamNo={teamNo} />
+        {/* <PartComponent teamNo={teamNo} /> */}
       </div>
-      <PartComponent teamNo={teamNo} />
     </>
   );
 };
