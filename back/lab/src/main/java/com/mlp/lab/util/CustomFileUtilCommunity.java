@@ -42,9 +42,6 @@ public class CustomFileUtilCommunity {
         if (!communityFolder.exists()) {
             communityFolder.mkdir();
         }
-
-        log.info("-------------------------------------------");
-        log.info("Community Path : " + communityPath);
     }
 
     public List<String> saveFiles(List<MultipartFile> files) throws RuntimeException { // 파일 저장
