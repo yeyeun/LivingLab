@@ -100,7 +100,7 @@ const ReadComponent = ({ teamNo }) => {
 
   return (
     <>
-      <div className="bg-slate-100 w-2/5 ml-auto p-4 rounded-lg">
+      <div className="bg-slate-100 w-2/5 mx-auto p-4 rounded-lg">
         <div className="flex justify-between items-center">
           <span className="text-left font-semibold ml-2 items-center flex">
             {team.flag ? '모집 마감' : '모집 중'}
@@ -149,32 +149,49 @@ const ReadComponent = ({ teamNo }) => {
           <div className="col-start-2 col-span-8 h-80">
             <MapComponent location={team.location} />
           </div>
-          <div className="col-start-6 col-span-4 my-6">
-            <div className="flex">
-              {id === team.user_id ? (
-                <>
-                  <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/2 mr-2 hover:bg-red-500" onClick={() => moveToModify(teamNo)}>
+          {/* <div className="col-start-2 col-span-8 my-6">
+            <div className="flex justify-between space-x-4"> */}
+          {id === team.user_id ? (
+            <>
+              <div className="col-start-2 col-span-8 my-6">
+                <div className="flex justify-between space-x-4">
+                  {/* <div className="flex"> */}
+                  {/* <div className="flex mr-auto"> */}
+                  <button className="text-base text-white bg-orange-400 p-2 rounded-md w-1/4 mr-2 hover:bg-red-500" onClick={() => moveToModify(teamNo)}>
                     수정하기
                   </button>
-                  <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 mr-2 hover:bg-slate-500" onClick={handleClickDelete}>
+                  <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/4 mr-2 hover:bg-slate-500" onClick={handleClickDelete}>
                     삭제하기
                   </button>
-                  <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>
+                  {/* </div> */}
+
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/4 mr-2 hover:bg-blue-500" onClick={handleOpenModal}>
+                    참여하기
+                  </button>
+                  <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/4 hover:bg-slate-500" onClick={() => moveToList()}>
                     목록
                   </button>
-                </>
-              ) : (
-                <>
+                  {/* </div> */}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="col-start-6 col-span-4 my-6">
+                <div className="flex justify-between space-x-4">
                   <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500" onClick={handleOpenModal}>
                     참여하기
                   </button>
                   <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>
                     목록
                   </button>
-                </>
-              )}
-            </div>
-          </div>
+                </div>
+              </div>
+            </>
+          )}
+          {/* </div>
+          </div> */}
+
           <ModalComponent show={showModal} onClose={handleCloseModal} />
           {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
         </div>
