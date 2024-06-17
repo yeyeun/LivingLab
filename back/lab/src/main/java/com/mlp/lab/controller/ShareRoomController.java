@@ -68,7 +68,7 @@ public class ShareRoomController {
             shareRoomDto.setFlag(true);
         }
         shareRoomDto.setUploadFileNames(uploadFileNames);
-        log.info("===========community add : " + shareRoomDto);
+        log.info("===========shareRoomDto add : " + shareRoomDto);
         shareRoomService.add(shareRoomDto);
     }
 

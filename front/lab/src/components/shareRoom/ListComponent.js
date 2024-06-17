@@ -54,7 +54,7 @@ const ListComponent = ({ search }) => {
               <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} class="object-cover w-full max-h-40" />
               <div class="w-full p-4 bg-white">
                 <p class="text-gray-900 text-xs leading-5 font-normal">
-                  {shareRoom.option1}
+                  {shareRoom.location}
                 </p>
                 {(shareRoom.rentFee % 10000) === 0 ? (
                 <p class="mb-2 text-xl font-medium text-gray-800">
@@ -65,6 +65,9 @@ const ListComponent = ({ search }) => {
                   금액 &nbsp; {(shareRoom.rentFee / 10000).toFixed(1)} &nbsp; 만원
                 </p>
                 )}
+                <p class="text-gray-900 text-xs leading-5 font-normal">
+                  {shareRoom.option1}
+                </p>
                 <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
                   {shareRoom.rentStartDate} &nbsp; 부터
                 </p>

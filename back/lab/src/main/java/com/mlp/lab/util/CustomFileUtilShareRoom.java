@@ -42,6 +42,8 @@ public class CustomFileUtilShareRoom {
         if (!shareRoomFolder.exists()) {
             shareRoomFolder.mkdir();
         }
+        log.info("-------------------------------------------");
+        log.info("shareRoomPath : " + shareRoomPath);
     }
 
     public List<String> saveFiles(List<MultipartFile> files) throws RuntimeException { // 파일 저장
