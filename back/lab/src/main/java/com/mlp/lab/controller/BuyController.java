@@ -52,7 +52,7 @@ public class BuyController {
         buyService.delete(buyNo);
     }
 
-    @GetMapping("/display/{fileName}") // 목록조회
+    @GetMapping("/display/{fileName}") // 사진 파일 출력
     public ResponseEntity<Resource> displayImage(@PathVariable(name = "fileName") String fileName) {
         return fileUtil.getFile(fileName);
     }
