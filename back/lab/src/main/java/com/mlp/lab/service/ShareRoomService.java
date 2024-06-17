@@ -28,13 +28,19 @@ public class ShareRoomService {
     private final ModelMapper modelMapper;
     private final ShareRoomRepository shareRoomRepository;
 
-    public RoomPageResponseDto<ShareRoomDto> list(RoomPageRequestDto roomPageRequestDto) {
+    public RoomPageResponseDto<ShareRoomDto> list(RoomPageRequestDto roomPageRequestDto,String search) {
         Pageable pageable = PageRequest.of(
                 roomPageRequestDto.getPage() - 1,
                 roomPageRequestDto.getSize(),
                 Sort.by("roomNo").descending());
 
-        Page<Object[]> result = shareRoomRepository.selectList(pageable);
+        //Page<Object[]> result = shareRoomRepository.selectList(pageable);
+        Page<Object[]> result = null;
+        if (search == null || search.isEmpty()){ // 페이지 클릭 시
+            result = shareRoomRepository.selectList(pageable);
+        } else if (search != null && !search.isEmpty()) { // 검색
+            result = shareRoomRepository.selectSearchList(search, pageable);
+        }
         List<ShareRoomDto> dtoList = result.get().map(arr -> {
             ShareRoom shareRoom = (ShareRoom) arr[0];
             ShareRoomImage shareRoomImage = (ShareRoomImage) arr[1];
