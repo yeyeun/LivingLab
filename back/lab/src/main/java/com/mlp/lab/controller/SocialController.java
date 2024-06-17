@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -27,7 +28,7 @@ public class SocialController {
 
   // API 서버와 리액트 연동 확인
   @GetMapping("/api/user/kakao")
-  public Map<String, Object> getUserFromKakao(String accessToken) {
+  public Map<String, Object> getUserFromKakao(@RequestParam(name="accessToken")String accessToken) {
 
     // react에서 가져온 accessToken을 여기로 전달
     log.info("accessToken: " + accessToken);
