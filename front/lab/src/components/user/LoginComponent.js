@@ -22,6 +22,7 @@ function LoginComponent(props) {
 
   const handleChange = (e) => {
     loginParam[e.target.name] = e.target.value;
+
     setLoginParam({ ...loginParam });
   };
 

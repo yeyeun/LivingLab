@@ -9,7 +9,7 @@ import com.mlp.lab.dto.ShareRoomDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.service.ShareRoomService;
-import com.mlp.lab.util.CustomFileUtil;
+import com.mlp.lab.util.CustomFileUtilShareRoom;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequiredArgsConstructor
 public class ShareRoomController {
     private final ShareRoomService shareRoomService;
-    private final CustomFileUtil fileUtil;
+    private final CustomFileUtilShareRoom fileUtil;
 
 
     @GetMapping("/list")

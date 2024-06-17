@@ -20,7 +20,7 @@ export const modify = async(roomNo,shareRoom) => {
   return res.data;
 }
 
-export const postAdd = async (shareRoom) => {
+export const postAddShareRoom = async (shareRoom) => {
     const header = { headers: { "Content-Type": "multipart/form-data" } };
     const res = await axios.post(`${prefix}/add`, shareRoom, header);
     return res.data;

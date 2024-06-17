@@ -22,8 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByNameAndPhone(String name, String phone); // 이름과 번호로 이메일(아이디) 찾기
 
-    @EntityGraph(attributePaths = { "userRoleList" })
-    @Query("select u from User u where u.email = :email") // 조인
-    User getWithRoles(@Param("email") String email);
+    // @EntityGraph(attributePaths = { "memberRoleList" })
+    // @Query("select u from User u where u.email = :email")
+    // User getWithRoles(@Param("email") String email);
 
 }

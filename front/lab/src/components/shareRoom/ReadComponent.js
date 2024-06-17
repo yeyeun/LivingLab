@@ -1,8 +1,9 @@
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { API_SERVER_HOST, getOne, deleteOne } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove"
 import { useSelector } from 'react-redux';
+import MapComponentForRoom from "../common/MapComponentForRoom";
 
 const host = API_SERVER_HOST;
 
@@ -19,7 +20,6 @@ const initState = {
 const ReadComponent = ({ roomNo }) => {
     const [shareRoom, setShareRoom] = useState(initState)
     const { moveToModify, moveToList } = useRoomCustomMove()
-    const [serverData, setServerData] = useState(initState);
     const [result, setResult] = useState(null)
     const loginState = useSelector((state) => state.loginSlice);
 
@@ -29,6 +29,8 @@ const ReadComponent = ({ roomNo }) => {
             setShareRoom(data)
         })
     }, [roomNo])
+
+
 
     const handleClickDelete = () => {
 
@@ -41,63 +43,146 @@ const ReadComponent = ({ roomNo }) => {
     }
 
     return (
-        <div class="flex flex-col w-3/4 gap-5 p-2 mx-auto bg-white shadow-lg select-none sm:p-4 sm:h-96 rounded-2xl sm:flex-row ">
-            {/* <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} class="h-52 sm:h-80 sm:w-72 rounded-xl"/>            */}
-            {shareRoom.uploadFileNames.map((imgFile, i) =>
-                <img
-                    alt="tip"
-                    key={i}
-                    width={600}
-                    src={`${host}/api/shareRoom/display/${imgFile}`}
-                    className="h-52 sm:h-80 sm:w-72 rounded-xl" />
-            )}
-            <div class="flex flex-col flex-1 gap-5 sm:p-2">
-                <div class="flex flex-col flex-1 gap-5">
-                    <div class="w-full bg-gray-200 h-10 rounded-2xl flex items-center justify-center">{shareRoom.title}
+        <div id="full-main">
+            <div id="wrap" className="pt-10 w-full text-center mx-auto  ">
+                <div id="images" className="w-[1200px] p-2.5 mx-auto">
+                    <div id="grid" className="grid grid-cols-custom grid-rows-2 gap-2 w-full h-[440px]">
+                        {shareRoom.uploadFileNames.map((imgFile, index) => (
+                            <React.Fragment key={index}>
+                                {index === 0 ? (
+                                    <div id={`child-first-${index}`} className="row-span-2 relative overflow-hidden">
+                                        <img src={`${host}/api/shareRoom/display/${imgFile}`} className="position-absolute object-cover w-full h-full"></img>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div id={`child-${index}`} className="relative overflow-hidden">
+                                            <img src={`${host}/api/shareRoom/display/${imgFile}`} className="position-absolute object-cover w-full h-full"></img>
+                                        </div>
+                                    </>
+                                )}
+                            </React.Fragment>
+                        ))}
                     </div>
-                    <div class="w-full h-52 bg-gray-200 rounded-2xl px-4">
-                        <div class="flow-root">
-                            <dl class="-my-3 divide-y divide-gray-100 text-sm">
-                                <div class="pt-6 pb-3 pl-2 flex">
-                                    <div class="font-bold text-gray-900 flex-none text-lg">월세</div>
-                                    <div class="grow"></div>
-                                    <div class="text-gray-700 sm:col-span-2 flex-none">{shareRoom.rentFee}</div>
+                </div>
+            </div>
+            <div id="text-main" className=" pt-24 pb-32">
+                <div id="grid2" className="w-[1200px] mx-auto grid grid-cols-[780px_360px] gap-x-10 gap-y-0 p-2.5">
+                    <div id="text-area" className="w-[780px] h-[1000px] col-span-1 ">
+                        <div id="box" className="flex items-center mb-10 p-8 border border-gray-200 rounded-sm bg-gray-50">
+                            <h1 className="flex-none ml-1 text-black text-base leading-6 font-bold"> {shareRoom.title} </h1>
+                        </div>
+                        <div id="main-container" className="grid gap-y-28">
+                            <section id="price">
+                                <div id="price-info" className="flex items-start mb-8">
+                                    <h1 className="text-black text-2xl leading-tight tracking-tighter font-bold">가격정보</h1>
                                 </div>
-                                <div class="py-3 pl-2 flex">
-                                    <div class="font-bold text-gray-900 flex-none text-lg">주차</div>
-                                    <div class="grow"></div>
-                                    <div class="text-gray-700 sm:col-span-2 flex-none">{shareRoom.parking}</div>
+                                <ul>
+                                    <li className="grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 pb-4">
+                                        <div>
+                                            <h1 className="text-gray-900 text-base leading-6 font-bold">금액</h1>
+                                        </div>
+                                        {(shareRoom.rentFee % 10000) === 0 ? (
+                                            <div>
+                                                <p className="text-base leading-6 font-medium">{(shareRoom.rentFee / 10000).toFixed(0)}&nbsp; 만원</p>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <p className="text-base leading-6 font-medium">{(shareRoom.rentFee / 10000).toFixed(1)}&nbsp; 만원</p>
+                                            </div>
+                                        )}
+
+                                    </li>
+                                    <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
+                                        <div>
+                                            <h1 className="text-gray-900 text-base leading-6 font-bold">주차가능여부</h1>
+                                        </div>
+                                        <div>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.parking}</p>
+                                        </div>
+                                    </li>
+                                    <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
+                                        <div>
+                                            <h1 className="text-gray-900 text-base leading-6 font-bold">주소</h1>
+                                        </div>
+                                        <div>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.location}</p>
+                                        </div>
+                                    </li>
+                                    <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
+                                        <div>
+                                            <h1 className="text-gray-900 text-base leading-6 font-bold">시작일</h1>
+                                        </div>
+                                        <div>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.rentStartDate}</p>
+                                        </div>
+                                    </li>
+                                    <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
+                                        <div>
+                                            <h1 className="text-gray-900 text-base leading-6 font-bold">종료일</h1>
+                                        </div>
+                                        <div>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.rentEndDate}</p>
+                                        </div>
+                                    </li>
+                                    <li className="border-t border-gray-200 grid grid-cols-[160px_minmax(0,1fr)] gap-x-4 py-4">
+                                        <div>
+                                            <h1 className="text-gray-900 text-base leading-6 font-bold">옵션</h1>
+                                        </div>
+                                        <div>
+                                            <p className="text-base leading-6 font-medium">{shareRoom.option1}</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </section>
+                            <section id="location">
+                                <div id="location-info" className="flex items-start mb-8">
+                                    <h1 className="text-black text-2xl leading-tight tracking-tighter font-bold">위치</h1>
                                 </div>
-                                <div class="py-3 pl-2 flex">
-                                    <div class="font-bold text-gray-900 flex-none text-lg">옵션</div>
-                                    <div class="grow"></div>
-                                    <div class="text-gray-700 sm:col-span-2 flex-none">{shareRoom.option1}</div>
+                                <div id="loc-title" className="mb-6">
+                                    <p className="flex-none mr-4 text-gray-900 text-base leading-6 font-normal">{shareRoom.location}</p>
                                 </div>
-                                <div class="py-3 pl-2 flex">
-                                    <div class="font-bold text-gray-900 flex-none text-lg">위치</div>
-                                    <div class="grow"></div>
-                                    <div class="text-gray-700 sm:col-span-2 flex-none">{shareRoom.location}</div>
+                                <div id="zeedo">
+                                    <div className="col-start-2 col-span-8 h-80">
+                                        <MapComponentForRoom location={shareRoom.location}/>
+                                    </div>
                                 </div>
-                            </dl>
+                            </section>
                         </div>
                     </div>
-                    <div class="flex gap-3 mt-auto">
-                        <div class="w-20 h-8 ml-auto bg-gray-200 rounded-full">
-                            문의하기
+                    <aside id="info-area" className="w-[360px] col-span-1">
+                        <div id="content-container" className="sticky top-24">
+                            <div id="inner-content" className="w-90 p-8 bg-white shadow-md border border-gray-300 rounded-sm relative">
+                                <p className="flex-none text-gray-900 text-base leading-6 font-normal">
+                                {shareRoom.content}
+                                </p>
+                                <div id="buttons" className="flex items-center w-full mt-8">
+                                    <div>
+                                        <button className="inline-flex items-center justify-center w-[211px] px-4 text-white bg-blue-600 h-[56px] text-sm leading-6 font-bold rounded-sm cursor-pointer transition-all duration-150 ease-out">
+                                            <span className="">문의하기</span>
+                                        </button>
+                                    </div>
+                                    <div className="w-[77px] ml-2">
+                                        <button className="h-[56px]">
+                                            <span>좋아요</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex justify-end p-4">
-                        {loginState.id === shareRoom.userId && (
+                    </aside>
+                    <div className="mt-[100px]">
+                    {loginState.id === shareRoom.userId && (
                             <>
-                                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-gray-400" onClick={() => moveToModify(roomNo)}>
-                                    Modify
+                                <button type="button" className="ml-5 float-right inline-block rounded bg-blue-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none" onClick={handleClickDelete}>
+                                    삭제하기
                                 </button>
-                                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-red-400" onClick={handleClickDelete}>
-                                    Delete
+                                <button type="button" className="float-right inline-block rounded bg-teal-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-teal-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none" onClick={() => moveToModify(roomNo)}>
+                                    수정하기
                                 </button>
+
                             </>
                         )}
-                    </div>
+                    </div>    
                 </div>
             </div>
         </div>

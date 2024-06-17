@@ -28,11 +28,13 @@ const PostComponent = ({ setAddress }) => {
 
   return (
     <div>
-      <button onClick={handleClick} className="rounded p-2 w-2/6 bg-gray-500 text-xm text-white" type="button">
-        🔍︎ 주소 검색
+      <button onClick={handleClick} className="flex-none inline-flex items-center justify-center w-24 ml-6 px-4 text-white border-0 rounded-sm transition-all duration-150 ease-out cursor-pointer h-11 text-base leading-6 font-bold bg-gray-900" type="button">
+        주소 검색
       </button>
     </div>
   );
 };
 
 export default PostComponent;
+
+

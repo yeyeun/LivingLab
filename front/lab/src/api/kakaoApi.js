@@ -16,7 +16,7 @@
 import axios from 'axios';
 import { API_SERVER_HOST } from './userApi';
 
-const rest_api_key = 'ea0feb168fdd4ed8456013d8b2f26c49'; // 이메일 나오는 rest api 키 받음
+const rest_api_key = '2b0436fd31d228c6702bb085c415ef9e'; // 이메일 나오는 rest api 키 받음
 
 const redirect_uri = 'http://localhost:3000/user/kakao'; //카카오 로그인에서 사용할 OAuth Redirect URI를 설정
 

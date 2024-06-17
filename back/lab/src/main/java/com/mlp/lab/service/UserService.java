@@ -17,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.entity.User;
-import com.mlp.lab.entity.UserRole;
 import com.mlp.lab.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -118,10 +117,10 @@ public class UserService {
         // .pwd(tempPassword)
         // .pwd(passwordEncoder.encode(tempPassword))
         .nickname(nickname)
-        // .role(UserRole.USER) // USER로 권한 설정
-        .social(true) // 소셜 계정 true
+        // .social(true)
         .build();
 
+    // member.addRole(MemberRole.USER); // 사용자 권한 부여
     return user;
   }
 

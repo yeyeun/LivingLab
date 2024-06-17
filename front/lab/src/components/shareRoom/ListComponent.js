@@ -49,17 +49,27 @@ const ListComponent = ({ search }) => {
       </div>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 py-10 max-w-7xl min-w-[1280px] items-center mx-auto">
         {serverData.dtoList.map((shareRoom) => (
-          <div class="mx-12 overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-60 md:w-80">
+          <div class="mx-12 overflow-hidden rounded-sm shadow-lg cursor-pointer h-90 w-60 md:w-80">
             <div className="block w-full h-full" onClick={() => moveToRead(shareRoom.roomNo)}>
               <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} class="object-cover w-full max-h-40" />
               <div class="w-full p-4 bg-white">
-                <p class="font-medium text-indigo-500 text-md">
+                <p class="text-gray-900 text-xs leading-5 font-normal">
+                  {shareRoom.option1}
                 </p>
+                {(shareRoom.rentFee % 10000) === 0 ? (
                 <p class="mb-2 text-xl font-medium text-gray-800">
-                  {shareRoom.title}
+                  금액 &nbsp; {(shareRoom.rentFee / 10000).toFixed(0)} &nbsp; 만원
                 </p>
-                <p class="font-light text-gray-400 text-md">
-                  월세 : {(shareRoom.rentFee / 10000).toFixed(1)} 만원
+                ) : (
+                <p class="mb-2 text-xl font-medium text-gray-800">
+                  금액 &nbsp; {(shareRoom.rentFee / 10000).toFixed(1)} &nbsp; 만원
+                </p>
+                )}
+                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
+                  {shareRoom.rentStartDate} &nbsp; 부터
+                </p>
+                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
+                  {shareRoom.rentEndDate} &nbsp; 까지
                 </p>
               </div>
             </div>

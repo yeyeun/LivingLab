@@ -4,13 +4,11 @@ import { useDispatch } from 'react-redux';
 import { login, loginPostAsync } from '../../slices/loginSlice';
 import imgLogo2 from '../../resources/images/logo2.png';
 import Post from '../common/PostComponent';
-import useCustomLogin from '../../hooks/useCustomLogin';
 
 const initState = {
   email: '',
   pwd: '',
-  pwdCheck: '',
-  name: '',
+  confirmPwd: '',
   phone: '',
   nickname: '',
   addr: '',
@@ -19,7 +17,6 @@ const initState = {
 
 function JoinComponent(props) {
   const [joinParam, setJoinParam] = useState({ ...initState });
-  const { moveToLogin, moveToPath } = useCustomLogin();
 
   //주소 찾기 팝업 추가 - 정운
   const [address, setAddress] = React.useState('');
@@ -29,16 +26,17 @@ function JoinComponent(props) {
 
   const handleChange = (e) => {
     joinParam[e.target.name] = e.target.value;
+
     setJoinParam({ ...joinParam });
   };
 
   const handleClickJoin = (e) => {
-    // dispatch(join(joinParam));
-    alert('회원가입 완료되었습니다!');
-    moveToLogin();
+    dispatch(login(joinParam));
 
     //dispatch(loginPostAsync(loginParam));
   };
+
+
 
   return (
     <div className="max-h-400">
@@ -86,7 +84,7 @@ function JoinComponent(props) {
               name="pwd"
               type={'password'}
               placeholder="비밀번호 확인"
-              value={joinParam.pwdCheck}
+              value={joinParam.confirmPwd}
               onChange={handleChange}
             ></input>
           </div>
@@ -133,11 +131,19 @@ function JoinComponent(props) {
             ></input>
           </div>
         </div>
-
+        
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-full p-3 text-left font-bold">주소</div>
-            <Post address={address} setAddress={setAddress}></Post>
+            <button
+              className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
+              onClick={() => {
+                setPopup(!popup);
+              }}
+            >
+              🔍︎ 주소 검색
+            </button>
+            {popup && <Post address={address} setAddress={setAddress}></Post>}
             <input
               className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
               name="addr"

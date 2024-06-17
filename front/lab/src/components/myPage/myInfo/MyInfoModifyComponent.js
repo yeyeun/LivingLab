@@ -260,9 +260,7 @@ const MyInfoModifyComponent = ({ id }) => {
           <div className="flex justify-center">
             <div className="w-1/3 p-3 text-left font-bold">주소</div>
             <div className="relative mb-4 w-full items-stretch">
-              <div className="w-44">
-                <PostComponent setAddress={handleAddrChange}></PostComponent>
-              </div>
+              <PostComponent setAddress={handleAddrChange}></PostComponent>
               <input
                 className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
                 name="addr"

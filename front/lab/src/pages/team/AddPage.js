@@ -1,9 +1,8 @@
-import AddComponent from '../../components/team/AddComponent'
 
 const AddPage = () => {
     return(
         <div>
-            <AddComponent/>
+            동네모임 글 작성 페이지
         </div>
     ); 
 }
