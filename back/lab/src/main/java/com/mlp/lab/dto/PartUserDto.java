@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PartUserDto {
-  // private String email; // 회원 이메일
+  private String email; // 회원 이메일
   private String nickname; // 회원 닉네임
   private Long id; // 회원 고유번호(user_id)
   // private Long pno; // 참여목록 번호

@@ -30,7 +30,7 @@ public class PartServiceImpl implements PartService {
   @Override
   public List<PartUserListDto> add(PartUserDto partUserDto, Long teamNo) {
 
-    // String email = partUserDto.getEmail();
+    String email = partUserDto.getEmail();
     String nickname = partUserDto.getNickname();
     Long id = partUserDto.getId(); // userId
     // Long pno = partUserDto.getPno();
@@ -53,7 +53,7 @@ public class PartServiceImpl implements PartService {
 
     if (partUser == null) {
       // 참여목록에 회원이 없는 경우
-      User user = User.builder().id(id).nickname(nickname).build();
+      User user = User.builder().id(id).nickname(nickname).email(email).build();
       partUser = PartUser.builder().user(user).part(part).build();
     }
     partUserRepository.save(partUser);

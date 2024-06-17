@@ -34,6 +34,7 @@ public class PartController {
   public List<PartUserListDto> addPart(@RequestBody PartUserDto partUserDto,
       @RequestParam(name = "teamNo") Long teamNo) {
     log.info(partUserDto);
+    log.info(teamNo);
     return partService.add(partUserDto, teamNo);
   }
 

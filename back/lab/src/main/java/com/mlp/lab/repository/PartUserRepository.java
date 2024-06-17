@@ -19,7 +19,7 @@ public interface PartUserRepository extends JpaRepository<PartUser, Long> {
   // pu.pino desc")
 
   // 특정한 게시물의 모든 참가목록 회원들을 가져올 경우 (회원 순으로 오름차순 출력)
-  @Query("select new com.mlp.lab.dto.PartUserListDto(pu.pino, pu.user.nickname) from PartUser pu inner join Part tp on pu.part = tp left join User u on pu.user = u where tp.team.teamNo = :teamNo order by pu.pino asc")
+  @Query("select new com.mlp.lab.dto.PartUserListDto(pu.pino, pu.user.nickname, pu.user.email) from PartUser pu inner join Part tp on pu.part = tp left join User u on pu.user = u where tp.team.teamNo = :teamNo order by pu.pino asc")
   List<PartUserListDto> getUserOfPartDtoByNo(@Param("teamNo") Long teamNo);
 
   // 게시물의 번호, 사용자의 번호로 해당 사용자가 참여회원으로 존재하는지 확인
