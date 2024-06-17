@@ -13,7 +13,7 @@ import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_full.png';
 import ResultModal from '../common/ResultModal';
 import PartComponent from './PartComponent';
-import ResultModal from '../common/ResultModal';
+
 
 const initState = {
   teamNo: 0,
@@ -38,7 +38,6 @@ const ReadComponent = ({ teamNo }) => {
   const [result, setResult] = useState(null);
   const [team, setTeam] = useState(initState);
   const [user, setUser] = useState(initUser);
-  const [result, setResult] = useState(null);
   const [addResultModal, setAddResultModal] = useState(null);
   const { moveToList, moveToModify } = useCustomMove();
   const loginInfo = useSelector((state) => state.loginSlice);
@@ -99,11 +98,6 @@ const ReadComponent = ({ teamNo }) => {
   const handleClickDelete = (e) => {
     deleteOne(teamNo);
     setResult('게시글이 삭제되었습니다');
-  };
-
-  const closeModal = () => {
-    setResult(null);
-    moveToList();
   };
 
   //날짜 포맷 설정
