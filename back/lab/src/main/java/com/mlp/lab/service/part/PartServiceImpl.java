@@ -28,14 +28,14 @@ public class PartServiceImpl implements PartService {
 
   // 참여목록에 참여하기
   @Override
-  public List<PartUserListDto> add(PartUserDto partUserDto) {
+  public List<PartUserListDto> add(PartUserDto partUserDto, Long teamNo) {
 
     // String email = partUserDto.getEmail();
     String nickname = partUserDto.getNickname();
     Long id = partUserDto.getId(); // userId
     // Long pno = partUserDto.getPno();
     Long pino = partUserDto.getPino();
-    Long teamNo = partUserDto.getTeamNo();
+    // Long teamNo = partUserDto.getTeamNo();
 
     // 참여목록에 이미 회원이 등록된 경우 (장바구니 아이템 번호가 있어서 수량변경만 하는 경우)
     if (pino != null) {
