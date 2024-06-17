@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { getPartUsers, postAddPart, removePart } from '../../api/partApi';
 import { API_SERVER_HOST, deleteOne, getOne } from '../../api/teamApi';
+import { getUser } from '../../api/userApi';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import useCustomMove from '../../hooks/useCustomMove';
@@ -11,6 +13,7 @@ import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_full.png';
 import PartComponent from './PartComponent';
+import ResultModal from '../common/ResultModal';
 
 const initState = {
   teamNo: 0,
@@ -25,13 +28,21 @@ const initState = {
   uploadFileNames: [],
 };
 
+const initUser = {
+  nickname: '',
+};
+
 const host = API_SERVER_HOST;
 
 const ReadComponent = ({ teamNo }) => {
   const [team, setTeam] = useState(initState);
+  const [user, setUser] = useState(initUser);
+  const [result, setResult] = useState(null);
+  const [addResultModal, setAddResultModal] = useState(null);
   const { moveToList, moveToModify } = useCustomMove();
   const loginInfo = useSelector((state) => state.loginSlice);
   const id = loginInfo?.email;
+  const ino = loginInfo.id;
 
   // 이미지 슬라이더
   const settings = {
@@ -52,9 +63,29 @@ const ReadComponent = ({ teamNo }) => {
     });
   }, [teamNo]);
 
+  useEffect(() => {
+    getUser(ino).then((data) => {
+      // fetchUserProfileImage(data.email);
+      setUser(data);
+    });
+  }, [ino]);
+
   const [showModal, setShowModal] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+
+  const handleClickAdd = async () => {
+    // const formData = new FormData();
+    // formData.append('nickname', user.nickname);
+    console.log(user);
+    postAddPart(user, teamNo);
+    setResult('참여목록에 등록되었습니다.');
+  };
+
+  const closeModal = () => {
+    setResult(null);
+    // moveToList();
+  };
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -106,7 +137,7 @@ const ReadComponent = ({ teamNo }) => {
 
   return (
     <>
-      <div className="bg-slate-100 w-2/5 mx-auto p-4 rounded-lg">
+      <div className="bg-slate-100 w-2/5 ml-auto p-4 rounded-lg">
         <div className="flex justify-between items-center">
           <span className="text-left font-semibold ml-2 items-center flex">
             {team.flag ? '모집 마감' : '모집 중'}
@@ -171,7 +202,7 @@ const ReadComponent = ({ teamNo }) => {
                   </button>
                   {/* </div> */}
 
-                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/4 mr-2 hover:bg-blue-500" onClick={handleOpenModal}>
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/4 mr-2 hover:bg-blue-500" onClick={handleClickAdd}>
                     참여하기
                   </button>
                   <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/4 hover:bg-slate-500" onClick={() => moveToList()}>
@@ -185,7 +216,7 @@ const ReadComponent = ({ teamNo }) => {
             <>
               <div className="col-start-6 col-span-4 my-6">
                 <div className="flex justify-between space-x-4">
-                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500" onClick={handleOpenModal}>
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500" onClick={handleClickAdd}>
                     참여하기
                   </button>
                   <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>
@@ -197,8 +228,10 @@ const ReadComponent = ({ teamNo }) => {
           )}
           {/* </div>
           </div> */}
+          {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
+          {addResultModal && <ResultModal title={'알림'} content={`${addResultModal}`} callbackFn={() => setAddResultModal(null)} />}
 
-          <ModalComponent show={showModal} onClose={handleCloseModal} />
+          <ModalComponent show={showModal} onClose={handleCloseModal} teamNo={teamNo} />
           <ConfirmationModal show={showConfirm} message={modalMessage} onConfirm={handleConfirm} onCancel={handleCancel} />
         </div>
       </div>
