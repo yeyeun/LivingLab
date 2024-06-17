@@ -110,6 +110,7 @@ const ListComponent = ({ search, sort }) => {
                   </div>
                   <div className="flex justify-end mb-2 text-lg tracking-tight text-gray-900 dark:text-white">{buy.nickname}</div>
                 </div>
+                <div className="text-base">{buy.recruit}</div>
               </div>
             </div>
             ))

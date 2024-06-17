@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import ListComponent from "../../../components/community/help/ListComponent";
 import useCustomHelp from "../../../hooks/useCustomHelp";
+<<<<<<< HEAD
 import ResultModal from '../../../components/common/ResultModal';
 
 
@@ -28,6 +26,11 @@ const ListPage = () => {
     navigate('/user/login'); // 로그인 페이지로 이동
   };
 
+=======
+
+const ListPage = () => {
+  const {moveToAdd} = useCustomHelp();
+>>>>>>> develop
 
   return (
     <div className="text-xl p-4 flex-grow">
@@ -37,11 +40,9 @@ const ListPage = () => {
             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
               <div className="overflow-hidden">
                 <div className="text-xl font-semibold pl-2 my-2 border-l-4 border-teal-300">도움요청</div>
-                <ListComponent />
-                <button
-                  type="button"
-                  className="float-right inline-block rounded bg-teal-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-teal-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none"
-                  onClick={handleClickWrite}>
+                <ListComponent/>
+                <button type="button" className="float-right inline-block rounded bg-teal-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-teal-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none"
+                onClick={()=>moveToAdd()}>
                   글쓰기
                 </button>
               </div>
@@ -49,9 +50,6 @@ const ListPage = () => {
           </div>
         </div>
       </div>
-      {addResultModal && (
-        <ResultModal title={'알림'} content={addResultModal} callbackFn={handleModalClose} />
-      )}
     </div>
   );
 };

@@ -8,29 +8,29 @@ import nolist from "../../resources/images/nolist2.png"
 import heart from "../../resources/images/heart_full.png"
 
 const initState = {
-  dtoList: [], //한 페이지에 불러오는 게시물 갯수
-  pageNumList: [],
-  pageRequestDto: null,
-  prev: false,
-  next: false,
-  totalCount: 0,
-  prevPage: 0,
-  nextPage: 0,
-  totalPage: 0,
-  current: 0,
-};
+    dtoList: [], //한 페이지에 불러오는 게시물 갯수
+    pageNumList: [],
+    pageRequestDto: null,
+    prev: false,
+    next: false,
+    totalCount: 0,
+    prevPage: 0,
+    nextPage: 0,
+    totalPage: 0,
+    current: 0
+}
 
-const host = API_SERVER_HOST;
+const host = API_SERVER_HOST
 
 const ListComponent = ({ search, sort }) => {
-  const { page, size, moveToList, moveToRead } = useCustomMove();
-  const [serverData, setServerData] = useState(initState);
+    const { page, size, moveToList, moveToRead } = useCustomMove();
+    const [serverData, setServerData] = useState(initState);
 
-  const checkDeadline = (deadline) => {
-    const currentDate = new Date();
-    const deadlineDate = new Date(deadline);
-    return currentDate > deadlineDate ? '모집 종료' : '모집 중';
-  };
+    const checkDeadline = (deadline) => {
+        const currentDate = new Date();
+        const deadlineDate = new Date(deadline);
+        return currentDate > deadlineDate ? '모집 종료' : '모집 중';
+    };
 
     //날짜 포맷 설정
     const formatDeadline = (deadline) => {
