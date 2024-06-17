@@ -10,8 +10,8 @@ export const getPartUsers = async (teamNo) => {
 };
 
 // 참여목록에 참여인원 추가
-export const postAddPart = async (partUser) => {
-  const res = await axios.post(`${host}/add`, partUser);
+export const postAddPart = async (user, teamNo) => {
+  const res = await axios.post(`${host}/add`, { user, teamNo });
   return res.data;
 };
 

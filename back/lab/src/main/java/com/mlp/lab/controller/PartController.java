@@ -31,9 +31,10 @@ public class PartController {
   private final PartService partService;
 
   @PostMapping("/add")
-  public List<PartUserListDto> addPart(PartUserDto partUserDto) {
-
-    return partService.add(partUserDto);
+  public List<PartUserListDto> addPart(@RequestBody PartUserDto partUserDto,
+      @RequestParam(name = "teamNo") Long teamNo) {
+    log.info(partUserDto);
+    return partService.add(partUserDto, teamNo);
   }
 
   @GetMapping("/users/team/{teamNo}")
