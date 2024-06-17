@@ -9,6 +9,7 @@ import iconNext from '../../resources/images/icon-next.png';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_full.png';
+import fullheart from '../../resources/images/heart_empty.png';
 import ResultModal from "../common/ResultModal";
 
 const initState = {
@@ -21,6 +22,7 @@ const initState = {
     current: 0,
     deadline: '',
     flag:'',
+    buyHit: 0,
     uploadFileNames: [],
 };
 
@@ -31,8 +33,10 @@ const ReadComponent = ({ buyNo }) => {
     const [buy, setBuy] = useState(initState);
     const { moveToList, moveToModify } = useCustomMove();
     const loginInfo = useSelector((state) => state.loginSlice);
-    const id = loginInfo?.email;
-
+    const email = loginInfo?.email;
+    const id = loginInfo?.id;
+    const isAuthenticated = loginInfo.email !== null; // 이메일 여부로 로그인 상태 판별
+    const isLiked=true;
     // 이미지 슬라이더
     const settings = {
       dots: true,
@@ -50,7 +54,7 @@ const ReadComponent = ({ buyNo }) => {
         console.log(data);
         setBuy(data);
       });
-    }, [buyNo]);
+    }, [buyNo, buy.buyHit]);
   
     const [showModal, setShowModal] = useState(false);
   
@@ -111,7 +115,7 @@ const ReadComponent = ({ buyNo }) => {
             </div>
             <div className="grid grid-cols-10 w-full mx-auto mt-4 mb-1 text-xl bg-white">
                 <div className="col-start-9 col-span-2 ml-5 mt-4 text-right flex justify-center">
-                  <img src={emptyheart} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
+                  <img src={isAuthenticated && isLiked ? fullheart : emptyheart} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
                 </div> 
                 <div className="col-start-3 col-span-6 h-72 mt-3 mb-10">
                   {buy.uploadFileNames.length > 0? (
@@ -157,7 +161,7 @@ const ReadComponent = ({ buyNo }) => {
                 </div>
                 <div className="col-start-6 col-span-4 my-6">
                   <div className="flex">
-                    {id === buy.user_id? (
+                    {email === buy.user_id? (
                     <>
                     <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/2 mr-2 hover:bg-red-500" onClick={() => moveToModify(buyNo)}>수정하기</button>
                     <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 mr-2 hover:bg-slate-500" onClick={handleClickDelete}>삭제하기</button>
