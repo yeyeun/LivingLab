@@ -24,3 +24,9 @@
 // registry.setApplicationDestinationPrefixes("/app");
 // }
 // }
+
+// // WebSocketMessageBrokerConfigure를 implement를 받아서 관련 메소드들을 오버라이드합니다.
+// // 위 STOMP의 구조를 설명했듯이 브로커라는 개념이 적용된다.
+// // setApplicationDesinationPrefixes 메소드를 이용하여서 전송할 목적지의 prefix값을 설정한다.
+// // 마지막으로 addEndpoint로 웹 소켓에서 활용될 주소를 적어주고
+// // withSockJS를 이용하여서 향상된 SockJS를 사용하겠다는 것을 알려준다
