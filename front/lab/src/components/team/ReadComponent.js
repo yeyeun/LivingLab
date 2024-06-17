@@ -21,6 +21,7 @@ const initState = {
     current: 0,
     deadline: '',
     flag:'',
+    teamHit: 0,
     uploadFileNames: [],
 };
 
