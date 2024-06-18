@@ -9,9 +9,10 @@ import MapComponent from '../common/MapComponent';
 import iconNext from '../../resources/images/icon-next.png';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
-import emptyheart from '../../resources/images/heart_full.png';
-import fullheart from '../../resources/images/heart_empty.png';
+import emptyheart from '../../resources/images/heart_empty.png';
+import fullheart from '../../resources/images/heart_full.png';
 import ResultModal from "../common/ResultModal";
+import InfoModal from "../common/InfoModal";
 
 const initState = {
     buyNo: 0,
@@ -27,6 +28,12 @@ const initState = {
     uploadFileNames: [],
 };
 
+const initState2 = {
+  likeNo: 0,
+  id: 0,
+  buyNo: 0
+}
+
 const host = API_SERVER_HOST;
 
 const ReadComponent = ({ buyNo }) => {
@@ -36,8 +43,11 @@ const ReadComponent = ({ buyNo }) => {
     const loginInfo = useSelector((state) => state.loginSlice);
     const email = loginInfo?.email;
     const id = loginInfo?.id;
-    const isAuthenticated = loginInfo.email !== null; // 이메일 여부로 로그인 상태 판별
-    const [isLiked, setIsLiked] = useState({}); // 좋아요 정보
+    const [isLiked, setIsLiked] = useState(false); // 좋아요 상태
+    const [ like, setLike ] = useState(initState2);
+    const [info, setInfo] = useState(null);
+
+
     // 이미지 슬라이더
     const settings = {
       dots: true,
@@ -52,19 +62,24 @@ const ReadComponent = ({ buyNo }) => {
   
     useEffect(() => {
       getOne(buyNo).then((data) => {
-        console.log(data);
         setBuy(data);
-      });
-    }, [buyNo, buy.buyHit]);
 
-    // useEffect(() => {
-    //   if(likeInfo.email !== null){
-    //     likeInfo(buyNo,id).then((data) => {
-    //       console.log(data);
-    //       setIsLiked(data);
-    //     });
-    //   }
-    // }, [id, loginInfo.email]);
+      });
+    }, [buyNo, isLiked, info]);
+
+    useEffect(() => {
+      if(email){ //로그인시에만 실행
+        likeInfo(buyNo,id).then((data) => {
+          setLike(data);
+          if(data){ //data가 있으면 이미 좋아요 누른글
+            setIsLiked(true);
+          }
+          else{
+            setIsLiked(false);
+          }
+        });
+      }
+    }, [email]);
   
     const [showModal, setShowModal] = useState(false);
   
@@ -86,19 +101,27 @@ const ReadComponent = ({ buyNo }) => {
       moveToList();
     };
 
+    const closeInfoModal = () => {
+      setInfo(null);
+    };
+
     const handleLikeClick = () => {
-      const formData = new FormData();
-      if (!isAuthenticated) {
-        alert('로그인 후 이용 가능합니다');
+      if (!email) {
+        setInfo("로그인 후 이용 가능합니다");
         return;
       }
       if (isLiked) {
+        unlikeBuy(like.likeNo);
         decreaseLike(buyNo);
+        setInfo("좋아요 목록에서 삭제되었습니다");
       } else {
-        formData.append("id",id);
-        formData.append("buyNo",buyNo);
-        likeBuy(formData);
+        const data = {
+          id : id,
+          buyNo : buyNo
+        }
+        likeBuy(data);
         increaseLike(buyNo);
+        setInfo("좋아요 목록에 추가되었습니다");
       }
       setIsLiked(!isLiked);
     };
@@ -133,6 +156,7 @@ const ReadComponent = ({ buyNo }) => {
 
     return(
         <div className="bg-slate-100 w-2/5 mx-auto p-4 rounded-lg">
+          {isLiked? (<div>isLiked true임</div>):(<div>isLiked false임</div>)}
             <div className="flex justify-between items-center">
                 <span className="text-left font-semibold ml-2 items-center flex">
                   {buy.flag? '모집 마감':'모집 중'}<img src={iconNext} alt="..." className="w-7 inline"/>
@@ -142,8 +166,7 @@ const ReadComponent = ({ buyNo }) => {
             </div>
             <div className="grid grid-cols-10 w-full mx-auto mt-4 mb-1 text-xl bg-white">
                 <div className="col-start-9 col-span-2 ml-5 mt-4 text-right flex justify-center">
-                  {/* <img src={isAuthenticated && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit} */}
-                  <img src={fullheart} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
+                  <img src={email && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
                 </div> 
                 <div className="col-start-3 col-span-6 h-72 mt-3 mb-10">
                   {buy.uploadFileNames.length > 0? (
@@ -206,6 +229,7 @@ const ReadComponent = ({ buyNo }) => {
                 </div>
                 <ModalComponent show={showModal} onClose={handleCloseModal} />
                 {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
+                {info && <InfoModal title={'알림'} content={`${info}`} callbackFn={closeInfoModal} />}
             </div>
         </div>
     );
