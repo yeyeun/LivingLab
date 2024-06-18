@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 
 
 const host = API_SERVER_HOST;
-
 const initState = {
   dtoList: [], //한 페이지에 불러오는 게시물 갯수
   pageNumList: [],
@@ -18,8 +17,8 @@ const initState = {
   prevPage: 0,
   nextPage: 0,
   totalPage: 0,
-  current: 0
-}
+  current: 0,
+};
 
 const ListComponent = ({ search }) => {
   const { page, size, moveToList, moveToRead, moveToAdd } = useRoomCustomMove();
@@ -89,9 +88,10 @@ const ListComponent = ({ search }) => {
         <div className="flex justify-end p-4">
         </div>
       </div>
+      <LandingComponent />
       <PageComponent serverData={serverData} movePage={moveToList} />
     </>
   );
-}
+};
 
 export default ListComponent;

@@ -102,4 +102,14 @@ public class BuyController {
     public List<BuyDto> getLatestBuyList() {
         return buyService.getLatestBuy();
     }
+
+    @PutMapping("/increase/{buyNo}") // 좋아요 +1
+    public void increase(@PathVariable(name = "buyNo") Long buyNo) {
+        buyService.increase(buyNo);
+    }
+
+    @PutMapping("/decrease/{buyNo}") // 좋아요 +1
+    public void decrease(@PathVariable(name = "buyNo") Long buyNo) {
+        buyService.decrease(buyNo);
+    }
 }

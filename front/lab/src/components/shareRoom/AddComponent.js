@@ -1,8 +1,14 @@
 import React, { useRef, useState } from "react";
 import { postAddShareRoom } from "../../api/shareRoomApi";
+import React, { useRef, useState } from "react";
+import { postAddShareRoom } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import { useSelector } from 'react-redux';
+import PostComponentForRoom from "../common/PostComponentForRoom";
+import Image1 from '../../resources/images/radio1.svg';
+import Image2 from '../../resources/images/radio2.svg';
+import iconEdit from '../../resources/images/iconEdit.png'
 import PostComponentForRoom from "../common/PostComponentForRoom";
 import Image1 from '../../resources/images/radio1.svg';
 import Image2 from '../../resources/images/radio2.svg';
@@ -11,6 +17,7 @@ import iconEdit from '../../resources/images/iconEdit.png'
 
 
 const AddComponent = () => {
+
 
     const [addResultModal, setAddResultModal] = useState(null);
     const [result, setResult] = useState(null);

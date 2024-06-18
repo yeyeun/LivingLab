@@ -77,7 +77,7 @@ public class BuyService {
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
             
             if(buyImage != null){
                 String imageStr = buyImage.getFileName();
@@ -301,5 +301,18 @@ public class BuyService {
         return dtoList;
     }
     
+    public void increase(Long buyNo) { // 좋아요 +1
+        Optional<Buy> result = buyRepository.findById(buyNo.intValue());
+        Buy buy = result.orElseThrow();
+        buy.setBuyHit(buy.getBuyHit()+1);
+        buyRepository.save(buy);
+    }
+
+    public void decrease(Long buyNo) { // 좋아요 -1
+        Optional<Buy> result = buyRepository.findById(buyNo.intValue());
+        Buy buy = result.orElseThrow();
+        buy.setBuyHit(buy.getBuyHit()-1);
+        buyRepository.save(buy);
+    }
 
 }

@@ -3,15 +3,27 @@ export const API_SERVER_HOST = 'http://localhost:8282';
 
 const host = `${API_SERVER_HOST}/api/part`;
 
-// 참여목록 조회
+// 공동구매 참여목록 조회
+export const getBuyPartUsers = async (buyNo) => {
+  const res = await axios.get(`${host}/users/buy/${buyNo}`);
+  return res.data;
+};
+
+// 공동구매 참여목록에 참여인원 추가
+export const postAddBuyPart = async (user, buyNo) => {
+  const res = await axios.post(`${host}/buy/add`, user, { params: { buyNo } }); //  { params: { teamNo } } 로 수정
+  return res.data;
+};
+
+// 동네모임 참여목록 조회
 export const getPartUsers = async (teamNo) => {
   const res = await axios.get(`${host}/users/team/${teamNo}`);
   return res.data;
 };
 
-// 참여목록에 참여인원 추가
+// 동네모임 참여목록에 참여인원 추가
 export const postAddPart = async (user, teamNo) => {
-  const res = await axios.post(`${host}/add`, user, { params: { teamNo } }); //  { params: { teamNo } } 로 수정
+  const res = await axios.post(`${host}/team/add`, user, { params: { teamNo } }); //  { params: { teamNo } } 로 수정
   return res.data;
 };
 

@@ -67,6 +67,11 @@ const MainPage = () => {
               </div>
             </Slider>
           </div>
+          <div className="weather-container ">
+          <div className="main-headline mb-2">
+              <span>우리 동네 날씨</span>
+            </div>
+          </div>
         </div>
 
         <div className="main-container">

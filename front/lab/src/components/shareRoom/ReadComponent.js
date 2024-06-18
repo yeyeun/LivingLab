@@ -1,21 +1,27 @@
+import React, { useEffect, useState } from 'react';
+import { API_SERVER_HOST, getOne, deleteOne } from '../../api/shareRoomApi';
+import useRoomCustomMove from '../../hooks/useRoomCustomMove';
 
 import React, { useEffect, useState } from "react"
 import { API_SERVER_HOST, getOne, deleteOne } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove"
 import { useSelector } from 'react-redux';
+import MapComponentForRoom from '../common/MapComponentForRoom';
+import heartEmpty from '../../resources/images/heart_empty.png';
 import MapComponentForRoom from "../common/MapComponentForRoom";
 
 const host = API_SERVER_HOST;
 
 const initState = {
-    roomNo: 0,
-    title: '',
-    rentFee: 0,
-    parking: '',
-    option1: '',
-    location: '',
-    uploadFileNames: []
-}
+  roomNo: 0,
+  title: '',
+  rentFee: 0,
+  parking: '',
+  option1: '',
+  location: '',
+  uploadFileNames: [],
+  hit: '',
+};
 
 const ReadComponent = ({ roomNo }) => {
     const [shareRoom, setShareRoom] = useState(initState)
@@ -23,12 +29,12 @@ const ReadComponent = ({ roomNo }) => {
     const [result, setResult] = useState(null)
     const loginState = useSelector((state) => state.loginSlice);
 
-    useEffect(() => {
-        getOne(roomNo).then(data => {
-            console.log(data)
-            setShareRoom(data)
-        })
-    }, [roomNo])
+  useEffect(() => {
+    getOne(roomNo).then((data) => {
+      console.log(data);
+      setShareRoom(data);
+    });
+  }, [roomNo]);
 
 
 

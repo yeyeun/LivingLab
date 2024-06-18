@@ -17,9 +17,6 @@ const ListPage = () => {
       <div className="m-auto w-2/5 pb-2 text-3xl font-Jua">자취방쉐어</div>
       {/* <div className="m-auto w-2/5 items-center">
         <LocationComponent />
-      </div> */}
-      <div className='pt-10 h-1/2 items-center'>
-        <SearchComponentForRoom onSearch={handleSearch}/>
       </div>
       <div>
         <ListComponent search={search} />

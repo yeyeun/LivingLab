@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.UserDto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,16 +33,32 @@ import lombok.ToString;
 public class User {
     @Id // 기본키(PK) 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "email", length = 100)
     private String email;
+
+    @Column(name = "pwd", length = 100)
     private String pwd;
     private String name;
+
+    @Column(name = "addr")
     private String addr;
+
+    @Column(name = "detail_addr")
     private String detailAddr;
+
+    @Column(name = "location")
     private String location; // 실시간 위치 정보
+
+    @Column(name = "phone")
     private String phone;
+
+    @Column(name = "nickname")
     private String nickname;
+
+    @Column(name = "profile_image")
     private String profileImage;
 
     // static으로 만들어 클래스를 만들지 않아도 사용가능
