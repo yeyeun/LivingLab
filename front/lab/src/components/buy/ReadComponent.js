@@ -77,7 +77,7 @@ const ReadComponent = ({ buyNo }) => {
     getOne(buyNo).then((data) => {
       setBuy(data);
     });
-  }, [buyNo]);
+  }, [buyNo,info]);
 
   useEffect(() => {
     getUser(ino).then((data) => {
@@ -104,7 +104,7 @@ const ReadComponent = ({ buyNo }) => {
           }
         });
       }
-    }, [email]);
+    }, [email,info]);
 
   const [showModal, setShowModal] = useState(false);
 
