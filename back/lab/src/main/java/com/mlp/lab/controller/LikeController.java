@@ -30,7 +30,7 @@ public class LikeController {
         likeService.deleteBuy(likeNo);
     }
 
-    @GetMapping("/buy")
+    @GetMapping("/buy") //좋아요 정보 조회
     public LikeBuyDto likeInfo(@RequestParam(value="buyNo") Long buyNo, @RequestParam(value="id") Long id){
         return likeService.read(buyNo,id);
    }
