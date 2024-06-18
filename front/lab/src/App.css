@@ -60,7 +60,7 @@
 
 .main-slide-container {
   position: relative;
-  width: 800px;
+  width: 650px;
   height: auto;
   margin: 20px auto;
 }
@@ -74,6 +74,11 @@
 
 .slider .slick-list {
   margin: 0 -20px;
+}
+
+.weather-container {
+  width: 500px;
+  height: 100%;
 }
 
 .latestPost-container {
@@ -106,21 +111,34 @@
   margin: 0 auto;
 }
 
-/* .type1 {
-  color: rgb(87, 206, 200);
+.list-button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.type2 {
-  color: rgb(255, 188, 43); 
+.list-tagbtn {
+  border: 1px solid rgb(0, 0, 0);
+  font-size: 20px;
+  border-radius: 24px;  
+  padding: 2px 10px;
+  background-color: #ffffff; 
+  border-color: #d4d4d4; 
 }
 
-.type3 {
-  color: rgb(248, 101, 114); 
+.list-tagbtn:hover {
+  filter: brightness(0.85);
 }
 
-.type4 {
-  color: rgb(168, 118, 71); 
-} */
+.tag-btn-active {
+  background-color: #bfdbfe;
+  border-color: #6094cf;
+}
+
+.tag-btn-active:hover {
+  filter: brightness(0.85);
+}
 
 .main-container {
   display: flex;
