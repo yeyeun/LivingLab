@@ -3,6 +3,7 @@ import { API_SERVER_HOST, getList } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PageComponent from "../common/PageComponent";
 import { useSelector } from 'react-redux';
+import LandingComponent from  "../common/mapSearch/LandingComponent";
 
 
 

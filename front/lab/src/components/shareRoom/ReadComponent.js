@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { API_SERVER_HOST, getOne, deleteOne } from '../../api/shareRoomApi';
-import useRoomCustomMove from '../../hooks/useRoomCustomMove';
-
 import React, { useEffect, useState } from "react"
 import { API_SERVER_HOST, getOne, deleteOne } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove"
 import { useSelector } from 'react-redux';
 import MapComponentForRoom from '../common/MapComponentForRoom';
 import heartEmpty from '../../resources/images/heart_empty.png';
-import MapComponentForRoom from "../common/MapComponentForRoom";
 
 const host = API_SERVER_HOST;
 
