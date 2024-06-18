@@ -12,8 +12,11 @@ public class PartUserListDto {
 
   private String nickname; // 참여회원 닉네임 (pname)
 
-  public PartUserListDto(Long pino, String nickname) {
+  private String email;
+
+  public PartUserListDto(Long pino, String nickname, String email) {
     this.pino = pino;
     this.nickname = nickname;
+    this.email = email;
   }
 }
