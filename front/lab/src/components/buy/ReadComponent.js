@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/buyApi';
-import { likeBuy, unlikeBuy, isLiked } from '../../api/likeApi';
+import { likeBuy, unlikeBuy, likeInfo } from '../../api/likeApi';
 import { useSelector } from 'react-redux';
 import Slider from "react-slick";
 import useCustomMove from '../../hooks/useCustomMove';
@@ -37,7 +37,7 @@ const ReadComponent = ({ buyNo }) => {
     const email = loginInfo?.email;
     const id = loginInfo?.id;
     const isAuthenticated = loginInfo.email !== null; // 이메일 여부로 로그인 상태 판별
-    const [isLiked, setIsLiked] = useState({}); // 좋아요 상태
+    const [isLiked, setIsLiked] = useState({}); // 좋아요 정보
     // 이미지 슬라이더
     const settings = {
       dots: true,
@@ -57,14 +57,14 @@ const ReadComponent = ({ buyNo }) => {
       });
     }, [buyNo, buy.buyHit]);
 
-    useEffect(() => {
-      if(loginInfo.email !== null){
-        isLiked(buyNo,id).then((data) => {
-          console.log(data);
-          setIsLiked(data);
-        });
-      }
-    }, [loginInfo.email]);
+    // useEffect(() => {
+    //   if(likeInfo.email !== null){
+    //     likeInfo(buyNo,id).then((data) => {
+    //       console.log(data);
+    //       setIsLiked(data);
+    //     });
+    //   }
+    // }, [id, loginInfo.email]);
   
     const [showModal, setShowModal] = useState(false);
   
@@ -142,7 +142,8 @@ const ReadComponent = ({ buyNo }) => {
             </div>
             <div className="grid grid-cols-10 w-full mx-auto mt-4 mb-1 text-xl bg-white">
                 <div className="col-start-9 col-span-2 ml-5 mt-4 text-right flex justify-center">
-                  <img src={isAuthenticated && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
+                  {/* <img src={isAuthenticated && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit} */}
+                  <img src={fullheart} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
                 </div> 
                 <div className="col-start-3 col-span-6 h-72 mt-3 mb-10">
                   {buy.uploadFileNames.length > 0? (
