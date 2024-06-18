@@ -36,10 +36,10 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email", length = 100)
     private String email;
 
-    @Column(name = "pwd", nullable = false, length = 100)
+    @Column(name = "pwd", length = 100)
     private String pwd;
     private String name;
 
