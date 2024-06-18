@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -69,16 +70,11 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseDto<Object> join(@RequestBody UserDto userDto) {
+    public ResponseDto<Object> join(@RequestParam("files") List<MultipartFile> files, @ModelAttribute UserDto userDto) {
         if (userService.findByEmail(userDto.getEmail()) != null) {
             return ResponseDto.setFailed("이미 존재하는 아이디입니다.");
         }
-        // if (!userDto.getPwd().equals(userDto.getPwdCheck())) {
-        // return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
-        // }
-
-        List<MultipartFile> files = userDto.getFiles(); // 서버에 저장
-        List<String> uploadFileNames = fileUtil.saveFiles(files); // DB에 저장
+        List<String> uploadFileNames = fileUtil.saveFiles(files);
         userDto.setUploadFileNames(uploadFileNames);
         userService.add(userDto);
 

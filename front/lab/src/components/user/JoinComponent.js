@@ -1,18 +1,21 @@
 import React from 'react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { login, loginPostAsync } from '../../slices/loginSlice';
 import imgLogo2 from '../../resources/images/logo2.png';
 import Post from '../common/PostComponent';
+import { joinUser } from '../../api/userApi';
+import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 
 const initState = {
   email: '',
   pwd: '',
   confirmPwd: '',
   phone: '',
+  name: '',
   nickname: '',
   addr: '',
   detailAddr: '',
+  files: [], // files 초기값 추가
 };
 
 function JoinComponent(props) {
@@ -23,6 +26,7 @@ function JoinComponent(props) {
   const [popup, setPopup] = React.useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // useNavigate 사용
 
   const handleChange = (e) => {
     joinParam[e.target.name] = e.target.value;
@@ -30,13 +34,34 @@ function JoinComponent(props) {
     setJoinParam({ ...joinParam });
   };
 
-  const handleClickJoin = (e) => {
-    dispatch(login(joinParam));
-
-    //dispatch(loginPostAsync(loginParam));
+  const handleFileChange = (e) => {
+    setJoinParam({
+      ...joinParam,
+      files: e.target.files,
+    });
   };
 
+  const handleClickJoin = async (e) => {
+    e.preventDefault();
 
+    if (joinParam.pwd !== joinParam.confirmPwd) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    try {
+      const response = await joinUser(joinParam); // joinUser API 호출
+      if (response.result==true) {
+        alert('회원가입이 완료되었습니다.');
+        navigate('/');
+      } else {
+        alert(response.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert('회원가입 중 오류가 발생했습니다.');
+    }
+  };
 
   return (
     <div className="max-h-400">
@@ -81,7 +106,7 @@ function JoinComponent(props) {
             <div className="w-full p-3 text-left font-bold">비밀번호 확인</div>
             <input
               className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="pwd"
+              name="confirmPwd"
               type={'password'}
               placeholder="비밀번호 확인"
               value={joinParam.confirmPwd}
@@ -109,7 +134,7 @@ function JoinComponent(props) {
             <div className="w-full p-3 text-left font-bold">휴대폰 번호</div>
             <input
               className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="name"
+              name="phone"
               type={'text'}
               placeholder="전화번호"
               value={joinParam.phone}
@@ -123,7 +148,7 @@ function JoinComponent(props) {
             <div className="w-full p-3 text-left font-bold">닉네임</div>
             <input
               className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="name"
+              name="nickname"
               type={'text'}
               placeholder="닉네임"
               value={joinParam.nickname}
@@ -153,6 +178,19 @@ function JoinComponent(props) {
               value={address}
             ></input>
             <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+            <div className="w-full p-3 text-left font-bold">프로필 이미지</div>
+            <input
+              className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
+              name="files"
+              type="file"
+              multiple
+              onChange={handleFileChange}
+            />
           </div>
         </div>
 

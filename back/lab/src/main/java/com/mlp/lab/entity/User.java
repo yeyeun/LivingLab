@@ -41,6 +41,8 @@ public class User {
 
     @Column(name = "pwd", length = 100)
     private String pwd;
+
+    @Column(name = "name")
     private String name;
 
     @Column(name = "addr")

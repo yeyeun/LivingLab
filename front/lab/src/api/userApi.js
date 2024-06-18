@@ -17,6 +17,28 @@ export const loginPost = async (loginParam) => {
   return res.data;
 };
 
+// 회원가입
+export const joinUser = async (joinParam) => {
+  const formData = new FormData();
+  formData.append('email', joinParam.email);
+  formData.append('pwd', joinParam.pwd);
+  formData.append('phone', joinParam.phone);
+  formData.append('nickname', joinParam.nickname);
+  formData.append('addr', joinParam.addr);
+  formData.append('detailAddr', joinParam.detailAddr);
+  for (let i = 0; i < joinParam.files.length; i++) {
+    formData.append('files', joinParam.files[i]);
+  }
+
+  const res = await axios.post(`${host}/join`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return res.data;
+};
+
 export const modifyUser = async (user) => {
   // 로그인한 사용자 기준으로 axios 처리 (JSON으로 바로 보냄)
   const res = await axios.put(`${host}/modify`, user);
