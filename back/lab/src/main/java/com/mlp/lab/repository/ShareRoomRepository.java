@@ -18,6 +18,6 @@ public interface ShareRoomRepository extends JpaRepository<ShareRoom,Integer>{
     Page<Object[]> selectList(Pageable pageable);
 
     // 검색어 기준 정렬(글 제목에서만 검색)
-    @Query("select s, si from ShareRoom s left join s.imageList si where si.ord = 0 and s.flag = true and s.title like %:title%")
+    @Query("select s, si from ShareRoom s left join s.imageList si where si.ord = 0 and s.flag = true and s.location like %:title%")
     Page<Object[]> selectSearchList(String title, Pageable pageable);
 }

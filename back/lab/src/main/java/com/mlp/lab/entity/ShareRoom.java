@@ -42,6 +42,8 @@ public class ShareRoom {
     private String roomImage;
     private String rentStartDate;
     private String rentEndDate;
+    private Integer averFee;
+    private Integer days;
     private boolean flag;
 
     @ElementCollection

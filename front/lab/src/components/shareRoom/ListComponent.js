@@ -53,18 +53,23 @@ const ListComponent = ({ search }) => {
             <div className="block w-full h-full" onClick={() => moveToRead(shareRoom.roomNo)}>
               <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} class="object-cover w-full max-h-40" />
               <div class="w-full p-4 bg-white">
-                <p class="text-gray-900 text-xs leading-5 font-normal">
+                <p class="text-gray-900 text-xs leading-5 font-normal mb-1">
                   {shareRoom.location}
                 </p>
-                {(shareRoom.rentFee % 10000) === 0 ? (
-                <p class="mb-2 text-xl font-medium text-gray-800">
-                  금액 &nbsp; {(shareRoom.rentFee / 10000).toFixed(0)} &nbsp; 만원
-                </p>
-                ) : (
-                <p class="mb-2 text-xl font-medium text-gray-800">
-                  금액 &nbsp; {(shareRoom.rentFee / 10000).toFixed(1)} &nbsp; 만원
-                </p>
-                )}
+                <div className="flex">
+                  <p class=" mb-2 text-xl font-medium text-blue-500"> 1박 &nbsp;{(shareRoom.averFee / 10000).toFixed(1)} &nbsp;만원</p>
+                  {(shareRoom.rentFee % 10000) === 0 ? (
+                  <p class="ml-10 mb-2 text-xl font-medium text-gray-800">
+                    총 &nbsp; {(shareRoom.rentFee / 10000).toFixed(0)} &nbsp; 만원
+                  </p>
+                  ) : (
+                  <p class="ml-10 mb-2 text-xl font-medium text-gray-800">
+                    총 &nbsp; {(shareRoom.rentFee / 10000).toFixed(1)} &nbsp; 만원
+                  </p>
+                  )}
+                  
+                </div>
+                
                 <p class="text-gray-900 text-xs leading-5 font-normal">
                   {shareRoom.option1}
                 </p>
@@ -73,6 +78,9 @@ const ListComponent = ({ search }) => {
                 </p>
                 <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
                   {shareRoom.rentEndDate} &nbsp; 까지
+                </p>
+                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
+                  {shareRoom.days} &nbsp; 일 &nbsp;동안
                 </p>
               </div>
             </div>

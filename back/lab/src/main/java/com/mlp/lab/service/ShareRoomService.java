@@ -34,7 +34,7 @@ public class ShareRoomService {
                 roomPageRequestDto.getSize(),
                 Sort.by("roomNo").descending());
 
-        //Page<Object[]> result = shareRoomRepository.selectList(pageable);
+        // Page<Object[]> result = shareRoomRepository.selectList(pageable);
         Page<Object[]> result = null;
         if (search == null || search.isEmpty()){ // 페이지 클릭 시
             result = shareRoomRepository.selectList(pageable);
@@ -54,6 +54,8 @@ public class ShareRoomService {
                     .location(shareRoom.getLocation())
                     .rentStartDate(shareRoom.getRentStartDate())
                     .rentEndDate(shareRoom.getRentEndDate())
+                    .averFee(shareRoom.getAverFee())
+                    .days(shareRoom.getDays())
                     .option1(shareRoom.getOption1())
                     .build();
 
@@ -100,6 +102,8 @@ public class ShareRoomService {
         shareRoom.setLocation(shareRoomDto.getLocation());
         shareRoom.setRentStartDate(shareRoomDto.getRentStartDate());
         shareRoom.setRentEndDate(shareRoomDto.getRentEndDate());
+        shareRoom.setAverFee(shareRoomDto.getAverFee());
+        shareRoom.setDays(shareRoomDto.getDays());
         shareRoom.setOption1(shareRoomDto.getOption1());
 
         // 파일들 삭제

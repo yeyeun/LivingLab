@@ -64,6 +64,14 @@ const ModifyComponent = ({ roomNo }) => {
         setPreviewFiles(imagePreviews);
     }
 
+    const calculateDaysBetweenDates = (startDate, endDate) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const timeDiff = end.getTime() - start.getTime();
+        const daysDiff = timeDiff / (1000 * 3600 * 24);
+        return Math.round(daysDiff); // 소수점은 제거하고 정수로 반환
+    };
+
     const handleClickModify = (e) => {
 
         //유효성 검사
@@ -73,6 +81,8 @@ const ModifyComponent = ({ roomNo }) => {
         }
         const files = uploadRef.current.files;
         const formData = new FormData();
+        const daysBetween = calculateDaysBetweenDates(shareRoom.rentStartDate, shareRoom.rentEndDate);
+        const averFee = shareRoom.rentFee / daysBetween;
 
         for (let i = 0; i < files.length; i++) {
             formData.append("files", files[i]);
@@ -86,6 +96,8 @@ const ModifyComponent = ({ roomNo }) => {
         formData.append("location", shareRoom.location);
         formData.append("rentStartDate", shareRoom.rentStartDate);
         formData.append("rentEndDate", shareRoom.rentEndDate);
+        formData.append("averFee", averFee);
+        formData.append("days", daysBetween);
         formData.append("uploadFileNames", shareRoom.uploadFileNames);
 
         console.log(formData);
