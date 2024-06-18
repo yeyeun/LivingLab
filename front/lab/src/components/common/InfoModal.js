@@ -1,4 +1,4 @@
-const ResultModal = ({ title, content, callbackFn }) => {
+const InfoModal = ({ title, content, callbackFn }) => {
   return (
     <div
       className={`fixed top-0 left-0 z-[1055] flex h-full w-full items-center justify-center bg-black bg-opacity-20`}
@@ -9,7 +9,7 @@ const ResultModal = ({ title, content, callbackFn }) => {
       }}
     >
       <div
-        className="relative bg-white shadow opacity-100 w-1/4 rounded-md px-6 min-w-[300px] flex flex-col items-center"
+        className="relative bg-white shadow dark:bg-gray-700 opacity-100 w-1/4 rounded-md px-6 min-w-[300px] flex flex-col items-center"
         onClick={(e) => e.stopPropagation()} // Prevent closing modal on inner click
       >
         <div className="w-full text-center bg-warming-400 mt-6 mb-6 pb-2 text-xl border-b-2 border-gray-500">
@@ -34,4 +34,5 @@ const ResultModal = ({ title, content, callbackFn }) => {
     </div>
   );
 };
-export default ResultModal;
+
+export default InfoModal;

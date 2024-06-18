@@ -30,7 +30,10 @@ public class LikeService {
 
     public LikeBuyDto read(Long buyNo, Long id) {
         Optional<LikeBuy> result = likeBuyRepository.findLike(buyNo,id);
-        LikeBuy likeBuy = result.orElseThrow();
+        LikeBuy likeBuy = result.orElse(null);
+        if(likeBuy == null){
+            return null;
+        }
         LikeBuyDto likeBuyDto = modelMapper.map(likeBuy, LikeBuyDto.class);
         return likeBuyDto;
     }

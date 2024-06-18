@@ -11,6 +11,6 @@ import com.mlp.lab.entity.like.LikeBuy;
 
 @Repository
 public interface LikeBuyRepository extends JpaRepository<LikeBuy, Long>{
-    @Query("select lb from LikeBuy lb where lb.buy=:buyNo and lb.user=:id")
+    @Query("select lb from LikeBuy lb where lb.buy.buyNo=:buyNo and lb.user.id=:id")
     Optional<LikeBuy> findLike(@Param("buyNo")Long buyNo, @Param("id") Long id);
 }

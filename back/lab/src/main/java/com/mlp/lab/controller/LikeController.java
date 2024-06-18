@@ -20,17 +20,17 @@ import lombok.RequiredArgsConstructor;
 public class LikeController {
     private final LikeService likeService;
 
-    @PostMapping("/buy")
+    @PostMapping("/buy") // 좋아요 +1
     public void likeBuy(@RequestBody LikeBuyDto likeBuyDto){
        likeService.addBuy(likeBuyDto);
     }
     
-    @DeleteMapping("/buy/{likeNo}")
+    @DeleteMapping("/buy/{likeNo}") // 좋아요 -1
     public void unlikeBuy(@PathVariable(name = "likeNo") long likeNo){
         likeService.deleteBuy(likeNo);
     }
 
-    @GetMapping("/buy")
+    @GetMapping("/buy") //좋아요 정보 조회
     public LikeBuyDto likeInfo(@RequestParam(value="buyNo") Long buyNo, @RequestParam(value="id") Long id){
         return likeService.read(buyNo,id);
    }
