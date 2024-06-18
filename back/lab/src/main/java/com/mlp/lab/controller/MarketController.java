@@ -54,7 +54,7 @@ public class MarketController {
     }
 
     @GetMapping("/display/{fileName}") // 목록조회
-    public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
+    public ResponseEntity<Resource> displayImage(@PathVariable(name="fileName") String fileName) {
         return fileUtil.getFile(fileName);
     }
 
@@ -99,4 +99,8 @@ public class MarketController {
         }
     }
 
+    @GetMapping("/latest")
+    public List<MarketDto> getLatestMarketList() {
+        return marketService.getLatestMarket();
+    }
 }

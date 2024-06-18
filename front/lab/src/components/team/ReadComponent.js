@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { getPartUsers, postAddPart, removePart } from '../../api/partApi';
 import { API_SERVER_HOST, deleteOne, getOne } from '../../api/teamApi';
+import { getUser } from '../../api/userApi';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import useCustomMove from '../../hooks/useCustomMove';
 import ModalComponent from '../common/ModalComponent';
-import ConfirmationModal from '../common/ConfirmationModal';
 import MapComponent from '../common/MapComponent';
 import iconNext from '../../resources/images/icon-next.png';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_full.png';
+import ResultModal from '../common/ResultModal';
 import PartComponent from './PartComponent';
+import Profile_Img from '../../resources/images/profile_img.png';
 
 const initState = {
   teamNo: 0,
@@ -25,13 +29,22 @@ const initState = {
   uploadFileNames: [],
 };
 
+const initUser = {
+  nickname: '',
+};
+
 const host = API_SERVER_HOST;
 
 const ReadComponent = ({ teamNo }) => {
   const [team, setTeam] = useState(initState);
+  const [user, setUser] = useState(initUser);
+  const [result, setResult] = useState(null);
+  const [part, setPart] = useState([]); // 참여 목록 상태 추가
+  const [addResultModal, setAddResultModal] = useState(null);
   const { moveToList, moveToModify } = useCustomMove();
   const loginInfo = useSelector((state) => state.loginSlice);
   const id = loginInfo?.email;
+  const ino = loginInfo.id;
 
   // 이미지 슬라이더
   const settings = {
@@ -47,14 +60,43 @@ const ReadComponent = ({ teamNo }) => {
 
   useEffect(() => {
     getOne(teamNo).then((data) => {
-      console.log(data);
       setTeam(data);
+    });
+  }, [teamNo]);
+
+  useEffect(() => {
+    getUser(ino).then((data) => {
+      fetchUserProfileImage(data.email);
+      setUser(data);
+    });
+  }, [ino]);
+
+  useEffect(() => {
+    getPartUsers(teamNo).then((data) => {
+      setPart(data);
     });
   }, [teamNo]);
 
   const [showModal, setShowModal] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+
+  const handleClickAdd = async () => {
+    try {
+      await postAddPart(user, teamNo); // 참여하기 요청 비동기 처리
+      setResult('참여목록에 등록되었습니다.');
+      // 참여 목록 갱신
+      const updatedPart = await getPartUsers(teamNo);
+      setPart(updatedPart);
+    } catch (error) {
+      console.error('참여 등록 실패:', error);
+      setResult('참여 등록에 실패했습니다.');
+    }
+  };
+
+  const closeModal = () => {
+    setResult(null);
+  };
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -64,19 +106,9 @@ const ReadComponent = ({ teamNo }) => {
     setShowModal(false);
   };
 
-  const handleDeleteClick = () => {
-    setModalMessage('삭제하시겠습니까?');
-    setShowConfirm(true);
-  };
-
-  const handleConfirm = () => {
+  const handleClickDelete = (e) => {
     deleteOne(teamNo);
-    setShowConfirm(false);
-    moveToList();
-  };
-
-  const handleCancel = () => {
-    setShowConfirm(false);
+    setResult('게시글이 삭제되었습니다');
   };
 
   //날짜 포맷 설정
@@ -101,6 +133,31 @@ const ReadComponent = ({ teamNo }) => {
       const month = padZero(deadlineDate.getMonth() + 1);
       const day = padZero(deadlineDate.getDate());
       return `${year}-${month}-${day} ${amPm} ${displayHours}:${minutes}까지`;
+    }
+  };
+
+  //프로필 사진 읽어오는 함수
+  const fetchUserProfileImage = async (email) => {
+    try {
+      const res = await axios.get(`http://localhost:8282/api/user/userProfileImage?email=${email}`, {
+        responseType: 'arraybuffer', // 바이너리 데이터로 응답받기
+      });
+
+      // 받은 바이너리 데이터 처리
+      const blob = new Blob([res.data], { type: 'image/png' });
+      const imageUrl = URL.createObjectURL(blob);
+      setUser((prev) => ({
+        ...prev, // 이전 상태를 복사해야 이미지 삭제하고 다시 변경했을 대 바로 적용됨
+        profileImage: imageUrl, // 이미지 데이터 추가
+      }));
+      console.log('프로필 사진 읽기 최종 성공');
+    } catch (error) {
+      console.error('프로필 이미지가 없습니다', error);
+      // 오류가 발생하면 대체 이미지를 사용하도록 설정
+      setUser((prev) => ({
+        ...prev,
+        profileImage: Profile_Img,
+      }));
     }
   };
 
@@ -143,7 +200,6 @@ const ReadComponent = ({ teamNo }) => {
               &ensp;{team.current} / {team.max}
             </span>
           </div>
-
           <div className="col-start-2 col-span-6 text-slate-700 text-2xl my-5">{team.title}</div>
           <div className="col-start-2 col-span-6 text-base">
             <img src={mapIcon} alt="..." className="w-5 inline" />
@@ -155,37 +211,57 @@ const ReadComponent = ({ teamNo }) => {
           <div className="col-start-2 col-span-8 h-80">
             <MapComponent location={team.location} />
           </div>
-          <div className="col-start-6 col-span-4 my-6">
-            <div className="flex">
-              {id === team.user_id ? (
-                <>
-                  <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/2 mr-2 hover:bg-red-500" onClick={() => moveToModify(teamNo)}>
+          {/* <div className="col-start-2 col-span-8 my-6">
+            <div className="flex justify-between space-x-4"> */}
+          {id === team.user_id ? (
+            <>
+              <div className="col-start-2 col-span-8 my-6">
+                <div className="flex justify-between space-x-4">
+                  {/* <div className="flex"> */}
+                  {/* <div className="flex mr-auto"> */}
+                  <button className="text-base text-white bg-orange-400 p-2 rounded-md w-1/4 mr-2 hover:bg-red-500" onClick={() => moveToModify(teamNo)}>
                     수정하기
                   </button>
-                  <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 mr-2 hover:bg-slate-500" onClick={handleDeleteClick}>
+                  <button className="text-base text-white bg-red-400 p-2 rounded-md w-1/4 mr-2 hover:bg-slate-500" onClick={handleClickDelete}>
                     삭제하기
                   </button>
-                  <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>
+                  {/* </div> */}
+
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/4 mr-2 hover:bg-blue-500" onClick={handleClickAdd}>
+                    참여하기
+                  </button>
+                  <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/4 hover:bg-slate-500" onClick={() => moveToList()}>
                     목록
                   </button>
-                </>
-              ) : (
-                <>
-                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500" onClick={handleOpenModal}>
+                  {/* </div> */}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="col-start-6 col-span-4 my-6">
+                <div className="flex justify-between space-x-4">
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500" onClick={handleClickAdd}>
                     참여하기
                   </button>
                   <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>
                     목록
                   </button>
-                </>
-              )}
-            </div>
-          </div>
+                </div>
+              </div>
+            </>
+          )}
+          {/* </div>
+          </div> */}
+          {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
+          {addResultModal && <ResultModal title={'알림'} content={`${addResultModal}`} callbackFn={() => setAddResultModal(null)} />}
 
           <ModalComponent show={showModal} onClose={handleCloseModal} />
-          <ConfirmationModal show={showConfirm} message={modalMessage} onConfirm={handleConfirm} onCancel={handleCancel} />
+          {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
         </div>
       </div>
+      {/* 참여인원 목록 컴포넌트 */}
+      <PartComponent teamNo={teamNo} part={part} /> {/* PartComponent에 참여 인원 전달 */}
     </>
   );
 };

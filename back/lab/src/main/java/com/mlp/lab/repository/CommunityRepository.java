@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
+import org.springframework.data.repository.query.Param;
 
 import com.mlp.lab.entity.Community;
 
@@ -17,45 +17,45 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
     Page<Community> tipList(Pageable pageable);
 
     @Query("select c from Community c where c.type = '1' and c.title like %:title%")
-    Page<Community> tipSearchList(Pageable pageable, String title);
+    Page<Community> tipSearchList(Pageable pageable,@Param(value="title") String title);
 
     @Query("select c from Community c where c.type = '1' and c.commCategory = :category")
-    Page<Community> tipSelectList(Pageable pageable, Character category);
+    Page<Community> tipSelectList(Pageable pageable,@Param(value="category") Character category);
 
     @Query("select c from Community c where c.type = '1' and c.commCategory = :category and c.title like %:title% ")
-    Page<Community> tipSearchSelectList(Pageable pageable, String title, Character category);
+    Page<Community> tipSearchSelectList(Pageable pageable,@Param(value="title") String title, @Param(value="category") Character category);
 
     @Query("select c from Community c where c.type = '2'")
     Page<Community> qnaList(Pageable pageable);
 
     @Query("select c from Community c where c.type = '2' and c.title like %:title%")
-    Page<Community> qnaSearchList(Pageable pageable, String title);
+    Page<Community> qnaSearchList(Pageable pageable,@Param(value="title") String title);
 
     @Query("select c from Community c where c.type = '2' and c.commCategory = :category")
-    Page<Community> qnaSelectList(Pageable pageable, Character category);
+    Page<Community> qnaSelectList(Pageable pageable,@Param(value="category") Character category);
 
     @Query("select c from Community c where c.type = '2' and c.commCategory = :category and c.title like %:title%")
-    Page<Community> qnaSearchSelectList(Pageable pageable, String title, Character category);
+    Page<Community> qnaSearchSelectList(Pageable pageable,@Param(value="title") String title,@Param(value="category") Character category);
 
     @Query("select c from Community c where c.type = '3'")
     Page<Community> reviewList(Pageable pageable);
 
     @Query("select c from Community c where c.type = '3' and c.title like %:title%")
-    Page<Community> reviewSearchList(Pageable pageable, String title);
+    Page<Community> reviewSearchList(Pageable pageable,@Param(value="title") String title);
 
     @Query("select c from Community c where c.type = '3' and c.commCategory = :category")
-    Page<Community> reviewSelectList(Pageable pageable, Character category);
+    Page<Community> reviewSelectList(Pageable pageable,@Param(value="category") Character category);
 
     @Query("select c from Community c where c.type = '3' and c.commCategory = :category and c.title like %:title%")
-    Page<Community> reviewSearchSelectList(Pageable pageable, String title, Character category);
+    Page<Community> reviewSearchSelectList(Pageable pageable,@Param(value="title") String title,@Param(value="category") Character category);
 
     @Query("select c from Community c where c.type = '4'")
     Page<Community> selectHelpList(Pageable pageable);
 
     @Query("select c from Community c where c.type = '4' and c.title like %:title%")
-    Page<Community> helpSearchList(Pageable pageable, String title);
+    Page<Community> helpSearchList(Pageable pageable,@Param(value="title") String title);
 
     @Query("select c from Community c order by c.createdDate desc")
-    List<Community> latestList();
+    List<Community> latestCommList();
 }
 

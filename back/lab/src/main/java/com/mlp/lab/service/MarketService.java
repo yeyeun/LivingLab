@@ -26,7 +26,7 @@ public class MarketService {
     private final MarketRepository marketRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<MarketDto> list(PageRequestDto pageRequestDto, String search, String sort){
+    public PageResponseDto<MarketDto> list(PageRequestDto pageRequestDto, String search, String sort) {
         Pageable pageable = PageRequest.of(
             pageRequestDto.getPage()-1,
             pageRequestDto.getSize(),
@@ -219,10 +219,10 @@ public class MarketService {
             
         long totalCount = result.getTotalElements();
         PageResponseDto<MarketDto> responseDTO = PageResponseDto.<MarketDto>withAll()
-            .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
-            .totalCount(totalCount)
-            .build();
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
         return responseDTO;
     }
 
@@ -264,5 +264,36 @@ public class MarketService {
             });
         }
         marketRepository.save(market);
+    }
+
+    // 메인에 표기할 최신순
+    public List<MarketDto> getLatestMarket() {
+        Pageable pageable = PageRequest.of(0, 8, Sort.by("marketNo").descending());
+        Page<Object[]> result = null;
+
+        result = marketRepository.latestMarketList(pageable);
+
+        List<MarketDto> dtoList = result.getContent().stream().map(arr -> {
+            Market market = (Market) arr[0];
+            MarketImage marketImage = (MarketImage) arr[1];
+
+            MarketDto marketDto = MarketDto.builder()
+                    .marketNo(market.getMarketNo())
+                    .title(market.getTitle())
+                    .marketCategory(market.getMarketCategory())
+                    .location(market.getLocation())
+                    .max(market.getMax())
+                    .current(market.getCurrent())
+                    .deadline(market.getDeadline())
+                    .nickname(market.getNickname())
+                    .content(market.getContent())
+                    .build();
+
+            String imageStr = marketImage.getFileName();
+            marketDto.setUploadFileNames(List.of(imageStr));
+            return marketDto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
     }
 }

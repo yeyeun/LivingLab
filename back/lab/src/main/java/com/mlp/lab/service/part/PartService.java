@@ -16,7 +16,7 @@ import java.util.List;
 public interface PartService {
 
   // 참여목록에 회원 추가
-  List<PartUserListDto> add(PartUserDto partUserDto);
+  List<PartUserListDto> add(PartUserDto partUserDto, Long teamNo);
 
   // 모든 참여회원 목록
   List<PartUserListDto> getPartUsers(Long teamNo);

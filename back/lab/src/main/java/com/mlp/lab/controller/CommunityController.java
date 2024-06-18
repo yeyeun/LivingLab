@@ -67,7 +67,7 @@ public class CommunityController {
     // 사진조회
     @GetMapping(value = { "/tip/display/{fileName}", "/qna/display/{fileName}", "/review/display/{fileName}",
             "/help/display/{fileName}" })
-    public ResponseEntity<Resource> displayImage(@PathVariable String fileName) {
+    public ResponseEntity<Resource> displayImage(@PathVariable(name="fileName") String fileName) {
         return fileUtil.getFile(fileName);
     }
 
@@ -139,7 +139,7 @@ public class CommunityController {
 
     // 메인페이지 커뮤니티 최신 글
     @GetMapping("/latest")
-    public List<CommunityDto> getLatestPosts() {
-        return communityService.getLatestPosts();
+    public List<CommunityDto> getLatestCommList() {
+        return communityService.getLatestComm();
     }
 }
