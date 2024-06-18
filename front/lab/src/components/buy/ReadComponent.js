@@ -226,7 +226,6 @@ const ReadComponent = ({ buyNo }) => {
         <div className="grid grid-cols-10 w-full mx-auto mt-4 mb-1 text-xl bg-white">
           <div className="col-start-9 col-span-2 ml-5 mt-4 text-right flex justify-center">
             <img src={email && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
-            {buy.buyHit}
           </div>
           <div className="col-start-3 col-span-6 h-72 mt-3 mb-10">
             {buy.uploadFileNames.length > 0 ? (
