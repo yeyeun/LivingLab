@@ -105,23 +105,23 @@ function LoginComponent(props) {
           </div>
         </div>
 
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
             <div className="w-full flex justify-center font-bold">
               <button className="rounded p-2 w-full bg-gray-300 text-xl text-white">Google</button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <KakaoLoginComponent />
 
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
             <div className="w-full flex justify-center font-bold">
               <button className="rounded p-2 w-full bg-green-400 text-xl text-white">Naver</button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full justify-center">
