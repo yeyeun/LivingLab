@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,8 +70,9 @@ public class UserController {
         return user; // // 로그인 정보 그대로 다 준다
     }
 
-    @PostMapping("/join")
-    public ResponseDto<Object> join(@RequestParam("files") List<MultipartFile> files, @ModelAttribute UserDto userDto) {
+    @PostMapping("/join")   //파일은 RequestBody로 받을 수 없음
+    public ResponseDto<Object> join(@RequestPart("user") UserDto userDto,
+        @RequestPart("files") List<MultipartFile> files) {
         if (userService.findByEmail(userDto.getEmail()) != null) {
             return ResponseDto.setFailed("이미 존재하는 아이디입니다.");
         }

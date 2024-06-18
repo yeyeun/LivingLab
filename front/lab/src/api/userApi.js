@@ -17,15 +17,21 @@ export const loginPost = async (loginParam) => {
   return res.data;
 };
 
-// 회원가입
+// 회원가입(FormData 객체를 사용하여 파일과 JSON 데이터를 분리하여 전송)
 export const joinUser = async (joinParam) => {
   const formData = new FormData();
-  formData.append('email', joinParam.email);
-  formData.append('pwd', joinParam.pwd);
-  formData.append('phone', joinParam.phone);
-  formData.append('nickname', joinParam.nickname);
-  formData.append('addr', joinParam.addr);
-  formData.append('detailAddr', joinParam.detailAddr);
+  formData.append('user', new Blob([JSON.stringify({
+    email: joinParam.email,
+    pwd: joinParam.pwd,
+    name: joinParam.name,
+    phone: joinParam.phone,
+    nickname: joinParam.nickname,
+    addr: joinParam.addr,
+    detailAddr: joinParam.detailAddr,
+    location: joinParam.location,
+    message: joinParam.message,
+  })], { type: "application/json" }));
+
   for (let i = 0; i < joinParam.files.length; i++) {
     formData.append('files', joinParam.files[i]);
   }
