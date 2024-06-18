@@ -14,9 +14,12 @@ public class PartUserListDto {
 
   private String email;
 
-  public PartUserListDto(Long pino, String nickname, String email) {
+  private String profileImage;
+
+  public PartUserListDto(Long pino, String nickname, String email, String profileImage) {
     this.pino = pino;
     this.nickname = nickname;
     this.email = email;
+    this.profileImage = profileImage;
   }
 }

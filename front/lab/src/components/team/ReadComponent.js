@@ -31,6 +31,7 @@ const initState = {
 
 const initUser = {
   nickname: '',
+  profileImage: '',
 };
 
 const host = API_SERVER_HOST;

@@ -9,12 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
 import com.mlp.lab.entity.User;
+import com.mlp.lab.entity.part.Part;
+import com.mlp.lab.entity.part.PartUser;
 import com.mlp.lab.dto.PartUserListDto;
-import com.mlp.lab.entity.Part;
-import com.mlp.lab.entity.PartUser;
 import com.mlp.lab.entity.Team;
-import com.mlp.lab.repository.PartRepository;
-import com.mlp.lab.repository.PartUserRepository;
+import com.mlp.lab.repository.part.PartRepository;
+import com.mlp.lab.repository.part.PartUserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
