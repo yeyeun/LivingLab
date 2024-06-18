@@ -301,5 +301,18 @@ public class BuyService {
         return dtoList;
     }
     
+    public void increase(Long buyNo) { // 좋아요 +1
+        Optional<Buy> result = buyRepository.findById(buyNo.intValue());
+        Buy buy = result.orElseThrow();
+        buy.setBuyHit(buy.getBuyHit()+1);
+        buyRepository.save(buy);
+    }
+
+    public void decrease(Long buyNo) { // 좋아요 -1
+        Optional<Buy> result = buyRepository.findById(buyNo.intValue());
+        Buy buy = result.orElseThrow();
+        buy.setBuyHit(buy.getBuyHit()-1);
+        buyRepository.save(buy);
+    }
 
 }
