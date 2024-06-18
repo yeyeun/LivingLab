@@ -6,11 +6,30 @@ const MapComponent = ({ searchPlace }) => {
   // 검색결과 배열에 담아줌
   const [Places, setPlaces] = useState([]);
 
+  const [address, setAddress] = useState(''); // 현재 좌표의 주소를 저장할 상태
+  const [location, setLocation] = useState(''); // 현재 위치를 저장할 상태
+
+  const successHandler = (response) => {
+    //console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
+    const { latitude, longitude } = response.coords;
+    setLocation({ latitude, longitude });
+  };
+
+  const errorHandler = (error) => {
+    console.log(error);
+  };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
+  });
+
   useEffect(() => {
     var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
     const container = document.getElementById('myMap');
+
     const options = {
-      center: new kakao.maps.LatLng(35.8121472, 128.6176768),
+      center: new kakao.maps.LatLng(location.latitude, location.longitude), // 현재 나의 실시간 좌표
+      // center: new kakao.maps.LatLng(35.8121472, 128.6176768),
       level: 3,
     };
     const map = new kakao.maps.Map(container, options);

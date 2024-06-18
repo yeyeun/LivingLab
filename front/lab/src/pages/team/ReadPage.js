@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
 import ReadComponent from '../../components/team/ReadComponent';
-import PartComponent from '../../components/team/PartComponent';
 
 const ReadPage = () => {
   const { teamNo } = useParams();
