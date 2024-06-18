@@ -11,6 +11,8 @@ import com.mlp.lab.entity.Buy;
 
 //Buy Entity의 기본키(PK) 타입인 Integer를 인자로 전달
 public interface BuyRepository extends JpaRepository<Buy, Integer> {
+    Buy findBuyByBuyNo(@Param(value = "buyNo")Long buyNo);
+
     @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL)")
     Page<Object[]> selectList(Pageable pageable);
 
