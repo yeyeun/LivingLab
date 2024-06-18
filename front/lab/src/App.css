@@ -60,7 +60,7 @@
 
 .main-slide-container {
   position: relative;
-  width: 800px;
+  width: 650px;
   height: auto;
   margin: 20px auto;
 }
@@ -74,6 +74,11 @@
 
 .slider .slick-list {
   margin: 0 -20px;
+}
+
+.weather-container {
+  width: 500px;
+  height: 100%;
 }
 
 .latestPost-container {
@@ -118,25 +123,21 @@
   font-size: 20px;
   border-radius: 24px;  
   padding: 2px 10px;
-  background-color: #ffffff; /* bg-neutral-100 */
-  border-color: #d4d4d4; /* border-neutral-300 */
+  background-color: #ffffff; 
+  border-color: #d4d4d4; 
 }
 
 .list-tagbtn:hover {
-  filter: brightness(0.85); /* 밝기 85%로 조정 */
-
-
+  filter: brightness(0.85);
 }
 
 .tag-btn-active {
-  background-color: #bfdbfe; /* bg-blue-100 */
-  border-color: #6094cf; /* border-blue-300 */
-
+  background-color: #bfdbfe;
+  border-color: #6094cf;
 }
 
 .tag-btn-active:hover {
-  filter: brightness(0.85); /* 밝기 85%로 조정 */
-
+  filter: brightness(0.85);
 }
 
 .main-container {
