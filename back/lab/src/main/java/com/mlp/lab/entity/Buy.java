@@ -58,7 +58,7 @@ public class Buy extends BaseTimeEntity{
     private String location;
 
     @Column(name = "buy_hit")
-    private Character buyHit;
+    private Integer buyHit;
 
     @Column(name = "nickname")
     private String nickname;
