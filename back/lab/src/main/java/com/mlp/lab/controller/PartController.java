@@ -30,7 +30,21 @@ public class PartController {
 
   private final PartService partService;
 
-  @PostMapping("/add")
+  @PostMapping("/buy/add")
+  public List<PartUserListDto> addBuyPart(@RequestBody PartUserDto partUserDto,
+      @RequestParam(name = "buyNo") Long buyNo) {
+    log.info(partUserDto);
+    log.info(buyNo);
+    return partService.addBuy(partUserDto, buyNo);
+  }
+
+  @GetMapping("/users/buy/{buyNo}")
+  public List<PartUserListDto> getPartBuyUsers(@PathVariable(name = "buyNo") Long buyNo) {
+
+    return partService.getBuyPartUsers(buyNo);
+  }
+
+  @PostMapping("/team/add")
   public List<PartUserListDto> addPart(@RequestBody PartUserDto partUserDto,
       @RequestParam(name = "teamNo") Long teamNo) {
     log.info(partUserDto);

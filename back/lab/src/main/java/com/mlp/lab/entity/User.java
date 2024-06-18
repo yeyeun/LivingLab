@@ -31,7 +31,7 @@ import lombok.ToString;
 @Table(name = "user") // db 테이블명과 맞춰야함
 @ToString(exclude = "userRoleList")
 public class User {
-    @Id //기본키(PK) 설정
+    @Id // 기본키(PK) 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
@@ -57,6 +57,8 @@ public class User {
 
     @Column(name = "nickname")
     private String nickname;
+
+    @Column(name = "profile_image")
     private String profileImage;
 
     // static으로 만들어 클래스를 만들지 않아도 사용가능

@@ -1,4 +1,6 @@
-package com.mlp.lab.entity;
+package com.mlp.lab.entity.part;
+
+import com.mlp.lab.entity.Team;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString(exclude = "teamNo")
-@Table(name = "part", indexes = { @Index(name = "idx_team_teamNo", columnList = "team_teamNo") })
+@Table(name = "team_part", indexes = { @Index(name = "idx_team_teamNo", columnList = "team_teamNo") })
 // 동네모임 참여목록 테이블
 public class Part {
 
@@ -20,5 +22,6 @@ public class Part {
   @OneToOne
   @JoinColumn(name = "team_teamNo") // team_no
   private Team team; // 동네모임 테이블과 조인 (게시물 번호)
+
 }
 // 참가인원 목록

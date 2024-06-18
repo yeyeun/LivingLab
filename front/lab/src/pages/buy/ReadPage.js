@@ -4,7 +4,7 @@ import ReadComponent from '../../components/buy/ReadComponent';
 const ReadPage = () => {
   const { buyNo } = useParams();
   return (
-    <div>
+    <div className="flex justify-center">
       <ReadComponent buyNo={buyNo} />
     </div>
   );
