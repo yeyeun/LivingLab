@@ -27,9 +27,6 @@ import lombok.RequiredArgsConstructor;
 public class BuyService {
     private final BuyRepository buyRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort){
         Pageable pageable = PageRequest.of(
