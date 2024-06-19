@@ -87,15 +87,39 @@ const AddComponent = () => {
   };
 
   const handleClickAdd = (e) => {
-    if (!shareRoom.title || !shareRoom.content) {
-      setAddResultModal('제목과 내용을 입력해주세요');
-      return;
-    }
-
     const files = imgRef.current.files;
     const formData = new FormData();
     const daysBetween = calculateDaysBetweenDates(shareRoom.rentStartDate, shareRoom.rentEndDate);
     const averFee = shareRoom.rentFee / daysBetween;
+
+    if (!shareRoom.title || !shareRoom.content) {
+      setAddResultModal('제목과 내용을 입력해주세요');
+      return;
+    }
+    if (!shareRoom.rentFee) {
+      setAddResultModal('금액을 입력해 주세요');
+      return;
+    }
+    if (!shareRoom.option1) {
+      setAddResultModal('옵션을 입력해 주세요');
+      return;
+    }
+    if (!shareRoom.parking) {
+      setAddResultModal('주차 가능여부를 선택해 주세요');
+      return;
+    }
+    if (!shareRoom.rentStartDate || !shareRoom.rentEndDate) {
+      setAddResultModal('시작일과 종료일을 입력해 주세요');
+      return;
+    }
+    if (!shareRoom.location) {
+      setAddResultModal('주소를 입력해주세요');
+      return;
+    }
+    if (!files[0]) {
+      setAddResultModal('사진을 등록해주세요');
+      return;
+    }
 
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i]);
