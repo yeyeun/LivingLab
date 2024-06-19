@@ -36,10 +36,10 @@ public class Buy extends BaseTimeEntity{
     @Column(name = "buy_no")
     private Long buyNo;
 
-    @Column(name = "title", nullable = false, length = 255)
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 500)
     private String content;
 
     @Column(name = "deadline")
@@ -100,7 +100,6 @@ public class Buy extends BaseTimeEntity{
         uploadFileNames.stream().forEach(uploadName -> {
             buy.addImageString(uploadName);
         });
-
         return buy;
     }
 
