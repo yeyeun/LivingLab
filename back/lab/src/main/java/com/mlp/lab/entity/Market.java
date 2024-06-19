@@ -36,12 +36,11 @@ public class Market extends BaseTimeEntity{
     private String content;
     private String deadline;
     private Character marketCategory;
-    private Integer max;
-    private Integer current;
     private String location;
     private Integer marketHit;
     private String nickname;
     private boolean flag; // true: 마감 / false:모집중
+    private Integer price;
 
     @ElementCollection
     @Builder.Default

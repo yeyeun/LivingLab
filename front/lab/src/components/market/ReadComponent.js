@@ -133,15 +133,12 @@ const ReadComponent = ({ marketNo }) => {
                     {market.marketCategory === '4' && '나눔'}
                     {market.marketCategory === '5' && '기타'}
                   </span>
-                  <span className="text-base rounded-3xl text-slate-700 text-center py-1 px-3 bg-neutral-100 border-neutral-300 border">
-                    <img src={userIcon} alt="..." className="w-3 inline mb-1" />&ensp;{market.current} / {market.max}
-                  </span>
                 </div>
-
                 <div className="col-start-2 col-span-6 text-slate-700 text-2xl my-5">
                   {market.title}
                 </div>
-                <div className="col-start-2 col-span-6 text-base">
+                <div className="col-start-2 col-span-8 text-base">
+                  <span>{market.price}원 / </span>
                   <img src={mapIcon} alt="..." className="w-5 inline" />&ensp;{market.location}
                 </div>
                 <div className="col-start-2 col-span-8"></div>

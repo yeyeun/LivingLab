@@ -71,8 +71,8 @@ public class MarketService {
 
             MarketDto marketDto = MarketDto.builder()
                     .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
-                    .location(market.getLocation()).max(market.getMax()).current(market.getCurrent())
-                    .deadline(market.getDeadline()).nickname(market.getNickname()).marketHit(market.getMarketHit()).build();
+                    .location(market.getLocation()).deadline(market.getDeadline()).nickname(market.getNickname())
+                    .marketHit(market.getMarketHit()).price(market.getPrice()).build();
             
             if(marketImage != null){
                 String imageStr = marketImage.getFileName();
@@ -107,8 +107,7 @@ public class MarketService {
 
             MarketDto marketDto = MarketDto.builder()
                     .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
-                    .location(market.getLocation()).max(market.getMax()).current(market.getCurrent())
-                    .deadline(market.getDeadline()).nickname(market.getNickname()).build();
+                    .location(market.getLocation()).deadline(market.getDeadline()).nickname(market.getNickname()).price(market.getPrice()).marketHit(market.getMarketHit()).build();
 
             if(marketImage != null){
                 String imageStr = marketImage.getFileName();
@@ -156,8 +155,8 @@ public class MarketService {
             
             MarketDto marketDto = MarketDto.builder()
                     .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
-                    .location(market.getLocation()).max(market.getMax()).current(market.getCurrent())
-                    .deadline(market.getDeadline()).nickname(market.getNickname()).build();
+                    .location(market.getLocation()).deadline(market.getDeadline()).nickname(market.getNickname())
+                    .marketHit(market.getMarketHit()).price(market.getPrice()).build();
 
             if(marketImage != null){
                 String imageStr = marketImage.getFileName();
@@ -205,8 +204,8 @@ public class MarketService {
 
             MarketDto marketDto = MarketDto.builder()
                     .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
-                    .location(market.getLocation()).max(market.getMax()).current(market.getCurrent())
-                    .deadline(market.getDeadline()).nickname(market.getNickname()).build();
+                    .location(market.getLocation()).deadline(market.getDeadline()).nickname(market.getNickname())
+                    .marketHit(market.getMarketHit()).price(market.getPrice()).build();
 
             if(marketImage != null){
                 String imageStr = marketImage.getFileName();
@@ -282,11 +281,11 @@ public class MarketService {
                     .title(market.getTitle())
                     .marketCategory(market.getMarketCategory())
                     .location(market.getLocation())
-                    .max(market.getMax())
-                    .current(market.getCurrent())
                     .deadline(market.getDeadline())
                     .nickname(market.getNickname())
                     .content(market.getContent())
+                    .marketHit(market.getMarketHit())
+                    .price(market.getPrice())
                     .build();
 
             String imageStr = marketImage.getFileName();
