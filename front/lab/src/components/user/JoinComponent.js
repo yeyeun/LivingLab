@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import imgLogo2 from '../../resources/images/logo2.png';
-import Post from '../common/PostComponent';
+import PostComponent from '../common/PostComponent';
 import { joinUser } from '../../api/userApi';
 import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 
@@ -21,7 +21,7 @@ const initState = {
 function JoinComponent(props) {
   const [joinParam, setJoinParam] = useState({ ...initState });
 
-  //주소 찾기 팝업 추가 - 정운
+  //주소 찾기 팝업 추가
   const [address, setAddress] = React.useState('');
   const [popup, setPopup] = React.useState(false);
 
@@ -32,6 +32,15 @@ function JoinComponent(props) {
     joinParam[e.target.name] = e.target.value;
 
     setJoinParam({ ...joinParam });
+  };
+
+  // addr(팝업 검색주소)만 따로 상태변경
+  const handleAddrChange = (newAddr) => {
+    setAddress(newAddr);
+    setJoinParam({
+      ...joinParam,
+      addr: newAddr,
+    });
   };
 
   const handleFileChange = (e) => {
@@ -51,7 +60,7 @@ function JoinComponent(props) {
 
     try {
       const response = await joinUser(joinParam); // joinUser API 호출
-      if (response.result==true) {
+      if (response.result === true) {
         alert('회원가입이 완료되었습니다.');
         navigate('/');
       } else {
@@ -156,41 +165,37 @@ function JoinComponent(props) {
             ></input>
           </div>
         </div>
-        
+
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-full p-3 text-left font-bold">주소</div>
-            <button
-              className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
-              onClick={() => {
-                setPopup(!popup);
-              }}
-            >
-              🔍︎ 주소 검색
-            </button>
-            {popup && <Post address={address} setAddress={setAddress}></Post>}
+            <div className="w-44">
+              <PostComponent setAddress={handleAddrChange}></PostComponent>
+            </div>
             <input
-              className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
+              className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
               name="addr"
               type={'text'}
-              placeholder="주소"
-              required={true}
-              value={address}
+              placeholder="주소(우편번호 및 도로명 검색)"
+              value={joinParam.addr}
+              readOnly
+            />
+
+            <input
+              className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
+              name="detailAddr"
+              type={'text'}
+              placeholder="상세주소"
+              value={joinParam.detailAddr}
+              onChange={handleChange}
             ></input>
-            <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input>
           </div>
         </div>
 
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-full p-3 text-left font-bold">프로필 이미지</div>
-            <input
-              className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="files"
-              type="file"
-              multiple
-              onChange={handleFileChange}
-            />
+            <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="files" type="file" multiple onChange={handleFileChange} />
           </div>
         </div>
 

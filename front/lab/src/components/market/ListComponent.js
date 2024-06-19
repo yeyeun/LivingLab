@@ -124,9 +124,6 @@ const ListComponent = ({ search, sort }) => {
                     {market.marketCategory === '3' && '교환'}
                     {market.marketCategory === '4' && '나눔'}
                   </span>
-                  <div className="bg-white text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl border border-gray-900 dark:bg-gray-700 dark:text-gray-300">
-                    <img src={userIcon} alt="..." className="w-3 inline" />&ensp;{market.current} / {market.max}
-                  </div>
                   <div className="text-gray-800 text-sm font-medium ml-auto">
                     <img src={heart} alt="..." className="w-4 inline" />&ensp;{market.marketHit}
                   </div>
