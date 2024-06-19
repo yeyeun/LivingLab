@@ -27,9 +27,9 @@ const IndexPage = () => {
   return (
     <div>
       <BasicLayout>
-        <div className="text-xl flex-grow">
-          <div className="min-h-screen flex flex-row bg-slate-100">
-            <div className="flex flex-col w-80 bg-white shadow-md overflow-hidden">
+        <div className="text-xl flex-grow bg-slate-100 py-8">
+          <div className="min-h-screen flex flex-row bg-white w-2/3 mx-auto">
+            <div className="flex flex-col w-80 bg-white shadow-lg overflow-hidden">
               <ul className="flex flex-col py-4 mt-8">
                 <li>
                   <div

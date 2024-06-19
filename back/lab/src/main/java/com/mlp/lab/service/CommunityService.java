@@ -213,7 +213,8 @@ public class CommunityService {
     public CommunityDto read(int commNo) { // 커뮤니티 특정 게시글 조회
         Optional<Community> result = communityRepository.findById(commNo);
         Community community = result.orElseThrow();
-        CommunityDto communityDto = community.entityToDto(community);
+        CommunityDto communityDto = Community.entityToDto(community);
+        communityDto.setRegDate(community.getCreatedDate());
         return communityDto;
     }
 
