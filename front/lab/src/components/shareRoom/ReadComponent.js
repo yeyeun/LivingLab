@@ -7,7 +7,6 @@ import heartEmpty from '../../resources/images/heart_empty.png';
 
 const host = API_SERVER_HOST;
 
-Modal.setAppElement('#root');
 
 const initState = {
   roomNo: 0,
