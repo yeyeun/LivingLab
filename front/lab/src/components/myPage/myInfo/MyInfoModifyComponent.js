@@ -44,12 +44,6 @@ const MyInfoModifyComponent = ({ id }) => {
     user[e.target.name] = e.target.value;
     setUser({ ...user });
   };
-  // const handleChange = (e) => {
-  //   setUser({
-  //     ...user,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
 
   // addr(팝업 검색주소)만 따로 상태변경
   const handleAddrChange = (newAddr) => {

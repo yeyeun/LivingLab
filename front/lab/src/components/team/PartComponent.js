@@ -5,11 +5,7 @@ import { API_SERVER_HOST, deleteOne, getOne } from '../../api/teamApi';
 import { getPartUsers, postAddPart, removePart } from '../../api/partApi';
 import useCustomLogin from './../../hooks/useCustomLogin';
 import ModalComponent from '../common/ModalComponent';
-
-const initState = {
-  teamNo: 0,
-  nickname: '',
-};
+import Profile_Img from '../../resources/images/profile_img.png';
 
 const PartComponent = ({ part }) => {
   // const { isLogin, loginState } = useCustomLogin();
@@ -52,7 +48,10 @@ const PartComponent = ({ part }) => {
           <div>
             {displayPart.map((partUser) => (
               <div key={partUser.pino}>
-                <div className="p-4">{partUser.nickname}</div>
+                <div className="flex p-5">
+                  <img alt="Profile_Img" src={`http://localhost:8282/api/user/userProfileImage?email=${partUser.email}`} className="rounded-full size-10 mr-2" />
+                  {partUser.nickname}
+                </div>
               </div>
             ))}
           </div>
