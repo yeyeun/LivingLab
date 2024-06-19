@@ -218,8 +218,6 @@ const ReadComponent = ({ buyNo }) => {
   return (
     <>
       <div className="bg-slate-100 w-2/5 ml-auto p-4 rounded-lg">
-        <div>ino값은:{ino}</div>
-        <div>buy.id값은:{buy.id}</div>
         <div className="flex justify-between items-center">
           <span className="text-left font-semibold ml-2 items-center flex">
             {buy.flag ? '모집 마감' : '모집 중'}

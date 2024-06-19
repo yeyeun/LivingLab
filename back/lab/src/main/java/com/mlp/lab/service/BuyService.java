@@ -19,6 +19,7 @@ import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.BuyImage;
 import com.mlp.lab.repository.BuyRepository;
+import com.mlp.lab.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BuyService {
     private final BuyRepository buyRepository;
+    private final UserRepository userRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort){
@@ -230,6 +232,7 @@ public class BuyService {
 
     public void add(BuyDto buyDto) { // 공동구매 등록(이미지 포함)
         Buy buy = Buy.DtoToEntity(buyDto);
+        buy.setUser(userRepository.findByUserId(buyDto.getId()));   //화면에서 받아온 Buy를 작성한 user id값으로 어떤 유저인지 찾아서 알려줌
         buyRepository.save(buy);
     }
 
