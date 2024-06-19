@@ -31,7 +31,6 @@ import com.mlp.lab.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-//커밋 테스트!!!
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -44,16 +43,6 @@ public class UserController {
     private final MailService mailService;
     private final CustomFileUtil fileUtil;
 
-    // @PostMapping("/login")
-    // public ResponseDto<Object> login(@RequestBody LoginDto loginDto) {
-    // User user = userService.findByEmail(loginDto.getEmail());
-    // if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
-    // return ResponseDto.setFailed("아이디와 비밀번호를 확인해주세요.");
-    // }
-    // return ResponseDto.setSuccessData("환영합니다 " + loginDto.getEmail() + " 님",
-    // user); // ResponseDto에 메세지와 데이터를 담아서 화면(리액트)로 전달
-    // }
-
     @PostMapping("/login")
     @ResponseBody
     public User login(@RequestBody LoginDto loginDto) {
@@ -61,22 +50,15 @@ public class UserController {
         if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
             return null;
         }
-        // User responseUser = new User();
-        // responseUser.setId(user.getId()); //아이디
-        // responseUser.setEmail(user.getEmail());
-        // responseUser.setAddr(user.getAddr());
-        // responseUser.setDetailAddr(user.getDetailAddr());
-        // responseUser.setNickname(user.getNickname());
         return user; // // 로그인 정보 그대로 다 준다
     }
 
     @PostMapping("/join")   //파일은 RequestBody로 받을 수 없음
-    public ResponseDto<Object> join(@RequestPart("user") UserDto userDto,
-        @RequestPart("files") List<MultipartFile> files) {
+    public ResponseDto<Object> join(UserDto userDto) {
         if (userService.findByEmail(userDto.getEmail()) != null) {
             return ResponseDto.setFailed("이미 존재하는 아이디입니다.");
         }
-        List<String> uploadFileNames = fileUtil.saveFiles(files);
+        List<String> uploadFileNames = fileUtil.saveFiles(userDto.getFiles());
         userDto.setUploadFileNames(uploadFileNames);
         userService.add(userDto);
 
