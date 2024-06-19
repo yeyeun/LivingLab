@@ -27,12 +27,11 @@ public class MarketDto { // 동네장터 화면에서 받을 데이터
     private LocalDateTime regDate;
     private String deadline;
     private Character marketCategory;
-    private Integer max;
-    private Integer current;
     private String location;
     private Integer marketHit;
     private String nickname;
     private boolean flag; // true:마감 / false:모집중
+    private Integer price;
 
     @Builder.Default
     private List<MultipartFile> files = new ArrayList<>(); // 서버에 저장되는 실제 파일 데이터
