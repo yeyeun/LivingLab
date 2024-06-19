@@ -37,8 +37,9 @@ public class ShareRoomController {
 
     @GetMapping("/list")
     public RoomPageResponseDto<ShareRoomDto> List(RoomPageRequestDto roomPageRequestDto,
-     @RequestParam(required = false, value = "search") String search){
-        return shareRoomService.list(roomPageRequestDto,search);
+    @RequestParam(required = false, value = "search") String search,
+    @RequestParam(required = false, value = "sort") String sort) {
+        return shareRoomService.list(roomPageRequestDto,search,sort);
     }
 
     @DeleteMapping("/{roomNo}")

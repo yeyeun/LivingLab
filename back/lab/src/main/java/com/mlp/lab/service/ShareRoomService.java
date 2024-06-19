@@ -27,19 +27,37 @@ public class ShareRoomService {
     private final ModelMapper modelMapper;
     private final ShareRoomRepository shareRoomRepository;
 
-    public RoomPageResponseDto<ShareRoomDto> list(RoomPageRequestDto roomPageRequestDto,String search) {
+    public RoomPageResponseDto<ShareRoomDto> list(RoomPageRequestDto roomPageRequestDto,String search, String sort) {
+
         Pageable pageable = PageRequest.of(
                 roomPageRequestDto.getPage() - 1,
                 roomPageRequestDto.getSize(),
                 Sort.by("roomNo").descending());
 
-        // Page<Object[]> result = shareRoomRepository.selectList(pageable);
         Page<Object[]> result = null;
-        if (search == null || search.isEmpty()){ // 페이지 클릭 시
+
+
+        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시 serch null / sort null
             result = shareRoomRepository.selectList(pageable);
-        } else if (search != null && !search.isEmpty()) { // 검색
+        } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색만 serch not null / sort null
             result = shareRoomRepository.selectSearchList(search, pageable);
+        } else if ((sort != null && !sort.isEmpty()) && (search == null || search.isEmpty())) { // 정렬만 serch null / sort not null
+            if(sort.equals("최신순")){
+                result = shareRoomRepository.newList(pageable);
+            }
+            if(sort.equals("낮은가격순")){
+                result = shareRoomRepository.lowPriceList(pageable);
+            }
+        } else if (search != null && sort != null) { // 검색&&정렬 둘다 serch not null / sort not null
+            if(sort.equals("최신순")){
+                result = shareRoomRepository.searchNewList(search, pageable);
+            }
+            if(sort.equals("낮은가격순")){
+                result = shareRoomRepository.searchLowPriceList(search, pageable);
+            }
         }
+
+
         List<ShareRoomDto> dtoList = result.get().map(arr -> {
             ShareRoom shareRoom = (ShareRoom) arr[0];
             ShareRoomImage shareRoomImage = (ShareRoomImage) arr[1];

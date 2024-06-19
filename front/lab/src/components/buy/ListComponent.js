@@ -72,6 +72,7 @@ const ListComponent = ({ search, sort }) => {
           recruit: checkDeadline(buy.deadline),
         })),
       };
+      console.log(updatedData);
       setServerData(updatedData);
     });
   }, [page, size, search, sort]);

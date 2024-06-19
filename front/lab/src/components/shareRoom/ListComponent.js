@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { API_SERVER_HOST, getList } from "../../api/shareRoomApi"
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PageComponent from "../common/PageComponent";
-import { useSelector } from 'react-redux';
 import LandingComponent from  "../common/mapSearch/LandingComponent";
 
 
@@ -21,31 +20,27 @@ const initState = {
   current: 0,
 };
 
-const ListComponent = ({ search }) => {
-  const { page, size, moveToList, moveToRead, moveToAdd } = useRoomCustomMove();
+const ListComponent = ({ search, sort }) => {
+  const { page, size, moveToList, moveToRead } = useRoomCustomMove();
   const [serverData, setServerData] = useState(initState);
-  const loginState = useSelector((state) => state.loginSlice);
 
   useEffect(() => {
-    getList({ page, size },search).then(data => {
-      console.log(data);
-      setServerData(data);
+    getList({ page, size },search, sort).then(data => {
+      const updatedData = {
+        ...data,
+        dtoList: data.dtoList.map((shareRoom) => ({
+          ...shareRoom,
+          // recruit: checkDeadline(buy.deadline),
+        })),
+      };
+      setServerData(updatedData);
     })
-  }, [page, size ,search]);
+  }, [page, size ,search, sort]);
 
 
   return (
     <>
       <div className=' '>
-      {!loginState.id ? (
-            <>
-
-            </>
-          ) : (
-            <div className="max-w-7xl min-w-[1280px]">
-              <button type="button" class="float-right inline-block rounded bg-teal-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-teal-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none" onClick={() => moveToAdd()}>글쓰기</button>
-            </div>
-          )}
       </div>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 py-10 max-w-7xl min-w-[1280px] items-center mx-auto">
         {serverData.dtoList.map((shareRoom) => (
@@ -89,7 +84,6 @@ const ListComponent = ({ search }) => {
         <div className="flex justify-end p-4">
         </div>
       </div>
-      <LandingComponent />
       <PageComponent serverData={serverData} movePage={moveToList} />
     </>
   );

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { modify, getOne, API_SERVER_HOST } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
-import PostComponentForRoom from "../common/PostComponentForRoom";
+import PostComponentForRoom from "../../components/shareRoom/PostComponentForRoom";
 import Image1 from '../../resources/images/radio1.svg';
 import Image2 from '../../resources/images/radio2.svg';
 
