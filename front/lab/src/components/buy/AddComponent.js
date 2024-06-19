@@ -9,7 +9,7 @@ import iconNext from '../../resources/images/icon-next.png';
 import iconEdit from '../../resources/images/iconEdit.png'
 
 const initState = {
-  email: '',
+  id: 0,
   nickname: '',
   title: '',
   location: '',
@@ -109,7 +109,7 @@ const AddComponent = () => {
         formData.append("files", files[i]);
     }
 
-    formData.append('user_id', user.email);
+    formData.append('id', ino);
     formData.append('nickname', user.nickname);
     formData.append('title', buy.title);
     formData.append('location', buy.location);
