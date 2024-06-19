@@ -12,11 +12,12 @@ import MapComponent from '../common/MapComponent';
 import iconNext from '../../resources/images/icon-next.png';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
-import emptyheart from '../../resources/images/heart_full.png';
-import fullheart from '../../resources/images/heart_empty.png';
+import emptyheart from '../../resources/images/heart_empty.png';
+import fullheart from '../../resources/images/heart_full.png';
 import ResultModal from '../common/ResultModal';
 import PartComponent from './PartComponent';
 import Profile_Img from '../../resources/images/profile_img.png';
+import InfoModal from "../common/InfoModal";
 
 const initState = {
   buyNo: 0,
@@ -37,6 +38,12 @@ const initUser = {
   profileImage: '',
 };
 
+const initState2 = {
+  likeNo: 0,
+  id: 0,
+  buyNo: 0
+}
+
 const host = API_SERVER_HOST;
 
 const ReadComponent = ({ buyNo }) => {
@@ -50,8 +57,10 @@ const ReadComponent = ({ buyNo }) => {
   const email = loginInfo?.email;
   const id = loginInfo?.id;
   const ino = loginInfo.id;
-  const isAuthenticated = loginInfo.email !== null; // 이메일 여부로 로그인 상태 판별
-  const [isLiked, setIsLiked] = useState({}); // 좋아요 정보
+  const [isLiked, setIsLiked] = useState({}); // true/false에 따라 하트 이미지 변경
+  const [ like, setLike ] = useState(initState2);
+  const [info, setInfo] = useState(null);
+
   // 이미지 슬라이더
   const settings = {
     dots: true,
@@ -68,7 +77,7 @@ const ReadComponent = ({ buyNo }) => {
     getOne(buyNo).then((data) => {
       setBuy(data);
     });
-  }, [buyNo]);
+  }, [buyNo,info]);
 
   useEffect(() => {
     getUser(ino).then((data) => {
@@ -83,14 +92,19 @@ const ReadComponent = ({ buyNo }) => {
     });
   }, [buyNo]);
 
-  // useEffect(() => {
-  //   if(likeInfo.email !== null){
-  //     likeInfo(buyNo,id).then((data) => {
-  //       console.log(data);
-  //       setIsLiked(data);
-  //     });
-  //   }
-  // }, [id, loginInfo.email]);
+    useEffect(() => {
+      if(email){ //로그인시에만 실행
+        likeInfo(buyNo,id).then((data) => {
+          setLike(data);
+          if(data){ //data가 있으면 이미 좋아요 누른글
+            setIsLiked(true);
+          }
+          else{
+            setIsLiked(false);
+          }
+        });
+      }
+    }, [email,info]);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -124,19 +138,27 @@ const ReadComponent = ({ buyNo }) => {
     setResult(null);
   };
 
+  const closeInfoModal = () => {
+    setInfo(null);
+  };
+
   const handleLikeClick = () => {
-    const formData = new FormData();
-    if (!isAuthenticated) {
-      alert('로그인 후 이용 가능합니다');
+    if (!email) {
+      setInfo("로그인 후 이용 가능합니다");
       return;
     }
     if (isLiked) {
+      unlikeBuy(like.likeNo);
       decreaseLike(buyNo);
+      setInfo("좋아요 목록에서 삭제되었습니다");
     } else {
-      formData.append('id', id);
-      formData.append('buyNo', buyNo);
-      likeBuy(formData);
+      const data = {
+        id : id,
+        buyNo : buyNo
+      }
+      likeBuy(data);
       increaseLike(buyNo);
+      setInfo("좋아요 목록에 추가되었습니다");
     }
     setIsLiked(!isLiked);
   };
@@ -203,9 +225,7 @@ const ReadComponent = ({ buyNo }) => {
         </div>
         <div className="grid grid-cols-10 w-full mx-auto mt-4 mb-1 text-xl bg-white">
           <div className="col-start-9 col-span-2 ml-5 mt-4 text-right flex justify-center">
-            {/* <img src={isAuthenticated && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit} */}
-            <img src={emptyheart} alt="..." className="w-7 mr-3 inline" />
-            {buy.buyHit}
+            <img src={email && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
           </div>
           <div className="col-start-3 col-span-6 h-72 mt-3 mb-10">
             {buy.uploadFileNames.length > 0 ? (
@@ -244,7 +264,7 @@ const ReadComponent = ({ buyNo }) => {
           </div>
           {/* <div className="col-start-2 col-span-8 my-6">
             <div className="flex justify-between space-x-4"> */}
-          {id === buy.user_id ? (
+          {email === buy.user_id ? (
             <>
               <div className="col-start-2 col-span-8 my-6">
                 <div className="flex justify-between space-x-4">
@@ -286,9 +306,8 @@ const ReadComponent = ({ buyNo }) => {
           </div> */}
           {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
           {addResultModal && <ResultModal title={'알림'} content={`${addResultModal}`} callbackFn={() => setAddResultModal(null)} />}
-
           <ModalComponent show={showModal} onClose={handleCloseModal} />
-          {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
+          {info && <InfoModal title={'알림'} content={`${info}`} callbackFn={closeInfoModal} />}
         </div>
       </div>
       {/* 참여인원 목록 컴포넌트 */}

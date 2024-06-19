@@ -13,6 +13,11 @@ export const unlikeBuy = async(likeNo) => {
 };
 
 export const likeInfo = async(buyNo, id) => {
-    const res = await axios.get(`${prefix}/buy`,{buyNo : buyNo, id : id});
+    const res = await axios.get(`${prefix}/buy`,{
+        params : {
+            buyNo: buyNo,
+            id: id
+        }
+    });
     return res.data;
 };

@@ -46,7 +46,7 @@ public class ChatRoomController {
         return ResponseDto.setSuccessData(userId+"번 유저의 모든 채팅방 목록 반환", roomsData);
     }
 
-    // 채팅방 생성
+    // 채팅방 생성(글 작성시 자동으로)
     @PostMapping("/room/create")
     @ResponseBody
     public ResponseDto<ChatRoomDataResponseDto.Info> createRoom(@RequestParam(name="userId") Long userId,
