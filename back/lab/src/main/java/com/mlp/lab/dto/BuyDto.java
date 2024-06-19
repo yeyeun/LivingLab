@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BuyDto { // 공동구매 화면에서 받을 데이터
     private Long buyNo;
-    private String user_id;
+    private Long id;
     private String title;
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")

@@ -21,6 +21,7 @@ import InfoModal from "../common/InfoModal";
 
 const initState = {
   buyNo: 0,
+  id: 0,
   title: '',
   location: '',
   content: '',
@@ -55,7 +56,6 @@ const ReadComponent = ({ buyNo }) => {
   const { moveToList, moveToModify } = useCustomMove();
   const loginInfo = useSelector((state) => state.loginSlice);
   const email = loginInfo?.email;
-  const id = loginInfo?.id;
   const ino = loginInfo.id;
   const [isLiked, setIsLiked] = useState({}); // true/false에 따라 하트 이미지 변경
   const [ like, setLike ] = useState(initState2);
@@ -75,6 +75,7 @@ const ReadComponent = ({ buyNo }) => {
 
   useEffect(() => {
     getOne(buyNo).then((data) => {
+      console.log("buy----",data);
       setBuy(data);
     });
   }, [buyNo,info]);
@@ -94,7 +95,7 @@ const ReadComponent = ({ buyNo }) => {
 
     useEffect(() => {
       if(email){ //로그인시에만 실행
-        likeInfo(buyNo,id).then((data) => {
+        likeInfo(buyNo,ino).then((data) => {
           setLike(data);
           if(data){ //data가 있으면 이미 좋아요 누른글
             setIsLiked(true);
@@ -153,7 +154,7 @@ const ReadComponent = ({ buyNo }) => {
       setInfo("좋아요 목록에서 삭제되었습니다");
     } else {
       const data = {
-        id : id,
+        id : ino,
         buyNo : buyNo
       }
       likeBuy(data);
@@ -216,6 +217,8 @@ const ReadComponent = ({ buyNo }) => {
   return (
     <>
       <div className="bg-slate-100 w-2/5 ml-auto p-4 rounded-lg">
+      <div>ino값은:{ino}</div>
+      <div>buy.id값은:{buy.id}</div>
         <div className="flex justify-between items-center">
           <span className="text-left font-semibold ml-2 items-center flex">
             {buy.flag ? '모집 마감' : '모집 중'}
@@ -264,7 +267,7 @@ const ReadComponent = ({ buyNo }) => {
           </div>
           {/* <div className="col-start-2 col-span-8 my-6">
             <div className="flex justify-between space-x-4"> */}
-          {email === buy.user_id ? (
+          {ino === buy.id ? (
             <>
               <div className="col-start-2 col-span-8 my-6">
                 <div className="flex justify-between space-x-4">
@@ -307,6 +310,7 @@ const ReadComponent = ({ buyNo }) => {
           {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
           {addResultModal && <ResultModal title={'알림'} content={`${addResultModal}`} callbackFn={() => setAddResultModal(null)} />}
           <ModalComponent show={showModal} onClose={handleCloseModal} />
+          {/* 좋아요 기능 알림 모달 */}
           {info && <InfoModal title={'알림'} content={`${info}`} callbackFn={closeInfoModal} />}
         </div>
       </div>
