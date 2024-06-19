@@ -35,9 +35,9 @@ public class MarketService {
             Page<Object[]> result = null;
             if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
                 result = marketRepository.selectList(pageable);
-            } else if (search != null && !search.isEmpty()) { // 검색
+            } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색
                 result = marketRepository.selectSearchList(search, pageable);
-            } else if (sort != null && !sort.isEmpty()) { // 정렬
+            } else if ((sort != null && !sort.isEmpty()) && (search == null || search.isEmpty())) { // 정렬
                 if(sort.equals("최신순")){
                     result = marketRepository.newList(pageable);
                 }
@@ -52,10 +52,10 @@ public class MarketService {
                 // }
             } else if (search != null && sort != null) { // 검색&&정렬 둘다
                 if(sort.equals("최신순")){
-                    result = marketRepository.searchNewList(sort, pageable);
+                    result = marketRepository.searchNewList(search, pageable);
                 }
                 if(sort.equals("마감임박순")){
-                    result = marketRepository.searchDeadLineList(sort, pageable);
+                    result = marketRepository.searchDeadLineList(search, pageable);
                 }
                 // if(sort.equals("거리순")){
                 //     result = 
