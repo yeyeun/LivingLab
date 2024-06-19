@@ -52,31 +52,33 @@ const ListComponent = ({ search, sort }) => {
                   {shareRoom.location}
                 </p>
                 <div className="flex">
-                  <p class=" mb-2 text-xl font-medium text-blue-500"> 1박 &nbsp;{(shareRoom.averFee / 10000).toFixed(1)} &nbsp;만원</p>
-                  {(shareRoom.rentFee % 10000) === 0 ? (
-                  <p class="ml-10 mb-2 text-xl font-medium text-gray-800">
-                    총 &nbsp; {(shareRoom.rentFee / 10000).toFixed(0)} &nbsp; 만원
+                  <p class=" mb-2 text-xl font-medium text-blue-500">
+                    {shareRoom.averFee.toLocaleString()}원/박
                   </p>
-                  ) : (
                   <p class="ml-10 mb-2 text-xl font-medium text-gray-800">
-                    총 &nbsp; {(shareRoom.rentFee / 10000).toFixed(1)} &nbsp; 만원
+                    총&nbsp; {parseInt(shareRoom.rentFee).toLocaleString()}원
                   </p>
-                  )}
-                  
                 </div>
                 
-                <p class="text-gray-900 text-xs leading-5 font-normal">
+                <p class="text-gray-900 text-xs leading-5 font-normal mb-2">
                   {shareRoom.option1}
                 </p>
-                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
-                  {shareRoom.rentStartDate} &nbsp; 부터
-                </p>
-                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
-                  {shareRoom.rentEndDate} &nbsp; 까지
-                </p>
-                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
-                  {shareRoom.days} &nbsp; 일 &nbsp;동안
-                </p>
+                <div className="flex">
+                  <div className="">
+                    <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
+                      {shareRoom.rentStartDate} &nbsp; 부터
+                    </p>
+                    <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
+                      {shareRoom.rentEndDate} &nbsp; 까지
+                    </p>
+                  </div>
+                  <div className="w-full ml-16 mt-3">
+                    <p class="text-gray-500 text-xl leading-6 whitespace-nowrap overflow-hidden overflow-ellipsis font-semibold">
+                      {shareRoom.days} &nbsp; 일 &nbsp;동안
+                    </p>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>

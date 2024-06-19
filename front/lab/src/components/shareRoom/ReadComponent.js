@@ -7,6 +7,8 @@ import heartEmpty from '../../resources/images/heart_empty.png';
 
 const host = API_SERVER_HOST;
 
+Modal.setAppElement('#root');
+
 const initState = {
   roomNo: 0,
   title: '',
@@ -24,13 +26,13 @@ const ReadComponent = ({ roomNo }) => {
     const [result, setResult] = useState(null)
     const loginState = useSelector((state) => state.loginSlice);
 
+
   useEffect(() => {
     getOne(roomNo).then((data) => {
       console.log(data);
       setShareRoom(data);
     });
   }, [roomNo]);
-
 
 
     const handleClickDelete = () => {
@@ -54,13 +56,14 @@ const ReadComponent = ({ roomNo }) => {
                                     <div id={`child-first-${index}`} className="row-span-2 relative overflow-hidden">
                                         <img src={`${host}/api/shareRoom/display/${imgFile}`} className="position-absolute object-cover w-full h-full"></img>
                                     </div>
-                                ) : (
+                                ) : index >= 1 && index <= 4 ? (
                                     <>
                                         <div id={`child-${index}`} className="relative overflow-hidden">
                                             <img src={`${host}/api/shareRoom/display/${imgFile}`} className="position-absolute object-cover w-full h-full"></img>
                                         </div>
                                     </>
-                                )}
+                                ): null}
+                                {/* 첫사진은 큰칸 , 나머지 4장은 작은칸 그 이후 사진들은 올리지 않음 */}
                             </React.Fragment>
                         ))}
                     </div>
@@ -153,7 +156,7 @@ const ReadComponent = ({ roomNo }) => {
                     <aside id="info-area" className="w-[360px] col-span-1">
                         <div id="content-container" className="sticky top-24">
                             <div id="inner-content" className="w-90 p-8 bg-white shadow-md border border-gray-300 rounded-sm relative">
-                                <p className="flex-none text-gray-900 text-base leading-6 font-normal">
+                                <p className="flex-none text-gray-900 text-base leading-6 font-normal whitespace-pre-wrap">
                                 {shareRoom.content}
                                 </p>
                                 <div id="buttons" className="flex items-center w-full mt-8">
