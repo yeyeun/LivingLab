@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.mlp.lab.entity.ShareRoom;
 
@@ -16,6 +17,22 @@ public interface ShareRoomRepository extends JpaRepository<ShareRoom, Integer> {
     Page<Object[]> selectList(Pageable pageable);
 
     // 검색어 기준 정렬(글 제목에서만 검색)
-    @Query("select s, si from ShareRoom s left join s.imageList si where si.ord = 0 and s.flag = true and s.title like %:title%")
-    Page<Object[]> selectSearchList(String title, Pageable pageable);
+    @Query("select s, si from ShareRoom s left join s.imageList si where si.ord = 0 and s.flag = true and s.location like %:location%")
+    Page<Object[]> selectSearchList(String location, Pageable pageable);
+
+    // 최신순
+    @Query("select s, si from ShareRoom s left join s.imageList si where s.flag = true and si.ord = 0 order by s.roomNo")
+    Page<Object[]> newList(Pageable pageable);
+
+    // 낮은가격순 asc는 오름차순, 아무것도 안적어도 기본으로 오름차순이다
+    @Query("select s, si from ShareRoom s left join s.imageList si where s.flag = true and si.ord = 0 order by s.averFee asc")
+    Page<Object[]> lowPriceList(Pageable pageable);
+
+    // 검색 + 최신순
+    @Query("select s, si from ShareRoom s left join s.imageList si where s.flag = true and si.ord = 0  and s.location like %:location% order by s.roomNo")
+    Page<Object[]> searchNewList(@Param(value="location")String location, Pageable pageable);
+
+    // 검색 + 낮은가격순
+    @Query("select s, si from ShareRoom s left join s.imageList si where s.flag = true and si.ord = 0 and s.location like %:location% order by s.averFee asc")
+    Page<Object[]> searchLowPriceList(@Param(value="location")String location, Pageable pageable);
 }

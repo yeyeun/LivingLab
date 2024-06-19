@@ -1,9 +1,10 @@
+
 import React, { useRef, useState } from "react";
 import { postAddShareRoom } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import { useSelector } from 'react-redux';
-import PostComponentForRoom from "../common/PostComponentForRoom";
+import PostComponentForRoom from "../../components/shareRoom/PostComponentForRoom";
 import Image1 from '../../resources/images/radio1.svg';
 import Image2 from '../../resources/images/radio2.svg';
 import iconEdit from '../../resources/images/iconEdit.png'
@@ -11,6 +12,7 @@ import iconEdit from '../../resources/images/iconEdit.png'
 
 
 const AddComponent = () => {
+
 
     const [addResultModal, setAddResultModal] = useState(null);
     const [result, setResult] = useState(null);
@@ -81,6 +83,14 @@ const AddComponent = () => {
         setShareRoom({ ...shareRoom })
     }
 
+    const calculateDaysBetweenDates = (startDate, endDate) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const timeDiff = end.getTime() - start.getTime();
+        const daysDiff = timeDiff / (1000 * 3600 * 24);
+        return Math.round(daysDiff); // 소수점은 제거하고 정수로 반환
+    };
+
     const handleClickAdd = (e) => {
 
         if (!shareRoom.title || !shareRoom.content) {
@@ -90,6 +100,8 @@ const AddComponent = () => {
 
         const files = imgRef.current.files;
         const formData = new FormData();
+        const daysBetween = calculateDaysBetweenDates(shareRoom.rentStartDate, shareRoom.rentEndDate);
+        const averFee = shareRoom.rentFee / daysBetween;
 
         for (let i = 0; i < files.length; i++) {
             formData.append("files", files[i]);
@@ -104,6 +116,8 @@ const AddComponent = () => {
         formData.append("option1", shareRoom.option1);
         formData.append("rentEndDate", shareRoom.rentEndDate);
         formData.append("rentStartDate", shareRoom.rentStartDate);
+        formData.append("averFee", averFee);
+        formData.append("days", daysBetween);
         formData.append("location", shareRoom.location);
         postAddShareRoom(formData);
         setResult("게시글이 등록되었습니다");

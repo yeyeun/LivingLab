@@ -27,9 +27,6 @@ import lombok.RequiredArgsConstructor;
 public class BuyService {
     private final BuyRepository buyRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort){
         Pageable pageable = PageRequest.of(
@@ -40,9 +37,9 @@ public class BuyService {
             Page<Object[]> result = null;
             if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
                 result = buyRepository.selectList(pageable);
-            } else if (search != null && !search.isEmpty()) { // 검색
+            } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색
                 result = buyRepository.selectSearchList(search, pageable);
-            } else if (sort != null && !sort.isEmpty()) { // 정렬
+            } else if ((sort != null && !sort.isEmpty()) && (search == null || search.isEmpty())) { // 정렬
                 if(sort.equals("최신순")){
                     result = buyRepository.newList(pageable);
                 }
@@ -57,10 +54,10 @@ public class BuyService {
                 // }
             } else if (search != null && sort != null) { // 검색&&정렬 둘다
                 if(sort.equals("최신순")){
-                    result = buyRepository.searchNewList(sort, pageable);
+                    result = buyRepository.searchNewList(search, pageable);
                 }
                 if(sort.equals("마감임박순")){
-                    result = buyRepository.searchDeadLineList(sort, pageable);
+                    result = buyRepository.searchDeadLineList(search, pageable);
                 }
                 // if(sort.equals("거리순")){
                 //     result = 

@@ -76,20 +76,19 @@ public class User {
         return userDto;
     }
 
-    // static으로 만들어 클래스를 만들지 않아도 사용가능
-    // public static User createMember(UserDto dto) { // 화면에서 dto를 통해 받은 값과 Entity를
-    // 통해 DB에 저장할 값을 지정
-    // User user = new User();
-    // user.setId(dto.getId());
-    // user.setEmail(dto.getEmail());
-    // user.setPwd(dto.getPwd());
-    // user.setName(dto.getName());
-    // user.setPhone(dto.getPhone());
-    // user.setAddr(dto.getAddr());
-    // user.setDetailAddr(dto.getDetailAddr());
-    // user.setNickname(dto.getNickname());
-    // return user;
-    // }
+    public static User createUser(UserDto dto) { // 화면에서 dto를 통해 받은 값과 Entity를 통해 DB에 저장할 값을 지정
+        User user = new User();
+        user.setId(dto.getId());
+        user.setEmail(dto.getEmail());
+        user.setPwd(dto.getPwd());
+        user.setName(dto.getName());
+        user.setPhone(dto.getPhone());
+        user.setAddr(dto.getAddr());
+        user.setDetailAddr(dto.getDetailAddr());
+        user.setNickname(dto.getNickname());
+        user.setProfileImage(dto.getUploadFileNames().get(0));
+        return user;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // 스프링 시큐리티 쓸 때 활용

@@ -1,15 +1,14 @@
 package com.mlp.lab.service;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
@@ -18,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.entity.User;
 import com.mlp.lab.repository.UserRepository;
+import com.mlp.lab.util.CustomFileUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,6 +29,7 @@ public class UserService {
   // final 붙여야지 생성자 만들어줌(RequiredArgsConstructor)
   private final ModelMapper modelMapper;
   private final UserRepository userRepository;
+  private final CustomFileUtil fileUtil; // CustomFileUtil 추가
 
   // 이럴 때 비밀번호는 인코딩해서 넣어줘야된다.(스프링 시큐리티)
   // private final PasswordEncoder passwordEncoder;
@@ -48,7 +49,9 @@ public class UserService {
 
   // 회원가입 (등록, 이미지 포함)
   public void add(UserDto userDto) {
-    User user = User.DtoToEntity(userDto);
+    User user = User.createUser(userDto);
+    List<String> uploadFileNames = fileUtil.saveFiles(userDto.getFiles());
+    userDto.setUploadFileNames(uploadFileNames);
     userRepository.save(user);
   }
 
