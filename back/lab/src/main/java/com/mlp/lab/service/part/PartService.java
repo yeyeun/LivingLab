@@ -20,6 +20,9 @@ public interface PartService {
   // 공동구매 한 게시물의 모든 참여회원 목록
   List<PartUserListDto> getBuyPartUsers(Long buyNo);
 
+  // 공동구매 참여목록에서 회원 삭제
+  List<PartUserListDto> removeBuy(Long pino);
+
   // 동네모임 한 게시물의 참여목록에 회원 추가
   List<PartUserListDto> add(PartUserDto partUserDto, Long teamNo);
 
@@ -29,6 +32,4 @@ public interface PartService {
   // 동네모임 참여목록에서 회원 삭제
   List<PartUserListDto> remove(Long pino);
 
-  // 공동구매 참여목록에서 회원 삭제
-  List<PartUserListDto> removeBuy(Long pino);
 }

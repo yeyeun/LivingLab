@@ -27,8 +27,14 @@ export const postAddPart = async (user, teamNo) => {
   return res.data;
 };
 
-// 참여목록에서 참여인원 삭제
-export const removePart = async (pino) => {
-  const res = await axios.delete(`{host}/delete/${pino}`);
+// 공동구매 참여목록에서 참여인원 삭제
+export const deleteBuyPartUser = async (pino) => {
+  const res = await axios.delete(`{host}/buy/delete/${pino}`);
+  return res.data;
+};
+
+// 동네모임 참여목록에서 참여인원 삭제
+export const deleteTeamPartUser = async (pino) => {
+  const res = await axios.delete(`{host}/team/delete/${pino}`);
   return res.data;
 };
