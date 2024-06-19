@@ -30,7 +30,7 @@ public class LikeBuy {
 
     // 외래 키
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)

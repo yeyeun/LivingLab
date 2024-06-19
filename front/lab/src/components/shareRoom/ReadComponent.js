@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
-import { API_SERVER_HOST, getOne, deleteOne } from "../../api/shareRoomApi"
-import useRoomCustomMove from "../../hooks/useRoomCustomMove"
+import React, { useEffect, useState } from 'react';
+import { API_SERVER_HOST, getOne, deleteOne } from '../../api/shareRoomApi';
+import useRoomCustomMove from '../../hooks/useRoomCustomMove';
 import { useSelector } from 'react-redux';
 import MapComponentForRoom from '../../components/shareRoom/MapComponentForRoom';
 import heartEmpty from '../../resources/images/heart_empty.png';
@@ -20,10 +20,10 @@ const initState = {
 };
 
 const ReadComponent = ({ roomNo }) => {
-    const [shareRoom, setShareRoom] = useState(initState)
-    const { moveToModify, moveToList } = useRoomCustomMove()
-    const [result, setResult] = useState(null)
-    const loginState = useSelector((state) => state.loginSlice);
+  const [shareRoom, setShareRoom] = useState(initState);
+  const { moveToModify, moveToList } = useRoomCustomMove();
+  const [result, setResult] = useState(null);
+  const loginState = useSelector((state) => state.loginSlice);
 
 
   useEffect(() => {
@@ -33,16 +33,13 @@ const ReadComponent = ({ roomNo }) => {
     });
   }, [roomNo]);
 
-
-    const handleClickDelete = () => {
-
-        deleteOne(roomNo).then(result => {
-            console.log("delete result : " + result)
-            setResult('Deleted')
-            moveToList()
-        })
-
-    }
+  const handleClickDelete = () => {
+    deleteOne(roomNo).then((result) => {
+      console.log('delete result : ' + result);
+      setResult('Deleted');
+      moveToList();
+    });
+  };
 
     return (
         <div id="full-main">

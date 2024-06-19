@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 const { kakao } = window;
 
@@ -29,10 +30,10 @@ const MapComponent = ({ searchPlace }) => {
 
     const options = {
       center: new kakao.maps.LatLng(location.latitude, location.longitude), // 현재 나의 실시간 좌표
-      // center: new kakao.maps.LatLng(35.8121472, 128.6176768),
+      //center: new kakao.maps.LatLng(35.8121472, 128.6176768),
       level: 3,
     };
-    const map = new kakao.maps.Map(container, options);
+    const map = new kakao.maps.Map(container, options); // 지도 생성
 
     const ps = new kakao.maps.services.Places();
 
@@ -99,15 +100,15 @@ const MapComponent = ({ searchPlace }) => {
         infowindow.open(map, marker);
       });
     }
-  }, [searchPlace]);
+  }, [searchPlace, location.latitude, location.longitude]);
 
   return (
-    <div className="flex">
+    <div className="flex flex-col">
       <div
         id="myMap"
         style={{
-          width: '500px',
-          height: '400px',
+          width: '300px',
+          height: '300px',
           // position: 'absolute',
         }}
       ></div>

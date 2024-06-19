@@ -62,9 +62,16 @@ public class PartController {
     return partService.getPartUsers(teamNo);
   }
 
-  // 참여목록에서 빠지기
-  @DeleteMapping("/delete/{pino}")
-  public List<PartUserListDto> removeFromPart(@PathVariable(name = "pino") Long pino) {
+  // 공동구매 참여목록에서 빠지기
+  @DeleteMapping("/buy/delete/{pino}")
+  public List<PartUserListDto> deleteBuyUser(@PathVariable(name = "pino") Long pino) {
+
+    return partService.removeBuy(pino);
+  }
+
+  // 동네모임 참여목록에서 빠지기
+  @DeleteMapping("/team/delete/{pino}")
+  public List<PartUserListDto> deleteTeamUser(@PathVariable(name = "pino") Long pino) {
 
     return partService.remove(pino);
   }

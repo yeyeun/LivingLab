@@ -42,7 +42,7 @@ const PartComponent = ({ part }) => {
   };
 
   return (
-    <div className="flex justify-center bg-slate-100 w-1/5 p-4 ml-10 mr-20 rounded-lg h-30">
+    <div className="flex justify-center bg-slate-100 w-1/5 p-4 ml-10 rounded-lg h-30">
       <div className="w-full">
         <div className="bg-blue-200 rounded-lg text-center p-4">
           <h2>참여 인원</h2>
@@ -52,9 +52,7 @@ const PartComponent = ({ part }) => {
           <div>
             {displayPart.map((partUser) => (
               <div key={partUser.pino}>
-                <div className="p-4">
-                  {partUser.nickname} {partUser.email}
-                </div>
+                <div className="p-4">{partUser.nickname}</div>
               </div>
             ))}
           </div>
