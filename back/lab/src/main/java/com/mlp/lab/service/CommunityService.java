@@ -35,10 +35,10 @@ public class CommunityService {
         if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색어 없을 시(전체 리스트)
             result = communityRepository.tipList(pageable);
         }
-        if (search != null && !search.isEmpty()) { // 검색어 있을 시
+        else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색어 있을 시
             result = communityRepository.tipSearchList(pageable, search);
         }
-        if (sort != null && !sort.isEmpty()) { // 카테고리별
+        else if ((sort != null && !sort.isEmpty()) && (search == null || search.isEmpty())) { // 카테고리별
             if (sort.equals("부동산")) {
                 result = communityRepository.tipSelectList(pageable, '1');
             }
@@ -52,7 +52,7 @@ public class CommunityService {
                 result = communityRepository.tipSelectList(pageable, '4');
             }
         }
-        if (search != null && sort != null) { // 카테고리&정렬
+        else if (search != null && sort != null) { // 카테고리&정렬
             if (sort.equals("부동산")) {
                 result = communityRepository.tipSearchSelectList(pageable, search, '1');
             }
