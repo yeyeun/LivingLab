@@ -112,13 +112,13 @@ const ListComponent = ({ search, sort }) => {
         serverData.dtoList
           .filter(market => !selectedCategory || market.marketCategory === selectedCategory).map(market =>
           <div key={market.marketNo} className="w-full mb-4 cursor-pointer" onClick={() => moveToRead(market.marketNo)}>
-            <div className="flex flex-col items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+            <div className="flex flex-col items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100">
               <div className="w-60 h-48">
                 <img className="w-full h-full object-cover rounded-none border-2" src={`${host}/api/market/display/${market.uploadFileNames[0]}`} alt="..." />
               </div>
               <div className="flex flex-col p-4 ml-5 leading-normal w-full">
                 <div className="mb-2 inline-flex items-center">
-                  <span className="bg-white text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl border border-gray-900 dark:bg-gray-700 dark:text-gray-300">
+                  <span className="bg-white text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl border border-gray-900">
                     {market.marketCategory === '1' && '구매'}
                     {market.marketCategory === '2' && '판매'}
                     {market.marketCategory === '3' && '교환'}
@@ -134,11 +134,11 @@ const ListComponent = ({ search, sort }) => {
                 <div className="flex justify-end">
                   <div className="font-bold text-red-500 text-base">{market.recruit}</div>
                 </div>
-                <div className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{market.title}</div>
-                <div className="mb-3 text-base text-gray-700 dark:text-gray-400">
+                <div className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{market.title}</div>
+                <div className="mb-3 text-base text-gray-700">
                   <img src={mapIcon} alt="..." className="w-4 inline" />&ensp;{market.location}
                 </div>
-                <div className="flex justify-end mb-2 text-lg tracking-tight text-gray-900 dark:text-white">{market.nickname}</div>
+                <div className="flex justify-end mb-2 text-lg tracking-tight text-gray-900">{market.nickname}</div>
               </div>
             </div>
           </div>

@@ -76,7 +76,7 @@ public class BuyService {
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
             
             if(buyImage != null){
                 String imageStr = buyImage.getFileName();
@@ -112,7 +112,7 @@ public class BuyService {
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
 
             if(buyImage != null){
                 String imageStr = buyImage.getFileName();
@@ -161,7 +161,7 @@ public class BuyService {
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
 
             if(buyImage != null){
                 String imageStr = buyImage.getFileName();
@@ -210,7 +210,7 @@ public class BuyService {
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
 
             if(buyImage != null){
                 String imageStr = buyImage.getFileName();
@@ -240,6 +240,7 @@ public class BuyService {
         Optional<Buy> result = buyRepository.findById(buyNo);
         Buy buy = result.orElseThrow();
         BuyDto buyDto = buy.entityToDto(buy);
+        buyDto.setId(buy.getUser().getId()); // Buy 안의 User 객체에서 id값만 가져옴
         return buyDto;
     }
 
@@ -291,6 +292,7 @@ public class BuyService {
                     .current(buy.getCurrent())
                     .deadline(buy.getDeadline())
                     .nickname(buy.getNickname())
+                    .buyHit(buy.getBuyHit())
                     .build();
     
             String imageStr = buyImage.getFileName();

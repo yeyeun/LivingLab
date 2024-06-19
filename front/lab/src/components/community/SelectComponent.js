@@ -16,8 +16,8 @@ function SelectComponent({ onSort }){
         onSort(e.target.value);
     };
     return(
-        <div className="flex w-full mb-2">
-            <select onChange={handleSelect} value={selected} className="text-base w-24 float-right">
+        <div className="flex items-center mr-2">
+            <select onChange={handleSelect} value={selected} className="w-24 border border-gray-300 rounded-lg bg-gray-50 text-sm py-2">
                 {selectList.map((item) => (
                     <option value={item.name}>{item.name}</option>
                 ))}
