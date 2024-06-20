@@ -31,6 +31,8 @@ public class ShareRoomDto { // 화면에서 받을 데이터
     private String roomImage;
     private String rentStartDate;
     private String rentEndDate;
+    private Integer averFee;
+    private Integer days;
     private boolean flag;
 
     @Builder.Default

@@ -19,6 +19,7 @@ import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.BuyImage;
 import com.mlp.lab.repository.BuyRepository;
+import com.mlp.lab.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,9 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BuyService {
     private final BuyRepository buyRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort){
@@ -40,9 +39,9 @@ public class BuyService {
             Page<Object[]> result = null;
             if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
                 result = buyRepository.selectList(pageable);
-            } else if (search != null && !search.isEmpty()) { // 검색
+            } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색
                 result = buyRepository.selectSearchList(search, pageable);
-            } else if (sort != null && !sort.isEmpty()) { // 정렬
+            } else if ((sort != null && !sort.isEmpty()) && (search == null || search.isEmpty())) { // 정렬
                 if(sort.equals("최신순")){
                     result = buyRepository.newList(pageable);
                 }
@@ -57,10 +56,10 @@ public class BuyService {
                 // }
             } else if (search != null && sort != null) { // 검색&&정렬 둘다
                 if(sort.equals("최신순")){
-                    result = buyRepository.searchNewList(sort, pageable);
+                    result = buyRepository.searchNewList(search, pageable);
                 }
                 if(sort.equals("마감임박순")){
-                    result = buyRepository.searchDeadLineList(sort, pageable);
+                    result = buyRepository.searchDeadLineList(search, pageable);
                 }
                 // if(sort.equals("거리순")){
                 //     result = 
@@ -77,7 +76,7 @@ public class BuyService {
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
             
             if(buyImage != null){
                 String imageStr = buyImage.getFileName();
@@ -113,7 +112,7 @@ public class BuyService {
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
 
             if(buyImage != null){
                 String imageStr = buyImage.getFileName();
@@ -162,7 +161,7 @@ public class BuyService {
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
 
             if(buyImage != null){
                 String imageStr = buyImage.getFileName();
@@ -211,7 +210,7 @@ public class BuyService {
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
-                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).build();
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
 
             if(buyImage != null){
                 String imageStr = buyImage.getFileName();
@@ -231,19 +230,22 @@ public class BuyService {
         return responseDTO;
     }
 
-    public void add(BuyDto buyDto) { // 공동구매 등록(이미지 포함)
+    public Buy add(BuyDto buyDto) { // 공동구매 등록(이미지 포함)
         Buy buy = Buy.DtoToEntity(buyDto);
-        buyRepository.save(buy);
+        buy.setUser(userRepository.findByUserId(buyDto.getId()));   //화면에서 받아온 Buy를 작성한 user id값으로 어떤 유저인지 찾아서 알려줌
+        buy = buyRepository.save(buy);
+        return buy;
     }
 
     public BuyDto read(int buyNo) { // 공동구매 조회
         Optional<Buy> result = buyRepository.findById(buyNo);
         Buy buy = result.orElseThrow();
         BuyDto buyDto = buy.entityToDto(buy);
+        buyDto.setId(buy.getUser().getId()); // Buy 안의 User 객체에서 id값만 가져옴
         return buyDto;
     }
 
-    @Transactional // DB 작업이 성공적으로 완료될때만 실제 DB에 반영
+    @Transactional // 삭제하기
     public void delete(int buyNo) {
         buyRepository.deleteById(buyNo);
     }
@@ -291,6 +293,7 @@ public class BuyService {
                     .current(buy.getCurrent())
                     .deadline(buy.getDeadline())
                     .nickname(buy.getNickname())
+                    .buyHit(buy.getBuyHit())
                     .build();
     
             String imageStr = buyImage.getFileName();

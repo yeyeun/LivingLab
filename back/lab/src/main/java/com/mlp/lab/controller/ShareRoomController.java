@@ -34,11 +34,12 @@ public class ShareRoomController {
     private final ShareRoomService shareRoomService;
     private final CustomFileUtilShareRoom fileUtil;
 
+
     @GetMapping("/list")
     public RoomPageResponseDto<ShareRoomDto> List(RoomPageRequestDto roomPageRequestDto,
-            @RequestParam(required = false, value = "search") String search,
-            @RequestParam(required = false, value = "sort") String sort) {
-        return shareRoomService.list(roomPageRequestDto, search, sort);
+    @RequestParam(required = false, value = "search") String search,
+    @RequestParam(required = false, value = "sort") String sort) {
+        return shareRoomService.list(roomPageRequestDto,search,sort);
     }
 
     @DeleteMapping("/{roomNo}")
@@ -92,7 +93,7 @@ public class ShareRoomController {
             uploadedFileNames.addAll(newUploadFileNames);
         }
         shareRoomService.modify(shareRoomDto);
-
+        
         if (oldFileNames != null && oldFileNames.size() > 0) {
             List<String> removeFiles = oldFileNames
                     .stream()

@@ -62,7 +62,7 @@ return(
                       <p className="ml-1">{tip.nickname}</p>
                     </p>
                     <p className="mr-3 flex flex-row items-center">
-                      <p className="ml-1">2024-06-02</p>
+                      <p className="ml-1">{tip.regDate}</p>
                     </p>
                     <p className="ml-auto mr-2 flex flex-row">
                         <img src={heartEmpty} width="20" alt="..."></img><span className="mx-1">{tip.commHit}</span>

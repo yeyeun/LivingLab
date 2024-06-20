@@ -26,70 +26,70 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class CustomFileUtilShareRoom {
 
-  @Value("${com.mlp.upload.path}")
-  private String uploadPath;
+    @Value("${com.mlp.upload.path}")
+    private String uploadPath;
+    
+    private String shareRoomPath;
 
-  private String shareRoomPath;
+    @PostConstruct
+    public void init() {
+        File uploadFolder = new File(uploadPath);
+        if (!uploadFolder.exists()) {
+            uploadFolder.mkdir();
+        }
+        shareRoomPath = uploadFolder.getAbsolutePath() + File.separator + "shareRoom";
+        File shareRoomFolder = new File(shareRoomPath);
+        if (!shareRoomFolder.exists()) {
+            shareRoomFolder.mkdir();
+        }
+        log.info("-------------------------------------------");
+        log.info("shareRoomPath : " + shareRoomPath);
+    }
 
-  @PostConstruct
-  public void init() {
-    File uploadFolder = new File(uploadPath);
-    if (!uploadFolder.exists()) {
-      uploadFolder.mkdir();
+    public List<String> saveFiles(List<MultipartFile> files) throws RuntimeException { // 파일 저장
+        if (files == null || files.size() == 0) {
+            return List.of();
+        }
+        List<String> uploadNames = new ArrayList<>();
+        for (MultipartFile multipartFile : files) {
+            String savedName = UUID.randomUUID().toString() +
+                    "_" + multipartFile.getOriginalFilename();
+            Path savedPath = Paths.get(shareRoomPath, savedName);
+            try {
+                Files.copy(multipartFile.getInputStream(), savedPath);
+                uploadNames.add(savedName);
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+        return uploadNames;
     }
-    shareRoomPath = uploadFolder.getAbsolutePath() + File.separator + "shareRoom";
-    File shareRoomFolder = new File(shareRoomPath);
-    if (!shareRoomFolder.exists()) {
-      shareRoomFolder.mkdir();
-    }
-    log.info("-------------------------------------------");
-    log.info("shareRoomPath : " + shareRoomPath);
-  }
 
-  public List<String> saveFiles(List<MultipartFile> files) throws RuntimeException { // 파일 저장
-    if (files == null || files.size() == 0) {
-      return List.of();
+    public ResponseEntity<Resource> getFile(String fileName) { // 업로드 파일 보여주기
+        Resource resource = new FileSystemResource(shareRoomPath + File.separator + fileName);
+        if (!resource.isReadable()) {
+            resource = new FileSystemResource(shareRoomPath + File.separator + "rose.png");
+        }
+        HttpHeaders headers = new HttpHeaders();
+        try {
+            headers.add("Content-type", Files.probeContentType(resource.getFile().toPath()));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.ok().headers(headers).body(resource);
     }
-    List<String> uploadNames = new ArrayList<>();
-    for (MultipartFile multipartFile : files) {
-      String savedName = UUID.randomUUID().toString() +
-          "_" + multipartFile.getOriginalFilename();
-      Path savedPath = Paths.get(shareRoomPath, savedName);
-      try {
-        Files.copy(multipartFile.getInputStream(), savedPath);
-        uploadNames.add(savedName);
-      } catch (IOException e) {
-        throw new RuntimeException(e.getMessage());
-      }
-    }
-    return uploadNames;
-  }
 
-  public ResponseEntity<Resource> getFile(String fileName) { // 업로드 파일 보여주기
-    Resource resource = new FileSystemResource(shareRoomPath + File.separator + fileName);
-    if (!resource.isReadable()) {
-      resource = new FileSystemResource(shareRoomPath + File.separator + "rose.png");
+    public void deleteFiles(List<String> fileNames) { // 파일 삭제
+        if (fileNames == null || fileNames.size() == 0) {
+            return;
+        }
+        fileNames.forEach(fileName -> {
+            Path filePath = Paths.get(shareRoomPath, fileName);
+            try {
+                Files.deleteIfExists(filePath);
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        });
     }
-    HttpHeaders headers = new HttpHeaders();
-    try {
-      headers.add("Content-type", Files.probeContentType(resource.getFile().toPath()));
-    } catch (Exception e) {
-      return ResponseEntity.internalServerError().build();
-    }
-    return ResponseEntity.ok().headers(headers).body(resource);
-  }
-
-  public void deleteFiles(List<String> fileNames) { // 파일 삭제
-    if (fileNames == null || fileNames.size() == 0) {
-      return;
-    }
-    fileNames.forEach(fileName -> {
-      Path filePath = Paths.get(shareRoomPath, fileName);
-      try {
-        Files.deleteIfExists(filePath);
-      } catch (IOException e) {
-        throw new RuntimeException(e.getMessage());
-      }
-    });
-  }
 }

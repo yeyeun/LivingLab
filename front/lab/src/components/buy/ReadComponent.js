@@ -17,10 +17,11 @@ import fullheart from '../../resources/images/heart_full.png';
 import ResultModal from '../common/ResultModal';
 import PartComponent from './PartComponent';
 import Profile_Img from '../../resources/images/profile_img.png';
-import InfoModal from "../common/InfoModal";
+import InfoModal from '../common/InfoModal';
 
 const initState = {
   buyNo: 0,
+  id: 0,
   title: '',
   location: '',
   content: '',
@@ -41,8 +42,8 @@ const initUser = {
 const initState2 = {
   likeNo: 0,
   id: 0,
-  buyNo: 0
-}
+  buyNo: 0,
+};
 
 const host = API_SERVER_HOST;
 
@@ -55,10 +56,9 @@ const ReadComponent = ({ buyNo }) => {
   const { moveToList, moveToModify } = useCustomMove();
   const loginInfo = useSelector((state) => state.loginSlice);
   const email = loginInfo?.email;
-  const id = loginInfo?.id;
   const ino = loginInfo.id;
   const [isLiked, setIsLiked] = useState({}); // true/false에 따라 하트 이미지 변경
-  const [ like, setLike ] = useState(initState2);
+  const [like, setLike] = useState(initState2);
   const [info, setInfo] = useState(null);
 
   // 이미지 슬라이더
@@ -75,9 +75,10 @@ const ReadComponent = ({ buyNo }) => {
 
   useEffect(() => {
     getOne(buyNo).then((data) => {
+      console.log('buy----', data);
       setBuy(data);
     });
-  }, [buyNo,info]);
+  }, [buyNo, info]);
 
   useEffect(() => {
     getUser(ino).then((data) => {
@@ -92,19 +93,20 @@ const ReadComponent = ({ buyNo }) => {
     });
   }, [buyNo]);
 
-    useEffect(() => {
-      if(email){ //로그인시에만 실행
-        likeInfo(buyNo,id).then((data) => {
-          setLike(data);
-          if(data){ //data가 있으면 이미 좋아요 누른글
-            setIsLiked(true);
-          }
-          else{
-            setIsLiked(false);
-          }
-        });
-      }
-    }, [email,info]);
+  useEffect(() => {
+    if (email) {
+      //로그인시에만 실행
+      likeInfo(buyNo, ino).then((data) => {
+        setLike(data);
+        if (data) {
+          //data가 있으면 이미 좋아요 누른글
+          setIsLiked(true);
+        } else {
+          setIsLiked(false);
+        }
+      });
+    }
+  }, [email, info]);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -144,21 +146,21 @@ const ReadComponent = ({ buyNo }) => {
 
   const handleLikeClick = () => {
     if (!email) {
-      setInfo("로그인 후 이용 가능합니다");
+      setInfo('로그인 후 이용 가능합니다');
       return;
     }
     if (isLiked) {
       unlikeBuy(like.likeNo);
       decreaseLike(buyNo);
-      setInfo("좋아요 목록에서 삭제되었습니다");
+      setInfo('좋아요 목록에서 삭제되었습니다');
     } else {
       const data = {
-        id : id,
-        buyNo : buyNo
-      }
+        id: ino,
+        buyNo: buyNo,
+      };
       likeBuy(data);
       increaseLike(buyNo);
-      setInfo("좋아요 목록에 추가되었습니다");
+      setInfo('좋아요 목록에 추가되었습니다');
     }
     setIsLiked(!isLiked);
   };
@@ -225,7 +227,8 @@ const ReadComponent = ({ buyNo }) => {
         </div>
         <div className="grid grid-cols-10 w-full mx-auto mt-4 mb-1 text-xl bg-white">
           <div className="col-start-9 col-span-2 ml-5 mt-4 text-right flex justify-center">
-            <img src={email && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline"/>{buy.buyHit}
+            <img src={email && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline" />
+            {buy.buyHit}
           </div>
           <div className="col-start-3 col-span-6 h-72 mt-3 mb-10">
             {buy.uploadFileNames.length > 0 ? (
@@ -258,13 +261,13 @@ const ReadComponent = ({ buyNo }) => {
           </div>
           <div className="col-start-2 col-span-8"></div>
           <div className="col-start-8 col-span-2 text-right text-base">{buy.nickname}</div>
-          <div className="col-start-2 col-span-8 my-5 border-t-4 py-4">{buy.content}</div>
+          <div className="col-start-2 col-span-8 my-5 border-t-4 py-4 whitespace-pre-wrap">{buy.content}</div>
           <div className="col-start-2 col-span-8 h-80">
             <MapComponent location={buy.location} />
           </div>
           {/* <div className="col-start-2 col-span-8 my-6">
             <div className="flex justify-between space-x-4"> */}
-          {email === buy.user_id ? (
+          {ino === buy.id ? (
             <>
               <div className="col-start-2 col-span-8 my-6">
                 <div className="flex justify-between space-x-4">
@@ -307,11 +310,12 @@ const ReadComponent = ({ buyNo }) => {
           {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
           {addResultModal && <ResultModal title={'알림'} content={`${addResultModal}`} callbackFn={() => setAddResultModal(null)} />}
           <ModalComponent show={showModal} onClose={handleCloseModal} />
+          {/* 좋아요 기능 알림 모달 */}
           {info && <InfoModal title={'알림'} content={`${info}`} callbackFn={closeInfoModal} />}
         </div>
       </div>
       {/* 참여인원 목록 컴포넌트 */}
-      <PartComponent buyNo={buyNo} part={part} user={user} /> {/* PartComponent에 참여 인원 전달 */}
+      <PartComponent buyNo={buyNo} part={part} user={user} /> {/* PartComponent에 참여 인원(part) 전달 */}
     </>
   );
 };

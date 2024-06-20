@@ -166,17 +166,6 @@ public class PartServiceImpl implements PartService {
     return partUserRepository.getUserOfPartDtoByNo(teamNo);
   }
 
-  // 동네모임 참여 삭제 후 목록 속 남은 참여인원 조회
-  @Override
-  public List<PartUserListDto> remove(Long pino) {
-
-    Long pno = partUserRepository.getPartFromUser(pino); // 참여인원이 속한 참여목록 번호 pno
-
-    partUserRepository.deleteById(pino);
-
-    return partUserRepository.getUsersOfPartDtoByPart(pno); // removeThenList
-  }
-
   // 공동구매 참여 삭제 후 목록 속 남은 참여인원 조회
   @Override
   public List<PartUserListDto> removeBuy(Long pino) {
@@ -186,6 +175,17 @@ public class PartServiceImpl implements PartService {
     buyPartUserRepository.deleteById(pino);
 
     return buyPartUserRepository.getUsersOfPartDtoByPart(pno); // removeThenList
+  }
+
+  // 동네모임 참여 삭제 후 목록 속 남은 참여인원 조회
+  @Override
+  public List<PartUserListDto> remove(Long pino) {
+
+    Long pno = partUserRepository.getPartFromUser(pino); // 참여인원이 속한 참여목록 번호 pno
+
+    partUserRepository.deleteById(pino);
+
+    return partUserRepository.getUsersOfPartDtoByPart(pno); // removeThenList
   }
 
 }

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { API_SERVER_HOST, getList } from '../../api/shareRoomApi';
-import useRoomCustomMove from '../../hooks/useRoomCustomMove';
-import PageComponent from '../common/PageComponent';
-import { useSelector } from 'react-redux';
-import LandingComponent from './../common/mapSearch/LandingComponent';
+import { useEffect, useState } from "react";
+import { API_SERVER_HOST, getList } from "../../api/shareRoomApi"
+import useRoomCustomMove from "../../hooks/useRoomCustomMove";
+import PageComponent from "../common/PageComponent";
+import LandingComponent from  "../common/mapSearch/LandingComponent";
+
+
 
 const host = API_SERVER_HOST;
 const initState = {
@@ -20,33 +21,26 @@ const initState = {
 };
 
 const ListComponent = ({ search, sort }) => {
-  const { page, size, moveToList, moveToRead, moveToAdd } = useRoomCustomMove();
+  const { page, size, moveToList, moveToRead } = useRoomCustomMove();
   const [serverData, setServerData] = useState(initState);
-  const loginState = useSelector((state) => state.loginSlice);
 
   useEffect(() => {
-    getList({ page, size }, search, sort).then((data) => {
-      console.log(data);
-      setServerData(data);
-    });
-  }, [page, size, search, sort]);
+    getList({ page, size },search, sort).then(data => {
+      const updatedData = {
+        ...data,
+        dtoList: data.dtoList.map((shareRoom) => ({
+          ...shareRoom,
+          // recruit: checkDeadline(buy.deadline),
+        })),
+      };
+      setServerData(updatedData);
+    })
+  }, [page, size ,search, sort]);
+
 
   return (
     <>
-      <div className=" ">
-        {!loginState.id ? (
-          <></>
-        ) : (
-          <div className="max-w-7xl min-w-[1280px]">
-            <button
-              type="button"
-              class="float-right inline-block rounded bg-teal-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-teal-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none"
-              onClick={() => moveToAdd()}
-            >
-              글쓰기
-            </button>
-          </div>
-        )}
+      <div className=' '>
       </div>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 py-10 max-w-7xl min-w-[1280px] items-center mx-auto">
         {serverData.dtoList.map((shareRoom) => (
@@ -54,24 +48,44 @@ const ListComponent = ({ search, sort }) => {
             <div className="block w-full h-full" onClick={() => moveToRead(shareRoom.roomNo)}>
               <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} class="object-cover w-full max-h-40" />
               <div class="w-full p-4 bg-white">
-                <p class="text-gray-900 text-xl leading-5 font-normal">{shareRoom.title}</p>
-                {/* <p class="text-gray-900 text-xs leading-5 font-normal">{shareRoom.location}</p> */}
-                {shareRoom.rentFee % 10000 === 0 ? (
-                  <p class="mb-2 text-xl font-medium text-gray-800">금액 &nbsp; {(shareRoom.rentFee / 10000).toFixed(0)} &nbsp; 만원</p>
-                ) : (
-                  <p class="mb-2 text-xl font-medium text-gray-800">금액 &nbsp; {(shareRoom.rentFee / 10000).toFixed(1)} &nbsp; 만원</p>
-                )}
-                <p class="text-gray-900 text-xs leading-5 font-normal">{shareRoom.option1}</p>
-                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{shareRoom.rentStartDate} &nbsp; 부터</p>
-                <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{shareRoom.rentEndDate} &nbsp; 까지</p>
-                <p class="text-gray-900 text-xs leading-5 font-normal">{shareRoom.location}</p>
+                <p class="text-gray-900 text-xs leading-5 font-normal mb-1">
+                  {shareRoom.location}
+                </p>
+                <div className="flex">
+                  <p class=" mb-2 text-xl font-medium text-blue-500">
+                    {shareRoom.averFee.toLocaleString()}원/박
+                  </p>
+                  <p class="ml-10 mb-2 text-xl font-medium text-gray-800">
+                    총&nbsp; {parseInt(shareRoom.rentFee).toLocaleString()}원
+                  </p>
+                </div>
+                
+                <p class="text-gray-900 text-xs leading-5 font-normal mb-2">
+                  {shareRoom.option1}
+                </p>
+                <div className="flex">
+                  <div className="">
+                    <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
+                      {shareRoom.rentStartDate} &nbsp; 부터
+                    </p>
+                    <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
+                      {shareRoom.rentEndDate} &nbsp; 까지
+                    </p>
+                  </div>
+                  <div className="w-full ml-16 mt-3">
+                    <p class="text-gray-500 text-xl leading-6 whitespace-nowrap overflow-hidden overflow-ellipsis font-semibold">
+                      {shareRoom.days} &nbsp; 일 &nbsp;동안
+                    </p>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
         ))}
-        <div className="flex justify-end p-4"></div>
+        <div className="flex justify-end p-4">
+        </div>
       </div>
-      <LandingComponent />
       <PageComponent serverData={serverData} movePage={moveToList} />
     </>
   );

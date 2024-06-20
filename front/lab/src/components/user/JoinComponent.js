@@ -1,8 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useRef } from 'react';
 import imgLogo2 from '../../resources/images/logo2.png';
-import Post from '../common/PostComponent';
+import PostComponent from '../common/PostComponent';
 import { joinUser } from '../../api/userApi';
 import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 
@@ -19,24 +18,33 @@ const initState = {
 };
 
 function JoinComponent(props) {
-  const [joinParam, setJoinParam] = useState({ ...initState });
+  const [user, setUser] = useState({ ...initState });
 
-  //주소 찾기 팝업 추가 - 정운
+  //주소 찾기 팝업 추가
   const [address, setAddress] = React.useState('');
   const [popup, setPopup] = React.useState(false);
 
-  const dispatch = useDispatch();
+  const imgRef = useRef();
   const navigate = useNavigate(); // useNavigate 사용
 
   const handleChange = (e) => {
-    joinParam[e.target.name] = e.target.value;
+    user[e.target.name] = e.target.value;
 
-    setJoinParam({ ...joinParam });
+    setUser({ ...user });
+  };
+
+  // addr(팝업 검색주소)만 따로 상태변경
+  const handleAddrChange = (newAddr) => {
+    setAddress(newAddr);
+    setUser({
+      ...user,
+      addr: newAddr,
+    });
   };
 
   const handleFileChange = (e) => {
-    setJoinParam({
-      ...joinParam,
+    setUser({
+      ...user,
       files: e.target.files,
     });
   };
@@ -44,14 +52,29 @@ function JoinComponent(props) {
   const handleClickJoin = async (e) => {
     e.preventDefault();
 
-    if (joinParam.pwd !== joinParam.confirmPwd) {
+    if (user.pwd !== user.confirmPwd) {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
 
+    const files = imgRef.current.files;
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i]);
+    }
+
+    formData.append('email', user.email);
+    formData.append('pwd', user.pwd);
+    formData.append('confirmPwd', user.confirmPwd);
+    formData.append('phone', user.phone);
+    formData.append('name', user.name);
+    formData.append('addr', user.addr);
+    formData.append('nickname', user.nickname);
+    formData.append('detailAddr', user.detailAddr);
+
     try {
-      const response = await joinUser(joinParam); // joinUser API 호출
-      if (response.result==true) {
+      const response = await joinUser(formData); // joinUser API 호출
+      if (response.result === true) {
         alert('회원가입이 완료되었습니다.');
         navigate('/');
       } else {
@@ -75,16 +98,16 @@ function JoinComponent(props) {
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-full p-3 text-left font-bold">이메일</div>
             <input
-              className="w-3/4 p-3 rounded-r border border-solid border-neutral-500 shadow-md"
+              className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
               name="email"
               type={'text'}
-              placeholder="MLP1234@gmail.com"
-              value={joinParam.email}
+              placeholder="아이디는 이메일 형식으로 입력해주세요."
+              value={user.email}
               onChange={handleChange}
             ></input>
-            <button className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white" onClick={handleClickJoin}>
+            {/* <button className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white" onClick={handleClickJoin}>
               중복확인
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="flex justify-center">
@@ -95,7 +118,7 @@ function JoinComponent(props) {
               name="pwd"
               type={'password'}
               placeholder="비밀번호를 입력하세요."
-              value={joinParam.pwd}
+              value={user.pwd}
               onChange={handleChange}
             ></input>
           </div>
@@ -109,7 +132,7 @@ function JoinComponent(props) {
               name="confirmPwd"
               type={'password'}
               placeholder="비밀번호 확인"
-              value={joinParam.confirmPwd}
+              value={user.confirmPwd}
               onChange={handleChange}
             ></input>
           </div>
@@ -123,7 +146,7 @@ function JoinComponent(props) {
               name="name"
               type={'text'}
               placeholder="이름"
-              value={joinParam.name}
+              value={user.name}
               onChange={handleChange}
             ></input>
           </div>
@@ -137,7 +160,7 @@ function JoinComponent(props) {
               name="phone"
               type={'text'}
               placeholder="전화번호"
-              value={joinParam.phone}
+              value={user.phone}
               onChange={handleChange}
             ></input>
           </div>
@@ -151,46 +174,42 @@ function JoinComponent(props) {
               name="nickname"
               type={'text'}
               placeholder="닉네임"
-              value={joinParam.nickname}
+              value={user.nickname}
               onChange={handleChange}
             ></input>
           </div>
         </div>
-        
+
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-full p-3 text-left font-bold">주소</div>
-            <button
-              className="rounded p-2 w-1/4 bg-gray-500 text-xm text-white"
-              onClick={() => {
-                setPopup(!popup);
-              }}
-            >
-              🔍︎ 주소 검색
-            </button>
-            {popup && <Post address={address} setAddress={setAddress}></Post>}
+            <div className="w-44">
+              <PostComponent setAddress={handleAddrChange}></PostComponent>
+            </div>
             <input
-              className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
+              className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
               name="addr"
               type={'text'}
-              placeholder="주소"
-              required={true}
-              value={address}
+              placeholder="주소(우편번호 및 도로명 검색)"
+              value={user.addr}
+              readOnly
+            />
+
+            <input
+              className="w-full p-3 rounded-r border border-solid border-neutral-300 shadow-md"
+              name="detailAddr"
+              type={'text'}
+              placeholder="상세주소"
+              value={user.detailAddr}
+              onChange={handleChange}
             ></input>
-            <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" name="detailAddr" type={'text'} placeholder="상세주소를 입력해주세요"></input>
           </div>
         </div>
 
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-full p-3 text-left font-bold">프로필 이미지</div>
-            <input
-              className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md"
-              name="files"
-              type="file"
-              multiple
-              onChange={handleFileChange}
-            />
+            <input className="w-full p-3 rounded-r border border-solid border-neutral-500 shadow-md" ref={imgRef} type="file" multiple onChange={handleFileChange} />
           </div>
         </div>
 

@@ -11,7 +11,7 @@ const initState = {
   nickname: '',
 };
 
-const PartComponent = ({ part, user }) => {
+const PartComponent = ({ buyNo, part, user }) => {
   // const { isLogin, loginState } = useCustomLogin();
 
   // const loginInfo = useSelector((state) => state.loginSlice);
@@ -51,8 +51,9 @@ const PartComponent = ({ part, user }) => {
         <div className>
           <div>
             {displayPart.map((partUser) => (
-              <div key={partUser.pino}>
-                <div className="p-4">{partUser.nickname}</div>
+              <div className="flex p-5">
+                <img alt="Profile_Img" src={`http://localhost:8282/api/user/userProfileImage?email=${partUser.email}`} className="rounded-full size-10 mr-2" />
+                {partUser.nickname}
               </div>
             ))}
           </div>

@@ -5,11 +5,7 @@ import { API_SERVER_HOST, deleteOne, getOne } from '../../api/teamApi';
 import { getPartUsers, postAddPart, removePart } from '../../api/partApi';
 import useCustomLogin from './../../hooks/useCustomLogin';
 import ModalComponent from '../common/ModalComponent';
-
-const initState = {
-  teamNo: 0,
-  nickname: '',
-};
+import Profile_Img from '../../resources/images/profile_img.png';
 
 const PartComponent = ({ part }) => {
   // const { isLogin, loginState } = useCustomLogin();
@@ -42,7 +38,7 @@ const PartComponent = ({ part }) => {
   };
 
   return (
-    <div className="flex justify-center bg-slate-100 w-1/5 p-4 ml-10 mr-20 rounded-lg h-30">
+    <div className="flex justify-center bg-slate-100 w-1/5 p-4 ml-10 rounded-lg h-30">
       <div className="w-full">
         <div className="bg-blue-200 rounded-lg text-center p-4">
           <h2>참여 인원</h2>
@@ -52,8 +48,9 @@ const PartComponent = ({ part }) => {
           <div>
             {displayPart.map((partUser) => (
               <div key={partUser.pino}>
-                <div className="p-4">
-                  {partUser.nickname} {partUser.email}
+                <div className="flex p-5">
+                  <img alt="Profile_Img" src={`http://localhost:8282/api/user/userProfileImage?email=${partUser.email}`} className="rounded-full size-10 mr-2" />
+                  {partUser.nickname}
                 </div>
               </div>
             ))}

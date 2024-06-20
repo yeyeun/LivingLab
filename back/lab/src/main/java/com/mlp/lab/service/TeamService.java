@@ -41,9 +41,9 @@ public class TeamService {
         Page<Object[]> result = null;
         if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
             result = teamRepository.selectList(pageable);
-        } else if (search != null && !search.isEmpty()) { // 검색
+        } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색
             result = teamRepository.selectSearchList(search, pageable);
-        } else if (sort != null && !sort.isEmpty()) { // 정렬
+        } else if ((sort != null && !sort.isEmpty()) && (search == null || search.isEmpty())) { // 정렬
             if (sort.equals("최신순")) {
                 result = teamRepository.newList(pageable);
             }
@@ -58,10 +58,10 @@ public class TeamService {
             // }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if (sort.equals("최신순")) {
-                result = teamRepository.searchNewList(sort, pageable);
+                result = teamRepository.searchNewList(search, pageable);
             }
             if (sort.equals("마감임박순")) {
-                result = teamRepository.searchDeadLineList(sort, pageable);
+                result = teamRepository.searchDeadLineList(search, pageable);
             }
             // if(sort.equals("거리순")){
             // result =
