@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import BasicLayout from '../../layouts/BasicLayout';
 import { getUser } from '../../api/userApi';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 import Profile_Img from '../../resources/images/profile_img.png';
 
@@ -21,11 +21,16 @@ const initState = {
 
 const IndexPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
 
   const ino = loginInfo.id;
+
+  const getTextClass = (path) => {
+    return location.pathname.startsWith(path) ? 'header-active' : 'text-gray-500';
+  };
 
   //useCallback 훅을 사용할 때는 두 번째 인자로 의존성 배열을 전달해야함
   const handleClickActivity = useCallback(() => {
@@ -87,26 +92,26 @@ const IndexPage = () => {
                 </li>
                 <li>
                   <div
-                    className="flex flex-row items-center h-24 decoration-slate-400 decoration-2 transform hover:underline hover:underline-offset-8 hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+                    className="flex flex-row items-center h-24 group transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
                     onClick={handleClickActivity}
                   >
-                    <span className="text-lg font-semibold ml-24">나의 활동</span>
+                    <span className={`text-lg font-semibold ml-24 ${getTextClass('/myPage/activity')}`}>나의 활동</span>
                   </div>
                 </li>
                 <li>
                   <div
-                    className="flex flex-row items-center h-24 transform hover:underline hover:underline-offset-8 hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+                    className="flex flex-row items-center h-24 transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
                     onClick={handleClickChat}
                   >
-                    <span className="text-lg font-semibold ml-24">채팅</span>
+                    <span className={`text-lg font-semibold ml-24 ${getTextClass('/myPage/chat')}`}>채팅</span>
                   </div>
                 </li>
                 <li>
                   <div
-                    className="flex flex-row items-center h-24 transform hover:underline hover:underline-offset-8 hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+                    className="flex flex-row items-center h-24 transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
                     onClick={handleClickInfo}
                   >
-                    <span className="text-lg font-semibold ml-24">회원정보</span>
+                    <span className={`text-lg font-semibold ml-24 ${getTextClass('/myPage/info')}`}>회원정보</span>
                   </div>
                 </li>
               </ul>
