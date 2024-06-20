@@ -4,6 +4,7 @@ import useRoomCustomMove from '../../hooks/useRoomCustomMove';
 import { useSelector } from 'react-redux';
 import MapComponentForRoom from '../../components/shareRoom/MapComponentForRoom';
 import heartEmpty from '../../resources/images/heart_empty.png';
+import ModalComponent from "./ModalComponent";
 
 const host = API_SERVER_HOST;
 
@@ -24,7 +25,7 @@ const ReadComponent = ({ roomNo }) => {
   const { moveToModify, moveToList } = useRoomCustomMove();
   const [result, setResult] = useState(null);
   const loginState = useSelector((state) => state.loginSlice);
-
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
 
   useEffect(() => {
     getOne(roomNo).then((data) => {
@@ -41,10 +42,20 @@ const ReadComponent = ({ roomNo }) => {
     });
   };
 
+    // Function to open modal with selected image
+    const openModal = () => {
+        setIsModalOpen2(true);
+    };
+
+    // Function to close modal
+    const closeModal = () => {
+        setIsModalOpen2(false);
+    };
+
     return (
         <div id="full-main">
             <div id="wrap" className="pt-10 w-full text-center mx-auto  ">
-                <div id="images" className="w-[1200px] p-2.5 mx-auto">
+                <div id="images" className="w-[1200px] p-2.5 mx-auto" onClick={openModal}>
                     <div id="grid" className="grid grid-cols-custom grid-rows-2 gap-2 w-full h-[440px]">
                         {shareRoom.uploadFileNames.map((imgFile, index) => (
                             <React.Fragment key={index}>
@@ -62,6 +73,11 @@ const ReadComponent = ({ roomNo }) => {
                                 {/* 첫사진은 큰칸 , 나머지 4장은 작은칸 그 이후 사진들은 올리지 않음 */}
                             </React.Fragment>
                         ))}
+                        <ModalComponent
+                            isOpen={isModalOpen2}
+                            images={shareRoom.uploadFileNames.map(fileName => `${host}/api/shareRoom/display/${fileName}`)}
+                            closeModal={closeModal}
+                        />
                     </div>
                 </div>
             </div>
