@@ -10,7 +10,7 @@ import com.mlp.lab.entity.Team;
 
 //Team Entity의 기본키(PK) 타입인 Integer를 인자로 전달
 public interface TeamRepository extends JpaRepository<Team, Integer> {
-    @Query("select t, ti from Team t left join t.imageList ti where t.flag = false and (ti.ord = 0 or ti.ord IS NULL) order by b.buyNo")
+    @Query("select t, ti from Team t left join t.imageList ti where t.flag = false and (ti.ord = 0 or ti.ord IS NULL) order by t.teamNo")
     Page<Object[]> selectList(Pageable pageable);
 
     // 검색어 기준 정렬(글 제목에서만 검색)
