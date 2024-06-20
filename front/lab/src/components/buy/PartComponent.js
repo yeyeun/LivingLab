@@ -11,7 +11,7 @@ const initState = {
   nickname: '',
 };
 
-const PartComponent = ({ part, user }) => {
+const PartComponent = ({ buyNo, part, user }) => {
   // const { isLogin, loginState } = useCustomLogin();
 
   // const loginInfo = useSelector((state) => state.loginSlice);
