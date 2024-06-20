@@ -104,4 +104,14 @@ public class ShareRoomController {
         return Map.of("RESULT", "SUCCESS");
     }
 
+    @PutMapping("/increase/{roomNo}") // 좋아요 +1
+    public void increase(@PathVariable(name = "roomNo") Long roomNo) {
+        shareRoomService.increase(roomNo);
+    }
+
+    @PutMapping("/decrease/{roomNo}") // 좋아요 +1
+    public void decrease(@PathVariable(name = "roomNo") Long roomNo) {
+        shareRoomService.decrease(roomNo);
+    }
+
 }

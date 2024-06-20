@@ -69,6 +69,7 @@ const AddComponent = () => {
     location: '',
     files: [],
     userId: userId,
+    roomHit: 0,
     uploadFileNames: [],
   };
   const [shareRoom, setShareRoom] = useState({ ...initState });

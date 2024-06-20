@@ -31,3 +31,13 @@ export const deleteOne = async (roomNo) => {
   console.log('deleting ', res.data);
   return res.data;
 };
+
+export const increaseLike = async(roomNo) => {
+  const res = await axios.put(`${prefix}/increase/${roomNo}`);
+  return res.data;
+}
+
+export const decreaseLike = async(roomNo) => {
+  const res = await axios.put(`${prefix}/decrease/${roomNo}`);
+  return res.data;
+}

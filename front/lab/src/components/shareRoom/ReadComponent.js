@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { API_SERVER_HOST, getOne, deleteOne } from '../../api/shareRoomApi';
+import { API_SERVER_HOST, getOne, deleteOne, increaseLike, decreaseLike } from '../../api/shareRoomApi';
 import useRoomCustomMove from '../../hooks/useRoomCustomMove';
 import { useSelector } from 'react-redux';
-import MapComponentForRoom from '../../components/shareRoom/MapComponentForRoom';
-import heartEmpty from '../../resources/images/heart_empty.png';
+import MapComponentForRoom from '../../components/shareRoom/KakaoMapComponent';
+import { likeRoom, unlikeRoom, likeInfoRoom } from '../../api/likeApi';
 import ModalComponent from "./ModalComponent";
+import emptyheart from '../../resources/images/heart_empty.png';
+import fullheart from '../../resources/images/heart_full.png';
 
 const host = API_SERVER_HOST;
 
@@ -16,16 +18,26 @@ const initState = {
   parking: '',
   option1: '',
   location: '',
+  roomHit: 0,
   uploadFileNames: [],
-  hit: '',
 };
+
+const initState2 = {
+    likeNo: 0,
+    id: 0,
+    roomNo: 0,
+  };
 
 const ReadComponent = ({ roomNo }) => {
   const [shareRoom, setShareRoom] = useState(initState);
+  const [like, setLike] = useState(initState2);
+  const [isLiked, setIsLiked] = useState({}); // true/false에 따라 하트 이미지 변경
+  const [info, setInfo] = useState(null);
   const { moveToModify, moveToList } = useRoomCustomMove();
   const [result, setResult] = useState(null);
   const loginState = useSelector((state) => state.loginSlice);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const ino = loginState.id;
 
   useEffect(() => {
     getOne(roomNo).then((data) => {
@@ -33,6 +45,21 @@ const ReadComponent = ({ roomNo }) => {
       setShareRoom(data);
     });
   }, [roomNo]);
+
+  useEffect(() => {
+    if (loginState.id) {
+      //로그인시에만 실행
+      likeInfoRoom(roomNo, ino).then((data) => {
+        setLike(data);
+        if (data) {
+          //data가 있으면 이미 좋아요 누른글
+          setIsLiked(true);
+        } else {
+          setIsLiked(false);
+        }
+      });
+    }
+  }, [loginState.id, info]);
 
   const handleClickDelete = () => {
     deleteOne(roomNo).then((result) => {
@@ -42,15 +69,36 @@ const ReadComponent = ({ roomNo }) => {
     });
   };
 
-    // Function to open modal with selected image
-    const openModal = () => {
-        setIsModalOpen2(true);
-    };
+// Function to open modal with selected image
+const openModal = () => {
+    setIsModalOpen2(true);
+};
 
-    // Function to close modal
-    const closeModal = () => {
-        setIsModalOpen2(false);
-    };
+// Function to close modal
+const closeModal = () => {
+    setIsModalOpen2(false);
+};
+
+const handleLikeClick = () => {
+    if (!loginState.id) {
+        setInfo('로그인 후 이용 가능합니다');
+        return;
+    }
+    if (isLiked) {
+        unlikeRoom(like.likeNo);
+        decreaseLike(roomNo);
+        setInfo('좋아요 목록에서 삭제되었습니다');
+    } else {
+        const data = {
+        id: ino,
+        roomNo: roomNo,
+        };
+        likeRoom(data);
+        increaseLike(roomNo);
+        setInfo('좋아요 목록에 추가되었습니다');
+    }
+    setIsLiked(!isLiked);
+};
 
     return (
         <div id="full-main">
@@ -158,7 +206,7 @@ const ReadComponent = ({ roomNo }) => {
                                     <p className="flex-none mr-4 text-gray-900 text-base leading-6 font-normal">{shareRoom.location}</p>
                                 </div>
                                 <div id="zeedo">
-                                    <div className="col-start-2 col-span-8 h-80">
+                                    <div className="col-start-2 col-span-8 h-[420px]">
                                         <MapComponentForRoom location={shareRoom.location}/>
                                     </div>
                                 </div>
@@ -179,14 +227,15 @@ const ReadComponent = ({ roomNo }) => {
                                     </div>
                                     <div className="w-[77px] ml-2">
                                         <button className="h-[56px]">
-                                            <span>좋아요</span>
+                                        <img src={loginState.id && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline" />
+                                        {shareRoom.roomHit}
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </aside>
-                    <div className="mt-[100px]">
+                    <div className="mt-[200px]">
                     {loginState.id === shareRoom.userId && (
                             <>
                                 <button type="button" className="ml-5 float-right inline-block rounded bg-blue-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none" onClick={handleClickDelete}>

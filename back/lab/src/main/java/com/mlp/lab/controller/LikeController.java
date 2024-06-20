@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mlp.lab.dto.like.LikeBuyDto;
+import com.mlp.lab.dto.like.LikeRoomDto;
 import com.mlp.lab.service.LikeService;
 import lombok.RequiredArgsConstructor;
 
@@ -34,5 +35,22 @@ public class LikeController {
     public LikeBuyDto likeInfo(@RequestParam(value="buyNo") Long buyNo, @RequestParam(value="id") Long id){
         return likeService.read(buyNo,id);
    }
+
+   ///////////////////// room 쪽 부분 
+
+   @PostMapping("/shareRoom") // 좋아요 +1
+   public void likeRoom(@RequestBody LikeRoomDto likeRoomDto){
+      likeService.addRoom(likeRoomDto);
+   }
+   
+   @DeleteMapping("/shareRoom/{likeNo}") // 좋아요 -1
+   public void unlikeRoom(@PathVariable(name = "likeNo") long likeNo){
+       likeService.deleteRoom(likeNo);
+   }
+
+   @GetMapping("/shareRoom") //좋아요 정보 조회
+   public LikeRoomDto likeInfoRoom(@RequestParam(value="roomNo") Long roomNo, @RequestParam(value="id") Long id){
+       return likeService.readRoom(roomNo,id);
+  }
 
 }

@@ -21,3 +21,23 @@ export const likeInfo = async(buyNo, id) => {
     });
     return res.data;
 };
+
+export const likeRoom = async(likeRoom) => {
+    const res = await axios.post(`${prefix}/shareRoom`,likeRoom);
+    return res.data;
+};
+
+export const unlikeRoom = async(likeNo) => {
+    const res = await axios.delete(`${prefix}/shareRoom/${likeNo}`);
+    return res.data;
+};
+
+export const likeInfoRoom = async(roomNo, id) => {
+    const res = await axios.get(`${prefix}/shareRoom`,{
+        params : {
+            roomNo: roomNo,
+            id: id
+        }
+    });
+    return res.data;
+};

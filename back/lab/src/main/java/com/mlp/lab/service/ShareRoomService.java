@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.dto.ShareRoomDto;
-
 import com.mlp.lab.entity.ShareRoom;
 import com.mlp.lab.entity.ShareRoomImage;
 import com.mlp.lab.repository.ShareRoomRepository;
@@ -131,6 +130,20 @@ public class ShareRoomService {
                 shareRoom.addImageString(uploadName);
             });
         }
+        shareRoomRepository.save(shareRoom);
+    }
+
+    public void increase(Long roomNo) { // 좋아요 +1
+        Optional<ShareRoom> result = shareRoomRepository.findById(roomNo.intValue());
+        ShareRoom shareRoom = result.orElseThrow();
+        shareRoom.setRoomHit(shareRoom.getRoomHit()+1);
+        shareRoomRepository.save(shareRoom);
+    }
+
+    public void decrease(Long roomNo) { // 좋아요 -1
+        Optional<ShareRoom> result = shareRoomRepository.findById(roomNo.intValue());
+        ShareRoom shareRoom = result.orElseThrow();
+        shareRoom.setRoomHit(shareRoom.getRoomHit()-1);
         shareRoomRepository.save(shareRoom);
     }
 
