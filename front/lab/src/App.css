@@ -1,3 +1,45 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+
+@font-face {
+  font-family: "KakaoBig";
+  font-style: normal;
+  font-weight: Regular;
+  src: url("./resources/fonts/KakaoBig-Regular.woff2");
+}
+
+@font-face {
+  font-family: "KakaoBig";
+  font-style: normal;
+  font-weight: Bold;
+  src: url("./resources/fonts/KakaoBig-Bold.woff2");
+}
+
+@font-face {
+  font-family: "KakaoSmall";
+  font-style: normal;
+  font-weight: 300; /* Light */
+  src: url("./resources/fonts/KakaoSmall-Light.woff2");
+}
+
+@font-face {
+  font-family: "KakaoSmall";
+  font-style: normal;
+  font-weight: 400; /* Regular */
+  src: url("./resources/fonts/KakaoSmall-Regular.woff2");
+}
+
+@font-face {
+  font-family: "KakaoSmall";
+  font-style: normal;
+  font-weight: 700; /* Bold */
+  src: url("./resources/fonts/KakaoSmall-Bold.woff2");
+}
+
+
+* {
+  font-family: "KakaoBig";
+}
+
 .App {
   text-align: center;
 }
@@ -38,16 +80,41 @@
   }
 }
 
+.bor-bot {
+  border-bottom: 1px solid var(--colorBg1);
+}
+
 /* 홈 화면 상단 */
 .main-container-top {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .main-image {
   width: auto;
   height: auto;
   margin: 0 auto;
+  border-radius: 50px;
 }
+
+.main-image-text {
+  position: absolute;
+  color: #ffffff;
+  font-size: 65px;
+}
+
+.KakaoSmall-Light {
+  font-family: "KakaoSmall";
+  font-weight: 300;
+}
+
+.KakaoSmall-Bold {
+  font-family: "KakaoSmall";
+  font-weight: 700;
+}
+
 
 .main-profile {
   width: 400px;
@@ -121,10 +188,10 @@
 .list-tagbtn {
   border: 1px solid rgb(0, 0, 0);
   font-size: 20px;
-  border-radius: 24px;  
+  border-radius: 24px;
   padding: 2px 10px;
-  background-color: #ffffff; 
-  border-color: #d4d4d4; 
+  background-color: #ffffff;
+  border-color: #d4d4d4;
 }
 
 .list-tagbtn:hover {
@@ -149,7 +216,7 @@
 
 .main-headline {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .main-item {
@@ -350,6 +417,10 @@ main-teamlist-container {
   color: #6ac5b7;
 }
 
+.header-fontsize {
+  font-size: 17.5px
+}
+
 .color-wood {
   color: #7e5835;
 }
@@ -503,7 +574,8 @@ main-teamlist-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 50; /* 최상단에 표시 */
+  z-index: 50;
+  /* 최상단에 표시 */
 }
 
 /* 모달 내용 */
@@ -625,6 +697,7 @@ input[type='date']::before {
 }
 
 input[type='date']:not(:focus):invalid {
+
   &::-webkit-datetime-edit-text,
   &::-webkit-datetime-edit-month-field,
   &::-webkit-datetime-edit-day-field,

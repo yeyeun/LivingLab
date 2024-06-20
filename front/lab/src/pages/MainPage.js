@@ -10,10 +10,14 @@ import CommunityPostComponent from '../components/main/CommunityPostComponent';
 import TeamPostComponent from '../components/main/TeamPostComponent';
 import MarketPostComponent from '../components/main/MarketPostComponent'
 import BuyPostComponent from '../components/main/BuyPostComponent';
+import img_main from '../resources/images/img_main5.png';
+
+
 
 import { Link } from 'react-router-dom';
 import React from "react";
 import Slider from "react-slick";
+import TypingComponent from '../components/main/TypingComponent';
 
 
 
@@ -37,8 +41,11 @@ const MainPage = () => {
 
       <BasicLayout>
 
-        <div className="main-container-top mt-10 mb-5">
-          <img className="main-image" src={Main} alt="MainImage" />
+        <div className="main-container-top mb-5">
+          <img className="main-image" src={img_main} alt="MainImage" />
+          <div className="main-image-text">
+            <TypingComponent/>
+          </div>
         </div>
         <div className="main-container">
           <div className="main-slide-container">
@@ -68,7 +75,7 @@ const MainPage = () => {
             </Slider>
           </div>
           <div className="weather-container ">
-          <div className="main-headline mb-2">
+            <div className="main-headline mb-2">
               <span>우리 동네 날씨</span>
             </div>
           </div>

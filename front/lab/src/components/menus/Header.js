@@ -13,17 +13,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart, faComments, faMessage, faHouse, faFilePen, faRightToBracket, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
-  // 아래 한 줄 코드 userSelector로 어디서든간에 로그인 데이터가 바뀌는 걸 알 수 있다.
-  // 이게 리덕스 툴킷이 하는 일
   const loginState = useSelector((state) => state.loginSlice);
 
   const { doLogout, moveToPath } = useCustomLogin();
 
-  //const dispatch = useDispatch();
-
   const handleClickLogout = () => {
-    //dispatch(logout());
-
     doLogout();
     alert('로그아웃되었습니다.');
     moveToPath('/');
@@ -33,56 +27,49 @@ const Header = () => {
 
   const getLinkClass = (path) => {
     if (path === '/') {
-      //홈의 경우
       return location.pathname === path ? 'header-active' : 'menu-hover color-wood';
     }
-    // 그 외의 경우
     return location.pathname.startsWith(path) && location.pathname !== '/' ? 'header-active' : 'menu-hover color-wood';
   };
 
   return (
-    <nav id="navbar" className="z-50 bg-white flex-wrap relative flex w-full items-center justify-start py-3 border-b-2">
-      <div className="flex w-full flex-wrap items-center justify-between px-3">
-        {/* left section */}
-        <div className="flex items-center basis-auto text-xl  ">
-          <img src={Logo} alt="LOGO" className="w-60" />
-          <ul className="flex flex-row p-3 list-none me-auto">
-            <li className="pr-10 pl-5">
-              <Link to={'/'} className={getLinkClass('/')}>
-                홈
-              </Link>
-            </li>
-            <li className="pr-10">
-              <Link to={'/buy'} className={getLinkClass('/buy')}>
-                공동구매
-              </Link>
-            </li>
-            <li className="pr-10">
-              <Link to={'/team'} className={getLinkClass('/team')}>
-                동네모임
-              </Link>
-            </li>
-            <li className="pr-10">
-              <Link to={'/market'} className={getLinkClass('/market')}>
-                동네장터
-              </Link>
-            </li>
-            <li className="pr-10">
-              <Link to={'/shareRoom'} className={getLinkClass('/shareRoom')}>
-                자취방쉐어
-              </Link>
-            </li>
-            <li className="pr-10">
-              <Link to={'/community'} className={getLinkClass('/community')}>
-                커뮤니티
-              </Link>
-            </li>
-          </ul>
-        </div>
-        {/* right section */}
+    <nav id="navbar" className="z-50 bg-white flex-wrap sticky top-0 relative flex w-full py-2.5 shadow">
+      <div className="flex w-full flex-wrap items-center justify-between px-3 ">
+        <img src={Logo} alt="LOGO" className="w-60" />
+        <ul className="flex flex-row p-3 list-none header-fontsize items-center">
+          <li className="px-5 pl-5">
+            <Link to={'/'} className={getLinkClass('/')}>
+              홈
+            </Link>
+          </li>
+          <li className="px-5">
+            <Link to={'/buy'} className={getLinkClass('/buy')}>
+              공동구매
+            </Link>
+          </li>
+          <li className="px-5">
+            <Link to={'/team'} className={getLinkClass('/team')}>
+              동네모임
+            </Link>
+          </li>
+          <li className="px-5">
+            <Link to={'/market'} className={getLinkClass('/market')}>
+              동네장터
+            </Link>
+          </li>
+          <li className="px-5">
+            <Link to={'/shareRoom'} className={getLinkClass('/shareRoom')}>
+              자취방쉐어
+            </Link>
+          </li>
+          <li className="px-5">
+            <Link to={'/community'} className={getLinkClass('/community')}>
+              커뮤니티
+            </Link>
+          </li>
+        </ul>
         <div className="relative flex items-center">
           {!loginState.email ? (
-            // 비로그인 상태
             <div>
               <button
                 type="button"
@@ -125,12 +112,11 @@ const Header = () => {
               </button>
             </div>
           ) : (
-            // 로그인 상태
             <div className="relative flex items-center">
               <button
                 type="button"
                 className="border border-gray-700 bg-gray-700 text-white 
-                        rounded-lg px-2  mx-1 transition duration-100 ease select-none hover:bg-gray-950 
+                        rounded-lg px-2 mx-1 transition duration-100 ease select-none hover:bg-gray-950 
                         focus:outline-none focus:shadow-outline"
               >
                 <Link to={'/myPage/activity'}>
