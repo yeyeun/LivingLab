@@ -315,7 +315,7 @@ const ReadComponent = ({ buyNo }) => {
         </div>
       </div>
       {/* 참여인원 목록 컴포넌트 */}
-      <PartComponent buyNo={buyNo} part={part} user={user} /> {/* PartComponent에 참여 인원 전달 */}
+      <PartComponent buyNo={buyNo} part={part} user={user} /> {/* PartComponent에 참여 인원(part) 전달 */}
     </>
   );
 };
