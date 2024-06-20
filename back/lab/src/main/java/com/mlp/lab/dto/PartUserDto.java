@@ -14,6 +14,6 @@ public class PartUserDto {
   // private Long pno; // 참여목록 번호
   private Long pino; // 참여회원 번호
 
-  private Long teamNo; // 동네모임 게시물 번호
+  private Long no; // 동네모임 게시물 번호
 
 }
