@@ -8,6 +8,12 @@ const ChatList = ({ onSelectChat }) => {
     { id: 2, name: '유우상', lastMessage: '댓글 기능 만들고 있어요' },
     { id: 3, name: '최영은', lastMessage: '커뮤니티 다 완성했어요' },
     { id: 4, name: '안정호', lastMessage: '홈 화면 수정 중이에요' },
+    { id: 4, name: '안정호', lastMessage: '홈 화면 수정 중이에요' },
+    { id: 4, name: '안정호', lastMessage: '홈 화면 수정 중이에요' },
+    { id: 4, name: '안정호', lastMessage: '홈 화면 수정 중이에요' },
+    { id: 4, name: '안정호', lastMessage: '홈 화면 수정 중이에요' },
+    { id: 4, name: '안정호', lastMessage: '홈 화면 수정 중이에요' },
+    { id: 4, name: '안정호', lastMessage: '홈 화면 수정 중이에요' },
     // Add more dummy data as needed
   ];
 

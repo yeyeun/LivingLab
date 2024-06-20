@@ -80,9 +80,9 @@ const IndexPage = () => {
     <div>
       <BasicLayout>
         <div className="text-xl flex-grow bg-teal-50">
-          <div className="min-h-screen flex flex-row w-4/5 mx-auto my-10 shadow-md">
-            <div className="flex flex-col w-80 bg-white overflow-hidden border-r">
-              <ul className="flex flex-col py-4 mt-8">
+          <div className="min-h-screen flex flex-row w-3/5 mx-auto my-10">
+            <div className="flex flex-col w-80 bg-white overflow-hidden h-fit rounded-3xl mr-5 shadow-md">
+              <ul className="flex flex-col py-4 my-8">
                 <img src={user.profileImage ? user.profileImage : Profile_Img} alt="프로필이미지" className="rounded-full size-1/2 mx-auto" />
 
                 <li>
@@ -95,7 +95,7 @@ const IndexPage = () => {
                     className="flex flex-row items-center h-24 group transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
                     onClick={handleClickActivity}
                   >
-                    <span className={`text-lg font-semibold ml-24 ${getTextClass('/myPage/activity')}`}>나의 활동</span>
+                    <span className={`text-xl font-semibold ml-24 ${getTextClass('/myPage/activity')}`}>나의 활동</span>
                   </div>
                 </li>
                 <li>
@@ -103,7 +103,7 @@ const IndexPage = () => {
                     className="flex flex-row items-center h-24 transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
                     onClick={handleClickChat}
                   >
-                    <span className={`text-lg font-semibold ml-24 ${getTextClass('/myPage/chat')}`}>채팅</span>
+                    <span className={`text-xl font-semibold ml-24 ${getTextClass('/myPage/chat')}`}>채팅</span>
                   </div>
                 </li>
                 <li>
@@ -111,7 +111,7 @@ const IndexPage = () => {
                     className="flex flex-row items-center h-24 transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
                     onClick={handleClickInfo}
                   >
-                    <span className={`text-lg font-semibold ml-24 ${getTextClass('/myPage/info')}`}>회원정보</span>
+                    <span className={`text-xl font-semibold ml-24 ${getTextClass('/myPage/info')}`}>회원정보</span>
                   </div>
                 </li>
               </ul>
