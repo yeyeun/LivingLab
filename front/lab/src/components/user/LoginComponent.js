@@ -9,6 +9,9 @@ import useCustomLogin from '../../hooks/useCustomLogin';
 import { loginPost } from '../../api/userApi';
 import FindIdModal from './FindIdModal';
 import FindPwdModal from './FindPwdModal';
+import { mailSend } from '../../api/emailApi'
+import { findId } from '../../api/userApi'
+import { findPwd } from '../../api/userApi'
 
 const initState = {
   email: '',
@@ -22,6 +25,14 @@ function LoginComponent(props) {
   const [findPwdModal, setFindPwdModal] = useState(false);
   const dispatch = useDispatch();
   const [step, setStep] = useState(0);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState('');
+  const [authNum, setAuthNum] = useState('');
+  const [inputNum, setInputNum] = useState('');
+  const [pwd, setPwd] = useState('');
+  
 
   const handleChange = (e) => {
     loginParam[e.target.name] = e.target.value;
@@ -48,6 +59,7 @@ function LoginComponent(props) {
   };
 
   const handleModalClose = () => {
+    setPwd(null);
     setFindIdModal(false);
     setFindPwdModal(false);
   };
@@ -62,9 +74,29 @@ function LoginComponent(props) {
     setStep(0); // 초기 단계로 설정
   };
 
-  const handleNextStep = () => {
+  const handleFindId = async () => {  //Id 찾기
+    const response = await findId({ name, phone });
+    setMessage(response.message);
     setStep((prevStep) => prevStep + 1);
   };
+
+  const handleFindPwd = async () => { //비밀번호 찾기위한 이메일 인증받기
+    const response = await mailSend({ email });
+    console.log("인증번호:"+authNum);
+    setAuthNum(response.data)
+    setStep((prevStep) => prevStep + 1);
+  };
+
+  const handleCheckNum = async () => {  //이메일 인증 번호와 비교하기
+    if(authNum === inputNum){ //인증번호 일치시
+      const response = await findPwd(email);
+      setPwd(response.data)
+      setStep((prevStep) => prevStep + 1);
+    } else {  //인증번호 불일치 시
+      setStep(3);
+    }
+  };
+  
 
   const renderContentId = () => {
     switch (step) {
@@ -75,13 +107,17 @@ function LoginComponent(props) {
               <span>회원정보에 등록된 이름과 전화번호를 입력해주세요</span>
             </div>
             <div class="w-full my-2 transform border-b-2 bg-transparent text-base duration-300 focus-within:border-teal-700">
-              <input type="text" placeholder="이름" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"/>
+              <input type="text" placeholder="이름" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"
+              value={name}
+              onChange={(e) => setName(e.target.value)}/>
             </div>
             <div class="w-full my-2 transform border-b-2 bg-transparent text-base duration-300 focus-within:border-teal-700">
-              <input type="text" placeholder="전화번호" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"/>
+              <input type="text" placeholder="전화번호" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}/>
             </div>
             <div className="w-full flex justify-center mt-5 mb-4">
-              <button onClick={handleNextStep} className="rounded bg-mainColor mt-4 mb-4 mr-2 px-4 py-1 text-base text-white hover:bg-teal-500 transition-colors">
+              <button onClick={handleFindId} className="rounded bg-mainColor mt-4 mb-4 mr-2 px-4 py-1 text-base text-white hover:bg-teal-500 transition-colors">
                 아이디 찾기
               </button>
               <button
@@ -97,7 +133,7 @@ function LoginComponent(props) {
         return (
           <div>
             <div className="w-full text-center text-sm pt-4 pb-4">
-              <span>OOO님의 아이디는 aaa@gmail.com입니다</span>
+              <span>{message}</span>
             </div>
             <div className="w-full flex justify-center mt-5 mb-4">
               <button
@@ -123,10 +159,12 @@ function LoginComponent(props) {
               <span>회원정보에 등록된 이메일 주소를 입력해주세요</span>
             </div>
             <div class="w-full my-2 transform border-b-2 bg-transparent text-base duration-300 focus-within:border-teal-700">
-              <input type="text" placeholder="이메일 주소" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"/>
+              <input type="email" placeholder="이메일 주소" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}/>
             </div>
             <div className="w-full flex justify-center mt-5 mb-4">
-              <button onClick={handleNextStep} className="rounded bg-mainColor mt-4 mb-4 mr-2 px-4 py-1 text-base text-white hover:bg-teal-500 transition-colors">
+              <button onClick={handleFindPwd} className="rounded bg-mainColor mt-4 mb-4 mr-2 px-4 py-1 text-base text-white hover:bg-teal-500 transition-colors">
                 인증번호 발송
               </button>
               <button
@@ -145,10 +183,12 @@ function LoginComponent(props) {
               <span>인증번호를 입력하세요</span>
             </div>
             <div class="w-full my-2 transform border-b-2 bg-transparent text-base duration-300 focus-within:border-teal-700">
-              <input type="text" placeholder="인증번호" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"/>
+              <input type="text" placeholder="인증번호" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"
+              value={inputNum}
+              onChange={(e) => setInputNum(e.target.value)}/>
             </div>
             <div className="w-full flex justify-center mt-5 mb-4">
-              <button onClick={handleNextStep} className="rounded bg-mainColor mt-4 mb-4 mr-2 px-4 py-1 text-base text-white hover:bg-teal-500 transition-colors">
+              <button onClick={handleCheckNum} className="rounded bg-mainColor mt-4 mb-4 mr-2 px-4 py-1 text-base text-white hover:bg-teal-500 transition-colors">
                 인증하기
               </button>
               <button
@@ -164,7 +204,23 @@ function LoginComponent(props) {
         return(
           <div>
           <div className="w-full text-center text-base pt-4 pb-4">
-            <span>등록된 비밀번호는 ****입니다</span>
+            <span>등록된 비밀번호는 {pwd}입니다</span>
+          </div>
+          <div className="w-full flex justify-center mt-5 mb-4">
+            <button
+              className="rounded bg-slate-400 mt-4 mb-4 px-4 py-1 text-base text-white hover:bg-slate-500 transition-colors"
+              onClick={handleModalClose}
+            >
+            닫기
+            </button>
+          </div>
+        </div>
+        );
+        case 3:
+        return(
+          <div>
+          <div className="w-full text-center text-base pt-4 pb-4">
+            <span>인증번호가 일치하지 않습니다. 다시 시도해 주세요</span>
           </div>
           <div className="w-full flex justify-center mt-5 mb-4">
             <button
