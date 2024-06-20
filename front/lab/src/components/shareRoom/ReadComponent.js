@@ -7,6 +7,7 @@ import { likeRoom, unlikeRoom, likeInfoRoom } from '../../api/likeApi';
 import ModalComponent from "./ModalComponent";
 import emptyheart from '../../resources/images/heart_empty.png';
 import fullheart from '../../resources/images/heart_full.png';
+import InfoModal from '../common/InfoModal';
 
 const host = API_SERVER_HOST;
 
@@ -79,6 +80,11 @@ const closeModal = () => {
     setIsModalOpen2(false);
 };
 
+const closeInfoModal = () => {
+    setInfo(null);
+  };
+
+
 const handleLikeClick = () => {
     if (!loginState.id) {
         setInfo('로그인 후 이용 가능합니다');
@@ -86,17 +92,29 @@ const handleLikeClick = () => {
     }
     if (isLiked) {
         unlikeRoom(like.likeNo);
-        decreaseLike(roomNo);
+        decreaseLike(roomNo).then(() => {
+            // 서버에서 hit 수 감소 후 로컬 상태 업데이트
+            setShareRoom(prevState => ({
+              ...prevState,
+              roomHit: prevState.roomHit - 1
+            }));
         setInfo('좋아요 목록에서 삭제되었습니다');
+    });
     } else {
         const data = {
-        id: ino,
-        roomNo: roomNo,
+            id: ino,
+            roomNo: roomNo,
         };
-        likeRoom(data);
-        increaseLike(roomNo);
-        setInfo('좋아요 목록에 추가되었습니다');
-    }
+            likeRoom(data);
+            increaseLike(roomNo).then(() => {
+          // 서버에서 hit 수 증가 후 로컬 상태 업데이트
+          setShareRoom(prevState => ({
+            ...prevState,
+            roomHit: prevState.roomHit + 1
+          }));
+          setInfo('좋아요 목록에 추가되었습니다');
+        });
+      }
     setIsLiked(!isLiked);
 };
 
@@ -126,6 +144,7 @@ const handleLikeClick = () => {
                             images={shareRoom.uploadFileNames.map(fileName => `${host}/api/shareRoom/display/${fileName}`)}
                             closeModal={closeModal}
                         />
+                        {info && <InfoModal title={'알림'} content={`${info}`} callbackFn={closeInfoModal} />}
                     </div>
                 </div>
             </div>
