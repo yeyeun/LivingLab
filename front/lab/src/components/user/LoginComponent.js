@@ -21,6 +21,7 @@ function LoginComponent(props) {
   const [findIdModal, setFindIdModal] = useState(false);
   const [findPwdModal, setFindPwdModal] = useState(false);
   const dispatch = useDispatch();
+  const [step, setStep] = useState(0);
 
   const handleChange = (e) => {
     loginParam[e.target.name] = e.target.value;
@@ -51,12 +52,133 @@ function LoginComponent(props) {
     setFindPwdModal(false);
   };
 
-  const handleClickFindId = (e) => {
+  const handleClickFindId = () => {
     setFindIdModal(true);
+    setStep(0); // 초기 단계로 설정
   };
 
-  const handleClickFindPwd = (e) => {
+  const handleClickFindPwd = () => {
     setFindPwdModal(true);
+    setStep(0); // 초기 단계로 설정
+  };
+
+  const handleNextStep = () => {
+    setStep((prevStep) => prevStep + 1);
+  };
+
+  const renderContentId = () => {
+    switch (step) {
+      case 0:
+        return (
+          <div>
+            <div className="w-full text-center text-sm pt-4 pb-4">
+              <span>회원정보에 등록된 이름과 전화번호를 입력해주세요</span>
+            </div>
+            <div class="w-full my-2 transform border-b-2 bg-transparent text-base duration-300 focus-within:border-teal-700">
+              <input type="text" placeholder="이름" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"/>
+            </div>
+            <div class="w-full my-2 transform border-b-2 bg-transparent text-base duration-300 focus-within:border-teal-700">
+              <input type="text" placeholder="전화번호" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"/>
+            </div>
+            <div className="w-full flex justify-center mt-5 mb-4">
+              <button onClick={handleNextStep} className="rounded bg-mainColor mt-4 mb-4 mr-2 px-4 py-1 text-base text-white hover:bg-teal-500 transition-colors">
+                아이디 찾기
+              </button>
+              <button
+                className="rounded bg-slate-400 mt-4 mb-4 px-4 py-1 text-base text-white hover:bg-slate-500 transition-colors"
+                onClick={handleModalClose}
+              >
+              닫기
+              </button>
+            </div>
+          </div>
+        );
+      case 1:
+        return (
+          <div>
+            <div className="w-full text-center text-sm pt-4 pb-4">
+              <span>OOO님의 아이디는 aaa@gmail.com입니다</span>
+            </div>
+            <div className="w-full flex justify-center mt-5 mb-4">
+              <button
+                className="rounded bg-slate-400 mt-4 mb-4 px-4 py-1 text-base text-white hover:bg-slate-500 transition-colors"
+                onClick={handleModalClose}
+              >
+              닫기
+              </button>
+            </div>
+          </div>
+        );
+      default:
+        return <p>일시적인 오류입니다. 다시 실행해주세요</p>
+    }
+  };
+
+  const renderContentPwd = () => {
+    switch (step) {
+      case 0:
+        return (
+          <div>
+            <div className="w-full text-center text-sm pt-4 pb-4">
+              <span>회원정보에 등록된 이메일 주소를 입력해주세요</span>
+            </div>
+            <div class="w-full my-2 transform border-b-2 bg-transparent text-base duration-300 focus-within:border-teal-700">
+              <input type="text" placeholder="이메일 주소" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"/>
+            </div>
+            <div className="w-full flex justify-center mt-5 mb-4">
+              <button onClick={handleNextStep} className="rounded bg-mainColor mt-4 mb-4 mr-2 px-4 py-1 text-base text-white hover:bg-teal-500 transition-colors">
+                인증번호 발송
+              </button>
+              <button
+                className="rounded bg-slate-400 mt-4 mb-4 px-4 py-1 text-base text-white hover:bg-slate-500 transition-colors"
+                onClick={handleModalClose}
+              >
+              닫기
+              </button>
+            </div>
+          </div>
+        );
+      case 1:
+        return (
+          <div>
+            <div className="w-full text-center text-sm pt-4 pb-4">
+              <span>인증번호를 입력하세요</span>
+            </div>
+            <div class="w-full my-2 transform border-b-2 bg-transparent text-base duration-300 focus-within:border-teal-700">
+              <input type="text" placeholder="인증번호" class="w-full p-1 border-none bg-transparent outline-none focus:outline-none"/>
+            </div>
+            <div className="w-full flex justify-center mt-5 mb-4">
+              <button onClick={handleNextStep} className="rounded bg-mainColor mt-4 mb-4 mr-2 px-4 py-1 text-base text-white hover:bg-teal-500 transition-colors">
+                인증하기
+              </button>
+              <button
+                className="rounded bg-slate-400 mt-4 mb-4 px-4 py-1 text-base text-white hover:bg-slate-500 transition-colors"
+                onClick={handleModalClose}
+              >
+              닫기
+              </button>
+            </div>
+          </div>
+        );
+      case 2:
+        return(
+          <div>
+          <div className="w-full text-center text-base pt-4 pb-4">
+            <span>등록된 비밀번호는 ****입니다</span>
+          </div>
+          <div className="w-full flex justify-center mt-5 mb-4">
+            <button
+              className="rounded bg-slate-400 mt-4 mb-4 px-4 py-1 text-base text-white hover:bg-slate-500 transition-colors"
+              onClick={handleModalClose}
+            >
+            닫기
+            </button>
+          </div>
+        </div>
+        );
+      default:
+        return <p>일시적인 오류입니다. 다시 실행해주세요</p>
+    }
   };
 
   return (
@@ -155,8 +277,12 @@ function LoginComponent(props) {
         </div> */}
 
 
-      <FindIdModal title={'아이디 찾기'} isVisible={findIdModal} callbackFn={handleModalClose}/>
-      <FindPwdModal title={'비밀번호 찾기'} isVisible={findPwdModal} callbackFn={handleModalClose} />
+      <FindIdModal title={'아이디 찾기'} isVisible={findIdModal} callbackFn={handleModalClose}>
+        {renderContentId()}
+      </FindIdModal>
+      <FindPwdModal title={'비밀번호 찾기'} isVisible={findPwdModal} onClose={handleModalClose}>
+        {renderContentPwd()}
+      </FindPwdModal>
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ const ChatInput = ({ onSend }) => {
           }
         }}
         className="flex-1 p-2 border rounded-lg"
-        placeholder="메시지를 입력하세요..."
+        placeholder="메시지를 입력하세요"
       />
       <button type="submit" className="ml-2 p-2 bg-teal-300 text-white rounded-lg">
         보내기
