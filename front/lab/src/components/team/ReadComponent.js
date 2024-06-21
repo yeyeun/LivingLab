@@ -168,7 +168,7 @@ const ReadComponent = ({ teamNo }) => {
       <div className=" bg-slate-200 w-1/4 rounded-md px-4 py-4">
         <LandingComponent />
       </div>
-      <div className="bg-slate-100 w-2/5 ml-5 p-4 rounded-lg">
+      <div className="bg-slate-100 w-[1000px] ml-5 p-4 rounded-lg">
         <div className="flex justify-between items-center">
           <span className="text-left font-semibold ml-2 items-center flex">
             {team.flag ? '모집 마감' : '모집 중'}
@@ -213,7 +213,7 @@ const ReadComponent = ({ teamNo }) => {
           <div className="col-start-2 col-span-8"></div>
           <div className="col-start-8 col-span-2 text-right text-base">{team.nickname}</div>
           <div className="col-start-2 col-span-8 my-5 border-t-4 py-4 whitespace-pre-wrap">{team.content}</div>
-          <div className="col-start-2 col-span-8 h-80">
+          <div className="col-start-2 col-span-8 h-[450px]">
             <MapComponent location={team.location} />
           </div>
           {/* <div className="col-start-2 col-span-8 my-6">
