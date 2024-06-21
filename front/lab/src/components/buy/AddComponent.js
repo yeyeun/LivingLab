@@ -7,7 +7,6 @@ import { getUser } from './../../api/userApi';
 import { useSelector } from 'react-redux';
 import iconNext from '../../resources/images/icon-next.png';
 import iconEdit from '../../resources/images/iconEdit.png';
-import { getBuyPartUsers, postAddBuyPart, removePart } from '../../api/partApi';
 
 const initState = {
   id: 0,
@@ -19,7 +18,7 @@ const initState = {
   max: 2,
   current: 1,
   deadline: '',
-  buyHit: '0',
+  buyHit: 0,
   files: [],
 };
 
@@ -124,9 +123,9 @@ const AddComponent = () => {
     formData.append('deadline', buy.deadline);
     formData.append('buyHit', buy.buyHit);
 
-    for (const x of formData.entries()) {
-      console.log(x);
-    }
+    // for (const x of formData.entries()) {
+    //   console.log(x);
+    // }
     postAddBuy(formData);
     setResult('게시글이 등록되었습니다');
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getBuyPartUsers, postAddBuyPart, removePart } from '../../api/partApi';
+import { getBuyPartUsers, postAddBuyPart } from '../../api/partApi';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/buyApi';
 import { likeBuy, unlikeBuy, likeInfoBuy } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
@@ -75,7 +75,6 @@ const ReadComponent = ({ buyNo }) => {
 
   useEffect(() => {
     getOne(buyNo).then((data) => {
-      console.log('buy----', data);
       setBuy(data);
     });
   }, [buyNo, info]);
@@ -123,10 +122,7 @@ const ReadComponent = ({ buyNo }) => {
     }
   };
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
+  
   const handleCloseModal = () => {
     setShowModal(false);
   };

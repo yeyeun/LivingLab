@@ -24,6 +24,28 @@ export const likeInfoBuy = async(buyNo, id) => {
     return res.data;
 };
 
+/* ============동네모임============== */
+
+export const likeTeam = async(likeTeam) => {
+    const res = await axios.post(`${prefix}/team`,likeTeam);
+    return res.data;
+};
+
+export const unlikeTeam = async(likeNo) => {
+    const res = await axios.delete(`${prefix}/team/${likeNo}`);
+    return res.data;
+};
+
+export const likeInfoTeam = async(teamNo, id) => {
+    const res = await axios.get(`${prefix}/team`,{
+        params : {
+            teamNo: teamNo,
+            id: id
+        }
+    });
+    return res.data;
+};
+
 /* ============동네장터============== */
 
 export const likeMarket = async(likeMarket) => {

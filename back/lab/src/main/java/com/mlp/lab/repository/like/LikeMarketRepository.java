@@ -11,6 +11,6 @@ import com.mlp.lab.entity.like.LikeMarket;
 
 @Repository
 public interface LikeMarketRepository extends JpaRepository<LikeMarket, Long>{
-    @Query("select lb from LikeMarket lb where lb.market.marketNo=:marketNo and lb.user.id=:id")
+    @Query("select lm from LikeMarket lm where lm.market.marketNo=:marketNo and lm.user.id=:id")
     Optional<LikeMarket> findLike(@Param("marketNo")Long marketNo, @Param("id") Long id);
 }

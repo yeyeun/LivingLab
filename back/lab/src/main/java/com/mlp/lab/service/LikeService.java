@@ -9,12 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mlp.lab.dto.like.LikeBuyDto;
 import com.mlp.lab.dto.like.LikeMarketDto;
 import com.mlp.lab.dto.like.LikeRoomDto;
+import com.mlp.lab.dto.like.LikeTeamDto;
 import com.mlp.lab.entity.like.LikeBuy;
 import com.mlp.lab.entity.like.LikeMarket;
 import com.mlp.lab.entity.like.LikeShareRoom;
+import com.mlp.lab.entity.like.LikeTeam;
 import com.mlp.lab.repository.like.LikeBuyRepository;
 import com.mlp.lab.repository.like.LikeMarketRepository;
 import com.mlp.lab.repository.like.LikeRoomRepository;
+import com.mlp.lab.repository.like.LikeTeamRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +28,7 @@ public class LikeService {
     private final ModelMapper modelMapper;
     private final LikeBuyRepository likeBuyRepository;
     private final LikeMarketRepository likeMarketRepository;
+    private final LikeTeamRepository likeTeamRepository;
     private final LikeRoomRepository likeRoomRepository;
 
     /* ===============공동구매=============== */ 
@@ -47,6 +51,29 @@ public class LikeService {
         LikeBuyDto likeBuyDto = modelMapper.map(likeBuy, LikeBuyDto.class);
         return likeBuyDto;
     }
+
+
+    /* ===============동네모임=============== */ 
+
+    public void addTeam(LikeTeamDto likeTeamDto){
+        LikeTeam likeTeam = modelMapper.map(likeTeamDto, LikeTeam.class);
+        likeTeamRepository.save(likeTeam);
+    }
+
+    public void deleteTeam(long likeNo) {
+        likeTeamRepository.deleteById(likeNo);
+    }
+
+    public LikeTeamDto readTeam(Long teamNo, Long id) {
+        Optional<LikeTeam> result = likeTeamRepository.findLike(teamNo,id);
+        LikeTeam likeTeam = result.orElse(null);
+        if(likeTeam == null){
+            return null;
+        }
+        LikeTeamDto likeTeamDto = modelMapper.map(likeTeam, LikeTeamDto.class);
+        return likeTeamDto;
+    }
+
 
     /* ===============동네장터=============== */ 
 

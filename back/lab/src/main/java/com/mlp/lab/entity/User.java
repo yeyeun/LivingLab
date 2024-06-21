@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.entity.like.LikeBuy;
+import com.mlp.lab.entity.like.LikeMarket;
+import com.mlp.lab.entity.like.LikeTeam;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -59,6 +61,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<LikeBuy> likeBuys;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<LikeTeam> likeTeams;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<LikeMarket> likeMarkets;
 
     // static으로 만들어 클래스를 만들지 않아도 사용가능
     public static User DtoToEntity(UserDto userDto) { // 화면에서 받은 dto를 entity로

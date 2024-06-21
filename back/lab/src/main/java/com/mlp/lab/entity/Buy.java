@@ -12,6 +12,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -23,6 +24,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Table(name = "buy")
 @ToString(exclude = "imageList")
+@EqualsAndHashCode(callSuper = false)
 public class Buy extends BaseTimeEntity{
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

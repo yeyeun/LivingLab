@@ -237,7 +237,7 @@ public class MarketService {
         Optional<Market> result = marketRepository.findById(marketNo);
         Market market = result.orElseThrow();
         MarketDto marketDto = market.entityToDto(market);
-        marketDto.setId(market.getUser().getId()); //User 객체에서 id값만 가져와서 직접 setId
+        marketDto.setId(market.getUser().getId()); //User 객체에서 ID값만 가져와서 직접 ID값을 넣어줌
         return marketDto;
     }
 
