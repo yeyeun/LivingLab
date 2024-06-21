@@ -52,7 +52,7 @@ public class Buy extends BaseTimeEntity{
     private Integer max;
 
     @Column(name = "current")
-    private Integer current;
+    private Integer current = 1;
 
     @Column(name = "location")
     private String location;
