@@ -98,7 +98,7 @@ const ReadComponent = ({ marketNo }) => {
   };
 
   return (
-    <div className="bg-slate-100 w-2/5 mx-auto p-4 rounded-lg">
+    <div className="bg-slate-100 w-[1000px] mx-auto p-4 rounded-lg">
       <div className="flex justify-between items-center">
         <span className="text-left font-semibold ml-2 items-center flex">
           {market.flag ? '모집 마감' : '모집 중'}
@@ -140,7 +140,7 @@ const ReadComponent = ({ marketNo }) => {
         <div className="col-start-2 col-span-8"></div>
         <div className="col-start-8 col-span-2 text-right text-base">{market.nickname}</div>
         <div className="col-start-2 col-span-8 my-5 border-t-4 py-4 whitespace-pre-wrap">{market.content}</div>
-        <div className="col-start-2 col-span-8 h-80">
+        <div className="col-start-2 col-span-8 h-[450px]">
           <MapComponent location={market.location} />
         </div>
         <div className="col-start-6 col-span-4 my-6">

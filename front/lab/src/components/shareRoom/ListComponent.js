@@ -47,7 +47,7 @@ const ListComponent = ({ search, sort }) => {
           <div class="mx-12 overflow-hidden rounded-sm shadow-lg cursor-pointer h-90 w-60 md:w-80">
             <div className="relative w-full h-full group" onClick={() => moveToRead(shareRoom.roomNo)}>
               <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`}
-              class="object-cover w-full max-h-40 transition duration-500 group-hover:blur-xl group-hover:brightness-120"/>
+              class="object-cover w-full max-h-40 transition duration-500 group-hover:blur-xl group-hover:brightness-125"/>
                 <div className="absolute top-0 w-full flex flex-col items-center justify-center px-4 group-hover:z-10">
                 <p class="text-gray-900 text-lg leading-5 font-bold mb-2 hidden group-hover:block rounded px-2 pt-6">
                     {shareRoom.title}

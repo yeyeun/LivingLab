@@ -217,7 +217,7 @@ const ReadComponent = ({ buyNo }) => {
 
   return (
     <>
-      <div className="bg-slate-100 w-2/5 ml-auto p-4 rounded-lg">
+      <div className="bg-slate-100 w-[1000px] ml-auto p-4 rounded-lg">
         <div className="flex justify-between items-center">
           <span className="text-left font-semibold ml-2 items-center flex">
             {buy.flag ? '모집 마감' : '모집 중'}
@@ -262,7 +262,7 @@ const ReadComponent = ({ buyNo }) => {
           <div className="col-start-2 col-span-8"></div>
           <div className="col-start-8 col-span-2 text-right text-base">{buy.nickname}</div>
           <div className="col-start-2 col-span-8 my-5 border-t-4 py-4 whitespace-pre-wrap">{buy.content}</div>
-          <div className="col-start-2 col-span-8 h-80">
+          <div className="col-start-2 col-span-8 h-[450px]">
             <MapComponent location={buy.location} />
           </div>
           {/* <div className="col-start-2 col-span-8 my-6">
