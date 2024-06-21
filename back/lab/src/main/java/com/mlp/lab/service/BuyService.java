@@ -230,10 +230,11 @@ public class BuyService {
         return responseDTO;
     }
 
-    public void add(BuyDto buyDto) { // 공동구매 등록(이미지 포함)
+    public Buy add(BuyDto buyDto) { // 공동구매 등록(이미지 포함)
         Buy buy = Buy.DtoToEntity(buyDto);
         buy.setUser(userRepository.findByUserId(buyDto.getId()));   //화면에서 받아온 Buy를 작성한 user id값으로 어떤 유저인지 찾아서 알려줌
         buyRepository.save(buy);
+        return buy;
     }
 
     public BuyDto read(int buyNo) { // 공동구매 조회
