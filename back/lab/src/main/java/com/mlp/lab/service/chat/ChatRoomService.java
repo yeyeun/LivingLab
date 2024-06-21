@@ -41,8 +41,8 @@ public class ChatRoomService {
 
     public ChatRoomDataResponseDto.Info createRoom(Long UserId, ChatRoomDataRequestDto.create createRequest) {
         Buy buy = buyRepository.findBuyByBuyNo(createRequest.getBuyNo());
-        User writer = buy.getUser();
-        User reader = userRepository.findByUserId(UserId);
+        User writer = buy.getUser();    //글 작성자(채팅방 생성 후 자동으로 입장)
+        User reader = userRepository.findByUserId(UserId);  //글을 읽고 참여하기를 누룬 유저(여기가 아니라 다른 곳에서 생성해야됨, 추후 수정 예정)
 
         // if (chatRoomRepository.findByUserIdAndBuyNo(UserId,
         // createRequest.getBuyNo()).isPresent()) {
