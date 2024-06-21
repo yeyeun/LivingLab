@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getBuyPartUsers, postAddBuyPart, removePart } from '../../api/partApi';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/buyApi';
-import { likeBuy, unlikeBuy, likeInfo } from '../../api/likeApi';
+import { likeBuy, unlikeBuy, likeInfoBuy } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
@@ -96,7 +96,7 @@ const ReadComponent = ({ buyNo }) => {
   useEffect(() => {
     if (email) {
       //로그인시에만 실행
-      likeInfo(buyNo, ino).then((data) => {
+      likeInfoBuy(buyNo, ino).then((data) => {
         setLike(data);
         if (data) {
           //data가 있으면 이미 좋아요 누른글
@@ -138,6 +138,7 @@ const ReadComponent = ({ buyNo }) => {
 
   const closeModal = () => {
     setResult(null);
+    moveToList();
   };
 
   const closeInfoModal = () => {

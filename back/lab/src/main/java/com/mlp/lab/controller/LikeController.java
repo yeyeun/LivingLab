@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mlp.lab.dto.like.LikeBuyDto;
+import com.mlp.lab.dto.like.LikeMarketDto;
 import com.mlp.lab.dto.like.LikeRoomDto;
 import com.mlp.lab.service.LikeService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LikeController {
     private final LikeService likeService;
+
+    /* ===============공동구매=============== */ 
 
     @PostMapping("/buy") // 좋아요 +1
     public void likeBuy(@RequestBody LikeBuyDto likeBuyDto){
@@ -32,11 +35,29 @@ public class LikeController {
     }
 
     @GetMapping("/buy") //좋아요 정보 조회
-    public LikeBuyDto likeInfo(@RequestParam(value="buyNo") Long buyNo, @RequestParam(value="id") Long id){
-        return likeService.read(buyNo,id);
+    public LikeBuyDto likeInfoBuy(@RequestParam(value="buyNo") Long buyNo, @RequestParam(value="id") Long id){
+        return likeService.readBuy(buyNo,id);
    }
 
-   ///////////////////// room 쪽 부분 
+     /* ===============동네장터=============== */ 
+
+    @PostMapping("/market") // 좋아요 +1
+    public void likeMarket(@RequestBody LikeMarketDto likeMarketDto){
+       likeService.addMarket(likeMarketDto);
+    }
+       
+    @DeleteMapping("/market/{likeNo}") // 좋아요 -1
+    public void unlikeMarket(@PathVariable(name = "likeNo") long likeNo){
+        likeService.deleteMarket(likeNo);
+    }
+   
+    @GetMapping("/market") //좋아요 정보 조회
+    public LikeMarketDto likeInfoMarket(@RequestParam(value="marketNo") Long marketNo, @RequestParam(value="id") Long id){
+         return likeService.readMarket(marketNo,id);
+    }
+
+
+   /* ===============자취방쉐어=============== */ 
 
    @PostMapping("/shareRoom") // 좋아요 +1
    public void likeRoom(@RequestBody LikeRoomDto likeRoomDto){

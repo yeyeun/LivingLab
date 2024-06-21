@@ -6,15 +6,9 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.UserDto;
+import com.mlp.lab.entity.like.LikeBuy;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -62,6 +56,9 @@ public class User {
 
     @Column(name = "profile_image")
     private String profileImage;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<LikeBuy> likeBuys;
 
     // static으로 만들어 클래스를 만들지 않아도 사용가능
     public static User DtoToEntity(UserDto userDto) { // 화면에서 받은 dto를 entity로
