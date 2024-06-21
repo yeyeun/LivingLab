@@ -13,7 +13,7 @@ import com.mlp.lab.entity.Buy;
 public interface BuyRepository extends JpaRepository<Buy, Integer> {
     Buy findBuyByBuyNo(@Param(value = "buyNo")Long buyNo);
 
-    @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL)")
+    @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL) order by b.buyNo")
     Page<Object[]> selectList(Pageable pageable);
 
     // 검색어 기준 정렬(글 제목에서만 검색)

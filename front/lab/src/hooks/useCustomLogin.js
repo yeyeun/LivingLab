@@ -32,6 +32,10 @@ const useCustomLogin = () => {
     navigate({ pathname: '/user/login' }, { replace: true });
   };
 
+  const moveToJoin = () => {
+    navigate({ pathname: '/user/join' }, { replace: true });
+  }
+
   //로그인 페이지로 이동 컴포넌트
   const moveToLoginReturn = () => {
     return <Navigate replace to="/user/login" />;
@@ -67,6 +71,7 @@ const useCustomLogin = () => {
     moveToLogin,
     moveToLoginReturn,
     exceptionHandle,
+    moveToJoin
   };
 };
 

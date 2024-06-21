@@ -14,11 +14,13 @@ const MyChatPage = () => {
   };
 
   return (
-    <div className="text-xl p-4 flex-grow">
-      <div className="bg-slate-50 w-4/5 rounded-md px-10 py-4">
-        <div className="flex flex-col">
-          <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+    <div className="text-xl flex-grow">
+      <div className="bg-white w-full rounded-md px-10 py-4 h-4/5 shadow-md">
+
+
+
+
+            <div className="mx-auto inline-block min-w-full h-full py-2">
               <div className="overflow-hidden">
                 <div className="text-2xl pl-2 my-2 border-l-4 font-Jua border-teal-300">채팅목록</div>
                 <div className="flex">
@@ -30,15 +32,16 @@ const MyChatPage = () => {
                       <ChatWindow chat={selectedChat} />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <p className="text-gray-500">채팅 목록 중 채팅할 사람을 선택하세요</p>
+                        <p className="text-gray-500">채팅 목록 중 채팅할 방을 선택하세요</p>
                       </div>
                     )}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+
+
+
       </div>
     </div>
   );
