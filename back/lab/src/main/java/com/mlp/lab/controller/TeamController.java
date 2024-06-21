@@ -104,5 +104,15 @@ public class TeamController {
         return teamService.getLatestTeam();
     }
 
+    @PutMapping("/increase/{teamNo}") // 좋아요 +1
+    public void increase(@PathVariable(name = "teamNo") Long teamNo) {
+        teamService.increase(teamNo);
+    }
+
+    @PutMapping("/decrease/{teamNo}") // 좋아요 +1
+    public void decrease(@PathVariable(name = "teamNo") Long teamNo) {
+        teamService.decrease(teamNo);
+    }
+
 
 }

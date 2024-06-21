@@ -2,6 +2,8 @@ import axios from 'axios';
 export const API_SERVER_HOST = 'http://localhost:8282';
 const prefix = `${API_SERVER_HOST}/api/like`;
 
+/* ============공동구매============== */
+
 export const likeBuy = async(likeBuy) => {
     const res = await axios.post(`${prefix}/buy`,likeBuy);
     return res.data;
@@ -12,7 +14,7 @@ export const unlikeBuy = async(likeNo) => {
     return res.data;
 };
 
-export const likeInfo = async(buyNo, id) => {
+export const likeInfoBuy = async(buyNo, id) => {
     const res = await axios.get(`${prefix}/buy`,{
         params : {
             buyNo: buyNo,
@@ -21,6 +23,53 @@ export const likeInfo = async(buyNo, id) => {
     });
     return res.data;
 };
+
+/* ============동네모임============== */
+
+export const likeTeam = async(likeTeam) => {
+    const res = await axios.post(`${prefix}/team`,likeTeam);
+    return res.data;
+};
+
+export const unlikeTeam = async(likeNo) => {
+    const res = await axios.delete(`${prefix}/team/${likeNo}`);
+    return res.data;
+};
+
+export const likeInfoTeam = async(teamNo, id) => {
+    const res = await axios.get(`${prefix}/team`,{
+        params : {
+            teamNo: teamNo,
+            id: id
+        }
+    });
+    return res.data;
+};
+
+/* ============동네장터============== */
+
+export const likeMarket = async(likeMarket) => {
+    const res = await axios.post(`${prefix}/market`,likeMarket);
+    return res.data;
+};
+
+export const unlikeMarket = async(likeNo) => {
+    const res = await axios.delete(`${prefix}/market/${likeNo}`);
+    return res.data;
+};
+
+export const likeInfoMarket = async(marketNo, id) => {
+    const res = await axios.get(`${prefix}/market`,{
+        params : {
+            marketNo: marketNo,
+            id: id
+        }
+    });
+    return res.data;
+};
+
+
+/* ============자취방쉐어============== */
 
 export const likeRoom = async(likeRoom) => {
     const res = await axios.post(`${prefix}/shareRoom`,likeRoom);
