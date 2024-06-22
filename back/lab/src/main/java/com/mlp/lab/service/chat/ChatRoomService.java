@@ -27,8 +27,8 @@ public class ChatRoomService {
     private final UserRepository userRepository;
     private final BuyRepository buyRepository;
 
-    public List<ChatRoomDataResponseDto.Info> findAllRoomByUserId(Long UserId) {
-        List<ChatRoom> ChatRooms = chatRoomRepository.findByUserId(UserId);
+    public List<ChatRoomDataResponseDto.Info> findAllRoomByUserId(Long userId) {
+        List<ChatRoom> ChatRooms = chatRoomRepository.findByUserId(userId);
         return ChatRooms.stream()
                 .map(chatRoom -> ChatRoomDataResponseDto.Info.of(chatRoom))
                 .collect(Collectors.toList());
@@ -39,10 +39,9 @@ public class ChatRoomService {
         return ChatRoomDataResponseDto.Info.of(chatRoom);
     }
 
-    public ChatRoomDataResponseDto.Info createRoom(Long UserId, ChatRoomDataRequestDto.create createRequest) {
-        Buy buy = buyRepository.findBuyByBuyNo(createRequest.getBuyNo());
-        User writer = buy.getUser();    //글 작성자(채팅방 생성 후 자동으로 입장)
-        User reader = userRepository.findByUserId(UserId);  //글을 읽고 참여하기를 누룬 유저(여기가 아니라 다른 곳에서 생성해야됨, 추후 수정 예정)
+    public ChatRoomDataResponseDto.Info createRoom(Long userId, ChatRoomDataRequestDto.create createRequest) {
+        Buy buy = buyRepository.findByBuyNo(createRequest.getBuyNo());
+        User user = buy.getUser();    //글 작성자(채팅방 생성 후 자동으로 입장)
 
         // if (chatRoomRepository.findByUserIdAndBuyNo(UserId,
         // createRequest.getBuyNo()).isPresent()) {
@@ -51,14 +50,21 @@ public class ChatRoomService {
 
         // TODO : 이미 채팅방이 생성되 있을 수도 있음
         ChatRoom chatRoom = ChatRoom.builder()
-                .writer(writer)
-                .reader(reader)
+                .writer(user)
                 .buy(buy)
                 .build();
 
         chatRoomRepository.save(chatRoom);
 
         return ChatRoomDataResponseDto.Info.of(chatRoom);
+    }
+
+    public void enterRoom(Long userId, Long buyNo){
+        User user = userRepository.findByUserId(userId);  //글을 읽고 참여하기를 누른 유저
+        ChatRoom chatRoom = chatRoomRepository.findByBuy_BuyNo(buyNo);
+        List<User> readers = chatRoom.getReader();
+        readers.add(user);
+        chatRoomRepository.save(chatRoom);
     }
 
     public void deleteRoom(Long roomId) {

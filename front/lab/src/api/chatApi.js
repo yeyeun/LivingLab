@@ -13,19 +13,19 @@ export const postCreateRoom = async (userId, createRequest) => {
 
 // 유저의 모든 채팅방 목록 반환
 export const getChatRoom = async (userId) => {
-  const res = await axios.get(`${host}/chat/rooms`, { params: { userId } });
+  const res = await axios.get(`${host}/rooms`, { params: { userId } });
   return res.data;
 };
 
 // 특정 채팅방 삭제
 export const deleteChatRoom = async (roomId) => {
-  const res = await axios.delete(`${host}/chat/room/delete/${roomId}`);
+  const res = await axios.delete(`${host}/room/delete/${roomId}`);
   return res.data;
 };
 
 // 채팅 기록 조회
 export const getChatHistory = async (roomId) => {
-  const res = await axios.get(`${host}/chat/room/history/${roomId}`);
+  const res = await axios.get(`${host}/room/history/${roomId}`);
   return res.data;
 };
 

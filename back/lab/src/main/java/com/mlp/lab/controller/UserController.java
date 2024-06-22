@@ -3,7 +3,6 @@ package com.mlp.lab.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,16 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.dto.LoginDto;
 import com.mlp.lab.dto.ResponseDto;
+import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.entity.User;
-import com.mlp.lab.service.MailService;
 import com.mlp.lab.service.UserService;
 import com.mlp.lab.util.CustomFileUtil;
 
@@ -36,10 +32,7 @@ import lombok.extern.log4j.Log4j2;
 public class UserController {
     // final을 붙여 생성자 생성(@Autoweird 대신)
     private final UserService userService;
-    private final MailService mailService;
     private final CustomFileUtil fileUtil;
-    private static String authNum;
-    private static User findPwdUser;
 
     @PostMapping("/login")
     @ResponseBody
