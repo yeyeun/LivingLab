@@ -27,6 +27,8 @@ public class UserDto { // 마이페이지 화면에서 받을 데이터
     private String addr;
     private String detailAddr;
     private String location; // 실시간 위치정보 추가
+    private double latitude; // 위도
+    private double longitude; // 경도
     private String message;
 
     @Builder.Default
@@ -47,6 +49,8 @@ public class UserDto { // 마이페이지 화면에서 받을 데이터
         dataMap.put("addr", addr);
         dataMap.put("detailAddr", detailAddr);
         dataMap.put("location", location);
+        dataMap.put("latitude", latitude);
+        dataMap.put("longitude", longitude);
 
         return dataMap;
     }

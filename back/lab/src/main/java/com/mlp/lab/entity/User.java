@@ -54,6 +54,12 @@ public class User {
     @Column(name = "location")
     private String location; // 실시간 위치 정보
 
+    @Column(name = "latitude")
+    private double latitude; // 실시간 위도
+
+    @Column(name = "longitude")
+    private double longitude; // 실시간 경도
+
     @Column(name = "phone")
     private String phone;
 
