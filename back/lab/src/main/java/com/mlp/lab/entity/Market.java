@@ -6,13 +6,9 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.MarketDto;
+import com.mlp.lab.entity.like.LikeMarket;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,19 +24,44 @@ import lombok.ToString;
 @Table(name = "market")
 @ToString(exclude = "imageList")
 public class Market extends BaseTimeEntity{
-    @Id //기본키 설정
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "marketno")
     private Long marketNo;
-    private String user_id;
+
+    @Column(name = "title", length = 50)
     private String title;
+
+    @Column(name = "content", length = 500)
     private String content;
+
+    @Column(name = "deadline")
     private String deadline;
+
+    @Column(name = "marketCategory")
     private Character marketCategory;
+
+    @Column(name = "location")
     private String location;
+
+    @Column(name = "marketHit")
     private Integer marketHit;
+
+    @Column(name = "nickname")
     private String nickname;
+
+    @Column(name = "flag")
     private boolean flag; // true: 마감 / false:모집중
+
+    @Column(name = "price")
     private Integer price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private User user;
+
+    @OneToMany(mappedBy = "market", cascade = CascadeType.REMOVE) // 게시글 삭제시 좋아요 정보도 삭제
+    private List<LikeMarket> likeMarkets;
 
     @ElementCollection
     @Builder.Default

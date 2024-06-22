@@ -17,6 +17,7 @@ import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.entity.Market;
 import com.mlp.lab.entity.MarketImage;
 import com.mlp.lab.repository.MarketRepository;
+import com.mlp.lab.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MarketService {
     private final MarketRepository marketRepository;
+    private final UserRepository userRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<MarketDto> list(PageRequestDto pageRequestDto, String search, String sort) {
@@ -227,6 +229,7 @@ public class MarketService {
 
     public void add(MarketDto marketDto) { // 동네장터 등록(이미지 포함)
         Market market = Market.DtoToEntity(marketDto);
+        market.setUser(userRepository.findByUserId(marketDto.getId()));
         marketRepository.save(market);
     }
 
@@ -234,6 +237,7 @@ public class MarketService {
         Optional<Market> result = marketRepository.findById(marketNo);
         Market market = result.orElseThrow();
         MarketDto marketDto = market.entityToDto(market);
+        marketDto.setId(market.getUser().getId()); //User 객체에서 ID값만 가져와서 직접 ID값을 넣어줌
         return marketDto;
     }
 
@@ -294,5 +298,19 @@ public class MarketService {
         }).collect(Collectors.toList());
 
         return dtoList;
+    }
+
+    public void increase(Long marketNo) { // 좋아요 +1
+        Optional<Market> result = marketRepository.findById(marketNo.intValue());
+        Market market = result.orElseThrow();
+        market.setMarketHit(market.getMarketHit()+1);
+        marketRepository.save(market);
+    }
+
+    public void decrease(Long marketNo) { // 좋아요 -1
+        Optional<Market> result = marketRepository.findById(marketNo.intValue());
+        Market market = result.orElseThrow();
+        market.setMarketHit(market.getMarketHit()-1);
+        marketRepository.save(market);
     }
 }

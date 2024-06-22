@@ -45,6 +45,9 @@ module.exports = {
         'height': 'height',
         'spacing': 'margin, padding',
         'blur': 'filter',
+      },
+      backgroundImage : {
+        'custom-image': "linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8)), url('/src/resources/images/background1.jpg')"
       }
     },
   },

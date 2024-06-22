@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
+import com.mlp.lab.entity.Buy;
 import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.service.BuyService;
 import com.mlp.lab.util.CustomFileUtilBuy;
@@ -58,11 +59,11 @@ public class BuyController {
     }
 
     @PostMapping("/add") // 작성
-    public void add(BuyDto buyDto) {
+    public Buy add(BuyDto buyDto) {
         List<MultipartFile> files = buyDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
         buyDto.setUploadFileNames(uploadFileNames);
-        buyService.add(buyDto);
+        return buyService.add(buyDto);
     }
 
     @PutMapping("/modify/{buyNo}") // 수정

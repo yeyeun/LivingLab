@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getBuyPartUsers, postAddBuyPart, removePart } from '../../api/partApi';
+import { getBuyPartUsers, postAddBuyPart } from '../../api/partApi';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/buyApi';
-import { likeBuy, unlikeBuy, likeInfo } from '../../api/likeApi';
+import { likeBuy, unlikeBuy, likeInfoBuy } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
@@ -75,7 +75,6 @@ const ReadComponent = ({ buyNo }) => {
 
   useEffect(() => {
     getOne(buyNo).then((data) => {
-      console.log('buy----', data);
       setBuy(data);
     });
   }, [buyNo, info]);
@@ -96,7 +95,7 @@ const ReadComponent = ({ buyNo }) => {
   useEffect(() => {
     if (email) {
       //로그인시에만 실행
-      likeInfo(buyNo, ino).then((data) => {
+      likeInfoBuy(buyNo, ino).then((data) => {
         setLike(data);
         if (data) {
           //data가 있으면 이미 좋아요 누른글
@@ -123,10 +122,7 @@ const ReadComponent = ({ buyNo }) => {
     }
   };
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
+  
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -138,6 +134,7 @@ const ReadComponent = ({ buyNo }) => {
 
   const closeModal = () => {
     setResult(null);
+    moveToList();
   };
 
   const closeInfoModal = () => {
@@ -217,7 +214,7 @@ const ReadComponent = ({ buyNo }) => {
 
   return (
     <>
-      <div className="bg-slate-100 w-2/5 ml-auto p-4 rounded-lg">
+      <div className="bg-slate-100 w-[1000px] ml-auto p-4 rounded-lg">
         <div className="flex justify-between items-center">
           <span className="text-left font-semibold ml-2 items-center flex">
             {buy.flag ? '모집 마감' : '모집 중'}
@@ -262,7 +259,7 @@ const ReadComponent = ({ buyNo }) => {
           <div className="col-start-2 col-span-8"></div>
           <div className="col-start-8 col-span-2 text-right text-base">{buy.nickname}</div>
           <div className="col-start-2 col-span-8 my-5 border-t-4 py-4 whitespace-pre-wrap">{buy.content}</div>
-          <div className="col-start-2 col-span-8 h-80">
+          <div className="col-start-2 col-span-8 h-[450px]">
             <MapComponent location={buy.location} />
           </div>
           {/* <div className="col-start-2 col-span-8 my-6">
