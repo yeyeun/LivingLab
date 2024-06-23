@@ -1,6 +1,6 @@
 package com.mlp.lab.entity.like;
 
-import com.mlp.lab.entity.Buy;
+import com.mlp.lab.entity.Team;
 import com.mlp.lab.entity.User;
 
 import jakarta.persistence.*;
@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "likebuy")
-public class LikeBuy {
+@Table(name = "liketeam")
+public class LikeTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long likeNo;
@@ -25,7 +25,7 @@ public class LikeBuy {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "buy_buyNo")
-    private Buy buy;
+    @JoinColumn(name = "team_teamNo")
+    private Team team;
     
 }

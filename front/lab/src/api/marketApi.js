@@ -30,6 +30,16 @@ export const deleteOne = async(marketNo) => {
   return res.data;
 }
 
+export const increaseLike = async(marketNo) => {
+  const res = await axios.put(`${prefix}/increase/${marketNo}`);
+  return res.data;
+}
+
+export const decreaseLike = async(marketNo) => {
+  const res = await axios.put(`${prefix}/decrease/${marketNo}`);
+  return res.data;
+}
+
 export const getLatestMarket = async (pageParam) => {
     const { page, size } = pageParam;
     const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });

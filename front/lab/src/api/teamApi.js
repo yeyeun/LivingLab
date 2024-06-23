@@ -30,6 +30,16 @@ export const deleteOne = async(teamNo) => {
   return res.data;
 }
 
+export const increaseLike = async(teamNo) => {
+  const res = await axios.put(`${prefix}/increase/${teamNo}`);
+  return res.data;
+}
+
+export const decreaseLike = async(teamNo) => {
+  const res = await axios.put(`${prefix}/decrease/${teamNo}`);
+  return res.data;
+}
+
 export const getLatestTeam = async (pageParam) => {
   const { page, size } = pageParam;
   const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });

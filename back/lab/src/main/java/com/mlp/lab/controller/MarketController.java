@@ -27,83 +27,89 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/market")
 @RequiredArgsConstructor
 public class MarketController {
-private final MarketService marketService;
-private final CustomFileUtilMarket fileUtil;
+    private final MarketService marketService;
+    private final CustomFileUtilMarket fileUtil;
 
-@GetMapping("/list") // 목록조회(검색기능 포함)
-public PageResponseDto<MarketDto> List(PageRequestDto pageRequestDto,
-@RequestParam(required = false, value = "search") String search,
-@RequestParam(required = false, value = "sort") String sort) {
-return marketService.list(pageRequestDto, search, sort);
-}
+    @GetMapping("/list") // 목록조회(검색기능 포함)
+    public PageResponseDto<MarketDto> List(PageRequestDto pageRequestDto,
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort) {
+        return marketService.list(pageRequestDto, search, sort);
+    }
 
-@GetMapping("/read/{marketNo}") // 상세조회
-public MarketDto read(@PathVariable(name = "marketNo") int marketNo) {
-return marketService.read(marketNo);
-}
+    @GetMapping("/read/{marketNo}") // 상세조회
+    public MarketDto read(@PathVariable(name = "marketNo") int marketNo) {
+        return marketService.read(marketNo);
+    }
 
-// 글 삭제 (이미지 포함)
-@DeleteMapping("/delete/{marketNo}")
-public void delete(@PathVariable(name = "marketNo") int marketNo) {
-List<String> uploadFileNames =
-marketService.read(marketNo).getUploadFileNames();
-if (uploadFileNames != null && uploadFileNames.size() > 0) {
-fileUtil.deleteFiles(uploadFileNames);
-}
-marketService.delete(marketNo);
-}
+    // 글 삭제 (이미지 포함)
+    @DeleteMapping("/delete/{marketNo}")
+    public void delete(@PathVariable(name = "marketNo") int marketNo) {
+        List<String> uploadFileNames = marketService.read(marketNo).getUploadFileNames();
+        if (uploadFileNames != null && uploadFileNames.size() > 0) {
+            fileUtil.deleteFiles(uploadFileNames);
+        }
+        marketService.delete(marketNo);
+    }
 
-@GetMapping("/display/{fileName}") // 목록조회
-public ResponseEntity<Resource> displayImage(@PathVariable(name="fileName")
-String fileName) {
-return fileUtil.getFile(fileName);
-}
+    @GetMapping("/display/{fileName}") // 목록조회
+    public ResponseEntity<Resource> displayImage(@PathVariable(name = "fileName") String fileName) {
+        return fileUtil.getFile(fileName);
+    }
 
-@PostMapping("/add") // 작성
-public void add(MarketDto marketDto) {
-List<MultipartFile> files = marketDto.getFiles();
-List<String> uploadFileNames = fileUtil.saveFiles(files);
-marketDto.setUploadFileNames(uploadFileNames);
-marketService.add(marketDto);
-}
+    @PostMapping("/add") // 작성
+    public void add(MarketDto marketDto) {
+        List<MultipartFile> files = marketDto.getFiles();
+        List<String> uploadFileNames = fileUtil.saveFiles(files);
+        marketDto.setUploadFileNames(uploadFileNames);
+        marketService.add(marketDto);
+    }
 
-@PutMapping("/modify/{marketNo}") // 수정
-public void modify(@PathVariable(name = "marketNo") Long marketNo, MarketDto
-marketDto) {
-marketDto.setMarketNo(marketNo);
-MarketDto oldDto = marketService.read(marketNo.intValue());
+    @PutMapping("/modify/{marketNo}") // 수정
+    public void modify(@PathVariable(name = "marketNo") Long marketNo, MarketDto marketDto) {
+        marketDto.setMarketNo(marketNo);
+        MarketDto oldDto = marketService.read(marketNo.intValue());
 
-// 기존 파일들(데이터베이스에 저장된 파일 이름)
-List<String> oldFileNames = oldDto.getUploadFileNames();
+        // 기존 파일들(데이터베이스에 저장된 파일 이름)
+        List<String> oldFileNames = oldDto.getUploadFileNames();
 
-// 새로 업로드해야 하는 파일들
-List<MultipartFile> files = marketDto.getFiles();
+        // 새로 업로드해야 하는 파일들
+        List<MultipartFile> files = marketDto.getFiles();
 
-// 새로 업로드된 파일 이름들
-List<String> newUploadFileNames = fileUtil.saveFiles(files);
+        // 새로 업로드된 파일 이름들
+        List<String> newUploadFileNames = fileUtil.saveFiles(files);
 
-// 변화가 없이 유지되는 파일들
-List<String> uploadedFileNames = marketDto.getUploadFileNames();
+        // 변화가 없이 유지되는 파일들
+        List<String> uploadedFileNames = marketDto.getUploadFileNames();
 
-// 유지되는 파일들 + 새로 업로드된 파일 이름들이 저장해야하는 파일 목록
-if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
-uploadedFileNames.addAll(newUploadFileNames);
-}
+        // 유지되는 파일들 + 새로 업로드된 파일 이름들이 저장해야하는 파일 목록
+        if (newUploadFileNames != null && newUploadFileNames.size() > 0) {
+            uploadedFileNames.addAll(newUploadFileNames);
+        }
 
-marketService.modify(marketDto);
+        marketService.modify(marketDto);
 
-if (oldFileNames != null && oldFileNames.size() > 0) {
-List<String> removeFiles = oldFileNames
-.stream()
-.filter(fileName -> uploadedFileNames.indexOf(fileName) ==
--1).collect(Collectors.toList());
-// 파일 삭제
-fileUtil.deleteFiles(removeFiles);
-}
-}
+        if (oldFileNames != null && oldFileNames.size() > 0) {
+            List<String> removeFiles = oldFileNames
+                    .stream()
+                    .filter(fileName -> uploadedFileNames.indexOf(fileName) == -1).collect(Collectors.toList());
+            // 파일 삭제
+            fileUtil.deleteFiles(removeFiles);
+        }
+    }
 
-@GetMapping("/latest")
-public List<MarketDto> getLatestMarketList() {
-return marketService.getLatestMarket();
-}
+    @GetMapping("/latest")
+    public List<MarketDto> getLatestMarketList() {
+        return marketService.getLatestMarket();
+    }
+
+    @PutMapping("/increase/{marketNo}") // 좋아요 +1
+    public void increase(@PathVariable(name = "marketNo") Long marketNo) {
+        marketService.increase(marketNo);
+    }
+
+    @PutMapping("/decrease/{marketNo}") // 좋아요 +1
+    public void decrease(@PathVariable(name = "marketNo") Long marketNo) {
+        marketService.decrease(marketNo);
+    }
 }

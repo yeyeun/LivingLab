@@ -9,7 +9,7 @@ import iconNext from '../../resources/images/icon-next.png';
 import iconEdit from '../../resources/images/iconEdit.png'
 
 const initState = {
-  email: '',
+  id: 0,
   nickname: '',
   title: '',
   location: '',
@@ -18,7 +18,7 @@ const initState = {
   max: 2,
   current: 1,
   deadline: '',
-  teamHit: '0',
+  teamHit: 0,
   files: [],
 };
 
@@ -109,7 +109,7 @@ const AddComponent = () => {
         formData.append("files", files[i]);
     }
 
-    formData.append('user_id', user.email);
+    formData.append('id', ino);
     formData.append('nickname', user.nickname);
     formData.append('title', team.title);
     formData.append('location', team.location);
@@ -120,12 +120,10 @@ const AddComponent = () => {
     formData.append('deadline', team.deadline);
     formData.append('teamHit', team.teamHit);
 
-    for (const x of formData.entries()) {
-      console.log(x);
-     };
     postAddTeam(formData);
     setResult('게시글이 등록되었습니다');
   };
+  
   const closeModal = () => {
     setResult(null);
     moveToList();

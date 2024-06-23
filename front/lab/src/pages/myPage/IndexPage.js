@@ -6,6 +6,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 import Profile_Img from '../../resources/images/profile_img.png';
 
+
 const initState = {
   id: 0,
   email: '',
@@ -79,11 +80,11 @@ const IndexPage = () => {
   return (
     <div>
       <BasicLayout>
-        <div className="text-xl flex-grow bg-teal-50">
+        <div className="text-xl flex-grow bg-mainColor bg-opacity-30">
           <div className="min-h-screen flex flex-row w-3/5 mx-auto my-10">
             <div className="flex flex-col w-80 bg-white overflow-hidden h-fit rounded-3xl mr-5 shadow-md">
               <ul className="flex flex-col py-4 my-8">
-                <img src={user.profileImage ? user.profileImage : Profile_Img} alt="프로필이미지" className="rounded-full size-1/2 mx-auto" />
+                <img src={user.profileImage ? user.profileImage : Profile_Img} alt="프로필이미지" className="rounded-full size-2/5 mx-auto" />
 
                 <li>
                   <div className="flex items-center pt-3 pb-10 text-gray-900 rounded-lg dark:text-white">
