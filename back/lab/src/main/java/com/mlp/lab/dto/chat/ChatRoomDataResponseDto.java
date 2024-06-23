@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.mlp.lab.entity.User;
 import com.mlp.lab.entity.chat.Chat;
 import com.mlp.lab.entity.chat.ChatRoom;
 
@@ -17,9 +18,9 @@ public class ChatRoomDataResponseDto {
         private Long roomId;
         private Long BuyNo;
         private Long writerId;
-        private Long readerId;
+        private List<Long> readerId;
 
-        private Info(Long roomId, Long BuyNo, Long writerId, Long readerId) {
+        private Info(Long roomId, Long BuyNo, Long writerId, List<Long> readerId) {
             this.roomId = roomId;
             this.BuyNo = BuyNo;
             this.writerId = writerId;
@@ -27,10 +28,19 @@ public class ChatRoomDataResponseDto {
         }
 
         public static Info of(ChatRoom chatRoom) {
+            List<Long> readerId = new ArrayList<>();
+
+            // chatRoom.getReader()가 List<User> 타입인 경우에 대비하여 처리
+            if (chatRoom.getReader() != null && !chatRoom.getReader().isEmpty()) {
+                readerId = chatRoom.getReader().stream()
+                        .map(User::getId)
+                        .collect(Collectors.toList());
+            }
+
             return new Info(chatRoom.getChatroomId(),
                     chatRoom.getBuy().getBuyNo(),
                     chatRoom.getWriter().getId(),
-                    chatRoom.getReader().getId());
+                    readerId);
         }
     }
 

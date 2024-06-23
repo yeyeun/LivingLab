@@ -27,7 +27,7 @@ public class ChatService {
     @Transactional
     public void sendMessage(Long userId, ChatDataRequestDto.Message message) {
         ChatRoom chatRoom = chatRoomRepository.findByChatroomId(message.getRoomId());
-                User user = userRepository.findByUserId(userId);
+        User user = userRepository.findByUserId(userId);
 
         Chat chat = Chat.builder()
                 .sender(user)

@@ -1,5 +1,7 @@
 package com.mlp.lab.entity.chat;
 
+import java.util.*;
+
 import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.User;
 
@@ -10,6 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
@@ -27,25 +31,23 @@ public class ChatRoom {
     private Long chatroomId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "buy_no")
+    @JoinColumn(name = "buy_no", referencedColumnName = "buy_no")
     private Buy buy;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "writer_id", referencedColumnName = "id")
     private User writer;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "reader_id", referencedColumnName = "id")
-    private User reader;
-
-    // @Column(name = "create_at")
-    // private final LocalDateTime createdAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-    // @Column(name = "update_at")
-    // private final LocalDateTime updatedAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+    @ManyToMany
+    @JoinTable(
+        name = "chatroom_reader",
+        joinColumns = @JoinColumn(name = "chatroom_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> reader = new ArrayList<>();
 
     @Builder
-    public ChatRoom(Long chatroomId, Buy buy, User writer, User reader) {
+    public ChatRoom(Long chatroomId, Buy buy, User writer, List<User> reader) {
         this.chatroomId = chatroomId;
         this.buy = buy;
         this.writer = writer;
