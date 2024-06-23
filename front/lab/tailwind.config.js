@@ -35,6 +35,7 @@ module.exports = {
       animation: {
         spinIn: 'spinIn 30s linear infinite',
         spinout: 'spinIn 10s linear infinite',
+        'bg-shimmer': 'bg-shimmer 1s ease-in-out forwards'
       },
       backdropFilter: ['hover', 'focus'],
       filter: { // 필터 유틸리티 활성화
@@ -48,7 +49,13 @@ module.exports = {
       },
       backgroundImage : {
         'custom-image': "linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8)), url('/src/resources/images/background1.jpg')"
-      }
+      },
+      keyframes : {
+        'bg-shimmer': {
+          '0%': { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '0 0' }
+        }
+      },
     },
   },
   plugins: [],
