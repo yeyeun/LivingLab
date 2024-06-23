@@ -5,7 +5,12 @@ import { getUser } from '../../api/userApi';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 import Profile_Img from '../../resources/images/profile_img.png';
-
+import chatIcon1 from '../../resources/images/chat_black.png';
+import chatIcon2 from '../../resources/images/chat_maincolor.png';
+import penIcon1 from '../../resources/images/pen_black.png';
+import penIcon2 from '../../resources/images/pen_maincolor.png';
+import userIcon1 from '../../resources/images/user_black.png';
+import userIcon2 from '../../resources/images/user_maincolor.png';
 
 const initState = {
   id: 0,
@@ -31,6 +36,18 @@ const IndexPage = () => {
 
   const getTextClass = (path) => {
     return location.pathname.startsWith(path) ? 'header-active' : 'text-gray-500';
+  };
+
+  const getImageClass1 = (path) => {
+    return location.pathname.startsWith(path) ? penIcon2 : penIcon1;
+  };
+
+  const getImageClass2 = (path) => {
+    return location.pathname.startsWith(path) ? chatIcon2 : chatIcon1;
+  };
+
+  const getImageClass3 = (path) => {
+    return location.pathname.startsWith(path) ? userIcon2 : userIcon1;
   };
 
   //useCallback 훅을 사용할 때는 두 번째 인자로 의존성 배열을 전달해야함
@@ -80,9 +97,9 @@ const IndexPage = () => {
   return (
     <div>
       <BasicLayout>
-        <div className="text-xl flex-grow bg-mainColor bg-opacity-30">
-          <div className="min-h-screen flex flex-row w-3/5 mx-auto my-10">
-            <div className="flex flex-col w-80 bg-white overflow-hidden h-fit rounded-3xl mr-5 shadow-md">
+        <div className="text-xl flex-grow bg-gray-300 bg-opacity-30">
+          <div className="min-h-screen flex flex-row w-4/5 mx-auto my-10">
+            <div className="flex flex-col w-80 bg-white overflow-hidden h-fit rounded mr-5 shadow-md">
               <ul className="flex flex-col py-4 my-8">
                 <img src={user.profileImage ? user.profileImage : Profile_Img} alt="프로필이미지" className="rounded-full size-2/5 mx-auto" />
 
@@ -93,28 +110,41 @@ const IndexPage = () => {
                 </li>
                 <li>
                   <div
-                    className="flex flex-row items-center h-24 group transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+                    className="relative flex flex-row items-center h-24 overflow-hidden group hover:cursor-pointer"
                     onClick={handleClickActivity}
                   >
-                    <span className={`text-xl font-semibold ml-24 ${getTextClass('/myPage/activity')}`}>나의 활동</span>
+                    <div className="absolute inset-0 bg-gray-100 scale-x-0 origin-left transition-transform duration-300 ease-in-out group-hover:scale-x-100"></div>
+                    <span className={`relative z-10 text-xl font-semibold ml-24 ${getTextClass('/myPage/activity')}`}>
+                      <img src={`${getImageClass1('/myPage/activity')}`} className="w-4 inline-flex mr-2 opacity-60" alt="..."/>
+                      나의 활동
+                    </span>
                   </div>
                 </li>
                 <li>
                   <div
-                    className="flex flex-row items-center h-24 transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+                    className="relative flex flex-row items-center h-24 overflow-hidden group hover:cursor-pointer"
                     onClick={handleClickChat}
                   >
-                    <span className={`text-xl font-semibold ml-24 ${getTextClass('/myPage/chat')}`}>채팅</span>
+                    <div className="absolute inset-0 bg-gray-100 scale-x-0 origin-left transition-transform duration-300 ease-in-out group-hover:scale-x-100"></div>
+                    <span className={`relative z-10 text-xl font-semibold ml-24 ${getTextClass('/myPage/chat')}`}>
+                      <img src={`${getImageClass2('/myPage/chat')}`} className="w-4 inline-flex mr-2 opacity-60" alt="..."/>
+                      채팅
+                    </span>
                   </div>
                 </li>
                 <li>
                   <div
-                    className="flex flex-row items-center h-24 transform hover:translate-x-2 hover:cursor-pointer transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+                    className="relative flex flex-row items-center h-24 overflow-hidden group hover:cursor-pointer"
                     onClick={handleClickInfo}
                   >
-                    <span className={`text-xl font-semibold ml-24 ${getTextClass('/myPage/info')}`}>회원정보</span>
+                    <div className="absolute inset-0 bg-gray-100 scale-x-0 origin-left transition-transform duration-300 ease-in-out group-hover:scale-x-100"></div>
+                    <span className={`relative z-10 text-xl font-semibold ml-24 ${getTextClass('/myPage/info')}`}>
+                      <img src={`${getImageClass3('/myPage/info')}`} className="w-4 inline-flex mr-2 opacity-60" alt="..."/>
+                      회원정보
+                    </span>
                   </div>
                 </li>
+
               </ul>
             </div>
             <Outlet />

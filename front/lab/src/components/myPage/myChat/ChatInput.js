@@ -11,21 +11,23 @@ const ChatInput = ({ onSend }) => {
     }
   };
 
+  const onKeyDown = (e) => {
+    if(e.key === 'Enter'){
+      handleSend(e);
+    }
+  }
+
   return (
-    <form onSubmit={handleSend} className="flex p-4 bg-white border-t">
+    <form onSubmit={handleSend} className="flex p-4 bg-white border-t rounded-b">
       <input
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            handleSend();
-          }
-        }}
-        className="flex-1 p-2 border rounded-lg"
+        onKeyDown={onKeyDown}
+        className="flex-1 p-2 border rounded-3xl text-base"
         placeholder="메시지를 입력하세요"
       />
-      <button type="submit" className="ml-2 p-2 bg-teal-300 text-white rounded-lg">
+      <button type="submit" className="ml-2 p-2 bg-teal-400 hover:bg-teal-500 text-white rounded-lg text-base">
         보내기
       </button>
     </form>
