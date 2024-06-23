@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { API_SERVER_HOST, getOne, deleteOne, increaseLike, decreaseLike } from '../../api/shareRoomApi';
 import useRoomCustomMove from '../../hooks/useRoomCustomMove';
 import { useSelector } from 'react-redux';
-import MapComponentForRoom from '../../components/shareRoom/KakaoMapComponent';
+import MapComponentForRoom from '../../components/shareRoom/MapComponentForRoom';
 import { likeRoom, unlikeRoom, likeInfoRoom } from '../../api/likeApi';
 import ModalComponent from "./ModalComponent";
 import emptyheart from '../../resources/images/heart_empty.png';
@@ -254,7 +254,7 @@ const handleLikeClick = () => {
                             </div>
                         </div>
                     </aside>
-                    <div className="mt-[200px]">
+                    <div className="mt-[350px]">
                     {loginState.id === shareRoom.userId && (
                             <>
                                 <button type="button" className="ml-5 float-right inline-block rounded bg-blue-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none" onClick={handleClickDelete}>
