@@ -1,6 +1,6 @@
 import userIcon from "../../resources/images/user3.png"
 
-const CommentComponent = () => {
+const ReplyComponent = () => {
     return(
         <article className="p-6 mb-3 mt-16 text-base border border-gray-200">
             <div className="flex justify-between items-center mb-2">
@@ -27,4 +27,4 @@ const CommentComponent = () => {
     );
 }
 
-export default CommentComponent;
+export default ReplyComponent;
