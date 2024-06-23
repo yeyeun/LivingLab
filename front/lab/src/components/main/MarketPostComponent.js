@@ -47,9 +47,24 @@ const MarketPostComponent = () => {
                     </li>
                 ))}
             </ul>
-            <div className="main-nextline"></div>
             <ul className="main-common-container">
                 {latestPosts.slice(2, 4).map((market) => (
+                    <li key={market.buyNo} className="main-marketlist">
+                        <div className="main-marketlist-image">
+                            <Link to={`/market/read/${market.marketNo}`}>
+                                <img className="main-marketlist-thumbnail" src={`${host}/api/market/display/${market.uploadFileNames[0]}`} alt={market.title} />
+                            </Link>
+                        </div>
+                        <div className="main-marketlist-title">
+                            <Link to={`/market/read/${market.marketNo}`}>
+                                {market.title}
+                            </Link>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+            <ul className="main-common-container">
+                {latestPosts.slice(4, 6).map((market) => (
                     <li key={market.buyNo} className="main-marketlist">
                         <div className="main-marketlist-image">
                             <Link to={`/market/read/${market.marketNo}`}>

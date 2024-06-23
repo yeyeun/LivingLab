@@ -34,6 +34,6 @@ public interface MarketRepository extends JpaRepository<Market, Integer> {
     Page<Object[]> searchDeadLineList(@Param(value = "title") String title, Pageable pageable);
 
     // 메인에 표기할 최신순
-    @Query("select m, mi from Market m left join m.imageList mi where mi.ord = 0 and m.flag = false order by m.marketNo")
+    @Query("select m, mi from Market m left join m.imageList mi where mi.ord = 0 and m.flag = false order by m.marketNo desc")
     Page<Object[]> latestMarketList(Pageable pageable);
 }

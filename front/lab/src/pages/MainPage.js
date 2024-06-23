@@ -30,27 +30,31 @@ const MainPage = () => {
     autoplay: true,
     arrows: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: 3,
     slidesToScroll: 1,
 
   };
 
 
   return (
-    <div>
+    //가장 바깥, 배경
+    <div className="bg-color">
+      <hr className="vertical-line" />
 
       <BasicLayout>
-
-        <div className="main-container-top mb-5">
+        <div className="main-container-top mb-10">
           <img className="main-image" src={img_main} alt="MainImage" />
           <div className="main-image-text">
-            <TypingComponent/>
+            <TypingComponent />
           </div>
         </div>
-        <div className="main-container">
+        {/* <div className="main-container text-6xl">
+          #지금 HOT 게시물
+          </div>
+          <div className="main-container">
+
           <div className="main-slide-container">
             <div className="main-headline mb-2">
-              <a>추천 글 ✔</a>
             </div>
             <Slider {...settings}>
               <div>
@@ -74,55 +78,126 @@ const MainPage = () => {
               </div>
             </Slider>
           </div>
-          <div className="weather-container ">
-            <div className="main-headline mb-2">
-              <span>우리 동네 날씨</span>
+         
+        </div> */}
+
+
+
+        <div className="background-container mt-10">
+          <div className="main-container text-7xl">
+            #커뮤니케이션
+          </div>
+          <div className="main-container">
+            <div className='main-box'>
+              {/* <Link to={'/community'} className="main-headline">
+                  커뮤니티
+              </Link> */}
+              <div className="main-comm">
+                <CommunityPostComponent />
+              </div>
+            </div>
+            <div className='main-textbox'>
+              <div className='main-desc'>
+                <div className="desc-title">
+                  커뮤니티
+                </div>
+                <div className="desc-tag">
+                  #자취TIP공유 #질문게시판 #리뷰게시판 #도움요청
+                </div>
+                <div className="desc-content">
+                  이웃과 정보를 공유해보세요!
+                </div>
+
+              </div>
+            </div>
+
+
+
+            {/* <div>
+              <Link to={'/buy'} className="main-headline">
+                <div>
+                  날씨 정보
+                </div>
+
+              </Link>
+              <div className="main-weather">
+
+              </div>
+            </div> */}
+          </div>
+        </div>
+
+        <div className="background-container">
+
+          <div className="main-container">
+
+            <div className='main-textbox'>
+              <div className='main-desc'>
+                <div className="desc-title">
+                  동네모임
+                </div>
+                <div className="desc-tag">
+                  #운동 #문화생활 #반려동물 #취미생활 #기타
+                </div>
+                <div className="desc-content">
+                  여가활동을 함께 할 이웃을 찾아보세요!
+
+                </div>
+
+              </div>
+            </div><div className='main-box'>
+              {/* <Link to={'/community'} className="main-headline">
+                  커뮤니티
+              </Link> */}
+              <div className="main-comm">
+                <TeamPostComponent />
+              </div>
             </div>
           </div>
         </div>
 
+        <div className="main-container text-7xl">
+          #마켓
+        </div>
         <div className="main-container">
           <div>
-            <Link to={'/community'} className="main-headline">
-              커뮤니티 [메모장 아이콘]
-            </Link>
-            <div className="main-item2">
-              <CommunityPostComponent />
+            <div className='main-headline'>
+              <Link to={'/buy'} className='font-bold'>
+                공동구매                
+              </Link>
+              <div className="desc-tag">
+                  #배달음식 #생필품 #식료품 #가구/가전 #기타
+                </div>
             </div>
-          </div>
-          <div>
-            <Link to={'/buy'} className="main-headline">
-              공동구매
-            </Link>
-            <div className="main-item3">
+            <div className="main-item">
               <BuyPostComponent />
             </div>
           </div>
-        </div>
-        <div className="main-container">
-          <div>
-            <Link to={'/team'} className="main-headline">
-              동네모임
-            </Link>
-            <div className="main-item overflow-hidden	" >
-              <TeamPostComponent />
 
+
+
+          <div>
+            <div className='main-headline'>
+              <Link to={'/market'} className="font-bold">
+                동네장터
+              </Link>
+              <div className="desc-tag">
+                  #구매 #판매 #교환 #나눔
+                </div>
             </div>
-
-          </div>
-          <div>
-            <Link to={'/market'} className="main-headline">
-              동네장터
-            </Link>
             <div className="main-item">
               <MarketPostComponent />
-
             </div>
           </div>
           <div>
-            <Link to={'/shareroom'} className="main-headline">
-              자취방쉐어
-            </Link>
+            <div className='main-headline'>
+              <Link to={'/shareroom'} className='font-bold'>
+                자취방쉐어
+              </Link>
+              <div className="desc-tag">
+                  #최신순 #낮은 가격순 #좋아요순
+                </div>
+            </div>
             <div className="main-item" >
             </div>
 

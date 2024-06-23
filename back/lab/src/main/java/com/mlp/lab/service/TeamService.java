@@ -273,7 +273,7 @@ public class TeamService {
     }
 
     public List<TeamDto> getLatestTeam() {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("teamNo").descending());
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("teamNo").descending());
         Page<Object[]> result = null;
 
         result = teamRepository.latestTeamList(pageable);

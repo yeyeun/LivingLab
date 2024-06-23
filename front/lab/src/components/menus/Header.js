@@ -4,7 +4,7 @@ import { getUser, fetchUserProfileImage } from '../../api/userApi';
 import Profile_Img from '../../resources/images/profile_img.png';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Logo from '../../resources/images/logo1.png';
+import Logo from '../../resources/images/logo1_vector.png';
 import { logout } from '../../slices/loginSlice';
 import { useDispatch } from 'react-redux';
 import { useState, useCallback, useEffect } from 'react';
@@ -33,7 +33,7 @@ const Header = () => {
   };
 
   return (
-    <nav id="navbar" className="z-50 bg-white flex-wrap sticky top-0 relative flex w-full py-2.5 shadow">
+    <nav id="navbar" className="z-50 flex-wrap sticky top-0 relative flex w-full py-2.5 shadow" style={{ backgroundColor: 'rgba(255, 255, 255, 0.97)' } }>
       <div className="flex w-full flex-wrap items-center justify-between px-3 ">
         <img src={Logo} alt="LOGO" className="w-60" />
         <ul className="flex flex-row p-3 list-none header-fontsize items-center">
