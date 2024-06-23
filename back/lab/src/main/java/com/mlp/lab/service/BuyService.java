@@ -30,44 +30,44 @@ public class BuyService {
     private final UserRepository userRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort){
+    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
-            Sort.by("buyNo").descending());
-         
-            Page<Object[]> result = null;
-            if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
-                result = buyRepository.selectList(pageable);
-            } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색
-                result = buyRepository.selectSearchList(search, pageable);
-            } else if ((sort != null && !sort.isEmpty()) && (search == null || search.isEmpty())) { // 정렬
-                if(sort.equals("최신순")){
-                    result = buyRepository.newList(pageable);
-                }
-                if(sort.equals("마감임박순")){
-                    result = buyRepository.deadLineList(pageable);
-                }
-                // if(sort.equals("거리순")){
-                //     result = 
-                // }
-                // if(sort.equals("좋아요순")){
-                //     result = 
-                // }
-            } else if (search != null && sort != null) { // 검색&&정렬 둘다
-                if(sort.equals("최신순")){
-                    result = buyRepository.searchNewList(search, pageable);
-                }
-                if(sort.equals("마감임박순")){
-                    result = buyRepository.searchDeadLineList(search, pageable);
-                }
-                // if(sort.equals("거리순")){
-                //     result = 
-                // }
-                // if(sort.equals("좋아요순")){
-                //     result = 
-                // }
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("buyNo").descending());
+
+        Page<Object[]> result = null;
+        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
+            result = buyRepository.selectList(pageable);
+        } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색
+            result = buyRepository.selectSearchList(search, pageable);
+        } else if ((sort != null && !sort.isEmpty()) && (search == null || search.isEmpty())) { // 정렬
+            if (sort.equals("최신순")) {
+                result = buyRepository.newList(pageable);
             }
+            if (sort.equals("마감임박순")) {
+                result = buyRepository.deadLineList(pageable);
+            }
+            // if(sort.equals("거리순")){
+            // result =
+            // }
+            // if(sort.equals("좋아요순")){
+            // result =
+            // }
+        } else if (search != null && sort != null) { // 검색&&정렬 둘다
+            if (sort.equals("최신순")) {
+                result = buyRepository.searchNewList(search, pageable);
+            }
+            if (sort.equals("마감임박순")) {
+                result = buyRepository.searchDeadLineList(search, pageable);
+            }
+            // if(sort.equals("거리순")){
+            // result =
+            // }
+            // if(sort.equals("좋아요순")){
+            // result =
+            // }
+        }
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];
             BuyImage buyImage = (BuyImage) arr[1];
@@ -77,32 +77,32 @@ public class BuyService {
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
                     .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
-            
-            if(buyImage != null){
+
+            if (buyImage != null) {
                 String imageStr = buyImage.getFileName();
                 buyDto.setUploadFileNames(List.of(imageStr));
-            }else{
+            } else {
                 buyDto.setUploadFileNames(List.of(defaultImageStr));
             }
             return buyDto;
-        }).collect(Collectors.toList());     
-            
+        }).collect(Collectors.toList());
+
         long totalCount = result.getTotalElements();
         PageResponseDto<BuyDto> responseDTO = PageResponseDto.<BuyDto>withAll()
-            .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
-            .totalCount(totalCount)
-            .build();
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
         return responseDTO;
     }
 
     // 검색된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> searchList(PageRequestDto pageRequestDto, String search){
+    public PageResponseDto<BuyDto> searchList(PageRequestDto pageRequestDto, String search) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
-            Sort.by("buyNo").descending());
-         
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("buyNo").descending());
+
         Page<Object[]> result = buyRepository.selectSearchList(search, pageable);
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];
@@ -114,92 +114,92 @@ public class BuyService {
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
                     .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
 
-            if(buyImage != null){
+            if (buyImage != null) {
                 String imageStr = buyImage.getFileName();
                 buyDto.setUploadFileNames(List.of(imageStr));
-            }else{
+            } else {
                 buyDto.setUploadFileNames(List.of(defaultImageStr));
             }
             return buyDto;
-        }).collect(Collectors.toList());     
-            
+        }).collect(Collectors.toList());
+
         long totalCount = result.getTotalElements();
         PageResponseDto<BuyDto> responseDTO = PageResponseDto.<BuyDto>withAll()
-            .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
-            .totalCount(totalCount)
-            .build();
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
         return responseDTO;
     }
 
     // 선택된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> sortList(PageRequestDto pageRequestDto, String sort){
+    public PageResponseDto<BuyDto> sortList(PageRequestDto pageRequestDto, String sort) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
-            Sort.by("buyNo").descending());
-         
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("buyNo").descending());
+
         Page<Object[]> result = buyRepository.selectList(pageable);
-        if(sort.equals("최신순")){
+        if (sort.equals("최신순")) {
             result = buyRepository.newList(pageable);
         }
-        if(sort.equals("마감임박순")){
+        if (sort.equals("마감임박순")) {
             result = buyRepository.deadLineList(pageable);
         }
         // if(sort.equals("거리순")){
-        //     result = 
+        // result =
         // }
         // if(sort.equals("좋아요순")){
-        //     result = 
+        // result =
         // }
 
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];
             BuyImage buyImage = (BuyImage) arr[1];
             String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
-            
+
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
                     .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
 
-            if(buyImage != null){
+            if (buyImage != null) {
                 String imageStr = buyImage.getFileName();
                 buyDto.setUploadFileNames(List.of(imageStr));
-            }else{
+            } else {
                 buyDto.setUploadFileNames(List.of(defaultImageStr));
             }
             return buyDto;
-        }).collect(Collectors.toList());     
-            
+        }).collect(Collectors.toList());
+
         long totalCount = result.getTotalElements();
         PageResponseDto<BuyDto> responseDTO = PageResponseDto.<BuyDto>withAll()
-            .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
-            .totalCount(totalCount)
-            .build();
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
         return responseDTO;
     }
 
     // 검색 + 선택된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> searchSortList(PageRequestDto pageRequestDto, String search, String sort){
+    public PageResponseDto<BuyDto> searchSortList(PageRequestDto pageRequestDto, String search, String sort) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage()-1,
-            pageRequestDto.getSize(),
-            Sort.by("buyNo").descending());
-         
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("buyNo").descending());
+
         Page<Object[]> result = buyRepository.selectList(pageable);
-        if(sort.equals("최신순")){
+        if (sort.equals("최신순")) {
             result = buyRepository.searchNewList(sort, pageable);
         }
-        if(sort.equals("마감임박순")){
+        if (sort.equals("마감임박순")) {
             result = buyRepository.searchDeadLineList(sort, pageable);
         }
         // if(sort.equals("거리순")){
-        //     result = 
+        // result =
         // }
         // if(sort.equals("좋아요순")){
-        //     result = 
+        // result =
         // }
 
         List<BuyDto> dtoList = result.get().map(arr -> {
@@ -212,27 +212,27 @@ public class BuyService {
                     .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
                     .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
 
-            if(buyImage != null){
+            if (buyImage != null) {
                 String imageStr = buyImage.getFileName();
                 buyDto.setUploadFileNames(List.of(imageStr));
-            }else{
+            } else {
                 buyDto.setUploadFileNames(List.of(defaultImageStr));
-            }                    
+            }
             return buyDto;
-        }).collect(Collectors.toList());     
-            
+        }).collect(Collectors.toList());
+
         long totalCount = result.getTotalElements();
         PageResponseDto<BuyDto> responseDTO = PageResponseDto.<BuyDto>withAll()
-            .dtoList(dtoList)
-            .pageRequestDto(pageRequestDto)
-            .totalCount(totalCount)
-            .build();
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
         return responseDTO;
     }
 
     public Buy add(BuyDto buyDto) { // 공동구매 등록(이미지 포함)
         Buy buy = Buy.DtoToEntity(buyDto);
-        buy.setUser(userRepository.findByUserId(buyDto.getId()));   //화면에서 받아온 Buy를 작성한 user id값으로 어떤 유저인지 찾아서 알려줌
+        buy.setUser(userRepository.findByUserId(buyDto.getId())); // 화면에서 받아온 Buy를 작성한 user id값으로 어떤 유저인지 찾아서 알려줌
         buyRepository.save(buy);
         return buy;
     }
@@ -249,8 +249,8 @@ public class BuyService {
     public void delete(int buyNo) {
         buyRepository.deleteById(buyNo);
     }
-    
-    public void modify(BuyDto buyDto) { //수정하기
+
+    public void modify(BuyDto buyDto) { // 수정하기
         // 조회
         Optional<Buy> result = buyRepository.findById(buyDto.getBuyNo().intValue());
         Buy buy = result.orElseThrow();
@@ -276,14 +276,14 @@ public class BuyService {
     // 메인에 표기할 최신순
     public List<BuyDto> getLatestBuy() {
         Pageable pageable = PageRequest.of(0, 8, Sort.by("buyNo").descending());
-        Page<Object[]> result = null; 
-    
+        Page<Object[]> result = null;
+
         result = buyRepository.latestBuyList(pageable);
-    
+
         List<BuyDto> dtoList = result.getContent().stream().map(arr -> {
             Buy buy = (Buy) arr[0];
             BuyImage buyImage = (BuyImage) arr[1];
-    
+
             BuyDto buyDto = BuyDto.builder()
                     .buyNo(buy.getBuyNo())
                     .title(buy.getTitle())
@@ -295,26 +295,60 @@ public class BuyService {
                     .nickname(buy.getNickname())
                     .buyHit(buy.getBuyHit())
                     .build();
-    
+
             String imageStr = buyImage.getFileName();
             buyDto.setUploadFileNames(List.of(imageStr));
             return buyDto;
         }).collect(Collectors.toList());
-    
+
         return dtoList;
     }
-    
+
+    // 메인에 표기할 거리순
+    public List<BuyDto> getdistanceBuy(double latitude, double longitude) {
+        Pageable pageable = PageRequest.of(0, 8, Sort.by("buyNo").descending());
+        Page<Object[]> result = null;
+
+        result = buyRepository.distanceList(latitude, longitude, pageable);
+
+        List<BuyDto> dtoList = result.getContent().stream().map(arr -> {
+            Buy buy = (Buy) arr[0];
+            BuyImage buyImage = (BuyImage) arr[1];
+
+            BuyDto buyDto = BuyDto.builder()
+                    .buyNo(buy.getBuyNo())
+                    .title(buy.getTitle())
+                    .buyCategory(buy.getBuyCategory())
+                    .location(buy.getLocation())
+                    .latitude(buy.getLatitude()) //
+                    .longitude(buy.getLongitude()) //
+                    .location(buy.getLocation())
+                    .max(buy.getMax())
+                    .current(buy.getCurrent())
+                    .deadline(buy.getDeadline())
+                    .nickname(buy.getNickname())
+                    .buyHit(buy.getBuyHit())
+                    .build();
+
+            String imageStr = buyImage.getFileName();
+            buyDto.setUploadFileNames(List.of(imageStr));
+            return buyDto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
+    }
+
     public void increase(Long buyNo) { // 좋아요 +1
         Optional<Buy> result = buyRepository.findById(buyNo.intValue());
         Buy buy = result.orElseThrow();
-        buy.setBuyHit(buy.getBuyHit()+1);
+        buy.setBuyHit(buy.getBuyHit() + 1);
         buyRepository.save(buy);
     }
 
     public void decrease(Long buyNo) { // 좋아요 -1
         Optional<Buy> result = buyRepository.findById(buyNo.intValue());
         Buy buy = result.orElseThrow();
-        buy.setBuyHit(buy.getBuyHit()-1);
+        buy.setBuyHit(buy.getBuyHit() - 1);
         buyRepository.save(buy);
     }
 
