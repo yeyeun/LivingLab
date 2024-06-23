@@ -55,18 +55,17 @@ public class ChatRoomController {
         return ResponseDto.setSuccessData("채팅방 생성", roomData);
     }
 
-    // 채팅방 입장 화면
-    @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
-        model.addAttribute("roomId", roomId);
-        return "/chat/roomdetail";
+    // 채팅방 입장
+    @GetMapping("/room/enter/{buyNo}")
+    public void enterRoom(@RequestParam(name="userId") Long userId, @PathVariable Long buyNo) {
+        chatRoomService.enterRoom(userId, buyNo);
     }
 
     // 특정 채팅방 조회
-    @GetMapping("/room/read/{roomId}")
+    @GetMapping("/room/read/{chatroomId}")
     @ResponseBody
-    public ResponseDto<ChatRoomDataResponseDto.Info> deleteRoom(@PathVariable("roomId") Long roomId) {
-        ChatRoomDataResponseDto.Info roomData = chatRoomService.findRoomByRoomId(roomId);
+    public ResponseDto<ChatRoomDataResponseDto.Info> deleteRoom(@PathVariable("chatroomId") Long chatroomId) {
+        ChatRoomDataResponseDto.Info roomData = chatRoomService.findRoomByRoomId(chatroomId);
         return ResponseDto.setSuccessData("특정 채팅방 조회", roomData);
     }
 

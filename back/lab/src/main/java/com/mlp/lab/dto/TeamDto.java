@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TeamDto { // 동네모임 화면에서 받을 데이터
     private Long teamNo;
-    private String user_id;
+    private Long id;
     private String title;
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")

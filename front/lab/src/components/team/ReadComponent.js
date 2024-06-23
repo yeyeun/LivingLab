@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getPartUsers, postAddPart, removePart } from '../../api/partApi';
-import { API_SERVER_HOST, deleteOne, getOne } from '../../api/teamApi';
+import { getPartUsers, postAddPart } from '../../api/partApi';
+import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/teamApi';
+import { likeTeam, unlikeTeam, likeInfoTeam } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
@@ -11,14 +12,17 @@ import MapComponent from '../common/MapComponent';
 import iconNext from '../../resources/images/icon-next.png';
 import userIcon from '../../resources/images/user.png';
 import mapIcon from '../../resources/images/map.png';
-import emptyheart from '../../resources/images/heart_full.png';
+import emptyheart from '../../resources/images/heart_empty.png';
+import fullheart from '../../resources/images/heart_full.png';
 import ResultModal from '../common/ResultModal';
 import PartComponent from './PartComponent';
 import Profile_Img from '../../resources/images/profile_img.png';
 import LandingComponent from './../common/mapSearch/LandingComponent';
+import InfoModal from '../common/InfoModal';
 
 const initState = {
   teamNo: 0,
+  id: 0,
   title: '',
   location: '',
   content: '',
@@ -27,12 +31,19 @@ const initState = {
   current: 0,
   deadline: '',
   flag: '',
+  teamHit: 0,
   uploadFileNames: [],
 };
 
 const initUser = {
   nickname: '',
   profileImage: '',
+};
+
+const initState2 = {
+  likeNo: 0,
+  id: 0,
+  teamNo: 0,
 };
 
 const host = API_SERVER_HOST;
@@ -45,8 +56,11 @@ const ReadComponent = ({ teamNo }) => {
   const [addResultModal, setAddResultModal] = useState(null);
   const { moveToList, moveToModify } = useCustomMove();
   const loginInfo = useSelector((state) => state.loginSlice);
-  const id = loginInfo?.email;
+  const email = loginInfo?.email;
   const ino = loginInfo.id;
+  const [isLiked, setIsLiked] = useState({}); // true/false에 따라 하트 이미지 변경
+  const [like, setLike] = useState(initState2);
+  const [info, setInfo] = useState(null);
 
   // 이미지 슬라이더
   const settings = {
@@ -64,7 +78,7 @@ const ReadComponent = ({ teamNo }) => {
     getOne(teamNo).then((data) => {
       setTeam(data);
     });
-  }, [teamNo]);
+  }, [teamNo, info]);
 
   useEffect(() => {
     getUser(ino).then((data) => {
@@ -79,9 +93,22 @@ const ReadComponent = ({ teamNo }) => {
     });
   }, [teamNo]);
 
+  useEffect(() => {
+    if (email) {
+      //로그인시에만 실행
+      likeInfoTeam(teamNo, ino).then((data) => {
+        setLike(data);
+        if (data) {
+          //data가 있으면 이미 좋아요 누른글
+          setIsLiked(true);
+        } else {
+          setIsLiked(false);
+        }
+      });
+    }
+  }, [email, info]);
+
   const [showModal, setShowModal] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
 
   const handleClickAdd = async () => {
     try {
@@ -98,10 +125,7 @@ const ReadComponent = ({ teamNo }) => {
 
   const closeModal = () => {
     setResult(null);
-  };
-
-  const handleOpenModal = () => {
-    setShowModal(true);
+    moveToList();
   };
 
   const handleCloseModal = () => {
@@ -112,6 +136,31 @@ const ReadComponent = ({ teamNo }) => {
     deleteOne(teamNo);
     setResult('게시글이 삭제되었습니다');
   };
+
+  const closeInfoModal = () => {
+    setInfo(null);
+  };
+
+  const handleLikeClick = () => {
+    if (!email) {
+      setInfo('로그인 후 이용 가능합니다');
+      return;
+    }
+    if (isLiked) {
+      unlikeTeam(like.likeNo);
+      decreaseLike(teamNo);
+      setInfo('좋아요 목록에서 삭제되었습니다');
+    } else {
+      const data = {
+        id: ino,
+        teamNo: teamNo,
+      };
+      likeTeam(data);
+      increaseLike(teamNo);
+      setInfo('좋아요 목록에 추가되었습니다');
+    }
+    setIsLiked(!isLiked);
+  };  
 
   //날짜 포맷 설정
   const formatDeadline = (deadline) => {
@@ -168,7 +217,7 @@ const ReadComponent = ({ teamNo }) => {
       <div className=" bg-slate-200 w-1/4 rounded-md px-4 py-4">
         <LandingComponent />
       </div>
-      <div className="bg-slate-100 w-2/5 ml-5 p-4 rounded-lg">
+      <div className="bg-slate-100 w-[1000px] ml-5 p-4 rounded-lg">
         <div className="flex justify-between items-center">
           <span className="text-left font-semibold ml-2 items-center flex">
             {team.flag ? '모집 마감' : '모집 중'}
@@ -178,7 +227,7 @@ const ReadComponent = ({ teamNo }) => {
         </div>
         <div className="grid grid-cols-10 w-full mx-auto mt-4 mb-1 text-xl bg-white">
           <div className="col-start-9 col-span-2 ml-5 mt-4 text-right flex justify-center">
-            <img src={emptyheart} alt="..." className="w-7 mr-3 inline" />
+          <img src={email && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline" />
             {team.teamHit}
           </div>
           <div className="col-start-3 col-span-6 h-72 mt-3 mb-10">
@@ -213,12 +262,12 @@ const ReadComponent = ({ teamNo }) => {
           <div className="col-start-2 col-span-8"></div>
           <div className="col-start-8 col-span-2 text-right text-base">{team.nickname}</div>
           <div className="col-start-2 col-span-8 my-5 border-t-4 py-4 whitespace-pre-wrap">{team.content}</div>
-          <div className="col-start-2 col-span-8 h-80">
+          <div className="col-start-2 col-span-8 h-[450px]">
             <MapComponent location={team.location} />
           </div>
           {/* <div className="col-start-2 col-span-8 my-6">
             <div className="flex justify-between space-x-4"> */}
-          {id === team.user_id ? (
+          {ino === team.id ? (
             <>
               <div className="col-start-2 col-span-8 my-6">
                 <div className="flex justify-between space-x-4">
@@ -263,6 +312,8 @@ const ReadComponent = ({ teamNo }) => {
 
           <ModalComponent show={showModal} onClose={handleCloseModal} />
           {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
+          {/* 좋아요 기능 알림 모달 */}
+          {info && <InfoModal title={'알림'} content={`${info}`} callbackFn={closeInfoModal} />}
         </div>
       </div>
       {/* 참여인원 목록 컴포넌트 */}

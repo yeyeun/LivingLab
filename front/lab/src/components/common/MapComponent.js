@@ -15,6 +15,15 @@ const MapComponent = ({ location }) => {
     const map = new kakao.maps.Map(mapscript, options);
     // 주소-좌표 변환 객체를 생성합니다.
     const geocoder = new kakao.maps.services.Geocoder();
+
+    // 컨트롤 생성
+    const mapTypeControl = new kakao.maps.MapTypeControl();
+    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+    //줌 컨트롤 생성
+    const zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+
     // 주소로 좌표를 검색합니다..
     geocoder.addressSearch(location, function (result, status) {
       // 정상적으로 검색이 완료됐으면

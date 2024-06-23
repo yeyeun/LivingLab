@@ -45,6 +45,7 @@ public class ShareRoom {
     private Integer averFee;
     private Integer days;
     private boolean flag;
+    private Integer roomHit;
 
     @ElementCollection
     @Builder.Default

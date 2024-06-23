@@ -10,16 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.dto.LoginDto;
 import com.mlp.lab.dto.ResponseDto;
+import com.mlp.lab.dto.UserDto;
 import com.mlp.lab.entity.User;
-import com.mlp.lab.service.MailService;
 import com.mlp.lab.service.UserService;
 import com.mlp.lab.util.CustomFileUtil;
 
@@ -35,7 +32,6 @@ import lombok.extern.log4j.Log4j2;
 public class UserController {
     // final을 붙여 생성자 생성(@Autoweird 대신)
     private final UserService userService;
-    private final MailService mailService;
     private final CustomFileUtil fileUtil;
 
     @PostMapping("/login")
@@ -48,34 +44,31 @@ public class UserController {
         return user; // // 로그인 정보 그대로 다 준다
     }
 
-    @PostMapping("/join")   //파일은 RequestBody로 받을 수 없음
+    @PostMapping("/join")   
     public ResponseDto<Object> join(UserDto userDto) {
-        if (userService.findByEmail(userDto.getEmail()) != null) {
-            return ResponseDto.setFailed("이미 존재하는 아이디입니다.");
-        }
+        // if (userService.findByEmail(userDto.getEmail()) != null) {
+        //     return ResponseDto.setFailed("이미 존재하는 아이디입니다.");
+        // }
         List<String> uploadFileNames = fileUtil.saveFiles(userDto.getFiles());
         userDto.setUploadFileNames(uploadFileNames);
         userService.add(userDto);
-
         return ResponseDto.setSuccess("회원가입 완료");
     }
 
     @PostMapping("/findId")
     public ResponseDto<Object> findId(@RequestBody UserDto userDto) {
         User user = userService.findId(userDto.getName(), userDto.getPhone());
+        if(user == null){
+            return ResponseDto.setFailed("존재 하지 않는 회원입니다. 이름과 번호를 다시 확인해주세요");
+        }
         return ResponseDto.setSuccess(user.getName() + "님의 아이디는 " + user.getEmail() + " 입니다.");
     }
 
-    @PostMapping("/findPwd")
-    public ResponseDto<Object> findPwd(@RequestParam int inputAuthNum, @RequestBody User user) {
-        int authNumber = mailService.makeRandomNumber();
-        System.out.println("인증번호: " + authNumber);
-        System.out.println("입력받은 인증번호: " + authNumber);
-
-        if (authNumber != inputAuthNum) {
-            return ResponseDto.setFailed("인증번호가 일치하지 않습니다.");
-        }
-        return ResponseDto.setSuccess(user.getName() + "님의 패스워드는 " + user.getPwd() + " 입니다.");
+    @PostMapping("/findPwd")    //인증번호 발송 클릭 시 
+    public ResponseDto<Object> findPwd(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String pwd = userService.findByEmail(email).getPwd();
+        return ResponseDto.setSuccessData("비밀번호", pwd);
     }
 
     // 회원정보 수정

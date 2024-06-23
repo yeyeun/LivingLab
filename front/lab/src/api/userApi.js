@@ -35,3 +35,18 @@ export const getUser = async (id) => {
   const res = await axios.get(`${host}/${id}`);
   return res.data;
 };
+
+//아이디(이메일) 찾기
+export const findId = async (userDto) => {
+  const header = { headers: { 'Content-Type': 'application/json' } };
+  const res = await axios.post(`${host}/findId`, userDto, header);
+  return res.data;
+}
+
+//비밀번호 알려주기(인증번호 확인 후 단계)
+export const findPwd = async ( email ) => {
+  const header = { headers: { 'Content-Type': 'application/json' } };
+  const res = await axios.post(`${host}/findPwd`, { email } , header );
+  return res.data;
+}
+

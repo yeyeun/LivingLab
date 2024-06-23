@@ -6,16 +6,13 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.TeamDto;
+import com.mlp.lab.entity.like.LikeTeam;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -27,21 +24,49 @@ import lombok.ToString;
 @AllArgsConstructor
 @Table(name = "team")
 @ToString(exclude = "imageList")
+@EqualsAndHashCode(callSuper = false)
 public class Team extends BaseTimeEntity{
-    @Id //기본키 설정
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "team_no")
     private Long teamNo;
-    private String user_id;
+
+    @Column(name = "title", length = 50)
     private String title;
+
+    @Column(name = "content", length = 500)
     private String content;
+
+    @Column(name = "deadline")
     private String deadline;
+
+    @Column(name = "team_Category")
     private Character teamCategory;
+
+    @Column(name = "max")
     private Integer max;
+
+    @Column(name = "current")
     private Integer current;
+
+    @Column(name = "location")
     private String location;
+
+    @Column(name = "team_Hit")
     private Integer teamHit;
+
+    @Column(name = "nickname")
     private String nickname;
+
+    @Column(name = "flag")
     private boolean flag; // true: 마감 / false:모집중
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private User user;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE) // 게시글 삭제시 좋아요 정보도 삭제
+    private List<LikeTeam> likeTeams;
 
     @ElementCollection
     @Builder.Default

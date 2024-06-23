@@ -19,10 +19,12 @@ import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.TeamDto;
 import com.mlp.lab.entity.Team;
 import com.mlp.lab.entity.TeamImage;
+import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Community;
 import com.mlp.lab.entity.Team;
 import com.mlp.lab.entity.TeamImage;
 import com.mlp.lab.repository.TeamRepository;
+import com.mlp.lab.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TeamService {
     private final TeamRepository teamRepository;
+    private final UserRepository userRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto, String search, String sort) {
@@ -234,6 +237,7 @@ public class TeamService {
 
     public void add(TeamDto teamDto) { // 동네모임 등록(이미지 포함)
         Team team = Team.DtoToEntity(teamDto);
+        team.setUser(userRepository.findByUserId(teamDto.getId()));
         teamRepository.save(team);
     }
 
@@ -241,11 +245,12 @@ public class TeamService {
         Optional<Team> result = teamRepository.findById(teamNo);
         Team team = result.orElseThrow();
         TeamDto teamDto = team.entityToDto(team);
+        teamDto.setId(team.getUser().getId());
         return teamDto;
     }
 
-    @Transactional // DB 작업이 성공적으로 완료될때만 실제 DB에 반영
-    public void delete(int teamNo) {
+    @Transactional
+    public void delete(int teamNo) { // 삭제하기
         teamRepository.deleteById(teamNo);
     }
 
@@ -300,5 +305,19 @@ public class TeamService {
         }).collect(Collectors.toList());
 
         return dtoList;
+    }
+
+    public void increase(Long teamNo) { // 좋아요 +1
+        Optional<Team> result = teamRepository.findById(teamNo.intValue());
+        Team team = result.orElseThrow();
+        team.setTeamHit(team.getTeamHit()+1);
+        teamRepository.save(team);
+    }
+
+    public void decrease(Long teamNo) { // 좋아요 -1
+        Optional<Team> result = teamRepository.findById(teamNo.intValue());
+        Team team = result.orElseThrow();
+        team.setTeamHit(team.getTeamHit()-1);
+        teamRepository.save(team);
     }
 }

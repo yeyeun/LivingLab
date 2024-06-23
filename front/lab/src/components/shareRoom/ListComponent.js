@@ -45,10 +45,19 @@ const ListComponent = ({ search, sort }) => {
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3 py-10 max-w-7xl min-w-[1280px] items-center mx-auto">
         {serverData.dtoList.map((shareRoom) => (
           <div class="mx-12 overflow-hidden rounded-sm shadow-lg cursor-pointer h-90 w-60 md:w-80">
-            <div className="block w-full h-full" onClick={() => moveToRead(shareRoom.roomNo)}>
-              <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} class="object-cover w-full max-h-40" />
+            <div className="relative w-full h-full group" onClick={() => moveToRead(shareRoom.roomNo)}>
+              <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`}
+              class="object-cover w-full max-h-40 transition duration-500 group-hover:blur-xl group-hover:brightness-125"/>
+                <div className="absolute top-0 w-full flex flex-col items-center justify-center px-4 group-hover:z-10">
+                <p class="text-gray-900 text-lg leading-5 font-bold mb-2 hidden group-hover:block rounded px-2 pt-6">
+                    {shareRoom.title}
+                  </p>
+                  <p class="text-gray-900 text-sm leading-5 font-medium mb-2 hidden group-hover:block rounded px-2 pt-10">
+                    옵션 : {shareRoom.option1}
+                  </p>
+                </div>
               <div class="w-full p-4 bg-white">
-                <p class="text-gray-900 text-xs leading-5 font-normal mb-1">
+                <p class="text-gray-900 text-sm leading-5 font-normal mb-1">
                   {shareRoom.location}
                 </p>
                 <div className="flex">
@@ -59,10 +68,6 @@ const ListComponent = ({ search, sort }) => {
                     총&nbsp; {parseInt(shareRoom.rentFee).toLocaleString()}원
                   </p>
                 </div>
-                
-                <p class="text-gray-900 text-xs leading-5 font-normal mb-2">
-                  {shareRoom.option1}
-                </p>
                 <div className="flex">
                   <div className="">
                     <p class="text-gray-500 text-sm leading-6 font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">
@@ -77,7 +82,6 @@ const ListComponent = ({ search, sort }) => {
                       {shareRoom.days} &nbsp; 일 &nbsp;동안
                     </p>
                   </div>
-
                 </div>
               </div>
             </div>

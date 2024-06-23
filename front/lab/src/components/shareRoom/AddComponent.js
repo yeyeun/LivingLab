@@ -69,6 +69,7 @@ const AddComponent = () => {
     location: '',
     files: [],
     userId: userId,
+    roomHit: 0,
     uploadFileNames: [],
   };
   const [shareRoom, setShareRoom] = useState({ ...initState });
@@ -136,6 +137,7 @@ const AddComponent = () => {
     formData.append('rentStartDate', shareRoom.rentStartDate);
     formData.append('averFee', averFee);
     formData.append('days', daysBetween);
+    formData.append('roomHit', shareRoom.roomHit); // roomHit 값을 formData에 추가
     formData.append('location', shareRoom.location);
     postAddShareRoom(formData);
     setResult('게시글이 등록되었습니다');

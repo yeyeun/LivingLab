@@ -6,22 +6,16 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.BuyDto;
+import com.mlp.lab.entity.like.LikeBuy;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 
 @Data
 @Entity
@@ -30,6 +24,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Table(name = "buy")
 @ToString(exclude = "imageList")
+@EqualsAndHashCode(callSuper = false)
 public class Buy extends BaseTimeEntity{
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,6 +64,9 @@ public class Buy extends BaseTimeEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private User user;
+
+    @OneToMany(mappedBy = "buy", cascade = CascadeType.REMOVE) // 게시글 삭제시 좋아요 정보도 삭제
+    private List<LikeBuy> likeBuys;
 
     @ElementCollection
     @Builder.Default
