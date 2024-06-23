@@ -11,6 +11,20 @@ export const postCreateRoom = async (userId, createRequest) => {
   return res.data;
 };
 
+// 공동구매 채팅방의 유저 조회(참여하기 표시)
+export const chatUserInfoBuy = async (buyNo) => {
+  const res = await axios.get(`${host}/room/get/buy`, {
+    params: { buyNo }
+  });
+  return res.data;
+};
+
+// 공동구매 채팅방 입장(참여)
+export const enterChatRoom = async (formData) => {
+  const response = await axios.post(`${host}/room/add`, formData);
+      return response.data;
+};
+
 // 유저의 모든 채팅방 목록 반환
 export const getChatRoom = async (userId) => {
   const res = await axios.get(`${host}/rooms`, { params: { userId } });

@@ -39,6 +39,11 @@ public class ChatRoomService {
         return ChatRoomDataResponseDto.Info.of(chatRoom);
     }
 
+    public ChatRoomDataResponseDto.Info findRoomByBuyNo(Long buyNo) {
+        ChatRoom chatRoom = chatRoomRepository.findByBuy_BuyNo(buyNo);
+        return ChatRoomDataResponseDto.Info.of(chatRoom);
+    }
+
     public ChatRoomDataResponseDto.Info createRoom(Long userId, ChatRoomDataRequestDto.create createRequest) {
         Buy buy = buyRepository.findByBuyNo(createRequest.getBuyNo());
         User user = buy.getUser();    //글 작성자(채팅방 생성 후 자동으로 입장)
@@ -59,12 +64,13 @@ public class ChatRoomService {
         return ChatRoomDataResponseDto.Info.of(chatRoom);
     }
 
-    public void enterRoom(Long userId, Long buyNo){
+    public ChatRoomDataResponseDto.Info enterRoom(Long userId, Long buyNo){
         User user = userRepository.findByUserId(userId);  //글을 읽고 참여하기를 누른 유저
         ChatRoom chatRoom = chatRoomRepository.findByBuy_BuyNo(buyNo);
         List<User> readers = chatRoom.getReader();
         readers.add(user);
         chatRoomRepository.save(chatRoom);
+        return ChatRoomDataResponseDto.Info.of(chatRoom);
     }
 
     public void deleteRoom(Long roomId) {

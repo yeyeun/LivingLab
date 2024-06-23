@@ -55,24 +55,26 @@ public class ChatRoomController {
         return ResponseDto.setSuccessData("채팅방 생성", roomData);
     }
 
-    // 채팅방 입장
-    @GetMapping("/room/enter/{buyNo}")
-    public void enterRoom(@RequestParam(name="userId") Long userId, @PathVariable Long buyNo) {
-        chatRoomService.enterRoom(userId, buyNo);
+    // 공동구매 특정 채팅방 입장
+    @PostMapping("/room/add")
+    @ResponseBody
+    public ResponseDto<ChatRoomDataResponseDto.Info> enterRoom(@RequestParam(name="userId") Long userId, @RequestParam(name = "buyNo") Long buyNo) {
+        ChatRoomDataResponseDto.Info roomData = chatRoomService.enterRoom(userId, buyNo);
+        return ResponseDto.setSuccessData("채팅방 입장", roomData);
     }
 
-    // 특정 채팅방 조회
-    @GetMapping("/room/read/{chatroomId}")
+    // 공동구매 특정 채팅방 조회
+    @GetMapping("/room/get/buy")
     @ResponseBody
-    public ResponseDto<ChatRoomDataResponseDto.Info> deleteRoom(@PathVariable("chatroomId") Long chatroomId) {
-        ChatRoomDataResponseDto.Info roomData = chatRoomService.findRoomByRoomId(chatroomId);
+    public ResponseDto<ChatRoomDataResponseDto.Info> chatUserInfoBuy(@RequestParam(name="buyNo") Long buyNo) {
+        ChatRoomDataResponseDto.Info roomData = chatRoomService.findRoomByBuyNo(buyNo);
         return ResponseDto.setSuccessData("특정 채팅방 조회", roomData);
     }
 
     // 특정 채팅방 삭제
     @DeleteMapping("/room/delete/{roomId}")
     @ResponseBody
-    public ResponseDto<Object> roomInfo(@PathVariable("roomId") Long roomId) {
+    public ResponseDto<Object> deleteRoom(@PathVariable("roomId") Long roomId) {
         chatRoomService.deleteRoom(roomId);
         return ResponseDto.setSuccess(roomId + "번 채팅방 삭제");
     }

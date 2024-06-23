@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getBuyPartUsers, postAddBuyPart } from '../../api/partApi';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/buyApi';
 import { likeBuy, unlikeBuy, likeInfoBuy } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
+import { enterChatRoom } from '../../api/chatApi';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import useCustomMove from '../../hooks/useCustomMove';
@@ -15,7 +15,7 @@ import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_empty.png';
 import fullheart from '../../resources/images/heart_full.png';
 import ResultModal from '../common/ResultModal';
-import PartComponent from './PartComponent';
+import PartComponent from './PartComponent'
 import Profile_Img from '../../resources/images/profile_img.png';
 import InfoModal from '../common/InfoModal';
 
@@ -51,7 +51,6 @@ const ReadComponent = ({ buyNo }) => {
   const [buy, setBuy] = useState(initState);
   const [user, setUser] = useState(initUser);
   const [result, setResult] = useState(null);
-  const [part, setPart] = useState([]); // 참여 목록 상태 추가
   const [addResultModal, setAddResultModal] = useState(null);
   const { moveToList, moveToModify } = useCustomMove();
   const loginInfo = useSelector((state) => state.loginSlice);
@@ -60,6 +59,7 @@ const ReadComponent = ({ buyNo }) => {
   const [isLiked, setIsLiked] = useState({}); // true/false에 따라 하트 이미지 변경
   const [like, setLike] = useState(initState2);
   const [info, setInfo] = useState(null);
+  const [userId, setUserId] = useState('');
 
   // 이미지 슬라이더
   const settings = {
@@ -86,11 +86,6 @@ const ReadComponent = ({ buyNo }) => {
     });
   }, [ino]);
 
-  useEffect(() => {
-    getBuyPartUsers(buyNo).then((data) => {
-      setPart(data);
-    });
-  }, [buyNo]);
 
   useEffect(() => {
     if (email) {
@@ -110,15 +105,17 @@ const ReadComponent = ({ buyNo }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleClickAdd = async () => {
+    const formData = new FormData();
+    formData.append('userId', ino); // ino 값을 formData에 추가
+    formData.append('buyNo', buyNo); // buyNo 값을 formData에 추가
+    
     try {
-      await postAddBuyPart(user, buyNo); // 참여하기 요청 비동기 처리
-      setResult('참여목록에 등록되었습니다.');
-      // 참여 목록 갱신
-      const updatedPart = await getBuyPartUsers(buyNo);
-      setPart(updatedPart);
+      const response = await enterChatRoom(formData); // FormData를 인자로 전달하여 호출
+      setResult('참여가 완료되었습니다.');
+      console.log('채팅방 입장 응답:', response); // 정상적으로 데이터가 출력되는지 확인용
     } catch (error) {
-      console.error('참여 등록 실패:', error);
-      setResult('참여 등록에 실패했습니다.');
+      setResult('이미 참여 중입니다.');
+      console.error('참여 오류:', error); // 에러 로그 확인
     }
   };
 
@@ -277,9 +274,9 @@ const ReadComponent = ({ buyNo }) => {
                     삭제하기
                   </button>
                   {/* </div> */}
-
-                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/4 mr-2 hover:bg-blue-500" onClick={handleClickAdd}>
-                    참여하기
+                  {/* 글쓴이는 자동 참여하 참여하기 필요 X */}
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/4 mr-2 hover:bg-blue-500" >
+                    참여하기 
                   </button>
                   <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/4 hover:bg-slate-500" onClick={() => moveToList()}>
                     목록
@@ -312,7 +309,7 @@ const ReadComponent = ({ buyNo }) => {
         </div>
       </div>
       {/* 참여인원 목록 컴포넌트 */}
-      <PartComponent buyNo={buyNo} part={part} user={user} /> {/* PartComponent에 참여 인원(part) 전달 */}
+      <PartComponent buyNo={buyNo} />
     </>
   );
 };
