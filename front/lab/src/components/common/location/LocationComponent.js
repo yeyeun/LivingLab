@@ -16,6 +16,8 @@ const initState = {
   detailAddr: '',
   profileImage: '',
   location: '',
+  latitude: 0,
+  longitude: 0,
 };
 
 const LocationComponent = () => {
@@ -53,6 +55,8 @@ const LocationComponent = () => {
 
       const modifiedUser = user;
       modifiedUser.location = result[0].address.address_name;
+      modifiedUser.latitude = location.latitude; // 위도(가로)
+      modifiedUser.longitude = location.longitude; // 경도 (세로)
       modifyUser(modifiedUser); // 상태값 변경된 거 DB에 반영
     };
 
@@ -119,6 +123,8 @@ const LocationComponent = () => {
                   <MapMarker position={{ lat: location.latitude, lng: location.longitude }} />
                 </Map>
                 <p>현재 위치 : {address.address_name}</p>
+                <p>현재 위도 : {location.latitude}</p>
+                <p>현재 경도 : {location.longitude}</p>
               </div>
             }
             callbackFn={handleModalClose}

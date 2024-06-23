@@ -16,17 +16,16 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-
 @Data
 @Entity
-@Builder //빌터 패턴으로 객체 생성
+@Builder // 빌터 패턴으로 객체 생성
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "buy")
 @ToString(exclude = "imageList")
 @EqualsAndHashCode(callSuper = false)
-public class Buy extends BaseTimeEntity{
-     @Id
+public class Buy extends BaseTimeEntity {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "buy_no")
     private Long buyNo;
@@ -51,6 +50,12 @@ public class Buy extends BaseTimeEntity{
 
     @Column(name = "location")
     private String location;
+
+    @Column(name = "latitude")
+    private double latitude; // 위도
+
+    @Column(name = "longitude")
+    private double longitude; // 경도
 
     @Column(name = "buy_hit")
     private Integer buyHit;
