@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import iconNext from '../../resources/images/icon-next.png';
 import iconEdit from '../../resources/images/iconEdit.png';
 import { postCreateRoom } from '../../api/chatApi';
-
 const initState = {
   id: 0,
   nickname: '',
@@ -22,7 +21,6 @@ const initState = {
   buyHit: 0,
   files: [],
 };
-
 const AddComponent = () => {
   const { moveToList } = useCustomMove();
   const [postImageFiles, setPostImageFiles] = useState([]); // 이미지 파일 프리뷰
@@ -30,42 +28,37 @@ const AddComponent = () => {
   const [result, setResult] = useState(null);
   const [addResultModal, setAddResultModal] = useState(null);
   const imgRef = useRef();
-
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
   const ino = loginInfo.id;
+  // const [addr, setAddr] = useState('');
+  const [location, setLocation] = useState(null); // 현재 위치를 저장할 상태
   useEffect(() => {
     getUser(ino).then((data) => {
       setUser(data);
     });
   }, [ino]);
-
   const handleImageChange = (e) => {
     // 이미지 변경
     const files = Array.from(e.target.files);
     const nonImageFiles = files.filter((file) => !file.type.startsWith('image/'));
-
     if (nonImageFiles.length > 0) {
       setAddResultModal('이미지 파일만 등록 가능합니다');
       imgRef.current.value = '';
       setPostImageFiles([]);
       return;
     }
-
     const imagePreviews = files.map((file) => ({
       url: URL.createObjectURL(file),
       name: file.name,
     }));
-
     setPostImageFiles(imagePreviews);
   };
-
   const handleRemoveImage = (index) => {
     // 이미지 제거
     setPostImageFiles((postFiles) => postFiles.filter((_, i) => i !== index));
     updateFileInput(index);
   };
-
   const updateFileInput = (removeIndex) => {
     // 입력된 파일 업데이트
     const dataTransfer = new DataTransfer();
@@ -78,68 +71,90 @@ const AddComponent = () => {
     });
     imgRef.current.files = dataTransfer.files; //제거된 파일 반영
   };
-
   const handleChangeBuy = (e) => {
     const { name, value } = e.target;
     setBuy((prev) => ({ ...prev, [name]: value }));
   };
-
   // 글쓰기 등록하기 버튼
   const handleClickAdd = async () => {
-    if (!buy.buyCategory) {
-      setAddResultModal('카테고리를 선택해주세요');
-      return;
+    try {
+      await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
+      if (!location || location.latitude === 0 || location.longitude === 0) {
+        setAddResultModal('유효한 주소를 입력해주세요');
+        return;
+      }
+      if (!buy.buyCategory) {
+        setAddResultModal('카테고리를 선택해주세요');
+        return;
+      }
+      if (!buy.title || !buy.content) {
+        setAddResultModal('제목과 내용을 입력해주세요');
+        return;
+      }
+      if (!buy.deadline || !buy.location) {
+        setAddResultModal('마감시간과 모임장소를 입력해주세요');
+        return;
+      }
+      const time = new Date();
+      const timeElement = new Date(buy.deadline);
+      console.log('time:', time);
+      console.log('timeElement:', timeElement);
+      if (time > timeElement) {
+        setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
+        return;
+      }
+      const files = imgRef.current.files;
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append('files', files[i]);
+      }
+      formData.append('id', ino);
+      formData.append('nickname', user.nickname);
+      formData.append('title', buy.title);
+      formData.append('location', buy.location);
+      formData.append('latitude', location.latitude); // 위도
+      formData.append('longitude', location.longitude); // 경도
+      formData.append('content', buy.content);
+      formData.append('buyCategory', buy.buyCategory);
+      formData.append('max', buy.max);
+      formData.append('current', buy.current);
+      formData.append('deadline', buy.deadline);
+      formData.append('buyHit', buy.buyHit);
+      const response = await postAddBuy(formData); // 등록 버튼 클릭시 디비에 저장 후 buyNo 가져오기
+      const createRequest = { buyNo: response.buyNo };
+      await postCreateRoom(formData.get('id'), createRequest);
+      setResult('게시글이 등록되었습니다');
+    } catch (error) {
+      console.error('Error adding post:', error);
     }
-    if (!buy.title || !buy.content) {
-      setAddResultModal('제목과 내용을 입력해주세요');
-      return;
-    }
-    if (!buy.deadline || !buy.location) {
-      setAddResultModal('마감시간과 모임장소를 입력해주세요');
-      return;
-    }
-    const time = new Date();
-    const timeElement = new Date(buy.deadline);
-    console.log('time:', time);
-    console.log('timeElement:', timeElement);
-    if (time > timeElement) {
-      setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
-      return;
-    }
-
-    const files = imgRef.current.files;
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i]);
-    }
-
-    formData.append('id', ino);
-    formData.append('nickname', user.nickname);
-    formData.append('title', buy.title);
-    formData.append('location', buy.location);
-    formData.append('content', buy.content);
-    formData.append('buyCategory', buy.buyCategory);
-    formData.append('max', buy.max);
-    formData.append('current', buy.current);
-    formData.append('deadline', buy.deadline);
-    formData.append('buyHit', buy.buyHit);
-
-    const response = await postAddBuy(formData);  //등록 버튼 클릭시 디비에 저장 후 buyNo 가져오기
-    const createRequest = { buyNo: response.buyNo };
-    await postCreateRoom(formData.get('id'), createRequest);
-    setResult('게시글이 등록되었습니다');
-
   };
-
   const closeModal = () => {
     setResult(null);
     moveToList();
   };
-
   const setAddress = (address) => {
     setBuy((prev) => ({ ...prev, location: address }));
   };
-
+  // 주소검색 결과주소를 좌표로 변환해서 location에 저장
+  const handleGeocode = () => {
+    return new Promise((resolve, reject) => {
+      const { kakao } = window;
+      const geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(buy.location, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          setLocation({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
+          resolve();
+        } else {
+          setAddResultModal('Failed to geocode the address.');
+          reject(new Error('Failed to geocode the address.'));
+        }
+      });
+    });
+  };
   const handleInputValidation = (e) => {
     const value = e.target.value;
     if (value !== '' && (isNaN(value) || value < 2)) {
@@ -147,7 +162,6 @@ const AddComponent = () => {
     }
     handleChangeBuy(e);
   };
-
   return (
     <div>
       <div className="flex items-center w-1/2 mx-auto text-xl font-semibold pl-2 border-l-4 border-teal-300">
