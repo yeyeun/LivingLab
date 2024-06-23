@@ -245,6 +245,11 @@ public class BuyService {
         return buyDto;
     }
 
+    public Buy get(Long buyNo){
+        Buy buy = buyRepository.findByBuyNo(buyNo);
+        return buy;
+    }
+
     @Transactional // 삭제하기
     public void delete(int buyNo) {
         buyRepository.deleteById(buyNo);

@@ -60,6 +60,8 @@ const ReadComponent = ({ buyNo }) => {
   const [like, setLike] = useState(initState2);
   const [info, setInfo] = useState(null);
   const [userId, setUserId] = useState('');
+  const [ current, setCurrent ] = useState(0);
+  const [ max, setMax ] = useState(0);
 
   // 이미지 슬라이더
   const settings = {
@@ -76,6 +78,8 @@ const ReadComponent = ({ buyNo }) => {
   useEffect(() => {
     getOne(buyNo).then((data) => {
       setBuy(data);
+      setCurrent(data.current);
+      setMax(data.max);
     });
   }, [buyNo, info]);
 
@@ -105,17 +109,22 @@ const ReadComponent = ({ buyNo }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleClickAdd = async () => {
+    setCurrent()
+    console.log("current, max: ", current, max)
     const formData = new FormData();
     formData.append('userId', ino); // ino 값을 formData에 추가
     formData.append('buyNo', buyNo); // buyNo 값을 formData에 추가
-    
-    try {
-      const response = await enterChatRoom(formData); // FormData를 인자로 전달하여 호출
-      setResult('참여가 완료되었습니다.');
-      console.log('채팅방 입장 응답:', response); // 정상적으로 데이터가 출력되는지 확인용
-    } catch (error) {
-      setResult('이미 참여 중입니다.');
-      console.error('참여 오류:', error); // 에러 로그 확인
+    if(current === max){
+      setResult('더이상 참여할수 없습니다.');
+    } else{
+      try {
+        const response = await enterChatRoom(formData); // FormData를 인자로 전달하여 호출
+        setResult('참여가 완료되었습니다.');
+        console.log('채팅방 입장 응답:', response); // 정상적으로 데이터가 출력되는지 확인용
+      } catch (error) {
+        setResult('이미 참여 중입니다.');
+        console.error('참여 오류:', error); // 에러 로그 확인
+      }
     }
   };
 

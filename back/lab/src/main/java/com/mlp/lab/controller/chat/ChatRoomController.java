@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.dto.chat.ChatRoomDataRequestDto;
 import com.mlp.lab.dto.chat.ChatRoomDataResponseDto;
+import com.mlp.lab.entity.Buy;
+import com.mlp.lab.repository.BuyRepository;
+import com.mlp.lab.service.BuyService;
 import com.mlp.lab.service.chat.ChatRoomService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
+    private final BuyService buyService;
+    private final BuyRepository buyRepository;
 
     // 채팅 리스트 화면
     @GetMapping("/room")
@@ -60,6 +65,9 @@ public class ChatRoomController {
     @ResponseBody
     public ResponseDto<ChatRoomDataResponseDto.Info> enterRoom(@RequestParam(name="userId") Long userId, @RequestParam(name = "buyNo") Long buyNo) {
         ChatRoomDataResponseDto.Info roomData = chatRoomService.enterRoom(userId, buyNo);
+        Buy buy = buyService.get(buyNo);
+        buy.setCurrent(buy.getCurrent()+1); //현재인원 증가
+        buyRepository.save(buy);
         return ResponseDto.setSuccessData("채팅방 입장", roomData);
     }
 
