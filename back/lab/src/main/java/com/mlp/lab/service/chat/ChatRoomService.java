@@ -73,6 +73,14 @@ public class ChatRoomService {
         return ChatRoomDataResponseDto.Info.of(chatRoom);
     }
 
+    public ChatRoomDataResponseDto.Info exitRoom(Long userId, Long buyNo){
+        User user = userRepository.findByUserId(userId);  //참여x를 누른 유저
+        ChatRoom chatRoom = chatRoomRepository.findByBuy_BuyNo(buyNo);
+        chatRoom.removeReader(user);
+        chatRoomRepository.save(chatRoom);
+        return ChatRoomDataResponseDto.Info.of(chatRoom);
+    }
+
     public void deleteRoom(Long roomId) {
         chatRoomRepository.deleteById(roomId);
     }
