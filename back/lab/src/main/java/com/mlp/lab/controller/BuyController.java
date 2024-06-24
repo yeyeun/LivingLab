@@ -33,9 +33,11 @@ public class BuyController {
 
     @GetMapping("/list") // 목록조회(검색기능 포함)
     public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto,
-    @RequestParam(required = false, value = "search") String search,
-    @RequestParam(required = false, value = "sort") String sort) {
-        return buyService.list(pageRequestDto, search, sort);
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort,
+            @RequestParam(required = false, value = "latitude") double latitude,
+            @RequestParam(required = false, value = "longitude") double longitude) {
+        return buyService.list(pageRequestDto, search, sort, latitude, longitude);
     }
 
     @GetMapping("/read/{buyNo}") // 상세조회
@@ -103,6 +105,13 @@ public class BuyController {
     public List<BuyDto> getLatestBuyList() {
         return buyService.getLatestBuy();
     }
+
+    // @GetMapping("/distance")
+    // public List<BuyDto> getdistanceList(@RequestParam(value = "latitude") double
+    // latitude,
+    // @RequestParam(value = "longitude") double longitude) {
+    // return buyService.getdistanceBuy(latitude, longitude);
+    // }
 
     @PutMapping("/increase/{buyNo}") // 좋아요 +1
     public void increase(@PathVariable(name = "buyNo") Long buyNo) {

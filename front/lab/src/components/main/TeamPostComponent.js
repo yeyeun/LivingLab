@@ -18,7 +18,7 @@ const TeamPostComponent = () => {
     useEffect(() => {
         const fetchLatestPosts = async () => {
             try {
-                const pageParam = { page: 1, size: 6 };
+                const pageParam = { page: 1, size: 4 };
                 const posts = await getLatestTeam(pageParam);
                 console.log('Success:', posts);
                 setLatestPosts(posts);
@@ -31,30 +31,40 @@ const TeamPostComponent = () => {
     }, []);
 
     return (
-        <>
-        <div className="main-nextline2 "></div>
-            <ul className="main-teamlist-container">
+        <div>
+            <ul>
                 {latestPosts.map((team, index) => (
-                    <li key={team.buyNo} className="main-teamlist"> 
-                        <div className="main-teamlist-title">
-                            <Link to={`/team/read/${team.teamNo}`}>
-                                {team.title}
-                            </Link>
-                        </div>
-                        <div className="main-teamlist-content">
-                        <Link to={`/team/read/${team.teamNo}`}>
-                                {team.content}
-                            </Link>
-                        </div>
-                        <span className="main-teamlist-number">
-                            <img className="main-person-num" src={PersonImg}/> {team.current}/{team.max}
-                        </span>
-                        {index !== latestPosts.length - 1 && <hr className="latestPost-hr"></hr>}
-                        </li>
-                ))}
-            </ul>            
+                    <li key={team.teamNo}  >
+                        <div className="main-teamlist-container">
+                            <div className='main-teamlist-image'>
+                                <Link to={`/team/read/${team.teamNo}`}>
+                                    <img className="main-teamlist-thumbnail" src={`${host}/api/team/display/${team.uploadFileNames[0]}`} alt={team.title} />
+                                </Link>
 
-        </>
+                            </div>
+                            
+                            <div className='main-teamlist-contentbox'>
+                                <div className="main-teamlist-title">
+                                    <Link to={`/team/read/${team.teamNo}`}>
+                                        {team.title}
+                                    </Link>
+                                </div>
+                                <div className="main-teamlist-content">
+                                    <Link to={`/team/read/${team.teamNo}`}>
+                                        {team.content}
+                                    </Link>
+                                </div>
+                            </div>
+                            <span className="main-teamlist-number">
+                                <img className="main-person-num" src={PersonImg} /> {team.current}/{team.max}
+                            </span>
+                        </div>
+                        {index !== latestPosts.length - 1 && <hr className="latestPost-hr"></hr>}
+                    </li>
+                ))}
+            </ul>
+
+        </div>
     )
 }
 
