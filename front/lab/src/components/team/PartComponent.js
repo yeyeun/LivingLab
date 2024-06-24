@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react';
 import ProfileComponent from '../common/ProfileComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import useCustomLogin from './../../hooks/useCustomLogin';
-import useCustomMove from '../../hooks/useCustomMove';
 import ModalComponent from '../common/ModalComponent';
 import ResultModal from '../common/ResultModal';
 import InfoModal from '../common/InfoModal';
-import { chatUserInfoBuy, exitChatRoomBuy } from '../../api/chatApi';
+import { chatUserInfoTeam, exitChatRoomTeam } from '../../api/chatApi';
 import { getUser } from '../../api/userApi'
 
-const PartComponent = ({ buyNo }) => {
+const PartComponent = ({ teamNo }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -24,8 +23,9 @@ const PartComponent = ({ buyNo }) => {
   useEffect(() => {
     const fetchChatroomData = async () => {
       try {
-        const chatroomResponse = await chatUserInfoBuy(buyNo);
+        const chatroomResponse = await chatUserInfoTeam(teamNo);
         const chatroomData = chatroomResponse.data;
+        console.log("데이터: "+chatroomData)
         setChatroomInfo(chatroomData);
 
         // 작성자 정보 가져오기
@@ -44,7 +44,7 @@ const PartComponent = ({ buyNo }) => {
       }
     };
     fetchChatroomData();
-  }, [buyNo]);
+  }, [teamNo]);
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -72,13 +72,13 @@ const PartComponent = ({ buyNo }) => {
     try {
       const formData = new FormData();
       formData.append('userId', userId);
-      formData.append('buyNo', buyNo);
+      formData.append('teamNo', teamNo);
 
       const isUserInRoom = displayUsers.some(user => user.id === userId);
       if(!isUserInRoom){
         setResult('참여중이 아닙니다.');
       } else {
-        await exitChatRoomBuy(formData);
+        await exitChatRoomTeam(formData);
         setDisplayUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
         setResult('참여를 취소했습니다.');
         setShowModal(false);

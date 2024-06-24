@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,14 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mlp.lab.dto.TeamDto;
-import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
-import com.mlp.lab.dto.TeamDto;
-import com.mlp.lab.entity.Team;
-import com.mlp.lab.entity.TeamImage;
 import com.mlp.lab.entity.Buy;
-import com.mlp.lab.entity.Community;
 import com.mlp.lab.entity.Team;
 import com.mlp.lab.entity.TeamImage;
 import com.mlp.lab.repository.TeamRepository;
@@ -101,140 +95,6 @@ public class TeamService {
         return responseDTO;
     }
 
-    // 검색된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> searchList(PageRequestDto pageRequestDto, String search) {
-        Pageable pageable = PageRequest.of(
-                pageRequestDto.getPage() - 1,
-                pageRequestDto.getSize(),
-                Sort.by("teamNo").descending());
-
-        Page<Object[]> result = teamRepository.selectSearchList(search, pageable);
-        List<TeamDto> dtoList = result.get().map(arr -> {
-            Team team = (Team) arr[0];
-            TeamImage teamImage = (TeamImage) arr[1];
-            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
-
-            TeamDto teamDto = TeamDto.builder()
-                    .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
-                    .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
-                    .deadline(team.getDeadline()).nickname(team.getNickname()).build();
-
-            if(teamImage != null){
-                String imageStr = teamImage.getFileName();
-                teamDto.setUploadFileNames(List.of(imageStr));
-            }else{
-                teamDto.setUploadFileNames(List.of(defaultImageStr));
-            }
-            return teamDto;
-        }).collect(Collectors.toList());
-
-        long totalCount = result.getTotalElements();
-        PageResponseDto<TeamDto> responseDTO = PageResponseDto.<TeamDto>withAll()
-                .dtoList(dtoList)
-                .pageRequestDto(pageRequestDto)
-                .totalCount(totalCount)
-                .build();
-        return responseDTO;
-    }
-
-    // 선택된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> sortList(PageRequestDto pageRequestDto, String sort) {
-        Pageable pageable = PageRequest.of(
-                pageRequestDto.getPage() - 1,
-                pageRequestDto.getSize(),
-                Sort.by("teamNo").descending());
-
-        Page<Object[]> result = teamRepository.selectList(pageable);
-        if (sort.equals("최신순")) {
-            result = teamRepository.newList(pageable);
-        }
-        if (sort.equals("마감임박순")) {
-            result = teamRepository.deadLineList(pageable);
-        }
-        // if(sort.equals("거리순")){
-        // result =
-        // }
-        // if(sort.equals("좋아요순")){
-        // result =
-        // }
-
-        List<TeamDto> dtoList = result.get().map(arr -> {
-            Team team = (Team) arr[0];
-            TeamImage teamImage = (TeamImage) arr[1];
-            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
-            
-            TeamDto teamDto = TeamDto.builder()
-                    .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
-                    .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
-                    .deadline(team.getDeadline()).nickname(team.getNickname()).build();
-
-            if(teamImage != null){
-                String imageStr = teamImage.getFileName();
-                teamDto.setUploadFileNames(List.of(imageStr));
-            }else{
-                teamDto.setUploadFileNames(List.of(defaultImageStr));
-            }
-            return teamDto;
-        }).collect(Collectors.toList());
-
-        long totalCount = result.getTotalElements();
-        PageResponseDto<TeamDto> responseDTO = PageResponseDto.<TeamDto>withAll()
-                .dtoList(dtoList)
-                .pageRequestDto(pageRequestDto)
-                .totalCount(totalCount)
-                .build();
-        return responseDTO;
-    }
-
-    // 검색 + 선택된 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> searchSortList(PageRequestDto pageRequestDto, String search, String sort) {
-        Pageable pageable = PageRequest.of(
-                pageRequestDto.getPage() - 1,
-                pageRequestDto.getSize(),
-                Sort.by("teamNo").descending());
-
-        Page<Object[]> result = teamRepository.selectList(pageable);
-        if (sort.equals("최신순")) {
-            result = teamRepository.searchNewList(sort, pageable);
-        }
-        if (sort.equals("마감임박순")) {
-            result = teamRepository.searchDeadLineList(sort, pageable);
-        }
-        // if(sort.equals("거리순")){
-        // result =
-        // }
-        // if(sort.equals("좋아요순")){
-        // result =
-        // }
-
-        List<TeamDto> dtoList = result.get().map(arr -> {
-            Team team = (Team) arr[0];
-            TeamImage teamImage = (TeamImage) arr[1];
-            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
-
-            TeamDto teamDto = TeamDto.builder()
-                    .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
-                    .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
-                    .deadline(team.getDeadline()).nickname(team.getNickname()).build();
-
-            if(teamImage != null){
-                String imageStr = teamImage.getFileName();
-                teamDto.setUploadFileNames(List.of(imageStr));
-            }else{
-                teamDto.setUploadFileNames(List.of(defaultImageStr));
-            }                    
-            return teamDto;
-        }).collect(Collectors.toList());
-
-        long totalCount = result.getTotalElements();
-        PageResponseDto<TeamDto> responseDTO = PageResponseDto.<TeamDto>withAll()
-                .dtoList(dtoList)
-                .pageRequestDto(pageRequestDto)
-                .totalCount(totalCount)
-                .build();
-        return responseDTO;
-    }
-
     public void add(TeamDto teamDto) { // 동네모임 등록(이미지 포함)
         Team team = Team.DtoToEntity(teamDto);
         team.setUser(userRepository.findByUserId(teamDto.getId()));
@@ -247,6 +107,11 @@ public class TeamService {
         TeamDto teamDto = team.entityToDto(team);
         teamDto.setId(team.getUser().getId());
         return teamDto;
+    }
+
+    public Team get(Long teamNo){
+        Team team = teamRepository.findByTeamNo(teamNo);
+        return team;
     }
 
     @Transactional

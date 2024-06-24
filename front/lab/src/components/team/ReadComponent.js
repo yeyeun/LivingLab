@@ -3,6 +3,7 @@ import axios from 'axios';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/teamApi';
 import { likeTeam, unlikeTeam, likeInfoTeam } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
+import { enterChatRoomTeam } from '../../api/chatApi';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import useCustomMove from '../../hooks/useCustomMove';
@@ -14,6 +15,7 @@ import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_empty.png';
 import fullheart from '../../resources/images/heart_full.png';
 import ResultModal from '../common/ResultModal';
+import PartComponent from './PartComponent'
 import Profile_Img from '../../resources/images/profile_img.png';
 import LandingComponent from './../common/mapSearch/LandingComponent';
 import InfoModal from '../common/InfoModal';
@@ -50,7 +52,6 @@ const ReadComponent = ({ teamNo }) => {
   const [team, setTeam] = useState(initState);
   const [user, setUser] = useState(initUser);
   const [result, setResult] = useState(null);
-  const [part, setPart] = useState([]); // 참여 목록 상태 추가
   const [addResultModal, setAddResultModal] = useState(null);
   const { moveToList, moveToModify } = useCustomMove();
   const loginInfo = useSelector((state) => state.loginSlice);
@@ -59,6 +60,9 @@ const ReadComponent = ({ teamNo }) => {
   const [isLiked, setIsLiked] = useState({}); // true/false에 따라 하트 이미지 변경
   const [like, setLike] = useState(initState2);
   const [info, setInfo] = useState(null);
+  const [userId, setUserId] = useState('');
+  const [ current, setCurrent ] = useState(0);
+  const [ max, setMax ] = useState(0);
 
   // 이미지 슬라이더
   const settings = {
@@ -75,6 +79,8 @@ const ReadComponent = ({ teamNo }) => {
   useEffect(() => {
     getOne(teamNo).then((data) => {
       setTeam(data);
+      setCurrent(data.current);
+      setMax(data.max);
     });
   }, [teamNo, info]);
 
@@ -102,22 +108,25 @@ const ReadComponent = ({ teamNo }) => {
 
   const [showModal, setShowModal] = useState(false);
 
-  // const handleClickAdd = async () => {
-  //   try {
-  //     await postAddPart(user, teamNo); // 참여하기 요청 비동기 처리
-  //     setResult('참여목록에 등록되었습니다.');
-  //     // 참여 목록 갱신
-  //     const updatedPart = await getPartUsers(teamNo);
-  //     setPart(updatedPart);
-  //   } catch (error) {
-  //     console.error('참여 등록 실패:', error);
-  //     setResult('참여 등록에 실패했습니다.');
-  //   }
-  // };
+  const handleClickAdd = async () => {
+    const formData = new FormData();
+    formData.append('userId', ino); // ino 값을 formData에 추가
+    formData.append('teamNo', teamNo); // buyNo 값을 formData에 추가
+    if(current === max){
+      setResult('더이상 참여할수 없습니다.');
+    } else{
+      try {
+        await enterChatRoomTeam(formData); // FormData를 인자로 전달하여 호출
+        setResult('참여가 완료되었습니다.');
+      } catch (error) {
+        setResult('이미 참여 중입니다.', error);
+      }
+    }
+  };
 
   const closeModal = () => {
     setResult(null);
-    moveToList();
+    window.location.reload();
   };
 
   const handleCloseModal = () => {
@@ -287,7 +296,7 @@ const ReadComponent = ({ teamNo }) => {
             <>
               <div className="col-start-6 col-span-4 my-6">
                 <div className="flex justify-between space-x-4">
-                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500">
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500" onClick={handleClickAdd}>
                     참여하기
                   </button>
                   <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>
@@ -301,15 +310,13 @@ const ReadComponent = ({ teamNo }) => {
           </div> */}
           {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
           {addResultModal && <ResultModal title={'알림'} content={`${addResultModal}`} callbackFn={() => setAddResultModal(null)} />}
-
           <ModalComponent show={showModal} onClose={handleCloseModal} />
-          {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
           {/* 좋아요 기능 알림 모달 */}
           {info && <InfoModal title={'알림'} content={`${info}`} callbackFn={closeInfoModal} />}
         </div>
       </div>
       {/* 참여인원 목록 컴포넌트 */}
-      {/* <PartComponent teamNo={teamNo} />  */}
+      <PartComponent teamNo={teamNo} /> 
     </>
   );
 };
