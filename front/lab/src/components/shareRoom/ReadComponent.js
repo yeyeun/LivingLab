@@ -4,7 +4,7 @@ import useRoomCustomMove from '../../hooks/useRoomCustomMove';
 import { useSelector } from 'react-redux';
 import MapComponentForRoom from '../../components/shareRoom/MapComponentForRoom';
 import { likeRoom, unlikeRoom, likeInfoRoom } from '../../api/likeApi';
-import ModalComponent from "./ModalComponent";
+import ModalComponent from "./ModalComponent"; // <- 사진 전체보기용 모달
 import emptyheart from '../../resources/images/heart_empty.png';
 import fullheart from '../../resources/images/heart_full.png';
 import InfoModal from '../common/InfoModal';
@@ -146,6 +146,9 @@ const handleLikeClick = () => {
                         />
                         {info && <InfoModal title={'알림'} content={`${info}`} callbackFn={closeInfoModal} />}
                     </div>
+                    <div className='relative float-right w-28 h-10 rounded-sm mt-4 bg-gray-800 opacity-80 cursor-pointer'>
+                        <span className='absolute top-2 left-0 w-full text-sm leading-6 text-white font-semibold text-center'>사진 모두 보기</span>
+                    </div>
                 </div>
             </div>
             <div id="text-main" className=" pt-24 pb-32">
@@ -153,6 +156,15 @@ const handleLikeClick = () => {
                     <div id="text-area" className="w-[780px] h-[1000px] col-span-1 ">
                         <div id="box" className="flex items-center mb-10 p-8 border border-gray-200 rounded-sm bg-gray-50">
                             <h1 className="flex-none ml-1 text-black text-base leading-6 font-bold"> {shareRoom.title} </h1>
+                            {shareRoom.parking==='O'? (
+                                <div className='flex-none ml-auto mr-10 inline-flex items-center justify-center w-auto h-7 px-2 text-xs leading-5 font-bold whitespace-nowrap border border-gray-300 rounded text-gray-900 bg-white'>
+                                    <span>주차</span>
+                                </div>
+                            ) : (
+                                <>
+                                </>
+                            )}
+        
                         </div>
                         <div id="main-container" className="grid gap-y-28">
                             <section id="price">
@@ -244,8 +256,9 @@ const handleLikeClick = () => {
                                             <span className="">문의하기</span>
                                         </button>
                                     </div>
-                                    <div className="w-[77px] ml-2">
-                                        <button className="h-[56px]">
+                                    <div className="w-[85px] ml-4 border">
+                                        <button className="ml-2
+                                         h-[56px]">
                                         <img src={loginState.id && isLiked ? fullheart : emptyheart} onClick={handleLikeClick} alt="..." className="w-7 mr-3 inline" />
                                         {shareRoom.roomHit}
                                         </button>
