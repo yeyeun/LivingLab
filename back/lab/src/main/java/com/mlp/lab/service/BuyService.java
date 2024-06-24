@@ -246,6 +246,11 @@ public class BuyService {
         return buyDto;
     }
 
+    public Buy get(Long buyNo) {
+        Buy buy = buyRepository.findByBuyNo(buyNo);
+        return buy;
+    }
+
     @Transactional // 삭제하기
     public void delete(int buyNo) {
         buyRepository.deleteById(buyNo);
@@ -278,7 +283,7 @@ public class BuyService {
 
     // 메인에 표기할 최신순
     public List<BuyDto> getLatestBuy() {
-        Pageable pageable = PageRequest.of(0, 8, Sort.by("buyNo").descending());
+        Pageable pageable = PageRequest.of(0, 9, Sort.by("buyNo").descending());
         Page<Object[]> result = null;
 
         result = buyRepository.latestBuyList(pageable);

@@ -82,7 +82,10 @@ const AddComponent = () => {
   const handleClickAdd = async () => {
     try {
       await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
-
+      // if (!location || location.latitude === 0 || location.longitude === 0) {
+      //   setAddResultModal('유효한 주소를 입력해주세요');
+      //   return;
+      // }
       if (!buy.buyCategory) {
         setAddResultModal('카테고리를 선택해주세요');
         return;

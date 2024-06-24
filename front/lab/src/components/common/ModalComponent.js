@@ -1,11 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { API_SERVER_HOST, deleteOne, getOne } from '../../api/teamApi';
-import { getPartUsers, postAddPart, removePart } from '../../api/partApi';
 import ProfileComponent from './ProfileComponent';
 
 const ModalComponent = ({ teamNo, show, onClose }) => {
-  const [part, setPart] = useState([]);
 
   //   useEffect(() => {
   //     getPartUsers(teamNo).then((data) => {

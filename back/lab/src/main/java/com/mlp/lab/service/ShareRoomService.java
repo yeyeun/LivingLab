@@ -9,9 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.dto.ShareRoomDto;
+import com.mlp.lab.entity.Market;
+import com.mlp.lab.entity.MarketImage;
 import com.mlp.lab.entity.ShareRoom;
 import com.mlp.lab.entity.ShareRoomImage;
 import com.mlp.lab.repository.ShareRoomRepository;
@@ -131,6 +134,39 @@ public class ShareRoomService {
             });
         }
         shareRoomRepository.save(shareRoom);
+    }
+
+     // 메인에 표기할 최신순
+    public List<ShareRoomDto> getLatestShareRoom() {
+        Pageable pageable = PageRequest.of(0, 3, Sort.by("roomNo").descending());
+        Page<Object[]> result = null;
+
+        result = shareRoomRepository.latestShareRoomList(pageable);
+
+        List<ShareRoomDto> dtoList = result.getContent().stream().map(arr -> {
+            ShareRoom shareRoom = (ShareRoom) arr[0];
+            ShareRoomImage shareRoomImage = (ShareRoomImage) arr[1];
+
+            ShareRoomDto shareRoomDto = ShareRoomDto.builder()
+                    .roomNo(shareRoom.getRoomNo())
+                    .title(shareRoom.getTitle())
+                    .content(shareRoom.getContent())                  
+                    .rentFee(shareRoom.getRentFee())
+                    .parking(shareRoom.getParking())
+                    .location(shareRoom.getLocation())
+                    .rentStartDate(shareRoom.getRentStartDate())
+                    .rentEndDate(shareRoom.getRentEndDate())
+                    .averFee(shareRoom.getAverFee())
+                    .days(shareRoom.getDays())
+                    .option1(shareRoom.getOption1())
+                    .build();
+
+            String imageStr = shareRoomImage.getFileName();
+            shareRoomDto.setUploadFileNames(List.of(imageStr));
+            return shareRoomDto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
     }
 
     public void increase(Long roomNo) { // 좋아요 +1

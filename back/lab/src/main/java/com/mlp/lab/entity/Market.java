@@ -26,7 +26,7 @@ import lombok.ToString;
 public class Market extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "marketno")
+    @Column(name = "market_no")
     private Long marketNo;
 
     @Column(name = "title", length = 50)

@@ -17,7 +17,7 @@ const BuyPostComponent = () => {
     useEffect(() => {
         const fetchLatestPosts = async () => {
             try {
-                const pageParam = { page: 1, size: 8 };
+                const pageParam = { page: 1, size: 9 };
                 const posts = await getLatestBuy(pageParam);
                 console.log('Success:', posts);
                 setLatestPosts(posts);
@@ -32,7 +32,7 @@ const BuyPostComponent = () => {
     return (
         <>
             <ul className="main-buylist-container">
-                {latestPosts.slice(0, 4).map((buy) => (
+                {latestPosts.slice(0, 3).map((buy) => (
                     <li key={buy.buyNo} className="main-buylist">
                         <div className="main-buylist-image">
                             <Link to={`/buy/read/${buy.buyNo}`}>
@@ -48,9 +48,26 @@ const BuyPostComponent = () => {
                     </li>
                 ))}
             </ul>
-            <div className="main-nextline"></div>
             <ul className="main-buylist-container">
-                {latestPosts.slice(4, 8).map((buy) => (
+                {latestPosts.slice(3, 6).map((buy) => (
+                    <li key={buy.buyNo} className="main-buylist">
+                        <div className="main-buylist-image">
+                            <Link to={`/buy/read/${buy.buyNo}`} >
+                                <img className="main-buylist-thumbnail" src={`${host}/api/buy/display/${buy.uploadFileNames[0]}`} alt={buy.title} />
+                            </Link>
+                            <div className="main-buylist-recruit">{checkDeadline(buy.deadline)}</div>
+                        </div>
+                        <div className="main-buylist-title">
+                            <Link to={`/buy/read/${buy.buyNo}`}>
+                                {buy.title}
+                            </Link>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+            
+            <ul className="main-buylist-container">
+                {latestPosts.slice(6, 9).map((buy) => (
                     <li key={buy.buyNo} className="main-buylist">
                         <div className="main-buylist-image">
                             <Link to={`/buy/read/${buy.buyNo}`} >

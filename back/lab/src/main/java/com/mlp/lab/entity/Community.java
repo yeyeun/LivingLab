@@ -7,39 +7,55 @@ import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.CommunityDto;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
 @Entity
-@Builder // 빌터 패턴으로 객체 생성
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "community")
 @ToString(exclude = "imageList")
+@EqualsAndHashCode(callSuper = false)
 public class Community extends BaseTimeEntity {
-    /* 해당 글 작성자만 수정할수 있으므로 BaseEntity는 상속받지 않음
-    생성일, 최근 수정일만 사용하도록 BaseTimeEntity만 상속 받음 */
-    @Id // 기본키 설정
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "commNo")
     private Long commNo;
-    private String user_id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private User user;
+
+    @Column(name = "type")
     private Character type;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "content", length = 500)
     private String content;
+
+    @Column(name = "commHit")
     private Integer commHit;
-    private Character commCategory; //0:기타, 1:부동산, 2:인테리어, 3:할인정보
+
+    @Column(name = "commCategory")
+    private Character commCategory; //0:기타, 1:부동산, 2:인테리어, 3:할인정보, 4:기타
+
+    @Column(name = "nickname")
     private String nickname;
+
+    @Column(name = "flag")
     private boolean flag; // true: 사진있음 / false:사진없음
+
+    @OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE)
+    private List<Reply> replies;
 
     @ElementCollection
     @Builder.Default
