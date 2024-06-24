@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mlp.lab.dto.ResponseDto;
 import com.mlp.lab.dto.chat.ChatRoomDataRequestDto;
 import com.mlp.lab.dto.chat.ChatRoomDataResponseDto;
+import com.mlp.lab.entity.Buy;
+import com.mlp.lab.repository.BuyRepository;
+import com.mlp.lab.service.BuyService;
 import com.mlp.lab.service.chat.ChatRoomService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
+    private final BuyService buyService;
+    private final BuyRepository buyRepository;
 
     // 채팅 리스트 화면
     @GetMapping("/room")
@@ -55,24 +60,29 @@ public class ChatRoomController {
         return ResponseDto.setSuccessData("채팅방 생성", roomData);
     }
 
-    // 채팅방 입장
-    @GetMapping("/room/enter/{buyNo}")
-    public void enterRoom(@RequestParam(name="userId") Long userId, @PathVariable Long buyNo) {
-        chatRoomService.enterRoom(userId, buyNo);
+    // 공동구매 특정 채팅방 입장
+    @PostMapping("/room/add")
+    @ResponseBody
+    public ResponseDto<ChatRoomDataResponseDto.Info> enterRoom(@RequestParam(name="userId") Long userId, @RequestParam(name = "buyNo") Long buyNo) {
+        ChatRoomDataResponseDto.Info roomData = chatRoomService.enterRoom(userId, buyNo);
+        Buy buy = buyService.get(buyNo);
+        buy.setCurrent(buy.getCurrent()+1); //현재인원 증가
+        buyRepository.save(buy);
+        return ResponseDto.setSuccessData("채팅방 입장", roomData);
     }
 
-    // 특정 채팅방 조회
-    @GetMapping("/room/read/{chatroomId}")
+    // 공동구매 특정 채팅방 조회
+    @GetMapping("/room/get/buy")
     @ResponseBody
-    public ResponseDto<ChatRoomDataResponseDto.Info> deleteRoom(@PathVariable("chatroomId") Long chatroomId) {
-        ChatRoomDataResponseDto.Info roomData = chatRoomService.findRoomByRoomId(chatroomId);
+    public ResponseDto<ChatRoomDataResponseDto.Info> chatUserInfoBuy(@RequestParam(name="buyNo") Long buyNo) {
+        ChatRoomDataResponseDto.Info roomData = chatRoomService.findRoomByBuyNo(buyNo);
         return ResponseDto.setSuccessData("특정 채팅방 조회", roomData);
     }
 
     // 특정 채팅방 삭제
     @DeleteMapping("/room/delete/{roomId}")
     @ResponseBody
-    public ResponseDto<Object> roomInfo(@PathVariable("roomId") Long roomId) {
+    public ResponseDto<Object> deleteRoom(@PathVariable("roomId") Long roomId) {
         chatRoomService.deleteRoom(roomId);
         return ResponseDto.setSuccess(roomId + "번 채팅방 삭제");
     }
