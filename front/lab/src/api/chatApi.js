@@ -25,6 +25,12 @@ export const enterChatRoom = async (formData) => {
       return response.data;
 };
 
+// 공동구매 채팅방 퇴장(참여x)
+export const exitChatRoom = async (formData) => {
+  const response = await axios.post(`${host}/room/exit`, formData);
+      return response.data;
+};
+
 // 유저의 모든 채팅방 목록 반환
 export const getChatRoom = async (userId) => {
   const res = await axios.get(`${host}/rooms`, { params: { userId } });

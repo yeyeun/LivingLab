@@ -32,17 +32,6 @@ public class ChatRoomController {
     private final BuyService buyService;
     private final BuyRepository buyRepository;
 
-    // 채팅 리스트 화면
-    @GetMapping("/room")
-    public String rooms(Model model) {
-        return "/chat/room";
-    }
-
-    @GetMapping("/room/test")
-    public String roomsTest(Model model) {
-        return "/chat/room_test";
-    }
-
     // 모든 채팅방 목록 반환(해당 유저의)
     @GetMapping("/rooms")
     @ResponseBody
@@ -69,6 +58,17 @@ public class ChatRoomController {
         buy.setCurrent(buy.getCurrent()+1); //현재인원 증가
         buyRepository.save(buy);
         return ResponseDto.setSuccessData("채팅방 입장", roomData);
+    }
+
+    // 공동구매 특정 채팅방 퇴장
+    @PostMapping("/room/exit")
+    @ResponseBody
+    public ResponseDto<ChatRoomDataResponseDto.Info> exitRoom(@RequestParam(name="userId") Long userId, @RequestParam(name="buyNo") Long buyNo) {
+        ChatRoomDataResponseDto.Info roomData = chatRoomService.exitRoom(userId, buyNo);
+        Buy buy = buyService.get(buyNo);
+        buy.setCurrent(buy.getCurrent()-1); //현재인원 감소
+        buyRepository.save(buy);
+        return ResponseDto.setSuccessData("채팅방 퇴장", roomData);
     }
 
     // 공동구매 특정 채팅방 조회

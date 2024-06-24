@@ -55,4 +55,8 @@ public class ChatRoom {
         this.writer = writer;
         this.reader = reader;
     }
+
+    public void removeReader(User user) {
+        this.reader.remove(user);
+    }
 }
