@@ -247,9 +247,12 @@ const handleLikeClick = () => {
                     <aside id="info-area" className="w-[360px] col-span-1">
                         <div id="content-container" className="sticky top-24">
                             <div id="inner-content" className="w-90 p-8 bg-white shadow-md border border-gray-300 rounded-sm relative">
-                                <p className="flex-none text-gray-900 text-base leading-6 font-normal whitespace-pre-wrap">
-                                {shareRoom.content}
-                                </p>
+                                    <div className='pb-4 border-b border-gray-200'>
+                                        <h1 className="text-gray-900 text-base leading-6 font-bold">상세설명</h1>
+                                    </div>
+                                    <p className="flex-none mt-4 text-gray-900 text-base leading-6 font-normal whitespace-pre-wrap">
+                                        {shareRoom.content}
+                                    </p>
                                 <div id="buttons" className="flex items-center w-full mt-8">
                                     <div>
                                         <button className="inline-flex items-center justify-center w-[211px] px-4 text-white bg-blue-600 h-[56px] text-sm leading-6 font-bold rounded-sm cursor-pointer transition-all duration-150 ease-out">
