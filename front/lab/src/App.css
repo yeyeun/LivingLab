@@ -41,7 +41,7 @@
 
 
 * {
-  font-family: "KakaoBig";  
+  font-family: "KakaoBig";
 }
 
 .bg-color {
@@ -177,7 +177,7 @@
 .latestPost-title {
   display: block;
   color: #414141;
-  
+
 }
 
 .latestPost-hit {
@@ -270,10 +270,10 @@
 }
 
 .desc-tag {
-  font-size:17px;
-  color:#7e5835;
+  font-size: 17px;
+  color: #7e5835;
   margin: 5px 0;
-  
+
 }
 
 .desc-content {
@@ -285,7 +285,7 @@
 
 .main-desc {
   display: inline-block;
-  width:100%;
+  width: 100%;
   margin: auto;
   display: table-cell;
   vertical-align: middle;
@@ -296,6 +296,18 @@
 .main-comm {
   width: 670px;
   height: 500px;
+  border-radius: 4px;
+  border-color: rgba(0, 0, 0, .06);
+  border-width: 1px;
+  background-color: #ffffff;
+  box-shadow: 0 20px 20px 0 rgba(0, 0, 0, .1);
+  padding: 2px;
+  margin: 50px auto;
+}
+
+.main-team {
+  width: 600px;
+  height: 550px;
   border-radius: 4px;
   border-color: rgba(0, 0, 0, .06);
   border-width: 1px;
@@ -325,7 +337,7 @@
 .main-buylist {
   width: 32%;
   overflow: hidden;
-  
+
 }
 
 .main-buylist-image {
@@ -346,7 +358,7 @@
   display: -webkit-box;
   width: 100%;
   height: 50px;
-  font-size:15px;
+  font-size: 15px;
   align-items: center;
   text-align: center;
   font-family: "KakaoSmall";
@@ -373,7 +385,7 @@
 } */
 
 .main-comm-title {
-  width:60%;
+  width: 60%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -416,9 +428,7 @@
   padding-right: 15px;
 }
 
-.main-marketlist-title {
-
-}
+.main-marketlist-title {}
 
 .main-marketlist-category {
   font-size: 13px;
@@ -430,48 +440,67 @@
 
 
 .main-teamlist-container {
+  display: flex;
   position: relative;
   padding: 9.3px;
   width: 100%;
-  height: 16%;
+  height: 136px;
 }
 
-/* .main-teamlist {
-  display: flex;
-  width: 100%;
-  height: 5%;
-  overflow: hidden;
-  margin-bottom: 10px;
-  padding:10px;
+.main-teamlist-image {
+  width: 150px;
+  height: 100%;
+  padding: 2px;
+}
 
-  background-color: #d1d1d1;
-} */
+.main-teamlist-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.main-teamlist-contentbox {
+  width: 55%;
+  height: 100%;
+  margin-left: 15px;
+  padding: 3px 0 3px 0;
+}
 
 .main-teamlist-title {
   display: inline-block;
-  font-size: 21px;
-  font-weight: 400;
-  border-radius: 20px;
+  font-size: 20px;
+  border-radius: 18px;
   background-color: #d2f0f8;
   padding: 4px 10px;
   margin-bottom: 1px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .main-teamlist-content {
+  display: -webkit-box;
   margin: 0 6px;
   font-weight: 300;
   font-size: 15px;
   font-family: "KakaoSmall";
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
 }
 
 .main-teamlist-number {
   position: absolute;
-  border-radius: 20px;
+  border-radius: 18px;
   background-color: #d2f0f8;
   margin: 0 0 auto 0;
   padding: 2px 8px;
   font-size: 17px;
-  top:30%;
+  top: 38%;
   right: 3%;
 }
 
@@ -489,8 +518,8 @@
 
 .main-roomlist {
   display: flex;
-  width:100%;
-  height:180px;
+  width: 100%;
+  height: 180px;
   align-items: center;
   padding-right: 18px;
 }
@@ -520,10 +549,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin:0 5px 5px 2px;
+  margin: 0 5px 5px 2px;
 }
-
-
 
 .main-roomlist-optionbox {
   width: 100%;
@@ -956,4 +983,29 @@ select option:disabled {
 #pagination a.on {
   color: lightblue;
   font-weight: bold;
+}
+
+/* =======스크롤바 관련========= */
+
+/* 기본적으로 숨김 */
+.no-scrollbar::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+  /* Chrome, Safari, Opera */
+}
+
+/* 마우스 올리면 나타남 */
+.no-scrollbar:hover::-webkit-scrollbar {
+  width: 8px;
+}
+
+.no-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  /* 스크롤바 색상 */
+  border-radius: 10px;
+}
+
+.round-container>* {
+  border-radius: 1.5rem;
+  /* rounded-3xl의 실제 CSS 값 */
 }

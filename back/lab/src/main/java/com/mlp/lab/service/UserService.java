@@ -79,6 +79,8 @@ public class UserService {
     user.setAddr(userDto.getAddr());
     user.setDetailAddr(userDto.getDetailAddr());
     user.setLocation(userDto.getLocation());
+    user.setLatitude(userDto.getLatitude()); // 위도
+    user.setLongitude(userDto.getLongitude()); // 경도
 
     userRepository.save(user);
   }

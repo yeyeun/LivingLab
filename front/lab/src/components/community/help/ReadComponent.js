@@ -1,6 +1,6 @@
 import heartEmpty from "../../../resources/images/heart_empty.png";
 import replyIcon from "../../../resources/images/reply.png";
-import CommentComponent from "../../common/CommentComponent";
+import ReplyComponent from "../../common/ReplyComponent";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { API_SERVER_HOST, getOneHelp, deleteOne } from "../../../api/communityApi";
@@ -113,7 +113,7 @@ return(
                     </div>
                 </form>
                 </div>
-                <CommentComponent/>
+                <ReplyComponent/>
             </div>
         </div>
     </div>

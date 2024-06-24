@@ -101,7 +101,6 @@ const MainPage = () => {
               <div className='main-desc'>
                 <div className="desc-title">
                   <Link to={'/community'} className="font-bold">
-
                     커뮤니티
                   </Link>
                 </div>
@@ -114,20 +113,6 @@ const MainPage = () => {
 
               </div>
             </div>
-
-
-
-            {/* <div>
-              <Link to={'/buy'} className="main-headline">
-                <div>
-                  날씨 정보
-                </div>
-
-              </Link>
-              <div className="main-weather">
-
-              </div>
-            </div> */}
           </div>
         </div>
 
@@ -139,7 +124,6 @@ const MainPage = () => {
               <div className='main-desc'>
                 <div className="desc-title">
                   <Link to={'/team'} className="font-bold">
-
                     동네모임
                   </Link>
                 </div>
@@ -152,11 +136,9 @@ const MainPage = () => {
                 </div>
 
               </div>
-            </div><div className='main-box'>
-              {/* <Link to={'/community'} className="main-headline">
-                  커뮤니티
-              </Link> */}
-              <div className="main-comm">
+            </div>
+            <div className='main-box'>
+              <div className="main-team ">
                 <TeamPostComponent />
               </div>
             </div>
