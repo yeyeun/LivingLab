@@ -72,25 +72,26 @@ const CommunityPostComponent = () => {
   };
 
   return (
-    <div className='latestPost-list '>
-      <ul className='latestPost-list'>
+    <div>
+      {/* <div className="main-headline"> 커뮤니티</div> */}
+      <ul>
         {latestPosts.map((comm, index) => (
           <li key={comm.commNo}>
             <div className="latestPost-container">
               <div className='w-1/5 ml-3'>
-                <Link to={toCommunity(comm.type)} className={`latestPost-type ${typeColor(comm.type)}`}>
+                <Link to={toCommunity(comm.type)} className='latestPost-type' >
                   {comm.type === '1' && '자취TIP공유'}
                   {comm.type === '2' && '질문게시판'}
                   {comm.type === '3' && '리뷰게시판'}
                   {comm.type === '4' && '도움요청'}
                 </Link>
               </div>
-              <div>
+              <div className='main-comm-title'>
                 <Link to={toRead(comm.type, comm.commNo)} >
                   <span className='latestPost-title'>{comm.title}</span>
                 </Link>
               </div>
-              <span className="latestPost-hit ">{comm.commHit}</span>
+              <span className="latestPost-hit">{comm.commHit}</span>
             </div>
             {index !== latestPosts.length - 1 && <hr className="latestPost-hr"></hr>}
           </li>
