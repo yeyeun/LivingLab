@@ -95,10 +95,11 @@ public class TeamService {
         return responseDTO;
     }
 
-    public void add(TeamDto teamDto) { // 동네모임 등록(이미지 포함)
+    public Team add(TeamDto teamDto) { // 동네모임 등록(이미지 포함)
         Team team = Team.DtoToEntity(teamDto);
         team.setUser(userRepository.findByUserId(teamDto.getId()));
         teamRepository.save(team);
+        return team;
     }
 
     public TeamDto read(int teamNo) { // 동네모임 조회
