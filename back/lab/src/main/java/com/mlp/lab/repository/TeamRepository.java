@@ -36,6 +36,6 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     Page<Object[]> searchDeadLineList(@Param(value = "title") String title, Pageable pageable);
 
     // 메인에 표기할 최신순
-    @Query("select t, ti from Team t left join t.imageList ti where ti.ord = 0 and t.flag = false order by t.teamNo")
+    @Query("select t, ti from Team t left join t.imageList ti where ti.ord = 0 and t.flag = false order by t.teamNo desc")
     Page<Object[]> latestTeamList(Pageable pageable);
 }

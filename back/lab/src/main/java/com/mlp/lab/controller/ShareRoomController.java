@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.ShareRoomDto;
+import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.service.ShareRoomService;
@@ -102,6 +103,11 @@ public class ShareRoomController {
             fileUtil.deleteFiles(removeFiles);
         }
         return Map.of("RESULT", "SUCCESS");
+    }
+
+    @GetMapping("/latest")
+    public List<ShareRoomDto> getLatestShareRoomList() {
+        return shareRoomService.getLatestShareRoom();
     }
 
     @PutMapping("/increase/{roomNo}") // 좋아요 +1

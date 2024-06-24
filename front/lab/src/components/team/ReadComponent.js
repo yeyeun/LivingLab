@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getPartUsers, postAddPart } from '../../api/partApi';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/teamApi';
 import { likeTeam, unlikeTeam, likeInfoTeam } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
@@ -15,7 +14,6 @@ import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_empty.png';
 import fullheart from '../../resources/images/heart_full.png';
 import ResultModal from '../common/ResultModal';
-import PartComponent from './PartComponent';
 import Profile_Img from '../../resources/images/profile_img.png';
 import LandingComponent from './../common/mapSearch/LandingComponent';
 import InfoModal from '../common/InfoModal';
@@ -88,12 +86,6 @@ const ReadComponent = ({ teamNo }) => {
   }, [ino]);
 
   useEffect(() => {
-    getPartUsers(teamNo).then((data) => {
-      setPart(data);
-    });
-  }, [teamNo]);
-
-  useEffect(() => {
     if (email) {
       //로그인시에만 실행
       likeInfoTeam(teamNo, ino).then((data) => {
@@ -110,18 +102,18 @@ const ReadComponent = ({ teamNo }) => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const handleClickAdd = async () => {
-    try {
-      await postAddPart(user, teamNo); // 참여하기 요청 비동기 처리
-      setResult('참여목록에 등록되었습니다.');
-      // 참여 목록 갱신
-      const updatedPart = await getPartUsers(teamNo);
-      setPart(updatedPart);
-    } catch (error) {
-      console.error('참여 등록 실패:', error);
-      setResult('참여 등록에 실패했습니다.');
-    }
-  };
+  // const handleClickAdd = async () => {
+  //   try {
+  //     await postAddPart(user, teamNo); // 참여하기 요청 비동기 처리
+  //     setResult('참여목록에 등록되었습니다.');
+  //     // 참여 목록 갱신
+  //     const updatedPart = await getPartUsers(teamNo);
+  //     setPart(updatedPart);
+  //   } catch (error) {
+  //     console.error('참여 등록 실패:', error);
+  //     setResult('참여 등록에 실패했습니다.');
+  //   }
+  // };
 
   const closeModal = () => {
     setResult(null);
@@ -281,7 +273,7 @@ const ReadComponent = ({ teamNo }) => {
                   </button>
                   {/* </div> */}
 
-                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/4 mr-2 hover:bg-blue-500" onClick={handleClickAdd}>
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/4 mr-2 hover:bg-blue-500">
                     참여하기
                   </button>
                   <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/4 hover:bg-slate-500" onClick={() => moveToList()}>
@@ -295,7 +287,7 @@ const ReadComponent = ({ teamNo }) => {
             <>
               <div className="col-start-6 col-span-4 my-6">
                 <div className="flex justify-between space-x-4">
-                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500" onClick={handleClickAdd}>
+                  <button className="text-base text-white bg-blue-400 p-2 rounded-md w-1/2 mr-2 hover:bg-blue-500">
                     참여하기
                   </button>
                   <button className="text-base text-white bg-slate-400 p-2 rounded-md w-1/2 hover:bg-slate-500" onClick={() => moveToList()}>
@@ -317,7 +309,7 @@ const ReadComponent = ({ teamNo }) => {
         </div>
       </div>
       {/* 참여인원 목록 컴포넌트 */}
-      <PartComponent teamNo={teamNo} part={part} /> {/* PartComponent에 참여 인원 전달 */}
+      {/* <PartComponent teamNo={teamNo} />  */}
     </>
   );
 };
