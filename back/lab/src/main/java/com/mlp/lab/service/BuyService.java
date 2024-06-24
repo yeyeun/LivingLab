@@ -30,7 +30,8 @@ public class BuyService {
     private final UserRepository userRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort) {
+    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort, double latitude,
+            double longitude) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
@@ -48,9 +49,9 @@ public class BuyService {
             if (sort.equals("마감임박순")) {
                 result = buyRepository.deadLineList(pageable);
             }
-            // if(sort.equals("거리순")){
-            // result =
-            // }
+            if (sort.equals("거리순")) {
+                result = buyRepository.distanceList(latitude, longitude, pageable);
+            }
             // if(sort.equals("좋아요순")){
             // result =
             // }
@@ -61,9 +62,9 @@ public class BuyService {
             if (sort.equals("마감임박순")) {
                 result = buyRepository.searchDeadLineList(search, pageable);
             }
-            // if(sort.equals("거리순")){
-            // result =
-            // }
+            if (sort.equals("거리순")) {
+                result = buyRepository.searchDistanceList(search, latitude, longitude, pageable);
+            }
             // if(sort.equals("좋아요순")){
             // result =
             // }
@@ -259,6 +260,8 @@ public class BuyService {
         buy.setTitle(buyDto.getTitle());
         buy.setContent(buyDto.getContent());
         buy.setLocation(buyDto.getLocation());
+        buy.setLatitude(buyDto.getLatitude());
+        buy.setLongitude(buyDto.getLongitude());
         buy.setBuyCategory(buyDto.getBuyCategory());
         buy.setDeadline(buyDto.getDeadline());
 
