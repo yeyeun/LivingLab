@@ -82,10 +82,7 @@ const AddComponent = () => {
   const handleClickAdd = async () => {
     try {
       await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
-      // if (!location || location.latitude === 0 || location.longitude === 0) {
-      //   setAddResultModal('유효한 주소를 입력해주세요');
-      //   return;
-      // }
+
       if (!buy.buyCategory) {
         setAddResultModal('카테고리를 선택해주세요');
         return;
@@ -154,6 +151,10 @@ const AddComponent = () => {
             longitude: coords.getLng(),
           });
           resolve();
+          if (!location || location.latitude === 0 || location.longitude === 0) {
+            setAddResultModal('거래 장소가 등록되었습니다!');
+            return;
+          }
         } else {
           setAddResultModal('Failed to geocode the address.');
           reject(new Error('Failed to geocode the address.'));
@@ -261,10 +262,13 @@ const AddComponent = () => {
           <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
             <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;거래장소
           </label>
+          <div className="w-1/5 ml-1 text-base">
+            <PostComponent setAddress={setAddress}></PostComponent>
+          </div>
           <div className="flex">
-            <div className="w-1/5 text-base">
+            {/* <div className="w-1/5 text-base">
               <PostComponent setAddress={setAddress}></PostComponent>
-            </div>
+            </div> */}
             <div className="w-4/5 pl-1">
               <input
                 className="w-full h-10 pl-2 rounded-md border border-stone-400 placeholder:text-base pb-1"
@@ -273,6 +277,11 @@ const AddComponent = () => {
                 placeholder="주소(우편번호 및 도로명 검색)"
                 value={buy.location}
               />
+            </div>
+            <div className="w-1/5">
+              <button className="text-base p-2 w-full text-white bg-mainColor ml-1 rounded-md  hover:bg-emerald-600" onClick={handleGeocode}>
+                장소 등록
+              </button>
             </div>
           </div>
         </div>
