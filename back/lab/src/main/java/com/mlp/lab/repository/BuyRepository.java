@@ -9,8 +9,8 @@ import org.springframework.data.repository.query.Param;
 import com.mlp.lab.entity.Buy;
 
 //Buy Entity의 기본키(PK) 타입인 Integer를 인자로 전달
-public interface BuyRepository extends JpaRepository<Buy, Integer> {
-        Buy findBuyByBuyNo(@Param(value = "buyNo") Long buyNo);
+public interface BuyRepository extends JpaRepository<Buy, Long> {
+    Buy findBuyByBuyNo(@Param(value = "buyNo")Long buyNo);
 
         Buy findByBuyNo(@Param(value = "buyNo") Long buyNo);
 

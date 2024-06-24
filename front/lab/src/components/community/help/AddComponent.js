@@ -6,7 +6,7 @@ import ResultModal from "../../common/ResultModal";
 import useCustomHelp from "../../../hooks/useCustomHelp";
 
 const initState = {
-    user_id: '',
+    id: 0,
     type: '4', //도움요청 게시판은 4
     title: '',
     content: '',
@@ -24,16 +24,17 @@ const AddComponent = () => {
     const { moveToList } = useCustomHelp(); //목록으로 이동하기
     const uploadRef = useRef();
     const loginInfo = useSelector((state) => state.loginSlice);
-    const id = loginInfo?.email;
+    const id = loginInfo.id;
+    const email = loginInfo?.email;
     const nickname = loginInfo?.nickname;
     const navigate = useNavigate();
 
     useEffect(() => {
-        // id가 없으면 로그인 화면으로 이동 -> 주소창으로 접근하는걸 방지
-        if (!id) {
+        // email값이 없으면 로그인 화면으로 이동 -> 주소창으로 접근하는걸 방지
+        if (!email) {
             navigate('/user/login'); // 로그인 경로로 이동
         }
-    }, [id, navigate]);
+    }, [email, navigate]);
 
     const handleChangeHelp = (e) => {
         help[e.target.name] = e.target.value;
@@ -91,7 +92,7 @@ const AddComponent = () => {
         }
         
         // 파일이 아닌 데이터를 formData에 추가
-        formData.append("user_id", id);
+        formData.append("id", id);
         formData.append("nickname", nickname);
         formData.append("type", help.type);
         formData.append("title", help.title);

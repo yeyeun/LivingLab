@@ -4,6 +4,7 @@ import ReplyComponent from "../../common/ReplyComponent";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { API_SERVER_HOST, getOneHelp, deleteOne } from "../../../api/communityApi";
+import { addReply, getList } from "../../../api/replyApi";
 import useCustomHelp from "../../../hooks/useCustomHelp";
 import ResultModal from "../../common/ResultModal";
 
@@ -19,11 +20,15 @@ const initState = {
 const host = API_SERVER_HOST;
 
 const ReadComponent = ({commNo}) => {
-    const [result, setResult] = useState(null);
-    const [help, setHelp] = useState(initState);
+    const [result, setResult] = useState(null); //게시글 삭제 모달창
+    const [addResultModal, setAddResultModal] = useState(null); //댓글 등록 모달창
+    const [help, setHelp] = useState(initState); //해당 게시물 내용
+    const [input, setInput] = useState(''); //댓글 내용
+    const [replies, setReplies] = useState([]);
     const { moveToList, moveToModify } = useCustomHelp();
     const loginInfo = useSelector((state) => state.loginSlice);
-    const id = loginInfo?.email;
+    const id = loginInfo?.id;
+    const email = loginInfo?.email;
 
     useEffect(() => {
         getOneHelp(commNo).then(data => {
@@ -31,6 +36,13 @@ const ReadComponent = ({commNo}) => {
             setHelp(data)
         })
     }, [commNo])
+
+    //댓글 리스트 호출
+    useEffect(() => {
+        getList(commNo).then(data => {
+            setReplies(data);
+        });
+    }, [commNo,addResultModal]);
 
     const handleClickDelete = (e) => {
         deleteOne(commNo);
@@ -41,6 +53,31 @@ const ReadComponent = ({commNo}) => {
         setResult(null);
         moveToList();
     }
+
+    //ReplyComponent에서 보낸 메세지값 처리
+    const setModalMessage = (message) => {
+        setAddResultModal(message);
+    }
+
+    // 댓글 등록
+    const handleClickAddReply = () => {
+        if(!email){
+            setAddResultModal("로그인 후 이용할 수 있습니다");
+            return;
+        }
+        if(!input){
+            setAddResultModal("내용을 입력해주세요");
+            return;
+        }
+        const newComment = {
+            id: id,
+            content: input,
+            commNo : commNo
+        };
+        addReply(newComment);
+        setAddResultModal("댓글이 등록되었습니다");
+        setInput('');
+    };
 
 return(
 <div className="relative p-4">
@@ -86,7 +123,7 @@ return(
                 </p>
                 <hr></hr>
                 <div className="flex justify-center space-x-2 mt-4">
-                    { id === help.user_id?
+                    { id === help.id?
                     (
                     <>
                     <button type="button" className="bg-gray-400 text-white rounded-md text-sm px-1 py-0.5 hover:bg-gray-500 ml-1" onClick={() => moveToModify(commNo)}>수정하기</button>
@@ -99,24 +136,48 @@ return(
                     <button type="button" className="bg-gray-400 text-white rounded-md text-sm px-1 py-0.5 hover:bg-gray-500 ml-1" onClick={() => moveToList()}>목록으로 이동</button>
                 </div>
                 <div>
-                <form className="my-6">
-                    <div className="py-2 px-4 mb-4 mt-9 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                        <label for="comment" className="sr-only">Your comment</label>
-                        <textarea id="comment" rows="3" className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
-                        placeholder="댓글을 입력해주세요" required></textarea>
-                    </div>
-                    <div>
-                    <button type="submit"
-                    className="float-right items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-subColor opacity-90 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                        댓글 등록
-                    </button>
-                    </div>
-                </form>
+                <div className="my-6 flex items-center space-x-2">
+                                <input
+                                    type="text"
+                                    placeholder="댓글을 입력해주세요"
+                                    value={input}
+                                    className="flex-1 py-2 px-2 text-base bg-white rounded-lg border border-gray-200"
+                                    onChange={e => setInput(e.target.value)}
+                                    onKeyDown={e => (e.key === 'Enter' ? handleClickAddReply() : null)}
+                                />
+                                <button
+                                    type="button"
+                                    className="py-2.5 px-4 text-xs font-medium text-center text-white bg-subColor opacity-90 rounded-lg hover:bg-amber-900"
+                                    onClick={handleClickAddReply}
+                                >
+                                    댓글 등록
+                                </button>
+                            </div>
+
                 </div>
-                <ReplyComponent/>
+                {replies.length > 0 ? (
+                            replies.map(reply =>
+                                <ReplyComponent
+                                    replyNo={reply.replyNo}
+                                    id={reply.id}
+                                    content={reply.content}
+                                    regDate={reply.regDate}
+                                    isWriter={help.id === reply.id? true : false}
+                                    isEdit={id === reply.id? true : false}
+                                    callbackFn={setModalMessage}
+                                />    
+                            )
+                        )
+                        :
+                        (
+                            <div className="flex justify-center text-base">
+                                등록된 댓글이 없습니다
+                            </div>
+                        )}
             </div>
         </div>
     </div>
+    {addResultModal && (<ResultModal title={'알림'} content={`${addResultModal}`} callbackFn={() => setAddResultModal(null)} />)}
 </div>
 );
 }
