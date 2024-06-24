@@ -50,12 +50,18 @@ public class ShareRoomService {
             if(sort.equals("낮은가격순")){
                 result = shareRoomRepository.lowPriceList(pageable);
             }
+            if(sort.equals("좋아요순")){
+                result = shareRoomRepository.likeList(pageable);
+            }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다 serch not null / sort not null
             if(sort.equals("최신순")){
                 result = shareRoomRepository.searchNewList(search, pageable);
             }
             if(sort.equals("낮은가격순")){
                 result = shareRoomRepository.searchLowPriceList(search, pageable);
+            }
+            if(sort.equals("좋아요순")){
+                result = shareRoomRepository.searchLikeList(search, pageable);
             }
         }
 

@@ -7,7 +7,7 @@ import Slide3 from '../resources/images/slide_3.png';
 import Slide4 from '../resources/images/slide_4.png';
 import Slide5 from '../resources/images/slide_5.png';
 import CommunityPostComponent from '../components/main/CommunityPostComponent';
-import TeamPostComponent from '../components/main/TeamPostComponenttest';
+import TeamPostComponent from '../components/main/TeamPostComponent';
 import MarketPostComponent from '../components/main/MarketPostComponent'
 import BuyPostComponent from '../components/main/BuyPostComponent';
 import ShareRoomPostComponent from '../components/main/shareRoomPostComponent'
