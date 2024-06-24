@@ -77,6 +77,8 @@ const PartComponent = ({ buyNo }) => {
       const isUserInRoom = displayUsers.some(user => user.id === userId);
       if(!isUserInRoom){
         setResult('참여중이 아닙니다.');
+      } else if(chatroomInfo.writerId == userId) {
+        setResult('자신이 쓴 게시글은 참여를 취소할 수 없습니다.');
       } else {
         await exitChatRoomBuy(formData);
         setDisplayUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));

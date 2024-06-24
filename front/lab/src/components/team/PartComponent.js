@@ -25,7 +25,6 @@ const PartComponent = ({ teamNo }) => {
       try {
         const chatroomResponse = await chatUserInfoTeam(teamNo);
         const chatroomData = chatroomResponse.data;
-        console.log("데이터: "+chatroomData)
         setChatroomInfo(chatroomData);
 
         // 작성자 정보 가져오기
@@ -77,6 +76,8 @@ const PartComponent = ({ teamNo }) => {
       const isUserInRoom = displayUsers.some(user => user.id === userId);
       if(!isUserInRoom){
         setResult('참여중이 아닙니다.');
+      } else if(chatroomInfo.writerId == userId){
+        setResult('자신이 쓴 게시글은 참여를 취소할 수 없습니다.');
       } else {
         await exitChatRoomTeam(formData);
         setDisplayUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
