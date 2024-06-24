@@ -16,13 +16,20 @@ public class ChatRoomDataResponseDto {
     @Setter
     public static class Info {
         private Long roomId;
-        private Long BuyNo;
+        private Long buyNo;
+        private Long teamNo;
+        private Long marketNo;
+        private Integer roomNo;
         private Long writerId;
         private List<Long> readerId;
 
-        private Info(Long roomId, Long BuyNo, Long writerId, List<Long> readerId) {
+        private Info(Long roomId, Long buyNo, Long teamNo, Long marketNo, Integer roomNo, Long writerId,
+                List<Long> readerId) {
             this.roomId = roomId;
-            this.BuyNo = BuyNo;
+            this.buyNo = buyNo;
+            this.teamNo = teamNo;
+            this.marketNo = marketNo;
+            this.roomNo = roomNo;
             this.writerId = writerId;
             this.readerId = readerId;
         }
@@ -37,9 +44,18 @@ public class ChatRoomDataResponseDto {
                         .collect(Collectors.toList());
             }
 
+            Long buyNo = chatRoom.getBuy() != null ? chatRoom.getBuy().getBuyNo() : null;
+            Long teamNo = chatRoom.getTeam() != null ? chatRoom.getTeam().getTeamNo() : null;
+            Long marketNo = chatRoom.getMarket() != null ? chatRoom.getMarket().getMarketNo() : null;
+            Integer roomNo = chatRoom.getShareRoom() != null ? chatRoom.getShareRoom().getRoomNo() : null;
+            Long writerId = chatRoom.getWriter() != null ? chatRoom.getWriter().getId() : null;
+
             return new Info(chatRoom.getChatroomId(),
-                    chatRoom.getBuy().getBuyNo(),
-                    chatRoom.getWriter().getId(),
+                    buyNo,
+                    teamNo,
+                    marketNo,
+                    roomNo,
+                    writerId,
                     readerId);
         }
     }
@@ -48,6 +64,7 @@ public class ChatRoomDataResponseDto {
     @Setter
     public static class ChatHistory {
         List<ChatDataResponseDto.Message> messageHistory = new ArrayList<>();
+
         public ChatHistory(List<Chat> messageHistory) {
             this.messageHistory = messageHistory.stream()
                     .map(chat -> new ChatDataResponseDto.Message(chat))

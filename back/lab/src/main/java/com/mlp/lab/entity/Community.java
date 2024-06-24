@@ -29,10 +29,6 @@ public class Community extends BaseTimeEntity {
     @Column(name = "commNo")
     private Long commNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private User user;
-
     @Column(name = "type")
     private Character type;
 
@@ -53,6 +49,11 @@ public class Community extends BaseTimeEntity {
 
     @Column(name = "flag")
     private boolean flag; // true: 사진있음 / false:사진없음
+
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private User user;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE)
     private List<Reply> replies;

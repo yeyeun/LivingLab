@@ -4,11 +4,13 @@ import ReplyComponent from "../../common/ReplyComponent";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { API_SERVER_HOST, getOneTip, deleteOne } from "../../../api/communityApi";
+import { addReply, getList } from "../../../api/replyApi";
 import useCustomTip from "../../../hooks/useCustomTip";
 import ResultModal from "../../common/ResultModal";
 
 const initState = {
     commNo: 0,
+    id: 0,
     title: '',
     content: '',
     commHit: 0,
@@ -23,6 +25,7 @@ const ReadComponent = ({commNo}) => {
     const [addResultModal, setAddResultModal] = useState(null); //댓글 등록 모달창
     const [tip, setTip] = useState(initState); //해당 게시물 내용
     const [input, setInput] = useState(''); //댓글 내용
+    const [replies, setReplies] = useState([]);
     const { moveToList, moveToModify } = useCustomTip();
     const loginInfo = useSelector((state) => state.loginSlice);
     const id = loginInfo.id;
@@ -30,12 +33,16 @@ const ReadComponent = ({commNo}) => {
 
     useEffect(() => {
         getOneTip(commNo).then(data => {
-            console.log(data)
-            setTip(data)
-            console.log("id값:",id);
-            console.log("email값:",email);
+            setTip(data);
         })
     }, [commNo])
+
+    //댓글 리스트 호출
+    useEffect(() => {
+        getList(commNo).then(data => {
+            setReplies(data);
+        });
+    }, [commNo, addResultModal]);
 
     const handleClickDelete = (e) => {
         deleteOne(commNo);
@@ -45,6 +52,11 @@ const ReadComponent = ({commNo}) => {
     const closeModal = () => {
         setResult(null);
         moveToList();
+    }
+
+    //ReplyComponent에서 보낸 메세지값 처리
+    const setModalMessage = (message) => {
+        setAddResultModal(message);
     }
 
     // 댓글 등록
@@ -57,7 +69,14 @@ const ReadComponent = ({commNo}) => {
             setAddResultModal("내용을 입력해주세요");
             return;
         }
-        console.log("댓글내용:",input);
+        const newComment = {
+            id: id,
+            content: input,
+            commNo : commNo
+        };
+        addReply(newComment);
+        setAddResultModal("댓글이 등록되었습니다");
+        setInput('');
     };
 
     return (
@@ -107,7 +126,7 @@ const ReadComponent = ({commNo}) => {
                         </p>
                         <hr></hr>
                         <div className="flex justify-center space-x-2 mt-4">
-                            {email === tip.user_id ?
+                            {id === tip.id ?
                                 (
                                     <>
                                         <button type="button" className="bg-gray-400 text-white rounded-md text-base px-1 py-0.5 hover:bg-gray-500 ml-1" onClick={() => moveToModify(commNo)}>수정하기</button>
@@ -139,7 +158,25 @@ const ReadComponent = ({commNo}) => {
                             </div>
 
                         </div>
-                        <ReplyComponent />
+                        {replies.length > 0 ? (
+                            replies.map(reply =>
+                                <ReplyComponent
+                                    replyNo={reply.replyNo}
+                                    id={reply.id}
+                                    content={reply.content}
+                                    regDate={reply.regDate}
+                                    isWriter={tip.id === reply.id? true : false}
+                                    isEdit={id === reply.id? true : false}
+                                    callbackFn={setModalMessage}
+                                />    
+                            )
+                        )
+                        :
+                        (
+                            <div className="flex justify-center text-base">
+                                등록된 댓글이 없습니다
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

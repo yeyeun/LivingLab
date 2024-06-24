@@ -10,6 +10,10 @@ import com.mlp.lab.entity.Market;
 
 //Market Entity의 기본키(PK) 타입인 Integer를 인자로 전달
 public interface MarketRepository extends JpaRepository<Market, Integer> {
+    Market findMarketByMarketNo(@Param(value = "marketNo")Long marketNo);
+
+    Market findByMarketNo(@Param(value = "marketNo")Long marketNo);
+
     @Query("select m, mi from Market m left join m.imageList mi where m.flag = false and (mi.ord = 0 or mi.ord IS NULL) order by m.marketNo desc")
     Page<Object[]> selectList(Pageable pageable);
 

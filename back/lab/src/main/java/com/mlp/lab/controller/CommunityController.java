@@ -60,7 +60,7 @@ public class CommunityController {
 
     // 상세조회
     @GetMapping(value = { "/tip/read/{commNo}", "/qna/read/{commNo}", "/review/read/{commNo}", "/help/read/{commNo}" })
-    public CommunityDto read(@PathVariable(name = "commNo") int commNo) {
+    public CommunityDto read(@PathVariable(name = "commNo") Long commNo) {
         return communityService.read(commNo);
     }
 
@@ -90,7 +90,7 @@ public class CommunityController {
             "/help/modify/{commNo}" })
     public void modify(@PathVariable(name = "commNo") Long commNo, CommunityDto communityDto) {
         communityDto.setCommNo(commNo);
-        CommunityDto oldDto = communityService.read(commNo.intValue());
+        CommunityDto oldDto = communityService.read(commNo);
 
         // 기존 파일들(데이터베이스에 저장된 파일 이름)
         List<String> oldFileNames = oldDto.getUploadFileNames();
@@ -129,7 +129,7 @@ public class CommunityController {
 
     // 글 삭제 (이미지 포함)
     @DeleteMapping("/delete/{commNo}")
-    public void delete(@PathVariable(name = "commNo") int commNo) {
+    public void delete(@PathVariable(name = "commNo") Long commNo) {
         List<String> uploadFileNames = communityService.read(commNo).getUploadFileNames();
         if (uploadFileNames != null && uploadFileNames.size() > 0) {
             fileUtil.deleteFiles(uploadFileNames);
