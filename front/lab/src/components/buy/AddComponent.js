@@ -33,11 +33,13 @@ const AddComponent = () => {
   const ino = loginInfo.id;
   // const [addr, setAddr] = useState('');
   const [location, setLocation] = useState(null); // 현재 위치를 저장할 상태
+
   useEffect(() => {
     getUser(ino).then((data) => {
       setUser(data);
     });
   }, [ino]);
+
   const handleImageChange = (e) => {
     // 이미지 변경
     const files = Array.from(e.target.files);
@@ -75,6 +77,7 @@ const AddComponent = () => {
     const { name, value } = e.target;
     setBuy((prev) => ({ ...prev, [name]: value }));
   };
+
   // 글쓰기 등록하기 버튼
   const handleClickAdd = async () => {
     try {
@@ -128,13 +131,16 @@ const AddComponent = () => {
       console.error('Error adding post:', error);
     }
   };
+
   const closeModal = () => {
     setResult(null);
     moveToList();
   };
+
   const setAddress = (address) => {
     setBuy((prev) => ({ ...prev, location: address }));
   };
+
   // 주소검색 결과주소를 좌표로 변환해서 location에 저장
   const handleGeocode = () => {
     return new Promise((resolve, reject) => {
@@ -155,6 +161,7 @@ const AddComponent = () => {
       });
     });
   };
+
   const handleInputValidation = (e) => {
     const value = e.target.value;
     if (value !== '' && (isNaN(value) || value < 2)) {
@@ -162,6 +169,7 @@ const AddComponent = () => {
     }
     handleChangeBuy(e);
   };
+
   return (
     <div>
       <div className="flex items-center w-1/2 mx-auto text-xl font-semibold pl-2 border-l-4 border-teal-300">
