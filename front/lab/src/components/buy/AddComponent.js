@@ -33,11 +33,13 @@ const AddComponent = () => {
   const ino = loginInfo.id;
   // const [addr, setAddr] = useState('');
   const [location, setLocation] = useState(null); // 현재 위치를 저장할 상태
+
   useEffect(() => {
     getUser(ino).then((data) => {
       setUser(data);
     });
   }, [ino]);
+
   const handleImageChange = (e) => {
     // 이미지 변경
     const files = Array.from(e.target.files);
@@ -75,14 +77,12 @@ const AddComponent = () => {
     const { name, value } = e.target;
     setBuy((prev) => ({ ...prev, [name]: value }));
   };
+
   // 글쓰기 등록하기 버튼
   const handleClickAdd = async () => {
     try {
       await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
-      // if (!location || location.latitude === 0 || location.longitude === 0) {
-      //   setAddResultModal('유효한 주소를 입력해주세요');
-      //   return;
-      // }
+
       if (!buy.buyCategory) {
         setAddResultModal('카테고리를 선택해주세요');
         return;
@@ -128,13 +128,16 @@ const AddComponent = () => {
       console.error('Error adding post:', error);
     }
   };
+
   const closeModal = () => {
     setResult(null);
     moveToList();
   };
+
   const setAddress = (address) => {
     setBuy((prev) => ({ ...prev, location: address }));
   };
+
   // 주소검색 결과주소를 좌표로 변환해서 location에 저장
   const handleGeocode = () => {
     return new Promise((resolve, reject) => {
@@ -148,6 +151,10 @@ const AddComponent = () => {
             longitude: coords.getLng(),
           });
           resolve();
+          if (!location || location.latitude === 0 || location.longitude === 0) {
+            setAddResultModal('거래 장소가 등록되었습니다!');
+            return;
+          }
         } else {
           setAddResultModal('Failed to geocode the address.');
           reject(new Error('Failed to geocode the address.'));
@@ -155,6 +162,7 @@ const AddComponent = () => {
       });
     });
   };
+
   const handleInputValidation = (e) => {
     const value = e.target.value;
     if (value !== '' && (isNaN(value) || value < 2)) {
@@ -162,6 +170,7 @@ const AddComponent = () => {
     }
     handleChangeBuy(e);
   };
+
   return (
     <div>
       <div className="flex items-center w-1/2 mx-auto text-xl font-semibold pl-2 border-l-4 border-teal-300">
@@ -253,10 +262,13 @@ const AddComponent = () => {
           <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
             <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;거래장소
           </label>
+          <div className="w-1/5 ml-1 text-base">
+            <PostComponent setAddress={setAddress}></PostComponent>
+          </div>
           <div className="flex">
-            <div className="w-1/5 text-base">
+            {/* <div className="w-1/5 text-base">
               <PostComponent setAddress={setAddress}></PostComponent>
-            </div>
+            </div> */}
             <div className="w-4/5 pl-1">
               <input
                 className="w-full h-10 pl-2 rounded-md border border-stone-400 placeholder:text-base pb-1"
@@ -265,6 +277,11 @@ const AddComponent = () => {
                 placeholder="주소(우편번호 및 도로명 검색)"
                 value={buy.location}
               />
+            </div>
+            <div className="w-1/5">
+              <button className="text-base p-2 w-full text-white bg-mainColor ml-1 rounded-md  hover:bg-emerald-600" onClick={handleGeocode}>
+                장소 등록
+              </button>
             </div>
           </div>
         </div>
