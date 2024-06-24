@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -237,7 +235,7 @@ public class BuyService {
         return buy;
     }
 
-    public BuyDto read(int buyNo) { // 공동구매 조회
+    public BuyDto read(Long buyNo) { // 공동구매 조회
         Optional<Buy> result = buyRepository.findById(buyNo);
         Buy buy = result.orElseThrow();
         BuyDto buyDto = buy.entityToDto(buy);
@@ -246,13 +244,13 @@ public class BuyService {
     }
 
     @Transactional // 삭제하기
-    public void delete(int buyNo) {
+    public void delete(Long buyNo) {
         buyRepository.deleteById(buyNo);
     }
     
     public void modify(BuyDto buyDto) { //수정하기
         // 조회
-        Optional<Buy> result = buyRepository.findById(buyDto.getBuyNo().intValue());
+        Optional<Buy> result = buyRepository.findById(buyDto.getBuyNo());
         Buy buy = result.orElseThrow();
 
         // 수정
@@ -305,14 +303,14 @@ public class BuyService {
     }
     
     public void increase(Long buyNo) { // 좋아요 +1
-        Optional<Buy> result = buyRepository.findById(buyNo.intValue());
+        Optional<Buy> result = buyRepository.findById(buyNo);
         Buy buy = result.orElseThrow();
         buy.setBuyHit(buy.getBuyHit()+1);
         buyRepository.save(buy);
     }
 
     public void decrease(Long buyNo) { // 좋아요 -1
-        Optional<Buy> result = buyRepository.findById(buyNo.intValue());
+        Optional<Buy> result = buyRepository.findById(buyNo);
         Buy buy = result.orElseThrow();
         buy.setBuyHit(buy.getBuyHit()-1);
         buyRepository.save(buy);

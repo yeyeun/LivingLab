@@ -10,8 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.mlp.lab.entity.Community;
 
-//Buy Entity의 기본키(PK) 타입인 Integer를 인자로 전달
-public interface CommunityRepository extends JpaRepository<Community, Integer> {
+public interface CommunityRepository extends JpaRepository<Community, Long> {
 
     @Query("select c from Community c where c.type = '1' order by c.commNo desc")
     Page<Community> tipList(Pageable pageable);

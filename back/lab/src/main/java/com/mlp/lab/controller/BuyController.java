@@ -39,13 +39,13 @@ public class BuyController {
     }
 
     @GetMapping("/read/{buyNo}") // 상세조회
-    public BuyDto read(@PathVariable(name = "buyNo") int buyNo) {
+    public BuyDto read(@PathVariable(name = "buyNo") Long buyNo) {
         return buyService.read(buyNo);
     }
 
     // 글 삭제 (이미지 포함)
     @DeleteMapping("/delete/{buyNo}")
-    public void delete(@PathVariable(name = "buyNo") int buyNo) {
+    public void delete(@PathVariable(name = "buyNo") Long buyNo) {
         List<String> uploadFileNames = buyService.read(buyNo).getUploadFileNames();
         if (uploadFileNames != null && uploadFileNames.size() > 0) {
             fileUtil.deleteFiles(uploadFileNames);
@@ -69,7 +69,7 @@ public class BuyController {
     @PutMapping("/modify/{buyNo}") // 수정
     public void modify(@PathVariable(name = "buyNo") Long buyNo, BuyDto buyDto) {
         buyDto.setBuyNo(buyNo);
-        BuyDto oldDto = buyService.read(buyNo.intValue());
+        BuyDto oldDto = buyService.read(buyNo);
 
         // 기존 파일들(데이터베이스에 저장된 파일 이름)
         List<String> oldFileNames = oldDto.getUploadFileNames();
