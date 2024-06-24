@@ -8,9 +8,10 @@ import Slide4 from '../resources/images/slide_4.png';
 import Slide5 from '../resources/images/slide_5.png';
 import CommunityPostComponent from '../components/main/CommunityPostComponent';
 import TeamPostComponent from '../components/main/TeamPostComponent';
-import MarketPostComponent from '../components/main/MarketPostComponent'
+import MarketPostComponent from '../components/main/MarketPostComponent';
 import BuyPostComponent from '../components/main/BuyPostComponent';
-import ShareRoomPostComponent from '../components/main/shareRoomPostComponent'
+import ShareRoomPostComponent from '../components/main/shareRoomPostComponent';
+import WeatherComponent from '../components/main/WeatherComponent';
 import img_main from '../resources/images/img_main5.png';
 
 
@@ -47,8 +48,16 @@ const MainPage = () => {
           <img className="main-image" src={img_main} alt="MainImage" />
           <div className="main-image-text">
             <TypingComponent />
+            <hr className="weather-hr "/>
+            </div>
+          
+          <div className="weather-container "> 
+            <WeatherComponent/>
+
           </div>
         </div>
+
+
         {/* <div className="main-container text-6xl">
           #지금 HOT 게시물
           </div>
@@ -90,9 +99,6 @@ const MainPage = () => {
           </div>
           <div className="main-container">
             <div className='main-box'>
-              {/* <Link to={'/community'} className="main-headline">
-                  커뮤니티
-              </Link> */}
               <div className="main-comm">
                 <CommunityPostComponent />
               </div>
