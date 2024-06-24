@@ -8,5 +8,8 @@ public class ChatRoomDataRequestDto {
     @Setter
     public static class create {
         private Long buyNo;
+        private Long teamNo;
+        private Long marketNo;
+        private Integer roomNo;
     }
 }
