@@ -41,3 +41,9 @@ export const decreaseLike = async(roomNo) => {
   const res = await axios.put(`${prefix}/decrease/${roomNo}`);
   return res.data;
 }
+
+export const getLatestShareRoom = async (pageParam) => {
+  const { page, size } = pageParam;
+  const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
+  return res.data;
+} 

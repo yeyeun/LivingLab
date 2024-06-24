@@ -86,12 +86,12 @@ const CommunityPostComponent = () => {
                   {comm.type === '4' && '도움요청'}
                 </Link>
               </div>
-              <div>
+              <div className='main-comm-title'>
                 <Link to={toRead(comm.type, comm.commNo)} >
                   <span className='latestPost-title'>{comm.title}</span>
                 </Link>
               </div>
-              <span className="latestPost-hit   ">{comm.commHit}</span>
+              <span className="latestPost-hit">{comm.commHit}</span>
             </div>
             {index !== latestPosts.length - 1 && <hr className="latestPost-hr"></hr>}
           </li>

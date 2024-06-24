@@ -10,6 +10,7 @@ import CommunityPostComponent from '../components/main/CommunityPostComponent';
 import TeamPostComponent from '../components/main/TeamPostComponent';
 import MarketPostComponent from '../components/main/MarketPostComponent'
 import BuyPostComponent from '../components/main/BuyPostComponent';
+import ShareRoomPostComponent from '../components/main/shareRoomPostComponent'
 import img_main from '../resources/images/img_main5.png';
 
 
@@ -99,7 +100,10 @@ const MainPage = () => {
             <div className='main-textbox'>
               <div className='main-desc'>
                 <div className="desc-title">
-                  커뮤니티
+                  <Link to={'/community'} className="font-bold">
+
+                    커뮤니티
+                  </Link>
                 </div>
                 <div className="desc-tag">
                   #자취TIP공유 #질문게시판 #리뷰게시판 #도움요청
@@ -127,14 +131,17 @@ const MainPage = () => {
           </div>
         </div>
 
-        <div className="background-container">
+        <div className="background-container mb-20">
 
           <div className="main-container">
 
             <div className='main-textbox'>
               <div className='main-desc'>
                 <div className="desc-title">
-                  동네모임
+                  <Link to={'/team'} className="font-bold">
+
+                    동네모임
+                  </Link>
                 </div>
                 <div className="desc-tag">
                   #운동 #문화생활 #반려동물 #취미생활 #기타
@@ -156,54 +163,58 @@ const MainPage = () => {
           </div>
         </div>
 
-        <div className="main-container text-7xl">
-          #마켓
-        </div>
-        <div className="main-container">
-          <div>
-            <div className='main-headline'>
-              <Link to={'/buy'} className='font-bold'>
-                공동구매                
-              </Link>
-              <div className="desc-tag">
+        <div className='my-20'>
+          <div className="main-container text-7xl my-20">
+            #마켓
+          </div>
+          <div className="main-container">
+            <div>
+              <div className='main-headline'>
+                <Link to={'/buy'} className='font-bold'>
+                  공동구매
+                </Link>
+                <div className="desc-tag">
                   #배달음식 #생필품 #식료품 #가구/가전 #기타
                 </div>
+              </div>
+              <div className="main-item">
+                <BuyPostComponent />
+              </div>
             </div>
-            <div className="main-item">
-              <BuyPostComponent />
-            </div>
-          </div>
 
 
 
-          <div>
-            <div className='main-headline'>
-              <Link to={'/market'} className="font-bold">
-                동네장터
-              </Link>
-              <div className="desc-tag">
+            <div>
+              <div className='main-headline'>
+                <Link to={'/market'} className="font-bold">
+                  동네장터
+                </Link>
+                <div className="desc-tag">
                   #구매 #판매 #교환 #나눔
                 </div>
+              </div>
+              <div className="main-item">
+                <MarketPostComponent />
+              </div>
             </div>
-            <div className="main-item">
-              <MarketPostComponent />
-            </div>
-          </div>
-          <div>
-            <div className='main-headline'>
-              <Link to={'/shareroom'} className='font-bold'>
-                자취방쉐어
-              </Link>
-              <div className="desc-tag">
+            <div>
+              <div className='main-headline'>
+                <Link to={'/shareroom'} className='font-bold'>
+                  자취방쉐어
+                </Link>
+                <div className="desc-tag">
                   #최신순 #낮은 가격순 #좋아요순
                 </div>
-            </div>
-            <div className="main-item" >
+              </div>
+              <div className="main-item" >
+                <ShareRoomPostComponent />
+
+              </div>
+
             </div>
 
-          </div>
+          </div></div>
 
-        </div>
       </BasicLayout>
     </div>
   );
