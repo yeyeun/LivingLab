@@ -28,6 +28,10 @@ public interface ShareRoomRepository extends JpaRepository<ShareRoom, Integer> {
     @Query("select s, si from ShareRoom s left join s.imageList si where s.flag = true and si.ord = 0 order by s.averFee asc")
     Page<Object[]> lowPriceList(Pageable pageable);
 
+    // 좋아요순
+    @Query("select s, si from ShareRoom s left join s.imageList si where s.flag = true and si.ord = 0 order by s.roomHit desc")
+    Page<Object[]> likeList(Pageable pageable);
+
     // 검색 + 최신순
     @Query("select s, si from ShareRoom s left join s.imageList si where s.flag = true and si.ord = 0  and s.location like %:location% order by s.roomNo")
     Page<Object[]> searchNewList(@Param(value="location")String location, Pageable pageable);
@@ -35,6 +39,10 @@ public interface ShareRoomRepository extends JpaRepository<ShareRoom, Integer> {
     // 검색 + 낮은가격순
     @Query("select s, si from ShareRoom s left join s.imageList si where s.flag = true and si.ord = 0 and s.location like %:location% order by s.averFee asc")
     Page<Object[]> searchLowPriceList(@Param(value="location")String location, Pageable pageable);
+
+    // 검색 + 좋아요순
+    @Query("select s, si from ShareRoom s left join s.imageList si where s.flag = true and si.ord = 0 and s.location like %:location% order by s.roomHit desc")
+    Page<Object[]> searchLikeList(@Param(value="location")String location, Pageable pageable);
 
     // 메인에 표기할 최신순
     @Query("select s, si from ShareRoom s left join s.imageList si where si.ord = 0 and s.flag = true order by s.roomNo desc")

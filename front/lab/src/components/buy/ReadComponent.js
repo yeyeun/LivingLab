@@ -3,7 +3,7 @@ import axios from 'axios';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/buyApi';
 import { likeBuy, unlikeBuy, likeInfoBuy } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
-import { enterChatRoom } from '../../api/chatApi';
+import { enterChatRoomBuy } from '../../api/chatApi';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import useCustomMove from '../../hooks/useCustomMove';
@@ -116,7 +116,7 @@ const ReadComponent = ({ buyNo }) => {
       setResult('더이상 참여할수 없습니다.');
     } else{
       try {
-        await enterChatRoom(formData); // FormData를 인자로 전달하여 호출
+        await enterChatRoomBuy(formData); // FormData를 인자로 전달하여 호출
         setResult('참여가 완료되었습니다.');
       } catch (error) {
         setResult('이미 참여 중입니다.', error);
@@ -135,7 +135,7 @@ const ReadComponent = ({ buyNo }) => {
 
   const closeModal = () => {
     setResult(null);
-    moveToList();
+    window.location.reload();
   };
 
   const closeInfoModal = () => {

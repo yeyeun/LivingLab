@@ -20,6 +20,12 @@ export const modify = async(roomNo,shareRoom) => {
   return res.data;
 };
 
+export const hideOne = async(roomNo,shareRoom) => {
+  const header = {headers:{"Content-Type":"multipart/form-data"}};
+  const res = await axios.put(`${prefix}/hide/${roomNo}`,shareRoom, header);
+  return res.data;
+};
+
 export const postAddShareRoom = async (shareRoom) => {
     const header = { headers: { "Content-Type": "multipart/form-data" } };
     const res = await axios.post(`${prefix}/add`, shareRoom, header);

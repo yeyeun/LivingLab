@@ -19,6 +19,7 @@ import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.TeamDto;
+import com.mlp.lab.entity.Team;
 import com.mlp.lab.service.TeamService;
 import com.mlp.lab.util.CustomFileUtilTeam;
 
@@ -60,11 +61,11 @@ public class TeamController {
     }
 
     @PostMapping("/add") // 작성
-    public void add(TeamDto teamDto) {
+    public Team add(TeamDto teamDto) {
         List<MultipartFile> files = teamDto.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
         teamDto.setUploadFileNames(uploadFileNames);
-        teamService.add(teamDto);
+        return teamService.add(teamDto);
     }
 
     @PutMapping("/modify/{teamNo}") // 수정

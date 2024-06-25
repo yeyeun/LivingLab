@@ -29,7 +29,7 @@ public class Market extends BaseTimeEntity{
     @Column(name = "market_no")
     private Long marketNo;
 
-    @Column(name = "title", length = 50)
+    @Column(name = "title")
     private String title;
 
     @Column(name = "content", length = 500)

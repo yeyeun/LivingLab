@@ -76,8 +76,14 @@ export const likeRoom = async(likeRoom) => {
     return res.data;
 };
 
-export const unlikeRoom = async(likeNo) => {
+export const unlikeRoom = async(likeNo) => { // 좋아요 단건 삭제
     const res = await axios.delete(`${prefix}/shareRoom/${likeNo}`);
+    return res.data;
+};
+
+export const deleteLike = async (roomNo) => { // 해당 글에 찍힌 모든 좋아요 삭제
+    const res = await axios.delete(`${prefix}/shareRoom/all/${roomNo}`);
+    console.log('deleting ', res.data);
     return res.data;
 };
 
@@ -90,3 +96,4 @@ export const likeInfoRoom = async(roomNo, id) => {
     });
     return res.data;
 };
+

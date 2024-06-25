@@ -12,6 +12,8 @@ import com.mlp.lab.entity.Team;
 public interface TeamRepository extends JpaRepository<Team, Integer> {
     Team findTeamByTeamNo(@Param(value = "teamNo")Long teamNo);
 
+    Team findByTeamNo(@Param(value = "teamNo")Long teamNo);
+
     @Query("select t, ti from Team t left join t.imageList ti where t.flag = false and (ti.ord = 0 or ti.ord IS NULL) order by t.teamNo desc")
     Page<Object[]> selectList(Pageable pageable);
 

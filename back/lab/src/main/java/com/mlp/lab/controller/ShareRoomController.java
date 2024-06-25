@@ -106,6 +106,15 @@ public class ShareRoomController {
         return Map.of("RESULT", "SUCCESS");
     }
 
+    @PutMapping("/hide/{roomNo}")
+    public Map<String, String> hide(@PathVariable(name = "roomNo") Integer roomNo, ShareRoomDto shareRoomDto) {
+        shareRoomDto.setRoomNo(roomNo);
+
+        shareRoomService.hide(shareRoomDto);
+        
+        return Map.of("RESULT", "SUCCESS");
+    }
+
     @GetMapping("/latest")
     public List<ShareRoomDto> getLatestShareRoomList() {
         return shareRoomService.getLatestShareRoom();
@@ -126,4 +135,11 @@ public class ShareRoomController {
         return shareRoomService.mylist(id);
     }
 
+    
+    @DeleteMapping("/like/shareRoom/{roomNo}")
+    public Map<String, String> removeLike(@PathVariable(name = "roomNo") Integer roomNo) {
+        log.info("Remove :" + roomNo);
+        shareRoomService.remove(roomNo);
+        return Map.of("RESULT", "SUCCESS");
+    }
 }

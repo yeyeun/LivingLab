@@ -7,7 +7,7 @@ import { getUser } from './../../api/userApi';
 import { useSelector } from 'react-redux';
 import iconNext from '../../resources/images/icon-next.png';
 import iconEdit from '../../resources/images/iconEdit.png'
-
+import { postCreateRoom } from '../../api/chatApi';
 const initState = {
   id: 0,
   nickname: '',
@@ -119,8 +119,9 @@ const AddComponent = () => {
     formData.append('current', team.current);
     formData.append('deadline', team.deadline);
     formData.append('teamHit', team.teamHit);
-
-    postAddTeam(formData);
+    const response = await postAddTeam(formData);
+    const createRequest = { teamNo: response.teamNo };
+    await postCreateRoom(formData.get('id'), createRequest);
     setResult('게시글이 등록되었습니다');
   };
   
