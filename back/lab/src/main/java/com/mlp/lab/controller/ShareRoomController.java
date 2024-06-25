@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.ShareRoomDto;
 import com.mlp.lab.dto.MarketDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.service.ShareRoomService;
@@ -118,6 +119,11 @@ public class ShareRoomController {
     @PutMapping("/decrease/{roomNo}") // 좋아요 +1
     public void decrease(@PathVariable(name = "roomNo") Long roomNo) {
         shareRoomService.decrease(roomNo);
+    }
+
+    @GetMapping("/mylist/{id}") // 작성한 게시물 조회 (3개)
+    public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
+        return shareRoomService.mylist(id);
     }
 
 }

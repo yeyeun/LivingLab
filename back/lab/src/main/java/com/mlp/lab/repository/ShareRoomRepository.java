@@ -39,4 +39,8 @@ public interface ShareRoomRepository extends JpaRepository<ShareRoom, Integer> {
     // 메인에 표기할 최신순
     @Query("select s, si from ShareRoom s left join s.imageList si where si.ord = 0 and s.flag = true order by s.roomNo desc")
     Page<Object[]> latestShareRoomList(Pageable pageable);
+
+    //마이페이지 내가 작성한 글
+    @Query("SELECT s FROM ShareRoom s WHERE s.userId = :id ORDER BY s.roomNo DESC")
+    Page<ShareRoom> findByUser(@Param(value = "id") Long id, Pageable pageable);
 }

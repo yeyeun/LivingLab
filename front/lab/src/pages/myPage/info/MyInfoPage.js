@@ -5,7 +5,7 @@ const MyInfoPage = () => {
   const { id } = useParams();
 
   return (
-    <div className="text-xl flex-grow h-screen">
+    <div className="text-xl flex-grow h-fit w-4/5">
       <div className="bg-white w-full rounded px-10 py-4 h-full shadow-md">
         <div className="flex flex-col">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">

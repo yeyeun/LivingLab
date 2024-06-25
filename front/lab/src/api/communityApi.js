@@ -110,4 +110,8 @@ export const getLatestComm = async (pageParam) => {
     return res.data;
 }
 
-
+/* 마이페이지 내가 작성한 글 조회 */
+export const myList = async (id) => {
+    const res = await axios.get(`${prefix}/mylist/${id}`);
+    return res.data;
+}

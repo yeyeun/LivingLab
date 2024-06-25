@@ -33,6 +33,7 @@ const IndexPage = () => {
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
 
   const ino = loginInfo.id;
+  const email = loginInfo.email;
 
   const getTextClass = (path) => {
     return location.pathname.startsWith(path) ? 'header-active' : 'text-gray-500';
@@ -61,13 +62,19 @@ const IndexPage = () => {
     navigate({ pathname: 'info' });
   }, [navigate]);
 
+
   useEffect(() => {
+    if(!email){
+      alert('비정상적인 접근입니다');
+      navigate('/user/login');
+      return;
+    }
     getUser(ino).then((data) => {
       fetchUserProfileImage(data.email);
       setUser(data);
       //setProfileImage(data.profileImage);
     });
-  }, [ino]);
+  }, [ino,email,navigate]);
 
   //프로필 사진 읽어오는 함수
   const fetchUserProfileImage = async (email) => {
@@ -99,9 +106,9 @@ const IndexPage = () => {
       <BasicLayout>
         <div className="text-xl flex-grow bg-gray-300 bg-opacity-30">
           <div className="min-h-screen flex flex-row w-4/5 mx-auto my-10">
-            <div className="flex flex-col w-80 bg-white overflow-hidden h-fit rounded mr-5 shadow-md">
+            <div className="flex flex-col w-1/5 bg-white overflow-hidden h-fit rounded mr-5 shadow-md">
               <ul className="flex flex-col py-4 my-8">
-                <img src={user.profileImage ? user.profileImage : Profile_Img} alt="프로필이미지" className="rounded-full size-2/5 mx-auto" />
+                <img src={user.profileImage ? user.profileImage : Profile_Img} alt="프로필이미지" className="rounded-full size-2/5 mx-auto shadow-md" />
 
                 <li>
                   <div className="flex items-center pt-3 pb-10 text-gray-900 rounded-lg dark:text-white">
