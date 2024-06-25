@@ -10,9 +10,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mlp.lab.dto.MarketDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.dto.ShareRoomDto;
+import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Market;
 import com.mlp.lab.entity.MarketImage;
 import com.mlp.lab.entity.ShareRoom;
@@ -201,4 +203,20 @@ public class ShareRoomService {
         shareRoomRepository.save(shareRoom);
     }
 
+    public List<MyActivityDto> mylist(Long id) {
+        PageRequest pageRequest = PageRequest.of(0,3);
+        Page<ShareRoom> result = shareRoomRepository.findByUser(id, pageRequest);
+
+        List<MyActivityDto> dtoList = result.getContent().stream().map(room -> {
+            MyActivityDto dto = new MyActivityDto();
+            dto.setTitle(room.getTitle());
+            dto.setNo(room.getRoomNo().longValue());
+            dto.setRentStartDate(room.getRentStartDate());
+            dto.setRentEndDate(room.getRentEndDate());
+            dto.setRent_fee(room.getRentFee());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
+    }
 }

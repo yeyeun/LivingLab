@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.MarketDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.entity.Market;
 import com.mlp.lab.entity.MarketImage;
 import com.mlp.lab.entity.Team;
@@ -185,5 +186,21 @@ public class MarketService {
         Market market = result.orElseThrow();
         market.setMarketHit(market.getMarketHit() - 1);
         marketRepository.save(market);
+    }
+
+    public List<MyActivityDto> mylist(Long id) {
+        PageRequest pageRequest = PageRequest.of(0,3);
+        Page<Market> result = marketRepository.findByUser(id, pageRequest);
+
+        List<MyActivityDto> dtoList = result.getContent().stream().map(market -> {
+            MyActivityDto dto = new MyActivityDto();
+            dto.setCategory(market.getMarketCategory());
+            dto.setRegDate(market.getCreatedDate());
+            dto.setTitle(market.getTitle());
+            dto.setNo(market.getMarketNo());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
     }
 }

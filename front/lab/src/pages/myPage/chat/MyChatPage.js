@@ -11,7 +11,7 @@ const MyChatPage = () => {
   };
 
   return (
-    <div className="text-xl flex-grow h-screen flex">
+    <div className="text-xl flex-grow h-screen flex w-4/5">
       <div className="bg-white w-full rounded h-4/5 shadow-md flex flex-col">
 
         <div className="flex-grow flex flex-col h-full">
