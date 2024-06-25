@@ -262,6 +262,20 @@ public class CommunityService {
                 .collect(Collectors.toList());
     }
 
+    public void increase(Long commNo) { // 좋아요 +1
+        Optional<Community> result = communityRepository.findById(commNo);
+        Community community = result.orElseThrow();
+        community.setCommHit(community.getCommHit() + 1);
+        communityRepository.save(community);
+    }
+
+    public void decrease(Long commNo) { // 좋아요 -1
+        Optional<Community> result = communityRepository.findById(commNo);
+        Community community = result.orElseThrow();
+        community.setCommHit(community.getCommHit() - 1);
+        communityRepository.save(community);
+    }
+
     public List<MyActivityDto> mylist(Long id) {
         PageRequest pageRequest = PageRequest.of(0,3);
         Page<Community> result = communityRepository.findByUser(id, pageRequest);
