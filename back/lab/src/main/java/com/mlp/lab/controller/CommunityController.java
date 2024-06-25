@@ -144,6 +144,16 @@ public class CommunityController {
         return communityService.getLatestComm();
     }
 
+    @PutMapping("/increase/{commNo}") // 좋아요 +1
+    public void increase(@PathVariable(name = "commNo") Long commNo) {
+        communityService.increase(commNo);
+    }
+
+    @PutMapping("/decrease/{commNo}") // 좋아요 +1
+    public void decrease(@PathVariable(name = "commNo") Long commNo) {
+        communityService.decrease(commNo);
+    }
+
     @GetMapping("/mylist/{id}") // 작성한 게시물 조회 (3개)
     public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
         return communityService.mylist(id);

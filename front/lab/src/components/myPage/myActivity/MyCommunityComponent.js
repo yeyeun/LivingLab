@@ -67,7 +67,13 @@ const MyCommunityComponent = ({id}) => {
               ) 
               : 
               (
-                <div>작성한 게시글이 없습니다</div>
+                <li className="py-4">
+                <div className="grid grid-cols-4">
+                  <div className="col-span-4 text-center text-base">
+                      작성한 게시물이 없습니다
+                  </div>
+                </div>
+               </li>
               )}
             </ul>
 
