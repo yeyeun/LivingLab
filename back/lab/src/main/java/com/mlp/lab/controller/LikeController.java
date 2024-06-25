@@ -86,6 +86,11 @@ public class LikeController {
         likeService.deleteRoom(likeNo);
     }
 
+    @DeleteMapping("/shareRoom/all/{roomNo}") // 해당 글에 찍힌 모든 좋아요 삭제
+    public void deleteLike(@PathVariable(name = "roomNo") long roomNo) {
+        likeService.deleteLike(roomNo);
+    }
+
     @GetMapping("/shareRoom") // 좋아요 정보 조회
     public LikeRoomDto likeInfoRoom(@RequestParam(value = "roomNo") Long roomNo, @RequestParam(value = "id") Long id) {
         return likeService.readRoom(roomNo, id);

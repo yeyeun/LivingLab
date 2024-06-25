@@ -142,6 +142,18 @@ public class ShareRoomService {
         shareRoomRepository.save(shareRoom);
     }
 
+    public void hide(ShareRoomDto shareRoomDto) { // 수정하기
+        // 조회
+        Optional<ShareRoom> result = shareRoomRepository.findById(shareRoomDto.getRoomNo().intValue());
+        ShareRoom shareRoom = result.orElseThrow();
+
+        // 수정
+        shareRoom.setFlag(false);
+
+        shareRoomRepository.save(shareRoom);
+    }
+
+
      // 메인에 표기할 최신순
     public List<ShareRoomDto> getLatestShareRoom() {
         Pageable pageable = PageRequest.of(0, 3, Sort.by("roomNo").descending());

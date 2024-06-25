@@ -103,8 +103,12 @@ public class LikeService {
         likeRoomRepository.save(likeShareRoom);
     }
 
-    public void deleteRoom(long likeNo) {
+    public void deleteRoom(long likeNo) { // 해당글에 찍힌 좋아요 1가지를 삭제하는기능
         likeRoomRepository.deleteById(likeNo);
+    }
+
+    public void deleteLike(long roomNo) { // 해당글 번호를 가진 모든 좋아요를 지우는 기능
+        likeRoomRepository.deleteLike(roomNo);
     }
 
     public LikeRoomDto readRoom(Long roomNo, Long id) {
@@ -116,5 +120,7 @@ public class LikeService {
         LikeRoomDto likeRoomDto = modelMapper.map(likeShareRoom, LikeRoomDto.class);
         return likeRoomDto;
     }
+
+
 
 }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { API_SERVER_HOST, getOne, deleteOne, increaseLike, decreaseLike } from '../../api/shareRoomApi';
+import { likeRoom, unlikeRoom, likeInfoRoom,deleteLike } from '../../api/likeApi';
 import useRoomCustomMove from '../../hooks/useRoomCustomMove';
 import { useSelector } from 'react-redux';
 import MapComponentForRoom from '../../components/shareRoom/MapComponentForRoom';
-import { likeRoom, unlikeRoom, likeInfoRoom } from '../../api/likeApi';
 import ModalComponent from "./ModalComponent"; // <- 사진 전체보기용 모달
+import ResultModal from '../common/ResultModal';
 import emptyheart from '../../resources/images/heart_empty.png';
 import fullheart from '../../resources/images/heart_full.png';
 import InfoModal from '../common/InfoModal';
@@ -63,12 +64,17 @@ const ReadComponent = ({ roomNo }) => {
   }, [loginState.id, info]);
 
   const handleClickDelete = () => {
-    deleteOne(roomNo).then((result) => {
+    deleteLike(roomNo)
+    .then(() => {
+      return deleteOne(roomNo);
+    })
+    .then((result) => {
       console.log('delete result : ' + result);
-      setResult('Deleted');
+      setResult('삭제되었습니다');
       moveToList();
     });
   };
+
 
 // Function to open modal with selected image
 const openModal = () => {
@@ -120,7 +126,8 @@ const handleLikeClick = () => {
 
     return (
         <div id="full-main">
-            <div id="wrap" className="pt-10 w-full text-center mx-auto  ">
+            {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
+            <div id="wrap" className="pt-10 w-full text-center mx-auto">
                 <div id="images" className="w-[1200px] p-2.5 mx-auto" onClick={openModal}>
                     <div id="grid" className="grid grid-cols-custom grid-rows-2 gap-2 w-full h-[440px]">
                         {shareRoom.uploadFileNames.map((imgFile, index) => (

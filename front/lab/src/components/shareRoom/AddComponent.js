@@ -91,7 +91,7 @@ const AddComponent = () => {
     const files = imgRef.current.files;
     const formData = new FormData();
     const daysBetween = calculateDaysBetweenDates(shareRoom.rentStartDate, shareRoom.rentEndDate);
-    const averFee = shareRoom.rentFee / daysBetween;
+    const averFee = Math.ceil(shareRoom.rentFee / daysBetween);
 
     if (!shareRoom.title || !shareRoom.content) {
       setAddResultModal('제목과 내용을 입력해주세요');
