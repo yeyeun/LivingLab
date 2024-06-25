@@ -10,7 +10,7 @@ import mapIcon from '../../resources/images/map.png';
 import emptyheart from '../../resources/images/heart_empty.png';
 import fullheart from '../../resources/images/heart_full.png';
 import ResultModal from '../common/ResultModal';
-import { likeMarket, unlikeMarket, likeInfoMarket } from '../../api/likeApi';
+import { likeMarket, unlikeMarket, likeInfoMarket, deleteLikeMarket } from '../../api/likeApi';
 import InfoModal from '../common/InfoModal';
 
 const initState = {
@@ -90,9 +90,15 @@ const ReadComponent = ({ marketNo }) => {
     setShowModal(false);
   };
 
-  const handleClickDelete = (e) => {
-    deleteOne(marketNo);
-    setResult('게시글이 삭제되었습니다');
+  const handleClickDelete = () => {
+    deleteLikeMarket(marketNo)
+    .then(() => {
+      return deleteOne(marketNo);
+    })
+    .then((result) => {
+      console.log('delete result : ' + result);
+      setResult('삭제되었습니다');
+    });
   };
 
   const closeModal = () => {
