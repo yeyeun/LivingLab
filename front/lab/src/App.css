@@ -115,26 +115,19 @@
   position: absolute;
   color: #ffffff;
   font-size: 47px;
-  top:40%;
 }
 
 .weather-container {
-  width:455.86px;
   position: absolute;
-  top: 56%;
+  top: 37%;
+  left:57%;
   color:#ffffff;
 }
 
 .weather-font {
   font-family: "Noto Sans KR", sans-serif;
+  font-size: 24px;
 } 
-
-.weather-head {
-  display: flex;
-  width:100%;
-	flex-direction: row-reverse;
-  font-size:20px;
-}
 
 .weather-hr {
   height:10px;
@@ -143,22 +136,25 @@
 
 .weather-icon {
   position: absolute;
-  left:-13px;
-  top:-10px;
+  width:40px;
+  height:40px;
+  left:-100px;
+  top:-3px;
 }
 
 .weather-temp {
   position: absolute;
-  left: 80px;
-  top:-1px;
+  font-size: 25px;
+  left: -55px;
+  top: -2px;
   font-family: "Noto Sans KR", sans-serif;
 
 }
 
 .weather-marker {
   margin-top: 5px;
-  width:35px;
-  height:35px;
+  width:28px;
+  height:28px;
 }
 
 .KakaoSmall {

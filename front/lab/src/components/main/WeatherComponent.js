@@ -44,38 +44,37 @@ const WeatherComponent = () => {
 
             {weather ? (
                 <div>
-                    <div className="weather-head">
-                    </div>
-
-                    <div className='flex justify-between'>
-                        <div className='flex'>
-                            <img 
-                            className='weather-icon'
-                                src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                                alt={weather.weather[0].description} />
-                            <div className='text-7xl weather-temp'>
-                                {Math.round(weather.main.temp)}°
-                            </div>
-
-                        </div>
+                    <div className='flex'>
                         <div>
-                            <div className='text-3xl flex justify-end weather-font'>
+                            {/* <div className='text-3xl flex justify-end weather-font mr-1'>
                                 {todayData()}
+                            </div> */}
+
+                            <div className='flex'>
+                                <img
+                                    className='weather-icon'
+                                    src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                                    alt={weather.weather[0].description} />
+                                <div className='weather-temp'>
+                                    {Math.round(weather.main.temp)}°
+                                </div>
+
                             </div>
-                            <div className='flex justify-end'>
+                            <div className='flex'>
                                 <img className='weather-marker'
                                     src={Marker}
                                     alt="marker" />
-                                <div className='text-4xl weather-font '>
+                                <div className=' weather-font '>
                                     {weather.name}
                                 </div>
 
                             </div>
                         </div>
+
                     </div>
                 </div>
             ) : (
-                <div className='text-2xl text-center'>날씨 정보를 가져오는 중...</div>
+                <div className='text-left'></div>
             )}
         </div>
     );

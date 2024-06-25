@@ -48,7 +48,7 @@ const MainPage = () => {
           <img className="main-image" src={img_main} alt="MainImage" />
           <div className="main-image-text">
             <TypingComponent />
-            <hr className="weather-hr "/>
+            {/* <hr className="weather-hr "/> */}
             </div>
           
           <div className="weather-container "> 
