@@ -136,6 +136,7 @@ const ReadComponent = ({ teamNo }) => {
   const handleClickDelete = (e) => {
     deleteOne(teamNo);
     setResult('게시글이 삭제되었습니다');
+    moveToList()
   };
 
   const closeInfoModal = () => {

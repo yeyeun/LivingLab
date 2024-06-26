@@ -131,6 +131,7 @@ const ReadComponent = ({ buyNo }) => {
   const handleClickDelete = (e) => {
     deleteOne(buyNo);
     setResult('게시글이 삭제되었습니다');
+    moveToList()
   };
 
   const closeModal = () => {
