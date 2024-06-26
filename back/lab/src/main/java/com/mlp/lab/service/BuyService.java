@@ -2,7 +2,6 @@ package com.mlp.lab.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +19,7 @@ import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.BuyImage;
 import com.mlp.lab.repository.BuyRepository;
 import com.mlp.lab.repository.UserRepository;
+import com.mlp.lab.repository.chat.ChatRoomRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class BuyService {
     private final BuyRepository buyRepository;
     private final UserRepository userRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category,
@@ -60,9 +61,9 @@ public class BuyService {
             if (sort.equals("거리순")) {
                 result = buyRepository.distanceList(latitude, longitude, pageable);
             }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+            result = buyRepository.likeList(pageable);
+            }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if (sort.equals("최신순")) {
                 result = buyRepository.searchNewList(search, pageable);
@@ -73,9 +74,9 @@ public class BuyService {
             if (sort.equals("거리순")) {
                 result = buyRepository.searchDistanceList(search, latitude, longitude, pageable);
             }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = buyRepository.searchLikeList(search, pageable);
+            }
         }
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];
@@ -127,6 +128,8 @@ public class BuyService {
 
     @Transactional // 삭제하기
     public void delete(Long buyNo) {
+        // chatroom 테이블에서 해당 buy_no 값을 참조하지 않도록 업데이트
+        chatRoomRepository.updateBuyRoom(buyNo);
         buyRepository.deleteById(buyNo);
     }
 

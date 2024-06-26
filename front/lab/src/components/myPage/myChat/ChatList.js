@@ -1,31 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getChatRoom } from '../../../api/chatApi';
 
 const ChatList = ({ onSelectChat }) => {
-  const chats = [
-    { id: 1, name: '이정운', lastMessage: '채팅 기능 생각 중이에요', img: 'https://via.placeholder.com/40' },
-    { id: 2, name: '유우상', lastMessage: '댓글 기능 만들고 있어요', img: 'https://via.placeholder.com/40' },
-    { id: 3, name: '최영은', lastMessage: '커뮤니티 다 완성했어요', img: 'https://via.placeholder.com/40' },
-    { id: 4, name: '안정호', lastMessage: '홈 화면 수정 중이에요', img: 'https://via.placeholder.com/40' },
-    { id: 5, name: '이정운', lastMessage: '채팅 기능 생각 중이에요', img: 'https://via.placeholder.com/40' },
-    { id: 6, name: '유우상', lastMessage: '댓글 기능 만들고 있어요', img: 'https://via.placeholder.com/40' },
-    { id: 7, name: '최영은', lastMessage: '커뮤니티 다 완성했어요', img: 'https://via.placeholder.com/40' },
-    { id: 8, name: '안정호', lastMessage: '홈 화면 수정 중이에요', img: 'https://via.placeholder.com/40' },
-    { id: 9, name: '이정운', lastMessage: '채팅 기능 생각 중이에요', img: 'https://via.placeholder.com/40' },
-    { id: 10, name: '유우상', lastMessage: '댓글 기능 만들고 있어요', img: 'https://via.placeholder.com/40' }
-    // Add more dummy data as needed
-  ];
+  const [ chatRooms, setChatRooms ] = useState('');
+  const loginInfo = useSelector((state) => state.loginSlice);
+  const id = loginInfo.id;
+
+  useEffect(()=>{
+    getChatRoom(id).then((response) => {
+      setChatRooms(response);
+    });
+  }, [id]);
+
+
+const getNonEmptyFieldsWithText = (room) => {
+  const fields = [];
+
+  if (room.buyNo !== null) {
+      fields.push({ value: room.buyNo, text: '공동구매' });
+  }
+  if (room.teamNo !== null) {
+      fields.push({ value: room.teamNo, text: '동네모임' });
+  }
+  if (room.marketNo !== null) {
+      fields.push({ value: room.marketNo, text: '동네장터' });
+  }
+  if (room.roomNo !== null) {
+      fields.push({ value: room.roomNo, text: '자취방쉐어' });
+  }
+
+  return fields;
+};
+
 
   return (
     <div className="h-full">
-      {chats.map((chat) => (
-        <div key={chat.id} className="py-7 px-5 cursor-pointer hover:bg-gray-100 border-b flex items-center" onClick={() => onSelectChat(chat)}>
-          <img src={chat.img} alt={chat.name} className="w-10 h-10 rounded-full mr-4" />
+      {chatRooms.data && chatRooms.data.length > 0 ? (
+      chatRooms.data.map((room) => 
+
+        <div key={room.roomId} className="py-7 px-5 cursor-pointer hover:bg-gray-100 border-b flex items-center" onClick={() => onSelectChat(room)}>
+          <img src="https://via.placeholder.com/40" alt="..." className="w-10 h-10 rounded-full mr-4" />
           <div>
-            <h2 className="text-lg font-bold">{chat.name}</h2>
-            <p className="text-sm text-gray-500">{chat.lastMessage}</p>
+            <h2 className="text-lg font-bold">{room.title}</h2>
+            <p className="text-sm text-gray-500">채팅방 마지막 메세지</p>
           </div>
         </div>
-      ))}
+        
+      )
+    )
+    :
+    (
+      <div className="p-7 flex items-center">
+        참여 중인 채팅방이 없습니다
+      </div>
+    )
+    }
     </div>
   );
 };

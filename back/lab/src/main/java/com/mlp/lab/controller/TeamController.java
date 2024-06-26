@@ -47,8 +47,8 @@ public class TeamController {
 
     // 글 삭제 (이미지 포함)
     @DeleteMapping("/delete/{teamNo}")
-    public void delete(@PathVariable(name = "teamNo") int teamNo) {
-        List<String> uploadFileNames = teamService.read(teamNo).getUploadFileNames();
+    public void delete(@PathVariable(name = "teamNo") Long teamNo) {
+        List<String> uploadFileNames = teamService.read(teamNo.intValue()).getUploadFileNames();
         if (uploadFileNames != null && uploadFileNames.size() > 0) {
             fileUtil.deleteFiles(uploadFileNames);
         }

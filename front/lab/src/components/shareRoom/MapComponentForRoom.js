@@ -44,7 +44,11 @@ const MapComponent = ({ location }) => {
       }
     });
 
-    kakao.maps.event.addListener(mapInstance, 'idle', searchPlaces);
+    kakao.maps.event.addListener(mapInstance, 'idle', () => {
+      if (currCategory) {
+        searchPlaces();
+      }
+    });
 
     const contentNode = document.createElement('div');
     contentNode.className = 'placeinfo_wrap';
@@ -61,7 +65,11 @@ const MapComponent = ({ location }) => {
 
   useEffect(() => {
     if (map) {
-      searchPlaces();
+      if (currCategory) {
+        searchPlaces();
+      } else {
+        removeMarker();
+      }
     }
   }, [currCategory, map]);
 
@@ -75,7 +83,6 @@ const MapComponent = ({ location }) => {
 
   const searchPlaces = () => {
     if (!currCategory || !map) {
-      removeMarker();
       return;
     }
 

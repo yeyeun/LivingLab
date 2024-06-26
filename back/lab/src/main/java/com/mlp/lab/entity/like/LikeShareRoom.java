@@ -2,7 +2,7 @@ package com.mlp.lab.entity.like;
 
 import org.springframework.transaction.annotation.Transactional;
 
-
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mlp.lab.entity.ShareRoom;
@@ -40,7 +40,7 @@ public class LikeShareRoom {
     @JoinColumn(name = "id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_roomNo")
     @JsonBackReference
     private ShareRoom shareRoom;

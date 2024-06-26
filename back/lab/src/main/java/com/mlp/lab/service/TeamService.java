@@ -19,6 +19,7 @@ import com.mlp.lab.entity.Team;
 import com.mlp.lab.entity.TeamImage;
 import com.mlp.lab.repository.TeamRepository;
 import com.mlp.lab.repository.UserRepository;
+import com.mlp.lab.repository.chat.ChatRoomRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class TeamService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category) {
@@ -57,9 +59,9 @@ public class TeamService {
             // if(sort.equals("거리순")){
             // result =
             // }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = teamRepository.likeList(pageable);
+            }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if (sort.equals("최신순")) {
                 result = teamRepository.searchNewList(search, pageable);
@@ -70,9 +72,9 @@ public class TeamService {
             // if(sort.equals("거리순")){
             // result =
             // }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = teamRepository.searchLikeList(search, pageable);
+            }
         }
 
         List<TeamDto> dtoList = result.get().map(arr -> {
@@ -124,8 +126,9 @@ public class TeamService {
     }
 
     @Transactional
-    public void delete(int teamNo) { // 삭제하기
-        teamRepository.deleteById(teamNo);
+    public void delete(Long teamNo) { // 삭제하기
+        chatRoomRepository.updateTeamRoom(teamNo);
+        teamRepository.deleteById(teamNo.intValue());
     }
 
     public void modify(TeamDto teamDto) { // 수정하기

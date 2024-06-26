@@ -16,6 +16,7 @@ public class ChatRoomDataResponseDto {
     @Setter
     public static class Info {
         private Long roomId;
+        private String title;
         private Long buyNo;
         private Long teamNo;
         private Long marketNo;
@@ -23,9 +24,10 @@ public class ChatRoomDataResponseDto {
         private Long writerId;
         private List<Long> readerId;
 
-        private Info(Long roomId, Long buyNo, Long teamNo, Long marketNo, Integer roomNo, Long writerId,
+        private Info(Long roomId, String title, Long buyNo, Long teamNo, Long marketNo, Integer roomNo, Long writerId,
                 List<Long> readerId) {
             this.roomId = roomId;
+            this.title = title;
             this.buyNo = buyNo;
             this.teamNo = teamNo;
             this.marketNo = marketNo;
@@ -44,6 +46,7 @@ public class ChatRoomDataResponseDto {
                         .collect(Collectors.toList());
             }
 
+            String title = chatRoom.getTitle();
             Long buyNo = chatRoom.getBuy() != null ? chatRoom.getBuy().getBuyNo() : null;
             Long teamNo = chatRoom.getTeam() != null ? chatRoom.getTeam().getTeamNo() : null;
             Long marketNo = chatRoom.getMarket() != null ? chatRoom.getMarket().getMarketNo() : null;
@@ -51,6 +54,7 @@ public class ChatRoomDataResponseDto {
             Long writerId = chatRoom.getWriter() != null ? chatRoom.getWriter().getId() : null;
 
             return new Info(chatRoom.getChatroomId(),
+                    title,
                     buyNo,
                     teamNo,
                     marketNo,
