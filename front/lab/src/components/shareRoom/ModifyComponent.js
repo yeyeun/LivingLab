@@ -73,7 +73,8 @@ const ModifyComponent = ({ roomNo }) => {
     };
 
     const handleClickModify = (e) => {
-
+        
+        const files = uploadRef.current.files;
         //유효성 검사
         if (!shareRoom.title || !shareRoom.userId) {
             setAddResultModal("제목과 내용을 입력해주세요");
@@ -99,12 +100,12 @@ const ModifyComponent = ({ roomNo }) => {
         setAddResultModal('주소를 입력해주세요');
         return;
         }
-        if (!files[0]) {
+        if (previewFiles.length === 0 && shareRoom.uploadFileNames.length === 0) {
         setAddResultModal('사진을 등록해주세요');
         return;
         }
 
-        const files = uploadRef.current.files;
+        
         const formData = new FormData();
         const daysBetween = calculateDaysBetweenDates(shareRoom.rentStartDate, shareRoom.rentEndDate);
         const averFee = shareRoom.rentFee / daysBetween;
@@ -223,11 +224,11 @@ const ModifyComponent = ({ roomNo }) => {
                             <tr className="border-b border-neutral-200">
                                 <th className="pl-5 text-left align-middle bg-neutral-100">
                                     <h1 className="text-[14px] text-gray-900 leading-6 font-bold">
-                                        금액
+                                        금액 (전체기간)
                                     </h1>
                                 </th>
                                 <td className="align-middle px-4 py-5 border-l border-neutral-200">
-                                    <div className="w-[120px]">
+                                    <div className="w-[160px]">
                                         <div className="w-full flex">
                                             <div className="flex-grow flex flex-wrap justify-start">
                                                 <div className="block w-full h-11 relative">

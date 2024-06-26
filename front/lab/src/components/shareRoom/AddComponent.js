@@ -214,10 +214,10 @@ const AddComponent = () => {
               </tr>
               <tr className="border-b border-neutral-200">
                 <th className="pl-5 text-left align-middle bg-neutral-100">
-                  <h1 className="text-[14px] text-gray-900 leading-6 font-bold">금액</h1>
+                  <h1 className="text-[14px] text-gray-900 leading-6 font-bold">금액 (전체기간)</h1>
                 </th>
                 <td className="align-middle px-4 py-5 border-l border-neutral-200">
-                  <div className="w-[120px]">
+                  <div className="w-[160px]">
                     <div className="w-full flex">
                       <div className="flex-grow flex flex-wrap justify-start">
                         <div className="block w-full h-11 relative">
