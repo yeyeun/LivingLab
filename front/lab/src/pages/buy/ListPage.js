@@ -50,9 +50,8 @@ const ListPage = () => {
       </div>
       <div className="m-auto bg-slate-200 w-1/2 rounded-md px-10 py-4">
         <SearchComponent onSearch={handleSearch} />
-
         <div className="flex">
-          <SelectComponent onSort={handleSort} />
+          <SelectComponent onSort={handleSort} email={email}/>
           <button
             type="button"
             className="w-32 mb-2 float-right inline-block rounded bg-teal-400 px-6 pb-2 pt-2.5 text-base font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-teal-500 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-teal-600 motion-reduce:transition-none"

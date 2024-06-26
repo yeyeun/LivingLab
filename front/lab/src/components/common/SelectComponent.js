@@ -9,7 +9,7 @@ const selectList = [
 ];
 
 
-function SelectComponent({ onSort }){
+function SelectComponent({ onSort, email }){
     const [ selected, setSelected ] = useState(selectList[0].name);
     const handleSelect = (e) => {
         setSelected(e.target.value);
@@ -19,7 +19,13 @@ function SelectComponent({ onSort }){
         <div className="flex w-full mb-2">
             <select onChange={handleSelect} value={selected} className="text-base w-24 float-right">
                 {selectList.map((item) => (
-                    <option value={item.name}>{item.name}</option>
+                    <option
+                        value={item.name}
+                        disabled={!email && item.id === 3}
+                        title={!email && item.id === 3 ? "현재 위치 설정 후 이용할 수 있어요!" : ""}
+                    >
+                        {item.name}
+                    </option>
                 ))}
             </select>
         </div>
