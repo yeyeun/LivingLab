@@ -29,6 +29,10 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     @Query("select t, ti from Team t left join t.imageList ti where t.flag = false and (ti.ord = 0 or ti.ord IS NULL) order by t.deadline asc")
     Page<Object[]> deadLineList(Pageable pageable);
 
+    // 좋아요순
+    @Query("select t, ti from Team t left join t.imageList ti where t.flag = false and (ti.ord = 0 or ti.ord IS NULL) order by t.teamHit desc")
+    Page<Object[]> likeList(Pageable pageable);
+
     // 검색 + 최신순
     @Query("select t, ti from Team t left join t.imageList ti where t.flag = false and (ti.ord = 0 or ti.ord IS NULL) and t.title like %:title% order by t.teamNo")
     Page<Object[]> searchNewList(@Param(value = "title") String title, Pageable pageable);
@@ -36,6 +40,10 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     // 검색 + 마감임박순
     @Query("select t, ti from Team t left join t.imageList ti where t.flag = false and (ti.ord = 0 or ti.ord IS NULL) and t.title like %:title% order by t.deadline asc")
     Page<Object[]> searchDeadLineList(@Param(value = "title") String title, Pageable pageable);
+
+    // 검색 + 좋아요순
+    @Query("select t, ti from Team t left join t.imageList ti where t.flag = false and (ti.ord = 0 or ti.ord IS NULL) and t.title like %:title% order by t.teamHit desc")
+    Page<Object[]> searchLikeList(@Param(value = "title") String title, Pageable pageable);
 
     // 메인에 표기할 최신순
     @Query("select t, ti from Team t left join t.imageList ti where ti.ord = 0 and t.flag = false order by t.teamNo desc")

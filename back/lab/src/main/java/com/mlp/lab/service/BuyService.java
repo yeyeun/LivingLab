@@ -2,7 +2,6 @@ package com.mlp.lab.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -52,9 +51,9 @@ public class BuyService {
             if (sort.equals("거리순")) {
                 result = buyRepository.distanceList(latitude, longitude, pageable);
             }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+            result = buyRepository.likeList(pageable);
+            }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if (sort.equals("최신순")) {
                 result = buyRepository.searchNewList(search, pageable);
@@ -65,9 +64,9 @@ public class BuyService {
             if (sort.equals("거리순")) {
                 result = buyRepository.searchDistanceList(search, latitude, longitude, pageable);
             }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = buyRepository.searchLikeList(search, pageable);
+            }
         }
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];

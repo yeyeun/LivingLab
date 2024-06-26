@@ -50,9 +50,9 @@ public class TeamService {
             // if(sort.equals("거리순")){
             // result =
             // }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = teamRepository.likeList(pageable);
+            }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if (sort.equals("최신순")) {
                 result = teamRepository.searchNewList(search, pageable);
@@ -63,9 +63,9 @@ public class TeamService {
             // if(sort.equals("거리순")){
             // result =
             // }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = teamRepository.searchLikeList(search, pageable);
+            }
         }
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];

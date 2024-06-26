@@ -10,18 +10,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.dto.ShareRoomDto;
-import com.mlp.lab.entity.Buy;
-import com.mlp.lab.entity.Market;
-import com.mlp.lab.entity.MarketImage;
 import com.mlp.lab.entity.ShareRoom;
 import com.mlp.lab.entity.ShareRoomImage;
 import com.mlp.lab.repository.ShareRoomRepository;
-import com.mlp.lab.repository.like.LikeRoomRepository;
 
 import lombok.RequiredArgsConstructor;
 import java.util.List;
@@ -31,10 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class ShareRoomService {
-    private final ModelMapper modelMapper;
     private final ShareRoomRepository shareRoomRepository;
-    private final LikeRoomRepository likeRoomRepository;
-
     public RoomPageResponseDto<ShareRoomDto> list(RoomPageRequestDto roomPageRequestDto,String search, String sort) {
 
         Pageable pageable = PageRequest.of(

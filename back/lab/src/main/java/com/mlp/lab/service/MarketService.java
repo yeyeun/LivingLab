@@ -51,9 +51,9 @@ public class MarketService {
             // if(sort.equals("거리순")){
             // result =
             // }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = marketRepository.likeList(pageable);
+            }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if (sort.equals("최신순")) {
                 result = marketRepository.searchNewList(search, pageable);
@@ -64,9 +64,9 @@ public class MarketService {
             // if(sort.equals("거리순")){
             // result =
             // }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = marketRepository.searchLikeList(search, pageable);
+            }
         }
         List<MarketDto> dtoList = result.get().map(arr -> {
             Market market = (Market) arr[0];

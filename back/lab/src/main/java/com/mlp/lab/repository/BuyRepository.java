@@ -30,6 +30,10 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
         @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL) order by b.deadline asc")
         Page<Object[]> deadLineList(Pageable pageable);
 
+        // 좋아요순
+        @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL) order by b.buyHit desc")
+        Page<Object[]> likeList(Pageable pageable);
+
         // 거리순
         @Query("SELECT b, bi, " +
                         "(6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +
@@ -82,6 +86,10 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
         // 검색 + 마감임박순
         @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL) and b.title like %:title% order by b.deadline asc")
         Page<Object[]> searchDeadLineList(@Param(value = "title") String title, Pageable pageable);
+
+        // 검색 + 좋아요순
+        @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL) and b.title like %:title% order by b.buyHit desc")
+        Page<Object[]> searchLikeList(@Param(value="title")String title, Pageable pageable);
 
         // 메인에 표기할 최신순
         @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false order by b.buyNo desc")
