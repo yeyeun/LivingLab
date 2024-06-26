@@ -37,22 +37,17 @@ const getNonEmptyFieldsWithText = (room) => {
   return (
     <div className="h-full">
       {chatRooms.data && chatRooms.data.length > 0 ? (
-      chatRooms.data.map((room) => {
-        const nonEmptyFields = getNonEmptyFieldsWithText(room);
-        return(
+      chatRooms.data.map((room) => 
 
-          <div key={room.roomId} className="py-7 px-5 cursor-pointer hover:bg-gray-100 border-b flex items-center" onClick={() => onSelectChat(room)}>
+        <div key={room.roomId} className="py-7 px-5 cursor-pointer hover:bg-gray-100 border-b flex items-center" onClick={() => onSelectChat(room)}>
           <img src="https://via.placeholder.com/40" alt="..." className="w-10 h-10 rounded-full mr-4" />
           <div>
-            {nonEmptyFields.map(({ value, text }) => (
-              <h2 className="text-lg font-bold">{text} {value}번글 채팅방</h2>
-            ))}
+            <h2 className="text-lg font-bold">{room.title}</h2>
             <p className="text-sm text-gray-500">채팅방 마지막 메세지</p>
           </div>
         </div>
         
-        );
-      })
+      )
     )
     :
     (

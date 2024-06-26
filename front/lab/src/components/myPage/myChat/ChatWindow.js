@@ -2,6 +2,7 @@ import React from 'react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const initState = {
   id: 0,
@@ -10,6 +11,7 @@ const initState = {
 };
 
 const ChatWindow = ({ chat }) => {
+  const navigate = useNavigate();
   //const [messages, setMessages] = useState(initState);
   const [messages, setMessages] = useState([
     { id: 1, text: '안녕!', sender: 'other' },
@@ -31,18 +33,36 @@ const ChatWindow = ({ chat }) => {
     if (data.teamNo) return { label: '동네모임', value: data.teamNo };
     if (data.marketNo) return { label: '동네장터', value: data.marketNo };
     if (data.roomNo) return { label: '자취방쉐어', value: data.roomNo };
-    return { label: '정보 없음', value: '' };
+    return { label: '-', value: '' };
   };
 
   const { label, value } = getRoomInfo(chat);
+
+  //채팅방 제목 클릭시 해당 게시물로 이동
+  const handleClickTitle = (label,value) => {
+    if(label === '공동구매'){
+      navigate(`/buy/read/${value}`);
+    }
+    else if(label === '동네모임'){
+      navigate(`/team/read/${value}`);
+    }
+    else if(label === '동네장터'){
+      navigate(`/market/read/${value}`);
+    }
+    else if(label === '자취방쉐어'){
+      navigate(`/shareRoom/read/${value}`);
+    }
+    else{
+      alert('삭제된 게시물입니다');
+    }
+  }
 
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between p-4 bg-gray-600 text-white rounded-t">
         <div className="text-sm flex items-center">
           <span className="bg-mainColor px-2 py-1 mr-1 rounded-2xl">{label}</span>
-          {value}번 게시물 제목
-
+          <span className="hover:underline cursor-pointer">{chat.title}</span>
         </div>
         <div className="text-sm flex items-center">
         <span className="bg-white px-2 py-1 ml-1 rounded text-black font-bold">2 / 3</span>

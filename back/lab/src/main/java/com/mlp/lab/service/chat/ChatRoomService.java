@@ -43,13 +43,14 @@ public class ChatRoomService {
         return ChatRoomDataResponseDto.Info.of(chatRoom);
     }
 
-    public ChatRoomDataResponseDto.Info createRoom(Long userId, ChatRoomDataRequestDto.create createRequest) {
+    public ChatRoomDataResponseDto.Info createRoom(Long userId, String title, ChatRoomDataRequestDto.create createRequest) {
         if(createRequest.getBuyNo()!=null){ //공동구매
             Buy buy = buyRepository.findByBuyNo(createRequest.getBuyNo());
             User user = buy.getUser();   //글 작성자(채팅방 생성 후 자동으로 입장)
             chatRoom = ChatRoom.builder()
                 .writer(user)
                 .buy(buy)
+                .title(title)
                 .build();
             chatRoomRepository.save(chatRoom);
         }
@@ -59,6 +60,7 @@ public class ChatRoomService {
             chatRoom = ChatRoom.builder()
                 .writer(user)
                 .team(team)
+                .title(title)
                 .build();
             chatRoomRepository.save(chatRoom);
         }
