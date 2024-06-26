@@ -33,17 +33,17 @@ public class TeamController {
     private final CustomFileUtilTeam fileUtil;
 
     @GetMapping("/list") // 목록조회(검색기능 포함)
-    public PageResponseDto<TeamDto> List(PageRequestDto pageRequestDto,
+    public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto,
             @RequestParam(required = false, value = "search") String search,
-            @RequestParam(required = false, value = "sort") String sort) {
-        return teamService.list(pageRequestDto, search, sort);
+            @RequestParam(required = false, value = "sort") String sort,
+            @RequestParam(required = false, value = "category") Character category) {
+        return teamService.list(pageRequestDto, search, sort, category);
     }
 
     @GetMapping("/read/{teamNo}") // 상세조회
     public TeamDto read(@PathVariable(name = "teamNo") int teamNo) {
         return teamService.read(teamNo);
     }
-
 
     // 글 삭제 (이미지 포함)
     @DeleteMapping("/delete/{teamNo}")
@@ -56,7 +56,7 @@ public class TeamController {
     }
 
     @GetMapping("/display/{fileName}") // 목록조회
-    public ResponseEntity<Resource> displayImage(@PathVariable(name="fileName") String fileName) {
+    public ResponseEntity<Resource> displayImage(@PathVariable(name = "fileName") String fileName) {
         return fileUtil.getFile(fileName);
     }
 

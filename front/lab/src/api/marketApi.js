@@ -7,11 +7,12 @@ export const getOne = async (marketNo) => {
   return res.data;
 };
 
-export const getList = async (pageParam, search, sort) => {
+export const getList = async (pageParam, search, sort, category) => {
   const { page, size } = pageParam;
-  const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size, search: search, sort: sort }});
+  const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size, search: search, sort: sort, category: category }});
   return res.data;
 };
+
 
 export const postAddMarket = async(market) => {
   const header = {headers:{"Content-Type":"multipart/form-data"}};

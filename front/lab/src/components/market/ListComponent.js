@@ -66,7 +66,7 @@ const ListComponent = ({ search, sort }) => {
   };
 
   useEffect(() => {
-    getList({ page, size }, search, sort).then((data) => {
+    getList({ page, size }, search, sort, selectedCategory).then((data) => {
       const updatedData = {
         ...data,
         dtoList: data.dtoList.map((market) => ({
@@ -76,7 +76,7 @@ const ListComponent = ({ search, sort }) => {
       };
       setServerData(updatedData);
     });
-  }, [page, size, search, sort]);
+  }, [page, size, search, sort, selectedCategory]);
 
 
 
@@ -110,7 +110,7 @@ const ListComponent = ({ search, sort }) => {
       </div>
       {serverData.dtoList.length > 0 ? (
         serverData.dtoList
-          .filter(market => !selectedCategory || market.marketCategory === selectedCategory).map(market =>
+          .map(market =>
           <div key={market.marketNo} className="w-full mb-4 cursor-pointer" onClick={() => moveToRead(market.marketNo)}>
             <div className="flex flex-col items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100">
               <div className="w-60 h-48">
