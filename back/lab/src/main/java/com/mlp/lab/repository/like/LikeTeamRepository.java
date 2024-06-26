@@ -16,7 +16,7 @@ public interface LikeTeamRepository extends JpaRepository<LikeTeam, Long>{
     Optional<LikeTeam> findLike(@Param("teamNo")Long teamNo, @Param("id") Long id);
 
     @Modifying
-    @Query("delete from LikeTeam lt where ls.team.teamNo=:teamNo")
+    @Query("delete from LikeTeam lt where lt.team.teamNo=:teamNo")
     void deleteLike(@Param("teamNo")Long teamNo);
 
 }

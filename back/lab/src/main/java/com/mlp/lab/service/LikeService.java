@@ -119,11 +119,11 @@ public class LikeService {
         likeRoomRepository.deleteById(likeNo);
     }
 
-    public void deleteLikeRoom(long roomNo) { // 해당글 번호를 가진 모든 좋아요를 지우는 기능
+    public void deleteLikeRoom(Integer roomNo) { // 해당글 번호를 가진 모든 좋아요를 지우는 기능
         likeRoomRepository.deleteLike(roomNo);
     }
 
-    public LikeRoomDto readRoom(Long roomNo, Long id) {
+    public LikeRoomDto readRoom(Integer roomNo, Long id) {
         Optional<LikeShareRoom> result = likeRoomRepository.findLike(roomNo,id);
         LikeShareRoom likeShareRoom = result.orElse(null);
         if(likeShareRoom == null){

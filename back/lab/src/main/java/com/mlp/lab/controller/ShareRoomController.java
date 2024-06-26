@@ -120,12 +120,12 @@ public class ShareRoomController {
     }
 
     @PutMapping("/increase/{roomNo}") // 좋아요 +1
-    public void increase(@PathVariable(name = "roomNo") Long roomNo) {
+    public void increase(@PathVariable(name = "roomNo") Integer roomNo) {
         shareRoomService.increase(roomNo);
     }
 
     @PutMapping("/decrease/{roomNo}") // 좋아요 +1
-    public void decrease(@PathVariable(name = "roomNo") Long roomNo) {
+    public void decrease(@PathVariable(name = "roomNo") Integer roomNo) {
         shareRoomService.decrease(roomNo);
     }
     

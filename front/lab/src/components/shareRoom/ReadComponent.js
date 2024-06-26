@@ -75,7 +75,6 @@ const ReadComponent = ({ roomNo }) => {
     });
   };
 
-
 // Function to open modal with selected image
 const openModal = () => {
     setIsModalOpen2(true);

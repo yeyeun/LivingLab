@@ -8,16 +8,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.dto.ShareRoomDto;
-import com.mlp.lab.entity.Market;
-import com.mlp.lab.entity.MarketImage;
 import com.mlp.lab.entity.ShareRoom;
 import com.mlp.lab.entity.ShareRoomImage;
 import com.mlp.lab.repository.ShareRoomRepository;
+import com.mlp.lab.repository.like.LikeRoomRepository;
 
 import lombok.RequiredArgsConstructor;
 import java.util.List;
@@ -25,9 +24,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ShareRoomService {
     private final ModelMapper modelMapper;
     private final ShareRoomRepository shareRoomRepository;
+    private final LikeRoomRepository likeRoomRepository;
 
     public RoomPageResponseDto<ShareRoomDto> list(RoomPageRequestDto roomPageRequestDto,String search, String sort) {
 
@@ -142,7 +143,7 @@ public class ShareRoomService {
         shareRoomRepository.save(shareRoom);
     }
 
-    public void hide(ShareRoomDto shareRoomDto) { // 수정하기
+    public void hide(ShareRoomDto shareRoomDto) { // 숨김처리하기
         // 조회
         Optional<ShareRoom> result = shareRoomRepository.findById(shareRoomDto.getRoomNo().intValue());
         ShareRoom shareRoom = result.orElseThrow();
@@ -187,14 +188,14 @@ public class ShareRoomService {
         return dtoList;
     }
 
-    public void increase(Long roomNo) { // 좋아요 +1
+    public void increase(Integer roomNo) { // 좋아요 +1
         Optional<ShareRoom> result = shareRoomRepository.findById(roomNo.intValue());
         ShareRoom shareRoom = result.orElseThrow();
         shareRoom.setRoomHit(shareRoom.getRoomHit()+1);
         shareRoomRepository.save(shareRoom);
     }
 
-    public void decrease(Long roomNo) { // 좋아요 -1
+    public void decrease(Integer roomNo) { // 좋아요 -1
         Optional<ShareRoom> result = shareRoomRepository.findById(roomNo.intValue());
         ShareRoom shareRoom = result.orElseThrow();
         shareRoom.setRoomHit(shareRoom.getRoomHit()-1);
