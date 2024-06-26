@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.BuyDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.BuyImage;
 import com.mlp.lab.repository.BuyRepository;
@@ -52,9 +53,9 @@ public class BuyService {
             if (sort.equals("거리순")) {
                 result = buyRepository.distanceList(latitude, longitude, pageable);
             }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+            result = buyRepository.likeList(pageable);
+            }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if (sort.equals("최신순")) {
                 result = buyRepository.searchNewList(search, pageable);
@@ -65,9 +66,9 @@ public class BuyService {
             if (sort.equals("거리순")) {
                 result = buyRepository.searchDistanceList(search, latitude, longitude, pageable);
             }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = buyRepository.searchLikeList(search, pageable);
+            }
         }
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];
@@ -226,6 +227,22 @@ public class BuyService {
         Buy buy = result.orElseThrow();
         buy.setBuyHit(buy.getBuyHit() - 1);
         buyRepository.save(buy);
+    }
+
+    public List<MyActivityDto> mylist(Long id) {
+        PageRequest pageRequest = PageRequest.of(0,3);
+        Page<Buy> result = buyRepository.findByUser(id, pageRequest);
+
+        List<MyActivityDto> dtoList = result.getContent().stream().map(buy -> {
+            MyActivityDto dto = new MyActivityDto();
+            dto.setCategory(buy.getBuyCategory());
+            dto.setRegDate(buy.getCreatedDate());
+            dto.setTitle(buy.getTitle());
+            dto.setNo(buy.getBuyNo());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
     }
 
 }

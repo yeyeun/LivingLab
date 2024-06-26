@@ -29,6 +29,10 @@ public interface MarketRepository extends JpaRepository<Market, Integer> {
     @Query("select m, mi from Market m left join m.imageList mi where m.flag = false and (mi.ord = 0 or mi.ord IS NULL) order by m.deadline asc")
     Page<Object[]> deadLineList(Pageable pageable);
 
+    // 좋아요순
+    @Query("select m, mi from Market m left join m.imageList mi where m.flag = false and (mi.ord = 0 or mi.ord IS NULL) order by m.marketHit desc")
+    Page<Object[]> likeList(Pageable pageable);
+
     // 검색 + 최신순
     @Query("select m, mi from Market m left join m.imageList mi where m.flag = false and (mi.ord = 0 or mi.ord IS NULL) and m.title like %:title% order by m.marketNo")
     Page<Object[]> searchNewList(@Param(value = "title") String title, Pageable pageable);
@@ -36,8 +40,16 @@ public interface MarketRepository extends JpaRepository<Market, Integer> {
     // 검색 + 마감임박순
     @Query("select m, mi from Market m left join m.imageList mi where m.flag = false and (mi.ord = 0 or mi.ord IS NULL) and m.title like %:title% order by m.deadline asc")
     Page<Object[]> searchDeadLineList(@Param(value = "title") String title, Pageable pageable);
+    
+    // 검색 + 좋아요순
+    @Query("select m, mi from Market m left join m.imageList mi where m.flag = false and (mi.ord = 0 or mi.ord IS NULL) and m.title like %:title% order by m.marketHit desc")
+    Page<Object[]> searchLikeList(@Param(value = "title") String title, Pageable pageable);
 
     // 메인에 표기할 최신순
     @Query("select m, mi from Market m left join m.imageList mi where mi.ord = 0 and m.flag = false order by m.marketNo desc")
     Page<Object[]> latestMarketList(Pageable pageable);
+
+    //마이페이지 내가 작성한 글
+    @Query("SELECT m FROM Market m WHERE m.user.id = :id ORDER BY m.marketNo DESC")
+    Page<Market> findByUser(@Param(value = "id") Long id, Pageable pageable);
 }

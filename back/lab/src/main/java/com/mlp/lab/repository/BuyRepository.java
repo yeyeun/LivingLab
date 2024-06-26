@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.mlp.lab.entity.Buy;
+import com.mlp.lab.entity.User;
 
 //Buy Entity의 기본키(PK) 타입인 Integer를 인자로 전달
 public interface BuyRepository extends JpaRepository<Buy, Long> {
@@ -28,6 +29,10 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
         // 마감임박순
         @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL) order by b.deadline asc")
         Page<Object[]> deadLineList(Pageable pageable);
+
+        // 좋아요순
+        @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL) order by b.buyHit desc")
+        Page<Object[]> likeList(Pageable pageable);
 
         // 거리순
         @Query("SELECT b, bi, " +
@@ -82,8 +87,15 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
         @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL) and b.title like %:title% order by b.deadline asc")
         Page<Object[]> searchDeadLineList(@Param(value = "title") String title, Pageable pageable);
 
+        // 검색 + 좋아요순
+        @Query("select b, bi from Buy b left join b.imageList bi where b.flag = false and (bi.ord = 0 or bi.ord IS NULL) and b.title like %:title% order by b.buyHit desc")
+        Page<Object[]> searchLikeList(@Param(value="title")String title, Pageable pageable);
+
         // 메인에 표기할 최신순
         @Query("select b, bi from Buy b left join b.imageList bi where bi.ord = 0 and b.flag = false order by b.buyNo desc")
         Page<Object[]> latestBuyList(Pageable pageable);
 
+        //마이페이지 내가 작성한 글
+        @Query("SELECT b FROM Buy b WHERE b.user.id = :id ORDER BY b.buyNo DESC")
+        Page<Buy> findByUser(@Param(value = "id") Long id, Pageable pageable);
 }

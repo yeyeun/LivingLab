@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mlp.lab.dto.CommunityDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
+import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Community;
 import com.mlp.lab.repository.CommunityRepository;
 import com.mlp.lab.repository.UserRepository;
@@ -258,6 +260,36 @@ public class CommunityService {
         return latestPosts.stream()
                 .map(post -> modelMapper.map(post, CommunityDto.class))
                 .collect(Collectors.toList());
+    }
+
+    public void increase(Long commNo) { // 좋아요 +1
+        Optional<Community> result = communityRepository.findById(commNo);
+        Community community = result.orElseThrow();
+        community.setCommHit(community.getCommHit() + 1);
+        communityRepository.save(community);
+    }
+
+    public void decrease(Long commNo) { // 좋아요 -1
+        Optional<Community> result = communityRepository.findById(commNo);
+        Community community = result.orElseThrow();
+        community.setCommHit(community.getCommHit() - 1);
+        communityRepository.save(community);
+    }
+
+    public List<MyActivityDto> mylist(Long id) {
+        PageRequest pageRequest = PageRequest.of(0,3);
+        Page<Community> result = communityRepository.findByUser(id, pageRequest);
+
+        List<MyActivityDto> dtoList = result.getContent().stream().map(comm -> {
+            MyActivityDto dto = new MyActivityDto();
+            dto.setCategory(comm.getType());
+            dto.setRegDate(comm.getCreatedDate());
+            dto.setTitle(comm.getTitle());
+            dto.setNo(comm.getCommNo());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
     }
                 
 

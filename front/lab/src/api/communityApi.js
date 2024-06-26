@@ -103,6 +103,16 @@ export const modifyHelp = async(commNo, help) => {
     return res.data;
 }
 
+export const increaseLike = async (commNo) => {
+    const res = await axios.put(`${prefix}/increase/${commNo}`);
+    return res.data;
+  };
+  
+  export const decreaseLike = async (commNo) => {
+    const res = await axios.put(`${prefix}/decrease/${commNo}`);
+    return res.data;
+  };
+
 // ******커뮤니티 최신 글 보기******
 export const getLatestComm = async (pageParam) => {
     const { page, size } = pageParam;
@@ -110,4 +120,8 @@ export const getLatestComm = async (pageParam) => {
     return res.data;
 }
 
-
+/* 마이페이지 내가 작성한 글 조회 */
+export const myList = async (id) => {
+    const res = await axios.get(`${prefix}/mylist/${id}`);
+    return res.data;
+}

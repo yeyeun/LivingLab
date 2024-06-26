@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mlp.lab.dto.TeamDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
-import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Team;
 import com.mlp.lab.entity.TeamImage;
 import com.mlp.lab.repository.TeamRepository;
@@ -52,9 +52,9 @@ public class TeamService {
             // if(sort.equals("거리순")){
             // result =
             // }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = teamRepository.likeList(pageable);
+            }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if (sort.equals("최신순")) {
                 result = teamRepository.searchNewList(search, pageable);
@@ -65,9 +65,9 @@ public class TeamService {
             // if(sort.equals("거리순")){
             // result =
             // }
-            // if(sort.equals("좋아요순")){
-            // result =
-            // }
+            if (sort.equals("좋아요순")){
+                result = teamRepository.searchLikeList(search, pageable);
+            }
         }
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
@@ -188,5 +188,21 @@ public class TeamService {
         Team team = result.orElseThrow();
         team.setTeamHit(team.getTeamHit()-1);
         teamRepository.save(team);
+    }
+
+    public List<MyActivityDto> mylist(Long id) {
+        PageRequest pageRequest = PageRequest.of(0,3);
+        Page<Team> result = teamRepository.findByUser(id, pageRequest);
+
+        List<MyActivityDto> dtoList = result.getContent().stream().map(team -> {
+            MyActivityDto dto = new MyActivityDto();
+            dto.setCategory(team.getTeamCategory());
+            dto.setRegDate(team.getCreatedDate());
+            dto.setTitle(team.getTitle());
+            dto.setNo(team.getTeamNo());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
     }
 }

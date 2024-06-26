@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/teamApi';
-import { likeTeam, unlikeTeam, likeInfoTeam } from '../../api/likeApi';
+import { likeTeam, unlikeTeam, likeInfoTeam,deleteLikeTeam } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
 import { enterChatRoomTeam } from '../../api/chatApi';
 import { useSelector } from 'react-redux';
@@ -133,11 +133,18 @@ const ReadComponent = ({ teamNo }) => {
     setShowModal(false);
   };
 
-  const handleClickDelete = (e) => {
-    deleteOne(teamNo);
-    setResult('게시글이 삭제되었습니다');
-    moveToList()
+  const handleClickDelete = () => {
+    deleteLikeTeam(teamNo)
+    .then(() => {
+      return deleteOne(teamNo);
+    })
+    .then((result) => {
+      console.log('delete result : ' + result);
+      setResult('삭제되었습니다');
+      moveToList()
+    });
   };
+
 
   const closeInfoModal = () => {
     setInfo(null);

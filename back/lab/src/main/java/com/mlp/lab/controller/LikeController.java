@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mlp.lab.dto.like.LikeBuyDto;
+import com.mlp.lab.dto.like.LikeCommDto;
 import com.mlp.lab.dto.like.LikeMarketDto;
 import com.mlp.lab.dto.like.LikeRoomDto;
 import com.mlp.lab.dto.like.LikeTeamDto;
@@ -30,13 +31,18 @@ public class LikeController {
     }
 
     @DeleteMapping("/buy/{likeNo}") // 좋아요 -1
-    public void unlikeBuy(@PathVariable(name = "likeNo") long likeNo) {
+    public void unlikeBuy(@PathVariable(name = "likeNo") Long likeNo) {
         likeService.deleteBuy(likeNo);
     }
 
     @GetMapping("/buy") // 좋아요 정보 조회
     public LikeBuyDto likeInfoBuy(@RequestParam(value = "buyNo") Long buyNo, @RequestParam(value = "id") Long id) {
         return likeService.readBuy(buyNo, id);
+    }
+
+    @DeleteMapping("/buy/all/{buyNo}") // 해당 글에 찍힌 모든 좋아요 삭제
+    public void deleteLikeBuy(@PathVariable(name = "buyNo") long buyNo) {
+        likeService.deleteLikeBuy(buyNo);
     }
 
     /* ===============동네모임=============== */
@@ -47,10 +53,15 @@ public class LikeController {
     }
 
     @DeleteMapping("/team/{likeNo}") // 좋아요 -1
-    public void unlikeTeam(@PathVariable(name = "likeNo") long likeNo) {
+    public void unlikeTeam(@PathVariable(name = "likeNo") Long likeNo) {
         likeService.deleteTeam(likeNo);
     }
 
+    @DeleteMapping("/team/all/{teamNo}") // 해당 글에 찍힌 모든 좋아요 삭제
+    public void deleteLikeTeam(@PathVariable(name = "teamNo") long teamNo) {
+        likeService.deleteLikeTeam(teamNo);
+    }
+    
     @GetMapping("/team") // 좋아요 정보 조회
     public LikeTeamDto likeInfoTeam(@RequestParam(value = "teamNo") Long teamNo, @RequestParam(value = "id") Long id) {
         return likeService.readTeam(teamNo, id);
@@ -64,8 +75,13 @@ public class LikeController {
     }
 
     @DeleteMapping("/market/{likeNo}") // 좋아요 -1
-    public void unlikeMarket(@PathVariable(name = "likeNo") long likeNo) {
+    public void unlikeMarket(@PathVariable(name = "likeNo") Long likeNo) {
         likeService.deleteMarket(likeNo);
+    }
+
+    @DeleteMapping("/market/all/{marketNo}") // 해당 글에 찍힌 모든 좋아요 삭제
+    public void deleteLikeMarket(@PathVariable(name = "marketNo") long marketNo) {
+        likeService.deleteLikeMarket(marketNo);
     }
 
     @GetMapping("/market") // 좋아요 정보 조회
@@ -86,9 +102,31 @@ public class LikeController {
         likeService.deleteRoom(likeNo);
     }
 
+    @DeleteMapping("/shareRoom/all/{roomNo}") // 해당 글에 찍힌 모든 좋아요 삭제
+    public void deleteLikeRoom(@PathVariable(name = "roomNo") Integer roomNo) {
+        likeService.deleteLikeRoom(roomNo);
+    }
+
     @GetMapping("/shareRoom") // 좋아요 정보 조회
-    public LikeRoomDto likeInfoRoom(@RequestParam(value = "roomNo") Long roomNo, @RequestParam(value = "id") Long id) {
+    public LikeRoomDto likeInfoRoom(@RequestParam(value = "roomNo") Integer roomNo, @RequestParam(value = "id") Long id) {
         return likeService.readRoom(roomNo, id);
+    }
+
+    /* ===============커뮤니티=============== */
+
+    @PostMapping("/comm") // 좋아요 +1
+    public void likeComm(@RequestBody LikeCommDto likeCommDto) {
+        likeService.addComm(likeCommDto);
+    }
+    
+    @DeleteMapping("/comm/{likeNo}") // 좋아요 -1
+    public void unlikeComm(@PathVariable(name = "likeNo") Long likeNo) {
+        likeService.deleteComm(likeNo);
+    }
+    
+    @GetMapping("/comm") // 좋아요 정보 조회
+    public LikeCommDto likeInfoComm(@RequestParam(value = "commNo") Long commNo, @RequestParam(value = "id") Long id) {
+        return likeService.readComm(commNo, id);
     }
 
 }

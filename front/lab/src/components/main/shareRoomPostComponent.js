@@ -54,7 +54,7 @@ const ShareComponent = () => {
                                 <span className='main-roomlist-charge'>
                                     금액₩
                                 </span>
-                                {shareRoom.rentFee}원 / {shareRoom.days}박
+                                {parseInt(shareRoom.rentFee).toLocaleString()}원 / {shareRoom.days}박
 
                             </div>
                         </div>
