@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { API_SERVER_HOST, getOne, deleteOne, increaseLike, decreaseLike } from '../../api/shareRoomApi';
-import { likeRoom, unlikeRoom, likeInfoRoom,deleteLike } from '../../api/likeApi';
+import { likeRoom, unlikeRoom, likeInfoRoom,deleteLikeRoom } from '../../api/likeApi';
 import useRoomCustomMove from '../../hooks/useRoomCustomMove';
 import { useSelector } from 'react-redux';
 import MapComponentForRoom from '../../components/shareRoom/MapComponentForRoom';
@@ -64,7 +64,7 @@ const ReadComponent = ({ roomNo }) => {
   }, [loginState.id, info]);
 
   const handleClickDelete = () => {
-    deleteLike(roomNo)
+    deleteLikeRoom(roomNo)
     .then(() => {
       return deleteOne(roomNo);
     })
@@ -74,7 +74,6 @@ const ReadComponent = ({ roomNo }) => {
       moveToList();
     });
   };
-
 
 // Function to open modal with selected image
 const openModal = () => {
@@ -126,7 +125,6 @@ const handleLikeClick = () => {
 
     return (
         <div id="full-main">
-            {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
             <div id="wrap" className="pt-10 w-full text-center mx-auto">
                 <div id="images" className="w-[1200px] p-2.5 mx-auto" onClick={openModal}>
                     <div id="grid" className="grid grid-cols-custom grid-rows-2 gap-2 w-full h-[440px]">
@@ -292,6 +290,7 @@ const handleLikeClick = () => {
                     </div>    
                 </div>
             </div>
+            {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeModal} />}
         </div>
     );
 }

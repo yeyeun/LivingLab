@@ -13,9 +13,9 @@ import com.mlp.lab.entity.like.LikeShareRoom;
 @Repository
 public interface LikeRoomRepository extends JpaRepository<LikeShareRoom, Long>{
     @Query("select ls from LikeShareRoom ls where ls.shareRoom.roomNo=:roomNo and ls.user.id=:id")
-    Optional<LikeShareRoom> findLike(@Param("roomNo")Long roomNo, @Param("id") Long id);
+    Optional<LikeShareRoom> findLike(@Param("roomNo")Integer roomNo, @Param("id") Long id);
 
     @Modifying
     @Query("delete from LikeShareRoom ls where ls.shareRoom.roomNo=:roomNo")
-    void deleteLike(@Param("roomNo")Long roomNo);
+    void deleteLike(@Param("roomNo")Integer roomNo);
 }

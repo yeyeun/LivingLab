@@ -40,6 +40,11 @@ public class LikeController {
         return likeService.readBuy(buyNo, id);
     }
 
+    @DeleteMapping("/buy/all/{buyNo}") // 해당 글에 찍힌 모든 좋아요 삭제
+    public void deleteLikeBuy(@PathVariable(name = "buyNo") long buyNo) {
+        likeService.deleteLikeBuy(buyNo);
+    }
+
     /* ===============동네모임=============== */
 
     @PostMapping("/team") // 좋아요 +1
@@ -52,6 +57,11 @@ public class LikeController {
         likeService.deleteTeam(likeNo);
     }
 
+    @DeleteMapping("/team/all/{teamNo}") // 해당 글에 찍힌 모든 좋아요 삭제
+    public void deleteLikeTeam(@PathVariable(name = "teamNo") long teamNo) {
+        likeService.deleteLikeTeam(teamNo);
+    }
+    
     @GetMapping("/team") // 좋아요 정보 조회
     public LikeTeamDto likeInfoTeam(@RequestParam(value = "teamNo") Long teamNo, @RequestParam(value = "id") Long id) {
         return likeService.readTeam(teamNo, id);
@@ -67,6 +77,11 @@ public class LikeController {
     @DeleteMapping("/market/{likeNo}") // 좋아요 -1
     public void unlikeMarket(@PathVariable(name = "likeNo") Long likeNo) {
         likeService.deleteMarket(likeNo);
+    }
+
+    @DeleteMapping("/market/all/{marketNo}") // 해당 글에 찍힌 모든 좋아요 삭제
+    public void deleteLikeMarket(@PathVariable(name = "marketNo") long marketNo) {
+        likeService.deleteLikeMarket(marketNo);
     }
 
     @GetMapping("/market") // 좋아요 정보 조회
@@ -88,12 +103,12 @@ public class LikeController {
     }
 
     @DeleteMapping("/shareRoom/all/{roomNo}") // 해당 글에 찍힌 모든 좋아요 삭제
-    public void deleteLike(@PathVariable(name = "roomNo") long roomNo) {
-        likeService.deleteLike(roomNo);
+    public void deleteLikeRoom(@PathVariable(name = "roomNo") Integer roomNo) {
+        likeService.deleteLikeRoom(roomNo);
     }
 
     @GetMapping("/shareRoom") // 좋아요 정보 조회
-    public LikeRoomDto likeInfoRoom(@RequestParam(value = "roomNo") Long roomNo, @RequestParam(value = "id") Long id) {
+    public LikeRoomDto likeInfoRoom(@RequestParam(value = "roomNo") Integer roomNo, @RequestParam(value = "id") Long id) {
         return likeService.readRoom(roomNo, id);
     }
 

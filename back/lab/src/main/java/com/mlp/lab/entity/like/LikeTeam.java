@@ -1,5 +1,6 @@
 package com.mlp.lab.entity.like;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mlp.lab.entity.Team;
 import com.mlp.lab.entity.User;
 
@@ -26,6 +27,7 @@ public class LikeTeam {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_teamNo")
+    @JsonBackReference
     private Team team;
     
 }
