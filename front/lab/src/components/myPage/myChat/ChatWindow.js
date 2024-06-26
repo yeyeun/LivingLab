@@ -13,7 +13,8 @@ const ChatWindow = ({ chat }) => {
   //const [messages, setMessages] = useState(initState);
   const [messages, setMessages] = useState([
     { id: 1, text: '안녕!', sender: 'other' },
-    { id: 2, text: '잘 지내?', sender: 'me' },
+    { id: 2, text: '오랜만이야', sender: 'other' },
+    { id: 3, text: '잘 지내?', sender: 'me' },
   ]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -25,17 +26,26 @@ const ChatWindow = ({ chat }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const getRoomInfo = (data) => {
+    if (data.buyNo) return { label: '공동구매', value: data.buyNo };
+    if (data.teamNo) return { label: '동네모임', value: data.teamNo };
+    if (data.marketNo) return { label: '동네장터', value: data.marketNo };
+    if (data.roomNo) return { label: '자취방쉐어', value: data.roomNo };
+    return { label: '정보 없음', value: '' };
+  };
+
+  const { label, value } = getRoomInfo(chat);
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between p-4 bg-gray-600 text-white rounded-t">
-        <div className="flex items-center">
-          <img src="https://via.placeholder.com/40" alt="Profile" className="rounded-full w-10 h-10" />
-          <span className="ml-2 text-lg font-bold">{chat.name}</span>
+        <div className="text-sm flex items-center">
+          <span className="bg-mainColor px-2 py-1 mr-1 rounded-2xl">{label}</span>
+          {value}번 게시물 제목
+
         </div>
         <div className="text-sm flex items-center">
-          <span className="bg-mainColor px-2 py-1 mr-1 rounded-2xl">공동구매</span>
-          곽티슈 같이 구매하실분
-          <span className="bg-white px-3 py-1 ml-1 rounded-2xl text-black font-bold">2 / 3</span>
+        <span className="bg-white px-2 py-1 ml-1 rounded text-black font-bold">2 / 3</span>
           <button 
             onClick={toggleSidebar} 
             className="ml-2 bg-gray-700 hover:bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center">

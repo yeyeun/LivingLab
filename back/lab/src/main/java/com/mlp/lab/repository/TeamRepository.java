@@ -49,6 +49,10 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     @Query("select t, ti from Team t left join t.imageList ti where ti.ord = 0 and t.flag = false order by t.teamNo desc")
     Page<Object[]> latestTeamList(Pageable pageable);
 
+    // 카테고리 + 검색
+    @Query("select t, ti from Team t left join t.imageList ti where t.flag = false and (ti.ord = 0 or ti.ord IS NULL) and t.teamCategory = :category and t.title like %:title% order by t.teamNo desc")
+    Page<Team> categorySearchList(@Param("category") Character category, @Param("title") String title, Pageable pageable);
+
     //마이페이지 내가 작성한 글
     @Query("SELECT t FROM Team t WHERE t.user.id = :id ORDER BY t.teamNo DESC")
     Page<Team> findByUser(@Param(value = "id") Long id, Pageable pageable);
