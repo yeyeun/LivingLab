@@ -2,7 +2,6 @@ package com.mlp.lab.service;
 
 import java.util.LinkedHashMap;
 import java.util.Optional;
-import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpEntity;
@@ -19,6 +18,7 @@ import com.mlp.lab.entity.User;
 import com.mlp.lab.repository.UserRepository;
 import com.mlp.lab.util.CustomFileUtil;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -47,20 +47,18 @@ public class UserService {
     return userRepository.findByNameAndPhone(name, phone);
   }
 
+  @Transactional
   // 회원가입 (등록, 이미지 포함)
   public void add(UserDto userDto) {
+    // User 엔티티 생성 및 저장
     User user = User.createUser(userDto);
-    List<String> uploadFileNames = fileUtil.saveFiles(userDto.getFiles());
-    userDto.setUploadFileNames(uploadFileNames);
     userRepository.save(user);
   }
 
   // 회원정보 조회
-  public UserDto get(Long id) {
+  public Optional<User> get(Long id) {
     Optional<User> result = userRepository.findById(id);
-    User user = result.orElseThrow();
-    UserDto userDto = modelMapper.map(user, UserDto.class);
-    return userDto;
+    return result;
   }
 
   // 회원정보 수정

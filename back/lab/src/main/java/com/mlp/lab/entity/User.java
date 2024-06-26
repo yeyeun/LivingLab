@@ -6,9 +6,6 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.UserDto;
-import com.mlp.lab.entity.like.LikeBuy;
-import com.mlp.lab.entity.like.LikeMarket;
-import com.mlp.lab.entity.like.LikeTeam;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -88,7 +85,7 @@ public class User {
         user.setAddr(dto.getAddr());
         user.setDetailAddr(dto.getDetailAddr());
         user.setNickname(dto.getNickname());
-        user.setProfileImage(dto.getUploadFileNames().get(0));
+        user.setProfileImage(dto.getUploadFileName());
         return user;
     }
 

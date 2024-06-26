@@ -1,17 +1,23 @@
 package com.mlp.lab.controller;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.LoginDto;
 import com.mlp.lab.dto.ResponseDto;
@@ -41,16 +47,13 @@ public class UserController {
         if (user == null || (!user.getPwd().equals(loginDto.getPwd()))) {
             return null;
         }
-        return user; // // 로그인 정보 그대로 다 준다
+        return user; //로그인 정보 그대로 다 준다
     }
 
-    @PostMapping("/join")   
+    @PostMapping("/join")
     public ResponseDto<Object> join(UserDto userDto) {
-        // if (userService.findByEmail(userDto.getEmail()) != null) {
-        //     return ResponseDto.setFailed("이미 존재하는 아이디입니다.");
-        // }
-        List<String> uploadFileNames = fileUtil.saveFiles(userDto.getFiles());
-        userDto.setUploadFileNames(uploadFileNames);
+        String uploadFileNames = fileUtil.saveFile(userDto.getFile());
+        userDto.setUploadFileName(uploadFileNames);
         userService.add(userDto);
         return ResponseDto.setSuccess("회원가입 완료");
     }
@@ -82,8 +85,40 @@ public class UserController {
     // 회원정보 조회
     @GetMapping("/{id}")
     @ResponseBody
-    public UserDto get(@PathVariable(name = "id") Long id) {
-        return userService.get(id);
+    public Optional<User> get(@PathVariable(name = "id") Long id) {
+        Optional<User> user = userService.get(id);
+        return user;
     }
 
+    @GetMapping("/display/{fileName}") //  이미지 파일 출력
+    public ResponseEntity<Resource> displayImage(@PathVariable(name = "fileName") String fileName) {
+        return fileUtil.getFile(fileName);
+    }
+
+    // 프로필 이미지 업로드
+    @PutMapping("/update/profileImage/{userId}")
+    public ResponseEntity<String> updateProfileImage(
+            @PathVariable Long userId,
+            @RequestParam("file") MultipartFile file
+    ) {
+        try {
+            String uploadedFileName = fileUtil.updateFile(userId.toString(), file);
+            return ResponseEntity.ok("이미지가 성공적으로 업로드되었습니다: " + uploadedFileName);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("이미지 업로드에 실패했습니다: " + e.getMessage());
+        }
+    }
+
+    // 프로필 이미지 삭제
+    @DeleteMapping("/delete/profileImage/{userId}")
+    public ResponseEntity<String> deleteProfileImage(@PathVariable Long userId) {
+        try {
+            fileUtil.deleteFile(userId.toString());
+            return ResponseEntity.ok("프로필 이미지가 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("프로필 이미지 삭제에 실패했습니다: " + e.getMessage());
+        }
+    }
 }
