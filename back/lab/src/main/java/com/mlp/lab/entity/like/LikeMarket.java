@@ -1,5 +1,6 @@
 package com.mlp.lab.entity.like;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mlp.lab.entity.Market;
 import com.mlp.lab.entity.User;
 
@@ -26,6 +27,7 @@ public class LikeMarket {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "market_marketNo")
+    @JsonBackReference
     private Market market;
     
 }
