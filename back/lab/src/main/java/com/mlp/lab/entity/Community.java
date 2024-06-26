@@ -6,6 +6,8 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import com.mlp.lab.dto.CommunityDto;
+import com.mlp.lab.entity.like.LikeBuy;
+import com.mlp.lab.entity.like.LikeCommunity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,10 +31,6 @@ public class Community extends BaseTimeEntity {
     @Column(name = "commNo")
     private Long commNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private User user;
-
     @Column(name = "type")
     private Character type;
 
@@ -54,8 +52,16 @@ public class Community extends BaseTimeEntity {
     @Column(name = "flag")
     private boolean flag; // true: 사진있음 / false:사진없음
 
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private User user;
+
     @OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE)
     private List<Reply> replies;
+
+    @OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE)
+    private List<LikeCommunity> likeCommunities;
 
     @ElementCollection
     @Builder.Default

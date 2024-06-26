@@ -10,6 +10,10 @@ import com.mlp.lab.entity.Market;
 
 //Market Entity의 기본키(PK) 타입인 Integer를 인자로 전달
 public interface MarketRepository extends JpaRepository<Market, Integer> {
+    Market findMarketByMarketNo(@Param(value = "marketNo")Long marketNo);
+
+    Market findByMarketNo(@Param(value = "marketNo")Long marketNo);
+
     @Query("select m, mi from Market m left join m.imageList mi where m.flag = false and (mi.ord = 0 or mi.ord IS NULL) order by m.marketNo desc")
     Page<Object[]> selectList(Pageable pageable);
 
@@ -36,4 +40,8 @@ public interface MarketRepository extends JpaRepository<Market, Integer> {
     // 메인에 표기할 최신순
     @Query("select m, mi from Market m left join m.imageList mi where mi.ord = 0 and m.flag = false order by m.marketNo desc")
     Page<Object[]> latestMarketList(Pageable pageable);
+
+    //마이페이지 내가 작성한 글
+    @Query("SELECT m FROM Market m WHERE m.user.id = :id ORDER BY m.marketNo DESC")
+    Page<Market> findByUser(@Param(value = "id") Long id, Pageable pageable);
 }

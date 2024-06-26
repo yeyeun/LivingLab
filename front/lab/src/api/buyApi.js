@@ -7,38 +7,38 @@ export const getOne = async (buyNo) => {
   return res.data;
 };
 
-export const getList = async (pageParam, search, sort) => {
+export const getList = async (pageParam, search, sort, latitude, longitude) => {
   const { page, size } = pageParam;
-  const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size, search: search, sort: sort }});
+  const res = await axios.get(`${prefix}/list`, { params: { page: page, size: size, search: search, sort: sort, latitude: latitude, longitude: longitude } });
   return res.data;
 };
 
-export const postAddBuy = async(buy) => {
-  const header = {headers:{"Content-Type":"multipart/form-data"}};
+export const postAddBuy = async (buy) => {
+  const header = { headers: { 'Content-Type': 'multipart/form-data' } };
   const res = await axios.post(`${prefix}/add`, buy, header);
   return res.data;
-}
+};
 
-export const modify = async(buyNo, buy) => {
-  const header = {headers:{"Content-Type":"multipart/form-data"}};
+export const modify = async (buyNo, buy) => {
+  const header = { headers: { 'Content-Type': 'multipart/form-data' } };
   const res = await axios.put(`${prefix}/modify/${buyNo}`, buy, header);
   return res.data;
-}
+};
 
-export const deleteOne = async(buyNo) => {
+export const deleteOne = async (buyNo) => {
   const res = await axios.delete(`${prefix}/delete/${buyNo}`);
   return res.data;
-}
+};
 
-export const increaseLike = async(buyNo) => {
+export const increaseLike = async (buyNo) => {
   const res = await axios.put(`${prefix}/increase/${buyNo}`);
   return res.data;
-}
+};
 
-export const decreaseLike = async(buyNo) => {
+export const decreaseLike = async (buyNo) => {
   const res = await axios.put(`${prefix}/decrease/${buyNo}`);
   return res.data;
-}
+};
 
 // ******공동구매 최신 글 보기******
 
@@ -46,4 +46,16 @@ export const getLatestBuy = async (pageParam) => {
   const { page, size } = pageParam;
   const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
   return res.data;
-} 
+};
+
+
+/* 마이페이지 내가 작성한 글 조회 */
+export const myList = async (id) => {
+  const res = await axios.get(`${prefix}/mylist/${id}`);
+  return res.data;
+};
+
+export const myListAll = async (id) => {
+  const res = await axios.get(`${prefix}/mylistall/${id}`);
+  return res.data;
+};

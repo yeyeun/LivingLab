@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.ShareRoomDto;
 import com.mlp.lab.dto.MarketDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.service.ShareRoomService;
@@ -105,6 +106,15 @@ public class ShareRoomController {
         return Map.of("RESULT", "SUCCESS");
     }
 
+    @PutMapping("/hide/{roomNo}")
+    public Map<String, String> hide(@PathVariable(name = "roomNo") Integer roomNo, ShareRoomDto shareRoomDto) {
+        shareRoomDto.setRoomNo(roomNo);
+
+        shareRoomService.hide(shareRoomDto);
+        
+        return Map.of("RESULT", "SUCCESS");
+    }
+
     @GetMapping("/latest")
     public List<ShareRoomDto> getLatestShareRoomList() {
         return shareRoomService.getLatestShareRoom();
@@ -120,4 +130,16 @@ public class ShareRoomController {
         shareRoomService.decrease(roomNo);
     }
 
+    @GetMapping("/mylist/{id}") // 작성한 게시물 조회 (3개)
+    public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
+        return shareRoomService.mylist(id);
+    }
+
+    
+    @DeleteMapping("/like/shareRoom/{roomNo}")
+    public Map<String, String> removeLike(@PathVariable(name = "roomNo") Integer roomNo) {
+        log.info("Remove :" + roomNo);
+        shareRoomService.remove(roomNo);
+        return Map.of("RESULT", "SUCCESS");
+    }
 }

@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommunityDto {
     private Long commNo;
-    private String user_id;
+    private Long id;
     private Character type;
     private String title;
     private String content;

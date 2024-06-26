@@ -13,10 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mlp.lab.dto.CommunityDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
+import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Community;
 import com.mlp.lab.repository.CommunityRepository;
+import com.mlp.lab.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommunityService {
     private final CommunityRepository communityRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
     public PageResponseDto<CommunityDto> listTip(PageRequestDto pageRequestDto, String search, String sort) { // 커뮤니티 게시글 목록가져오기(페이징처리, 이미지 포함)
@@ -207,20 +211,22 @@ public class CommunityService {
 
     public void add(CommunityDto communityDto) { // 커뮤니티 게시글 등록(이미지 포함)
         Community community = Community.DtoToEntity(communityDto);
+        community.setUser(userRepository.findByUserId(communityDto.getId()));
         communityRepository.save(community);
     }
 
-    public CommunityDto read(int commNo) { // 커뮤니티 특정 게시글 조회
+    public CommunityDto read(Long commNo) { // 커뮤니티 특정 게시글 조회
         Optional<Community> result = communityRepository.findById(commNo);
         Community community = result.orElseThrow();
         CommunityDto communityDto = Community.entityToDto(community);
         communityDto.setRegDate(community.getCreatedDate());
+        communityDto.setId(community.getUser().getId());
         return communityDto;
     }
 
     public void modify(CommunityDto communityDto) { // 커뮤니티 게시글 수정하기
         // 1.조회
-        Optional<Community> result = communityRepository.findById(communityDto.getCommNo().intValue());
+        Optional<Community> result = communityRepository.findById(communityDto.getCommNo());
         Community community = result.orElseThrow();
 
         // 수정
@@ -241,7 +247,7 @@ public class CommunityService {
     }
 
     @Transactional // DB 작업이 성공적으로 완료될때만 실제 DB에 반영
-    public void delete(int commNo) {
+    public void delete(Long commNo) {
         communityRepository.deleteById(commNo);
     }
 
@@ -254,6 +260,36 @@ public class CommunityService {
         return latestPosts.stream()
                 .map(post -> modelMapper.map(post, CommunityDto.class))
                 .collect(Collectors.toList());
+    }
+
+    public void increase(Long commNo) { // 좋아요 +1
+        Optional<Community> result = communityRepository.findById(commNo);
+        Community community = result.orElseThrow();
+        community.setCommHit(community.getCommHit() + 1);
+        communityRepository.save(community);
+    }
+
+    public void decrease(Long commNo) { // 좋아요 -1
+        Optional<Community> result = communityRepository.findById(commNo);
+        Community community = result.orElseThrow();
+        community.setCommHit(community.getCommHit() - 1);
+        communityRepository.save(community);
+    }
+
+    public List<MyActivityDto> mylist(Long id) {
+        PageRequest pageRequest = PageRequest.of(0,3);
+        Page<Community> result = communityRepository.findByUser(id, pageRequest);
+
+        List<MyActivityDto> dtoList = result.getContent().stream().map(comm -> {
+            MyActivityDto dto = new MyActivityDto();
+            dto.setCategory(comm.getType());
+            dto.setRegDate(comm.getCreatedDate());
+            dto.setTitle(comm.getTitle());
+            dto.setNo(comm.getCommNo());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
     }
                 
 

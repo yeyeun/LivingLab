@@ -10,9 +10,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mlp.lab.dto.MarketDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.dto.ShareRoomDto;
+import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Market;
 import com.mlp.lab.entity.MarketImage;
 import com.mlp.lab.entity.ShareRoom;
@@ -50,12 +52,18 @@ public class ShareRoomService {
             if(sort.equals("낮은가격순")){
                 result = shareRoomRepository.lowPriceList(pageable);
             }
+            if(sort.equals("좋아요순")){
+                result = shareRoomRepository.likeList(pageable);
+            }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다 serch not null / sort not null
             if(sort.equals("최신순")){
                 result = shareRoomRepository.searchNewList(search, pageable);
             }
             if(sort.equals("낮은가격순")){
                 result = shareRoomRepository.searchLowPriceList(search, pageable);
+            }
+            if(sort.equals("좋아요순")){
+                result = shareRoomRepository.searchLikeList(search, pageable);
             }
         }
 
@@ -136,6 +144,18 @@ public class ShareRoomService {
         shareRoomRepository.save(shareRoom);
     }
 
+    public void hide(ShareRoomDto shareRoomDto) { // 수정하기
+        // 조회
+        Optional<ShareRoom> result = shareRoomRepository.findById(shareRoomDto.getRoomNo().intValue());
+        ShareRoom shareRoom = result.orElseThrow();
+
+        // 수정
+        shareRoom.setFlag(false);
+
+        shareRoomRepository.save(shareRoom);
+    }
+
+
      // 메인에 표기할 최신순
     public List<ShareRoomDto> getLatestShareRoom() {
         Pageable pageable = PageRequest.of(0, 3, Sort.by("roomNo").descending());
@@ -183,4 +203,20 @@ public class ShareRoomService {
         shareRoomRepository.save(shareRoom);
     }
 
+    public List<MyActivityDto> mylist(Long id) {
+        PageRequest pageRequest = PageRequest.of(0,3);
+        Page<ShareRoom> result = shareRoomRepository.findByUser(id, pageRequest);
+
+        List<MyActivityDto> dtoList = result.getContent().stream().map(room -> {
+            MyActivityDto dto = new MyActivityDto();
+            dto.setTitle(room.getTitle());
+            dto.setNo(room.getRoomNo().longValue());
+            dto.setRentStartDate(room.getRentStartDate());
+            dto.setRentEndDate(room.getRentEndDate());
+            dto.setRent_fee(room.getRentFee());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
+    }
 }

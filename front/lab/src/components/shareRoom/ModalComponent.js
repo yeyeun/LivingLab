@@ -26,7 +26,7 @@ const ModalComponent = ({ isOpen, images, closeModal }) => {
           <img
             src={images[currentImageIndex]}
             alt={`Slide ${currentImageIndex}`}
-            className="block w-auto h-auto max-w-[800px] min-w-[800px] max-h-[600px] min-h-[600px] mx-auto"
+            className="block w-auto h-auto max-w-[1024px] min-w-[768px] max-h-[1024px] min-h-[768px] mx-auto"
           />
           {/* Right Arrow Button */}
           <button onClick={nextImage} className="w-16 h-16 p-0 border-0 rounded-sm bg-[rgba(34,34,34,0.7)] absolute top-1/2 -translate-y-1/2 z-10 cursor-pointer right-10">

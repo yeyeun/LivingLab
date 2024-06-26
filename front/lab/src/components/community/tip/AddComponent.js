@@ -6,7 +6,7 @@ import ResultModal from "../../common/ResultModal";
 import useCustomTip from "../../../hooks/useCustomTip";
 
 const initState = {
-    user_id: '',
+    id: 0,
     type: '1', //자취TIP 게시판은 1
     title: '',
     content: '',
@@ -24,16 +24,17 @@ const AddComponent = () => {
     const { moveToList } = useCustomTip(); //목록으로 이동하기
     const uploadRef = useRef();
     const loginInfo = useSelector((state) => state.loginSlice);
-    const id = loginInfo?.email;
+    const id = loginInfo.id;
+    const email = loginInfo?.email;
     const nickname = loginInfo?.nickname;
     const navigate = useNavigate();
 
     useEffect(() => {
-        // id가 없으면 로그인 화면으로 이동 -> 주소창으로 접근하는걸 방지
-        if (!id) {
+        // email값이 없으면 로그인 화면으로 이동 -> 주소창으로 접근하는걸 방지
+        if (!email) {
             navigate('/user/login'); // 로그인 경로로 이동
         }
-    }, [id, navigate]);
+    }, [email, navigate]);
 
     const handleChangeTip = (e) => {
         tip[e.target.name] = e.target.value;
@@ -96,7 +97,7 @@ const AddComponent = () => {
         }
         
         // 파일이 아닌 데이터를 formData에 추가
-        formData.append("user_id", id);
+        formData.append("id", id);
         formData.append("nickname", nickname);
         formData.append("type", tip.type);
         formData.append("title", tip.title);

@@ -1,8 +1,12 @@
 package com.mlp.lab.entity.chat;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mlp.lab.entity.Buy;
+import com.mlp.lab.entity.Market;
+import com.mlp.lab.entity.ShareRoom;
+import com.mlp.lab.entity.Team;
 import com.mlp.lab.entity.User;
 
 import jakarta.persistence.Column;
@@ -19,9 +23,11 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "chatroom")
 @NoArgsConstructor
 public class ChatRoom {
@@ -30,9 +36,21 @@ public class ChatRoom {
     @Column(name = "chatroom_id")
     private Long chatroomId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "buy_no", referencedColumnName = "buy_no")
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "buy_no", referencedColumnName = "buy_no", nullable = true)
     private Buy buy;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "team_no", referencedColumnName = "team_no", nullable = true)
+    private Team team;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "market_no", referencedColumnName = "market_no", nullable = true)
+    private Market market;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "room_no", referencedColumnName = "roomNo", nullable = true)
+    private ShareRoom shareRoom;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "writer_id", referencedColumnName = "id")
@@ -47,10 +65,17 @@ public class ChatRoom {
     private List<User> reader = new ArrayList<>();
 
     @Builder
-    public ChatRoom(Long chatroomId, Buy buy, User writer, List<User> reader) {
+    public ChatRoom(Long chatroomId, Buy buy, Team team, Market market, ShareRoom shareRoom, User writer, List<User> reader) {
         this.chatroomId = chatroomId;
         this.buy = buy;
+        this.team = team;
+        this.market = market;
+        this.shareRoom = shareRoom;
         this.writer = writer;
         this.reader = reader;
+    }
+
+    public void removeReader(User user) {
+        this.reader.remove(user);
     }
 }

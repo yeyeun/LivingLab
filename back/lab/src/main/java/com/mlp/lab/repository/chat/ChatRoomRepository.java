@@ -20,6 +20,10 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
     ChatRoom findByBuy_BuyNo(Long buyNo);
 
+    ChatRoom findByTeam_TeamNo(Long buyNo);
+
+    ChatRoom findByMarket_MarketNo(Long buyNo);
+
     @Query("SELECT cr FROM ChatRoom cr " +
            "LEFT JOIN cr.reader r " +
            "WHERE (cr.writer.id = :id OR r.id = :id) AND cr.buy.buyNo = :buyNo")

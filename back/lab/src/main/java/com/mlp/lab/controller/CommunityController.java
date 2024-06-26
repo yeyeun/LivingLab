@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.CommunityDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.service.CommunityService;
@@ -60,7 +61,7 @@ public class CommunityController {
 
     // 상세조회
     @GetMapping(value = { "/tip/read/{commNo}", "/qna/read/{commNo}", "/review/read/{commNo}", "/help/read/{commNo}" })
-    public CommunityDto read(@PathVariable(name = "commNo") int commNo) {
+    public CommunityDto read(@PathVariable(name = "commNo") Long commNo) {
         return communityService.read(commNo);
     }
 
@@ -90,7 +91,7 @@ public class CommunityController {
             "/help/modify/{commNo}" })
     public void modify(@PathVariable(name = "commNo") Long commNo, CommunityDto communityDto) {
         communityDto.setCommNo(commNo);
-        CommunityDto oldDto = communityService.read(commNo.intValue());
+        CommunityDto oldDto = communityService.read(commNo);
 
         // 기존 파일들(데이터베이스에 저장된 파일 이름)
         List<String> oldFileNames = oldDto.getUploadFileNames();
@@ -129,7 +130,7 @@ public class CommunityController {
 
     // 글 삭제 (이미지 포함)
     @DeleteMapping("/delete/{commNo}")
-    public void delete(@PathVariable(name = "commNo") int commNo) {
+    public void delete(@PathVariable(name = "commNo") Long commNo) {
         List<String> uploadFileNames = communityService.read(commNo).getUploadFileNames();
         if (uploadFileNames != null && uploadFileNames.size() > 0) {
             fileUtil.deleteFiles(uploadFileNames);
@@ -141,5 +142,20 @@ public class CommunityController {
     @GetMapping("/latest")
     public List<CommunityDto> getLatestCommList() {
         return communityService.getLatestComm();
+    }
+
+    @PutMapping("/increase/{commNo}") // 좋아요 +1
+    public void increase(@PathVariable(name = "commNo") Long commNo) {
+        communityService.increase(commNo);
+    }
+
+    @PutMapping("/decrease/{commNo}") // 좋아요 +1
+    public void decrease(@PathVariable(name = "commNo") Long commNo) {
+        communityService.decrease(commNo);
+    }
+
+    @GetMapping("/mylist/{id}") // 작성한 게시물 조회 (3개)
+    public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
+        return communityService.mylist(id);
     }
 }

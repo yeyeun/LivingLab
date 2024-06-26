@@ -19,6 +19,7 @@ import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.entity.Buy;
 import com.mlp.lab.dto.BuyDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.service.BuyService;
 import com.mlp.lab.util.CustomFileUtilBuy;
 
@@ -33,19 +34,21 @@ public class BuyController {
 
     @GetMapping("/list") // 목록조회(검색기능 포함)
     public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto,
-    @RequestParam(required = false, value = "search") String search,
-    @RequestParam(required = false, value = "sort") String sort) {
-        return buyService.list(pageRequestDto, search, sort);
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort,
+            @RequestParam(required = false, value = "latitude") double latitude,
+            @RequestParam(required = false, value = "longitude") double longitude) {
+        return buyService.list(pageRequestDto, search, sort, latitude, longitude);
     }
 
     @GetMapping("/read/{buyNo}") // 상세조회
-    public BuyDto read(@PathVariable(name = "buyNo") int buyNo) {
+    public BuyDto read(@PathVariable(name = "buyNo") Long buyNo) {
         return buyService.read(buyNo);
     }
 
     // 글 삭제 (이미지 포함)
     @DeleteMapping("/delete/{buyNo}")
-    public void delete(@PathVariable(name = "buyNo") int buyNo) {
+    public void delete(@PathVariable(name = "buyNo") Long buyNo) {
         List<String> uploadFileNames = buyService.read(buyNo).getUploadFileNames();
         if (uploadFileNames != null && uploadFileNames.size() > 0) {
             fileUtil.deleteFiles(uploadFileNames);
@@ -69,7 +72,7 @@ public class BuyController {
     @PutMapping("/modify/{buyNo}") // 수정
     public void modify(@PathVariable(name = "buyNo") Long buyNo, BuyDto buyDto) {
         buyDto.setBuyNo(buyNo);
-        BuyDto oldDto = buyService.read(buyNo.intValue());
+        BuyDto oldDto = buyService.read(buyNo);
 
         // 기존 파일들(데이터베이스에 저장된 파일 이름)
         List<String> oldFileNames = oldDto.getUploadFileNames();
@@ -104,6 +107,13 @@ public class BuyController {
         return buyService.getLatestBuy();
     }
 
+    // @GetMapping("/distance")
+    // public List<BuyDto> getdistanceList(@RequestParam(value = "latitude") double
+    // latitude,
+    // @RequestParam(value = "longitude") double longitude) {
+    // return buyService.getdistanceBuy(latitude, longitude);
+    // }
+
     @PutMapping("/increase/{buyNo}") // 좋아요 +1
     public void increase(@PathVariable(name = "buyNo") Long buyNo) {
         buyService.increase(buyNo);
@@ -113,4 +123,10 @@ public class BuyController {
     public void decrease(@PathVariable(name = "buyNo") Long buyNo) {
         buyService.decrease(buyNo);
     }
+
+    @GetMapping("/mylist/{id}") // 작성한 게시물 조회 (3개)
+    public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
+        return buyService.mylist(id);
+    }
+
 }

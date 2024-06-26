@@ -76,8 +76,14 @@ export const likeRoom = async(likeRoom) => {
     return res.data;
 };
 
-export const unlikeRoom = async(likeNo) => {
+export const unlikeRoom = async(likeNo) => { // 좋아요 단건 삭제
     const res = await axios.delete(`${prefix}/shareRoom/${likeNo}`);
+    return res.data;
+};
+
+export const deleteLike = async (roomNo) => { // 해당 글에 찍힌 모든 좋아요 삭제
+    const res = await axios.delete(`${prefix}/shareRoom/all/${roomNo}`);
+    console.log('deleting ', res.data);
     return res.data;
 };
 
@@ -85,6 +91,28 @@ export const likeInfoRoom = async(roomNo, id) => {
     const res = await axios.get(`${prefix}/shareRoom`,{
         params : {
             roomNo: roomNo,
+            id: id
+        }
+    });
+    return res.data;
+};
+
+/* ============커뮤니티============== */
+
+export const likeComm = async(likeComm) => {
+    const res = await axios.post(`${prefix}/comm`,likeComm);
+    return res.data;
+};
+
+export const unlikeComm = async(likeNo) => {
+    const res = await axios.delete(`${prefix}/comm/${likeNo}`);
+    return res.data;
+};
+
+export const likeInfoComm = async(commNo, id) => {
+    const res = await axios.get(`${prefix}/comm`,{
+        params : {
+            commNo: commNo,
             id: id
         }
     });
