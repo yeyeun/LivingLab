@@ -34,11 +34,6 @@ const initState = {
   uploadFileNames: [],
 };
 
-const initUser = {
-  nickname: '',
-  profileImage: '',
-};
-
 const initState2 = {
   likeNo: 0,
   id: 0,
@@ -49,7 +44,6 @@ const host = API_SERVER_HOST;
 
 const ReadComponent = ({ buyNo }) => {
   const [buy, setBuy] = useState(initState);
-  const [user, setUser] = useState(initUser);
   const [result, setResult] = useState(null);
   const [addResultModal, setAddResultModal] = useState(null);
   const { moveToList, moveToModify } = useCustomMove();
@@ -59,7 +53,6 @@ const ReadComponent = ({ buyNo }) => {
   const [isLiked, setIsLiked] = useState({}); // true/false에 따라 하트 이미지 변경
   const [like, setLike] = useState(initState2);
   const [info, setInfo] = useState(null);
-  const [userId, setUserId] = useState('');
   const [ current, setCurrent ] = useState(0);
   const [ max, setMax ] = useState(0);
 
@@ -82,14 +75,6 @@ const ReadComponent = ({ buyNo }) => {
       setMax(data.max);
     });
   }, [buyNo, info]);
-
-  useEffect(() => {
-    getUser(ino).then((data) => {
-      fetchUserProfileImage(data.email);
-      setUser(data);
-    });
-  }, [ino]);
-
 
   useEffect(() => {
     if (email) {
@@ -192,31 +177,6 @@ const ReadComponent = ({ buyNo }) => {
       const month = padZero(deadlineDate.getMonth() + 1);
       const day = padZero(deadlineDate.getDate());
       return `${year}-${month}-${day} ${amPm} ${displayHours}:${minutes}까지`;
-    }
-  };
-
-  //프로필 사진 읽어오는 함수
-  const fetchUserProfileImage = async (email) => {
-    try {
-      const res = await axios.get(`http://localhost:8282/api/user/userProfileImage?email=${email}`, {
-        responseType: 'arraybuffer', // 바이너리 데이터로 응답받기
-      });
-
-      // 받은 바이너리 데이터 처리
-      const blob = new Blob([res.data], { type: 'image/png' });
-      const imageUrl = URL.createObjectURL(blob);
-      setUser((prev) => ({
-        ...prev, // 이전 상태를 복사해야 이미지 삭제하고 다시 변경했을 대 바로 적용됨
-        profileImage: imageUrl, // 이미지 데이터 추가
-      }));
-      console.log('프로필 사진 읽기 최종 성공');
-    } catch (error) {
-      console.error('프로필 이미지가 없습니다', error);
-      // 오류가 발생하면 대체 이미지를 사용하도록 설정
-      setUser((prev) => ({
-        ...prev,
-        profileImage: Profile_Img,
-      }));
     }
   };
 
