@@ -65,7 +65,7 @@ const ListComponent = ({ search, sort }) => {
   };
 
   useEffect(() => {
-    getList({ page, size }, search, sort).then((data) => {
+    getList({ page, size }, search, sort, selectedCategory).then((data) => {
       const updatedData = {
         ...data,
         dtoList: data.dtoList.map((team) => ({
@@ -76,15 +76,15 @@ const ListComponent = ({ search, sort }) => {
       console.log(updatedData);
       setServerData(updatedData);
     });
-  }, [page, size, search, sort]);
+  }, [page, size, search, sort, selectedCategory]);
 
-  return (   
+  return (
 
     <div>
       <div className="list-button-container ">
         <button
           className={`list-tagbtn ${selectedCategory === '1' ? 'tag-btn-active' : ''}`}
-          onClick={() => handleCategoryClick('1') }
+          onClick={() => handleCategoryClick('1')}
         >
           #운동
         </button>
@@ -115,7 +115,7 @@ const ListComponent = ({ search, sort }) => {
       </div>
       {serverData.dtoList.length > 0 ? (
         serverData.dtoList
-          .filter(team => !selectedCategory || team.teamCategory === selectedCategory).map(team =>
+          .map(team =>
             <div key={team.teamNo} className="w-full mb-4 cursor-pointer" onClick={() => moveToRead(team.teamNo)}>
               <div className="flex flex-col items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100">
                 <div className="w-60 h-48">
