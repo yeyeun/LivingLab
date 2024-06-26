@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,45 +18,45 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+
 
 @Component
-@Log4j2
 @RequiredArgsConstructor
 public class CustomFileUtil {
 
     @Value("${com.mlp.upload.path}")
     private String uploadPath;
     
+    private String userPath;
 
     @PostConstruct
     public void init() {
-        File tempFolder = new File(uploadPath);
-        if (tempFolder.exists() == false) {
-            tempFolder.mkdir();
+        File uploadFolder = new File(uploadPath);
+        if (!uploadFolder.exists()) {
+            uploadFolder.mkdir();
         }
-        uploadPath = tempFolder.getAbsolutePath();
-        log.info("-------------------------------------------");
-        log.info(uploadPath);
+        userPath = uploadFolder.getAbsolutePath() + File.separator + "user";
+        File buyFolder = new File(userPath);
+        if (!buyFolder.exists()) {
+            buyFolder.mkdir();
+        }
     }
 
-    public List<String> saveFiles(List<MultipartFile> files) throws RuntimeException { // 파일 저장
-        if (files == null || files.size() == 0) {
-            return List.of();
+    public String saveFile(MultipartFile file) throws RuntimeException { // 단일 파일 저장
+        if (file == null || file.isEmpty()) {
+            return null;
         }
-        List<String> uploadNames = new ArrayList<>();
-        for (MultipartFile multipartFile : files) {
-            String savedName = UUID.randomUUID().toString() +
-                    "_" + multipartFile.getOriginalFilename();
-            Path savedPath = Paths.get(uploadPath, savedName);
-            try {
-                Files.copy(multipartFile.getInputStream(), savedPath);
-                uploadNames.add(savedName);
-            } catch (IOException e) {
-                throw new RuntimeException(e.getMessage());
-            }
+        
+        String savedName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path savedPath = Paths.get(uploadPath, savedName);
+        
+        try {
+            Files.copy(file.getInputStream(), savedPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return uploadNames;
+        
+        return savedName;
     }
 
     public ResponseEntity<Resource> getFile(String fileName) { // 업로드 파일 보여주기
@@ -74,17 +73,20 @@ public class CustomFileUtil {
         return ResponseEntity.ok().headers(headers).body(resource);
     }
 
-    public void deleteFiles(List<String> fileNames) { // 파일 삭제
-        if (fileNames == null || fileNames.size() == 0) {
-            return;
+    public void deleteFile(String fileName) { // 파일 삭제
+        Path filePath = Paths.get(userPath, fileName);
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
         }
-        fileNames.forEach(fileName -> {
-            Path filePath = Paths.get(uploadPath, fileName);
-            try {
-                Files.deleteIfExists(filePath);
-            } catch (IOException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        });
+    }
+
+    public String updateFile(String fileName, MultipartFile newFile) throws RuntimeException {
+        // 기존 파일 삭제
+        deleteFile(fileName);
+        
+        // 새 파일 저장
+        return saveFile(newFile);
     }
 }
