@@ -141,6 +141,7 @@ const ReadComponent = ({ teamNo }) => {
     .then((result) => {
       console.log('delete result : ' + result);
       setResult('삭제되었습니다');
+      moveToList()
     });
   };
 

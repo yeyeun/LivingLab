@@ -136,6 +136,7 @@ const ReadComponent = ({ buyNo }) => {
     .then((result) => {
       console.log('delete result : ' + result);
       setResult('삭제되었습니다');
+      moveToList()
     });
   };
 

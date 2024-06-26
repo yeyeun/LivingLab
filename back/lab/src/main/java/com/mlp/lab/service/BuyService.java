@@ -19,6 +19,7 @@ import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.BuyImage;
 import com.mlp.lab.repository.BuyRepository;
 import com.mlp.lab.repository.UserRepository;
+import com.mlp.lab.repository.chat.ChatRoomRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class BuyService {
     private final BuyRepository buyRepository;
     private final UserRepository userRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
     public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort, double latitude,
@@ -118,6 +120,8 @@ public class BuyService {
 
     @Transactional // 삭제하기
     public void delete(Long buyNo) {
+        // chatroom 테이블에서 해당 buy_no 값을 참조하지 않도록 업데이트
+        chatRoomRepository.updateBuyRoom(buyNo);
         buyRepository.deleteById(buyNo);
     }
 
