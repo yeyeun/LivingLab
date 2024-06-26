@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/buyApi';
-import { likeBuy, unlikeBuy, likeInfoBuy } from '../../api/likeApi';
+import { likeBuy, unlikeBuy, likeInfoBuy, deleteLikeBuy } from '../../api/likeApi';
 import { getUser } from '../../api/userApi';
 import { enterChatRoomBuy } from '../../api/chatApi';
 import { useSelector } from 'react-redux';
@@ -128,9 +128,15 @@ const ReadComponent = ({ buyNo }) => {
     setShowModal(false);
   };
 
-  const handleClickDelete = (e) => {
-    deleteOne(buyNo);
-    setResult('게시글이 삭제되었습니다');
+  const handleClickDelete = () => {
+    deleteLikeBuy(buyNo)
+    .then(() => {
+      return deleteOne(buyNo);
+    })
+    .then((result) => {
+      console.log('delete result : ' + result);
+      setResult('삭제되었습니다');
+    });
   };
 
   const closeModal = () => {

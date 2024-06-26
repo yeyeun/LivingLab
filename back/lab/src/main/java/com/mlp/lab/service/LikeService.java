@@ -46,6 +46,10 @@ public class LikeService {
         likeBuyRepository.deleteById(likeNo);
     }
 
+    public void deleteLikeBuy(long buyNo) { // 해당글 번호를 가진 모든 좋아요를 지우는 기능
+        likeBuyRepository.deleteLike(buyNo);
+    }
+
     public LikeBuyDto readBuy(Long buyNo, Long id) {
         Optional<LikeBuy> result = likeBuyRepository.findLike(buyNo,id);
         LikeBuy likeBuy = result.orElse(null);
@@ -66,6 +70,10 @@ public class LikeService {
 
     public void deleteTeam(long likeNo) {
         likeTeamRepository.deleteById(likeNo);
+    }
+
+    public void deleteLikeTeam(long teamNo) { // 해당글 번호를 가진 모든 좋아요를 지우는 기능
+        likeTeamRepository.deleteLike(teamNo);
     }
 
     public LikeTeamDto readTeam(Long teamNo, Long id) {
@@ -90,6 +98,10 @@ public class LikeService {
         likeMarketRepository.deleteById(likeNo);
     }
 
+    public void deleteLikeMarket(long marketNo) { // 해당글 번호를 가진 모든 좋아요를 지우는 기능
+        likeMarketRepository.deleteLike(marketNo);
+    }
+
     public LikeMarketDto readMarket(Long marketNo, Long id) {
         Optional<LikeMarket> result = likeMarketRepository.findLike(marketNo,id);
         LikeMarket likeMarket = result.orElse(null);
@@ -111,11 +123,11 @@ public class LikeService {
         likeRoomRepository.deleteById(likeNo);
     }
 
-    public void deleteLike(long roomNo) { // 해당글 번호를 가진 모든 좋아요를 지우는 기능
+    public void deleteLikeRoom(Integer roomNo) { // 해당글 번호를 가진 모든 좋아요를 지우는 기능
         likeRoomRepository.deleteLike(roomNo);
     }
 
-    public LikeRoomDto readRoom(Long roomNo, Long id) {
+    public LikeRoomDto readRoom(Integer roomNo, Long id) {
         Optional<LikeShareRoom> result = likeRoomRepository.findLike(roomNo,id);
         LikeShareRoom likeShareRoom = result.orElse(null);
         if(likeShareRoom == null){
