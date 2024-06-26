@@ -49,9 +49,9 @@ public class ChatRoomController {
     // 채팅방 생성(글 작성시 자동으로)
     @PostMapping("/room/create")
     @ResponseBody
-    public ResponseDto<ChatRoomDataResponseDto.Info> createRoom(@RequestParam(name="userId") Long userId,
+    public ResponseDto<ChatRoomDataResponseDto.Info> createRoom(@RequestParam(name="userId") Long userId, @RequestParam(name="title") String title,
             @RequestBody ChatRoomDataRequestDto.create createRequest) {
-        ChatRoomDataResponseDto.Info roomData = chatRoomService.createRoom(userId, createRequest);
+        ChatRoomDataResponseDto.Info roomData = chatRoomService.createRoom(userId, title, createRequest);
         return ResponseDto.setSuccessData("채팅방 생성", roomData);
     }
 

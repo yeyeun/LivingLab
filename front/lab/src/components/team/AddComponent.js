@@ -121,7 +121,7 @@ const AddComponent = () => {
     formData.append('teamHit', team.teamHit);
     const response = await postAddTeam(formData);
     const createRequest = { teamNo: response.teamNo };
-    await postCreateRoom(formData.get('id'), createRequest);
+    await postCreateRoom(formData.get('id'), formData.get('title'), createRequest);
     setResult('게시글이 등록되었습니다');
   };
   
