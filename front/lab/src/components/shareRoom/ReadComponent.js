@@ -89,7 +89,7 @@ const closeInfoModal = () => {
     setInfo(null);
   };
 
-
+// 좋아요 버튼 클릭
 const handleLikeClick = () => {
     if (!loginState.id) {
         setInfo('로그인 후 이용 가능합니다');
