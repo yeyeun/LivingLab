@@ -78,10 +78,12 @@ const ListComponent = ({ search, sort }) => {
   };
 
   useEffect(() => {
-    getUser(ino).then((data) => {
-      setUser(data);
-    });
-  }, [ino]);
+    if(email){
+      getUser(ino).then((data) => {
+        setUser(data);
+      });
+    }
+  }, [ino, email]);
 
   useEffect(() => {
     getList({ page, size }, search, sort, user.latitude, user.longitude).then((data) => {
