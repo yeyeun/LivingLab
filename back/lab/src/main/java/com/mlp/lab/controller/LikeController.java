@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mlp.lab.dto.like.LikeBuyDto;
+import com.mlp.lab.dto.like.LikeCommDto;
 import com.mlp.lab.dto.like.LikeMarketDto;
 import com.mlp.lab.dto.like.LikeRoomDto;
 import com.mlp.lab.dto.like.LikeTeamDto;
@@ -30,7 +31,7 @@ public class LikeController {
     }
 
     @DeleteMapping("/buy/{likeNo}") // 좋아요 -1
-    public void unlikeBuy(@PathVariable(name = "likeNo") long likeNo) {
+    public void unlikeBuy(@PathVariable(name = "likeNo") Long likeNo) {
         likeService.deleteBuy(likeNo);
     }
 
@@ -52,7 +53,7 @@ public class LikeController {
     }
 
     @DeleteMapping("/team/{likeNo}") // 좋아요 -1
-    public void unlikeTeam(@PathVariable(name = "likeNo") long likeNo) {
+    public void unlikeTeam(@PathVariable(name = "likeNo") Long likeNo) {
         likeService.deleteTeam(likeNo);
     }
 
@@ -74,7 +75,7 @@ public class LikeController {
     }
 
     @DeleteMapping("/market/{likeNo}") // 좋아요 -1
-    public void unlikeMarket(@PathVariable(name = "likeNo") long likeNo) {
+    public void unlikeMarket(@PathVariable(name = "likeNo") Long likeNo) {
         likeService.deleteMarket(likeNo);
     }
 
@@ -109,6 +110,23 @@ public class LikeController {
     @GetMapping("/shareRoom") // 좋아요 정보 조회
     public LikeRoomDto likeInfoRoom(@RequestParam(value = "roomNo") Integer roomNo, @RequestParam(value = "id") Long id) {
         return likeService.readRoom(roomNo, id);
+    }
+
+    /* ===============커뮤니티=============== */
+
+    @PostMapping("/comm") // 좋아요 +1
+    public void likeComm(@RequestBody LikeCommDto likeCommDto) {
+        likeService.addComm(likeCommDto);
+    }
+    
+    @DeleteMapping("/comm/{likeNo}") // 좋아요 -1
+    public void unlikeComm(@PathVariable(name = "likeNo") Long likeNo) {
+        likeService.deleteComm(likeNo);
+    }
+    
+    @GetMapping("/comm") // 좋아요 정보 조회
+    public LikeCommDto likeInfoComm(@RequestParam(value = "commNo") Long commNo, @RequestParam(value = "id") Long id) {
+        return likeService.readComm(commNo, id);
     }
 
 }

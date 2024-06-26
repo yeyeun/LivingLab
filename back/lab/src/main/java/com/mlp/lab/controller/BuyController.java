@@ -19,6 +19,7 @@ import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.entity.Buy;
 import com.mlp.lab.dto.BuyDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.service.BuyService;
 import com.mlp.lab.util.CustomFileUtilBuy;
 
@@ -122,4 +123,10 @@ public class BuyController {
     public void decrease(@PathVariable(name = "buyNo") Long buyNo) {
         buyService.decrease(buyNo);
     }
+
+    @GetMapping("/mylist/{id}") // 작성한 게시물 조회 (3개)
+    public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
+        return buyService.mylist(id);
+    }
+
 }

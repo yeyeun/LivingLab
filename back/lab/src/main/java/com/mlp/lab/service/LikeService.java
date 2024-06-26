@@ -7,14 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mlp.lab.dto.like.LikeBuyDto;
+import com.mlp.lab.dto.like.LikeCommDto;
 import com.mlp.lab.dto.like.LikeMarketDto;
 import com.mlp.lab.dto.like.LikeRoomDto;
 import com.mlp.lab.dto.like.LikeTeamDto;
 import com.mlp.lab.entity.like.LikeBuy;
+import com.mlp.lab.entity.like.LikeCommunity;
 import com.mlp.lab.entity.like.LikeMarket;
 import com.mlp.lab.entity.like.LikeShareRoom;
 import com.mlp.lab.entity.like.LikeTeam;
 import com.mlp.lab.repository.like.LikeBuyRepository;
+import com.mlp.lab.repository.like.LikeCommRepository;
 import com.mlp.lab.repository.like.LikeMarketRepository;
 import com.mlp.lab.repository.like.LikeRoomRepository;
 import com.mlp.lab.repository.like.LikeTeamRepository;
@@ -30,6 +33,7 @@ public class LikeService {
     private final LikeMarketRepository likeMarketRepository;
     private final LikeTeamRepository likeTeamRepository;
     private final LikeRoomRepository likeRoomRepository;
+    private final LikeCommRepository likeCommRepository;
 
     /* ===============공동구매=============== */ 
 
@@ -133,6 +137,25 @@ public class LikeService {
         return likeRoomDto;
     }
 
+    /* ===============커뮤니티=============== */ 
 
+    public void addComm(LikeCommDto likeCommDto){
+        LikeCommunity likeCommunity = modelMapper.map(likeCommDto, LikeCommunity.class);
+        likeCommRepository.save(likeCommunity);
+    }
+
+    public void deleteComm(long likeNo) {
+        likeCommRepository.deleteById(likeNo);
+    }
+
+    public LikeCommDto readComm(Long commNo, Long id) {
+        Optional<LikeCommunity> result = likeCommRepository.findLike(commNo,id);
+        LikeCommunity likeCommunity = result.orElse(null);
+        if(likeCommunity == null){
+            return null;
+        }
+        LikeCommDto likeCommDto = modelMapper.map(likeCommunity, LikeCommDto.class);
+        return likeCommDto;
+    }
 
 }

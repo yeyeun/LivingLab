@@ -2,6 +2,9 @@ package com.mlp.lab.entity.like;
 
 import org.springframework.transaction.annotation.Transactional;
 
+
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mlp.lab.entity.ShareRoom;
 import com.mlp.lab.entity.User;
 
@@ -39,6 +42,7 @@ public class LikeShareRoom {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "room_roomNo")
+    @JsonBackReference
     private ShareRoom shareRoom;
     
 }

@@ -2,6 +2,7 @@ package com.mlp.lab.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.BuyDto;
+import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.BuyImage;
 import com.mlp.lab.repository.BuyRepository;
@@ -222,6 +224,22 @@ public class BuyService {
         Buy buy = result.orElseThrow();
         buy.setBuyHit(buy.getBuyHit() - 1);
         buyRepository.save(buy);
+    }
+
+    public List<MyActivityDto> mylist(Long id) {
+        PageRequest pageRequest = PageRequest.of(0,3);
+        Page<Buy> result = buyRepository.findByUser(id, pageRequest);
+
+        List<MyActivityDto> dtoList = result.getContent().stream().map(buy -> {
+            MyActivityDto dto = new MyActivityDto();
+            dto.setCategory(buy.getBuyCategory());
+            dto.setRegDate(buy.getCreatedDate());
+            dto.setTitle(buy.getTitle());
+            dto.setNo(buy.getBuyNo());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return dtoList;
     }
 
 }

@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ListComponent from "../../../components/community/help/ListComponent";
-import useCustomReview from "../../../hooks/useCustomReview";
+import useCustomHelp from "../../../hooks/useCustomHelp";
 import ResultModal from '../../../components/common/ResultModal';
 
 
 const ListPage = () => {
-  const { moveToAdd } = useCustomReview();
+  const { moveToAdd } = useCustomHelp();
   const [addResultModal, setAddResultModal] = useState(null);
   const navigate = useNavigate();
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보

@@ -53,3 +53,9 @@ export const getLatestShareRoom = async (pageParam) => {
   const res = await axios.get(`${prefix}/latest`, { params: { page: page, size: size } });
   return res.data;
 }
+
+/* 마이페이지 내가 작성한 글 조회 */
+export const myList = async (id) => {
+  const res = await axios.get(`${prefix}/mylist/${id}`);
+  return res.data;
+}

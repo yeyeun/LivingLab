@@ -65,15 +65,6 @@ public class User {
     @Column(name = "profile_image")
     private String profileImage;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<LikeBuy> likeBuys;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<LikeTeam> likeTeams;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<LikeMarket> likeMarkets;
-
     // static으로 만들어 클래스를 만들지 않아도 사용가능
     public static User DtoToEntity(UserDto userDto) { // 화면에서 받은 dto를 entity로
         ModelMapper modelMapper = new ModelMapper();

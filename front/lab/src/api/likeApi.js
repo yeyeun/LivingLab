@@ -115,3 +115,24 @@ export const likeInfoRoom = async(roomNo, id) => {
     return res.data;
 };
 
+/* ============커뮤니티============== */
+
+export const likeComm = async(likeComm) => {
+    const res = await axios.post(`${prefix}/comm`,likeComm);
+    return res.data;
+};
+
+export const unlikeComm = async(likeNo) => {
+    const res = await axios.delete(`${prefix}/comm/${likeNo}`);
+    return res.data;
+};
+
+export const likeInfoComm = async(commNo, id) => {
+    const res = await axios.get(`${prefix}/comm`,{
+        params : {
+            commNo: commNo,
+            id: id
+        }
+    });
+    return res.data;
+};

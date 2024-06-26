@@ -1,10 +1,8 @@
-package com.mlp.lab.entity;
-
-import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.CreatedDate;
+package com.mlp.lab.entity.like;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.mlp.lab.entity.Community;
+import com.mlp.lab.entity.User;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,26 +15,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "reply")
-public class Reply {
+@Table(name = "likebuy")
+public class LikeCommunity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long replyNo;
-
-    @Column(name = "content", length = 50)
-    private String content;
+    private Long likeNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "community_commNo")
     @JsonBackReference
     private Community community;
-
-    @CreatedDate
-    @Column(name = "regDate", nullable = false, updatable = false)
-    private LocalDateTime regDate;
+    
 }
