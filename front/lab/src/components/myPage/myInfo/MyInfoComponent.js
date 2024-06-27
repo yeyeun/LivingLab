@@ -3,8 +3,6 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { API_SERVER_HOST, getUser } from '../../../api/userApi';
-import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 
 const initState = {
   id: 0,
@@ -21,8 +19,7 @@ const initState = {
 
 const host = API_SERVER_HOST;
 
-const MyInfoComponent = ({ id }) => {
-  const location = useLocation(); // 회원정보 수정에서 넘어온 상태값
+const MyInfoComponent = () => {
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
   const ino = loginInfo.id;
