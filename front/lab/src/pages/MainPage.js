@@ -44,16 +44,19 @@ const MainPage = () => {
       <hr className="vertical-line" />
 
       <BasicLayout>
-        <div className="main-container-top mb-10">
-          <img className="main-image" src={img_main} alt="MainImage" />
-          <div className="main-image-text">
-            <TypingComponent />
-            {/* <hr className="weather-hr "/> */}
-            </div>
-          
-          <div className="weather-container "> 
-            <WeatherComponent/>
 
+        <div className="main-container-top mb-10">
+          <div className='main-image-box'>
+            <img className="main-image" src={img_main} alt="MainImage" />
+            <div className="main-image-text">
+              <TypingComponent />
+              {/* <hr className="weather-hr "/> */}
+            </div>
+
+            <div className="weather-container ">
+              <WeatherComponent />
+
+            </div>
           </div>
         </div>
 
