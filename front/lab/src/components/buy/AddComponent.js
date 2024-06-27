@@ -81,7 +81,7 @@ const AddComponent = () => {
   // 글쓰기 등록하기 버튼
   const handleClickAdd = async () => {
     try {
-      await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
+      //await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
 
       if (!buy.buyCategory) {
         setAddResultModal('카테고리를 선택해주세요');
