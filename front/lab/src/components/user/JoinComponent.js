@@ -14,7 +14,7 @@ const initState = {
   nickname: '',
   addr: '',
   detailAddr: '',
-  files: [], // files 초기값 추가
+  file: null, // 파일 객체 초기값
 };
 
 function JoinComponent(props) {
@@ -45,7 +45,7 @@ function JoinComponent(props) {
   const handleFileChange = (e) => {
     setUser({
       ...user,
-      files: e.target.files,
+      file: e.target.files[0], //단일 파일
     });
   };
 
@@ -57,12 +57,8 @@ function JoinComponent(props) {
       return;
     }
 
-    const files = imgRef.current.files;
     const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i]);
-    }
-
+    formData.append('file', user.file);
     formData.append('email', user.email);
     formData.append('pwd', user.pwd);
     formData.append('confirmPwd', user.confirmPwd);

@@ -18,9 +18,9 @@ export const loginPost = async (loginParam) => {
 };
 
 // 회원가입(FormData 객체를 사용하여 파일과 JSON 데이터를 분리하여 전송)
-export const joinUser = async (user) => {
+export const joinUser = async (formdata) => {
   const header = {headers:{"Content-Type":"multipart/form-data"}};
-  const res = await axios.post(`${host}/join`, user, header);
+  const res = await axios.post(`${host}/join`, formdata, header);
   return res.data;
 };
 

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,8 +52,8 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseDto<Object> join(UserDto userDto) {
-        String uploadFileNames = fileUtil.saveFile(userDto.getFile());
+    public ResponseDto<Object> join(@ModelAttribute UserDto userDto, @RequestParam("file") MultipartFile file) {
+        String uploadFileNames = fileUtil.saveFile(file);
         userDto.setUploadFileName(uploadFileNames);
         userService.add(userDto);
         return ResponseDto.setSuccess("회원가입 완료");
