@@ -7,7 +7,9 @@ import ModalComponent from '../common/ModalComponent';
 import ResultModal from '../common/ResultModal';
 import InfoModal from '../common/InfoModal';
 import { chatUserInfoBuy, exitChatRoomBuy } from '../../api/chatApi';
-import { getUser } from '../../api/userApi'
+import { getUser, API_SERVER_HOST } from '../../api/userApi'
+
+const host = API_SERVER_HOST;
 
 const PartComponent = ({ buyNo }) => {
 
@@ -102,7 +104,7 @@ const PartComponent = ({ buyNo }) => {
           <div>
             {displayUsers.map((user) => (
               <div className="flex p-5" key={user.id}>
-                <img alt="Profile_Img" src={`http://localhost:8282/api/user/userProfileImage?email=${user.email}`} className="rounded-full size-10 mr-2" />
+                <img alt="Profile_Img" src={`${host}/api/user/display/${user.profileImage}`} className="rounded-full size-10 mr-2" />
                 {user.nickname}
               </div>
             ))}
