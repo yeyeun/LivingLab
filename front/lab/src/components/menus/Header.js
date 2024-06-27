@@ -33,9 +33,13 @@ const Header = () => {
   };
 
   return (
-    <nav id="navbar" className="z-50 flex-wrap sticky top-0 relative flex w-full py-2.5 shadow" style={{ backgroundColor: 'rgba(255, 255, 255, 0.97)' } }>
+    <nav id="navbar" className="z-50 flex-wrap sticky top-0 relative flex w-full py-2.5 shadow" style={{ backgroundColor: 'rgba(255, 255, 255, 0.97)' }}>
       <div className="flex w-full flex-wrap items-center justify-between px-3 ">
-        <img src={Logo} alt="LOGO" className="w-60" />
+        <Link to={'/'}>
+
+          <img src={Logo} alt="LOGO" className="w-60 m-2" />
+        </Link>
+
         <ul className="flex flex-row p-3 list-none header-fontsize items-center">
           <li className="px-5 pl-5">
             <Link to={'/'} className={getLinkClass('/')}>
@@ -120,7 +124,7 @@ const Header = () => {
                         focus:outline-none focus:shadow-outline"
               >
                 <Link to={'/myPage/activity'}>
-                  <div className="flex items-center p-2 text-white rounded-lg">
+                  <div className="flex items-center p-2 text-white rounded-sm">
                     <FontAwesomeIcon
                       icon={faUser}
                       className="flex-shrink-0 w-5 h-5 mr-2 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
