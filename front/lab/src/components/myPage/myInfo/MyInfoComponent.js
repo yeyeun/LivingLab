@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { API_SERVER_HOST, getUser } from '../../../api/userApi';
