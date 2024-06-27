@@ -86,7 +86,7 @@ const ListComponent = ({ search, sort }) => {
   }, [ino, email]);
 
   useEffect(() => {
-    getList({ page, size }, search, sort, user.latitude, user.longitude).then((data) => {
+    getList({ page, size }, search, sort, selectedCategory, user.latitude, user.longitude).then((data) => {
       const updatedData = {
         ...data,
         dtoList: data.dtoList.map((buy) => ({
@@ -97,7 +97,7 @@ const ListComponent = ({ search, sort }) => {
       console.log(updatedData);
       setServerData(updatedData);
     });
-  }, [page, size, search, sort, user.latitude, user.longitude]);
+  }, [page, size, search, sort, selectedCategory, user.latitude, user.longitude]);
 
   return (
     <div>
@@ -121,7 +121,6 @@ const ListComponent = ({ search, sort }) => {
 
       {serverData.dtoList.length > 0 ? (
         serverData.dtoList
-          .filter((buy) => !selectedCategory || buy.buyCategory === selectedCategory)
           .map((buy) => (
             <div key={buy.buyNo} className="w-full mb-4 cursor-pointer" onClick={() => moveToRead(buy.buyNo)}>
               <div className="flex flex-col items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100">

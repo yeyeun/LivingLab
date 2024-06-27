@@ -7,9 +7,9 @@ export const getOne = async (buyNo) => {
   return res.data;
 };
 
-export const getList = async (pageParam, search, sort, latitude, longitude) => {
+export const getList = async (pageParam, search, sort, category, latitude, longitude) => {
   const { page, size } = pageParam;
-  const res = await axios.get(`${prefix}/list`, { params: { page: page, size: size, search: search, sort: sort, latitude: latitude, longitude: longitude } });
+  const res = await axios.get(`${prefix}/list`, { params: { page: page, size: size, search: search, sort: sort, category:category, latitude: latitude, longitude: longitude } });
   return res.data;
 };
 

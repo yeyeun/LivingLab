@@ -34,8 +34,9 @@ public class MarketController {
     @GetMapping("/list") // 목록조회(검색기능 포함)
     public PageResponseDto<MarketDto> List(PageRequestDto pageRequestDto,
             @RequestParam(required = false, value = "search") String search,
-            @RequestParam(required = false, value = "sort") String sort) {
-        return marketService.list(pageRequestDto, search, sort);
+            @RequestParam(required = false, value = "sort") String sort,
+            @RequestParam(required = false, value = "category") Character category) {
+        return marketService.list(pageRequestDto, search, sort, category);
     }
 
     @GetMapping("/read/{marketNo}") // 상세조회

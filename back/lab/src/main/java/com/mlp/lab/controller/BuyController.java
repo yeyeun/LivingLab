@@ -36,9 +36,10 @@ public class BuyController {
     public PageResponseDto<BuyDto> List(PageRequestDto pageRequestDto,
             @RequestParam(required = false, value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort,
+            @RequestParam(required = false, value = "category") Character category,
             @RequestParam(required = false, value = "latitude") double latitude,
             @RequestParam(required = false, value = "longitude") double longitude) {
-        return buyService.list(pageRequestDto, search, sort, latitude, longitude);
+        return buyService.list(pageRequestDto, search, sort, category, latitude, longitude);
     }
 
     @GetMapping("/read/{buyNo}") // 상세조회

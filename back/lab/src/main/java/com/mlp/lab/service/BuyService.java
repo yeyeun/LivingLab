@@ -31,7 +31,8 @@ public class BuyService {
     private final ChatRoomRepository chatRoomRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort, double latitude,
+    public PageResponseDto<BuyDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category,
+            double latitude,
             double longitude) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
@@ -39,7 +40,14 @@ public class BuyService {
                 Sort.by("buyNo").descending());
 
         Page<Object[]> result = null;
-        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
+
+        if (category != null && (search != null && !search.isEmpty())) {
+            // 카테고리와 검색 조건이 모두 지정된 경우
+            result = buyRepository.selectCategorySearchList(category, search, pageable);
+        } else if (category != null) {
+            // 카테고리만 지정된 경우
+            result = buyRepository.selectCategoryList(category, pageable);
+        } else if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
             result = buyRepository.selectList(pageable);
         } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색
             result = buyRepository.selectSearchList(search, pageable);
@@ -230,7 +238,7 @@ public class BuyService {
     }
 
     public List<MyActivityDto> mylist(Long id) {
-        PageRequest pageRequest = PageRequest.of(0,3);
+        PageRequest pageRequest = PageRequest.of(0, 3);
         Page<Buy> result = buyRepository.findByUser(id, pageRequest);
 
         List<MyActivityDto> dtoList = result.getContent().stream().map(buy -> {

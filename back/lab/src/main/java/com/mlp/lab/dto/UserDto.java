@@ -31,11 +31,8 @@ public class UserDto { // 마이페이지 화면에서 받을 데이터
     private double longitude; // 경도
     private String message;
 
-    @Builder.Default
-    private List<MultipartFile> files = new ArrayList<>(); // 서버에 저장되는 실제 파일 데이터
-
-    @Builder.Default
-    private List<String> uploadFileNames = new ArrayList<>(); // 데이터베이스에 저장될 파일 이름
+    private MultipartFile file; // 서버에 저장되는 실제 파일 데이터
+    private String uploadFileName; // 데이터베이스에 저장될 파일 이름
 
     public Map<String, Object> getClaims() {
         Map<String, Object> dataMap = new HashMap<>();

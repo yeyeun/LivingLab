@@ -31,14 +31,21 @@ public class TeamService {
     private final ChatRoomRepository chatRoomRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto, String search, String sort) {
+    public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
                 Sort.by("teamNo").descending());
 
         Page<Object[]> result = null;
-        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
+
+        if (category != null && (search != null && !search.isEmpty())) {
+            // 카테고리와 검색 조건이 모두 지정된 경우
+            result = teamRepository.selectCategorySearchList(category, search, pageable);
+        } else if (category != null) {
+            // 카테고리만 지정된 경우
+            result = teamRepository.selectCategoryList(category, pageable);
+        } else if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
             result = teamRepository.selectList(pageable);
         } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색
             result = teamRepository.selectSearchList(search, pageable);
@@ -69,20 +76,21 @@ public class TeamService {
                 result = teamRepository.searchLikeList(search, pageable);
             }
         }
+
         List<TeamDto> dtoList = result.get().map(arr -> {
             Team team = (Team) arr[0];
             TeamImage teamImage = (TeamImage) arr[1];
-            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+            String defaultImageStr = "default.png"; // 기본 이미지 파일명 설정
 
             TeamDto teamDto = TeamDto.builder()
                     .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
                     .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
                     .deadline(team.getDeadline()).nickname(team.getNickname()).teamHit(team.getTeamHit()).build();
-            
-            if(teamImage != null){
+
+            if (teamImage != null) {
                 String imageStr = teamImage.getFileName();
                 teamDto.setUploadFileNames(List.of(imageStr));
-            }else{
+            } else {
                 teamDto.setUploadFileNames(List.of(defaultImageStr));
             }
             return teamDto;
@@ -112,7 +120,7 @@ public class TeamService {
         return teamDto;
     }
 
-    public Team get(Long teamNo){
+    public Team get(Long teamNo) {
         Team team = teamRepository.findByTeamNo(teamNo);
         return team;
     }
@@ -179,19 +187,19 @@ public class TeamService {
     public void increase(Long teamNo) { // 좋아요 +1
         Optional<Team> result = teamRepository.findById(teamNo.intValue());
         Team team = result.orElseThrow();
-        team.setTeamHit(team.getTeamHit()+1);
+        team.setTeamHit(team.getTeamHit() + 1);
         teamRepository.save(team);
     }
 
     public void decrease(Long teamNo) { // 좋아요 -1
         Optional<Team> result = teamRepository.findById(teamNo.intValue());
         Team team = result.orElseThrow();
-        team.setTeamHit(team.getTeamHit()-1);
+        team.setTeamHit(team.getTeamHit() - 1);
         teamRepository.save(team);
     }
 
     public List<MyActivityDto> mylist(Long id) {
-        PageRequest pageRequest = PageRequest.of(0,3);
+        PageRequest pageRequest = PageRequest.of(0, 3);
         Page<Team> result = teamRepository.findByUser(id, pageRequest);
 
         List<MyActivityDto> dtoList = result.getContent().stream().map(team -> {

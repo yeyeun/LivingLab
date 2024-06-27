@@ -30,14 +30,19 @@ public class MarketService {
     private final UserRepository userRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<MarketDto> list(PageRequestDto pageRequestDto, String search, String sort) {
+    public PageResponseDto<MarketDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
                 Sort.by("marketNo").descending());
 
         Page<Object[]> result = null;
-        if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
+
+        if (category != null && (search != null && !search.isEmpty())) { // 카테고리와 검색 조건이 모두 지정된 경우
+            result = marketRepository.selectCategorySearchList(category, search, pageable);
+        } else if (category != null) {  // 카테고리만 지정된 경우
+            result = marketRepository.selectCategoryList(category, pageable);
+        } else if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
             result = marketRepository.selectList(pageable);
         } else if ((search != null && !search.isEmpty()) && (sort == null || sort.isEmpty())) { // 검색
             result = marketRepository.selectSearchList(search, pageable);
