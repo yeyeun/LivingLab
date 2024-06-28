@@ -39,6 +39,9 @@ public class ChatRoom {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "type")
+    private String type;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "buy_no", referencedColumnName = "buy_no", nullable = true)
     private Buy buy;
@@ -68,9 +71,10 @@ public class ChatRoom {
     private List<User> reader = new ArrayList<>();
 
     @Builder
-    public ChatRoom(Long chatroomId, String title, Buy buy, Team team, Market market, ShareRoom shareRoom, User writer, List<User> reader) {
+    public ChatRoom(Long chatroomId, String title, String type, Buy buy, Team team, Market market, ShareRoom shareRoom, User writer, List<User> reader) {
         this.chatroomId = chatroomId;
         this.title = title;
+        this.type = type;
         this.buy = buy;
         this.team = team;
         this.market = market;
