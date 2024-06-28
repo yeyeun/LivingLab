@@ -16,7 +16,6 @@ import com.mlp.lab.dto.CommunityDto;
 import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
-import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Community;
 import com.mlp.lab.repository.CommunityRepository;
 import com.mlp.lab.repository.UserRepository;

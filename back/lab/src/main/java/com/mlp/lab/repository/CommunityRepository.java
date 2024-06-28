@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Community;
 
 public interface CommunityRepository extends JpaRepository<Community, Long> {
