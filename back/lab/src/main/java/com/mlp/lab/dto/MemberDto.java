@@ -22,7 +22,8 @@ public class MemberDto extends User {
   private String addr;
   // private boolean social;
 
-  // private List<String> roleNames = new ArrayList<>();
+
+  private List<String> roleNames = new ArrayList<>();
 
   public MemberDto(Long id, String email, String pwd, String name, String phone, String nickname, String addr,
       List<String> roleNames) {
