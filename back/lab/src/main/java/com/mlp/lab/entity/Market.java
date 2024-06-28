@@ -45,6 +45,12 @@ public class Market extends BaseTimeEntity{
     @Column(name = "location")
     private String location;
 
+    @Column(name = "latitude")
+    private double latitude; // 위도
+
+    @Column(name = "longitude")
+    private double longitude; // 경도
+    
     @Column(name = "marketHit")
     private Integer marketHit;
 

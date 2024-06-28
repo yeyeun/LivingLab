@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import iconNext from '../../resources/images/icon-next.png';
 import iconEdit from '../../resources/images/iconEdit.png';
 import { postCreateRoom } from '../../api/chatApi';
+
 const initState = {
   id: 0,
   nickname: '',
@@ -21,6 +22,7 @@ const initState = {
   buyHit: 0,
   files: [],
 };
+
 const AddComponent = () => {
   const { moveToList } = useCustomMove();
   const [postImageFiles, setPostImageFiles] = useState([]); // 이미지 파일 프리뷰
@@ -31,7 +33,6 @@ const AddComponent = () => {
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
   const ino = loginInfo.id;
-  // const [addr, setAddr] = useState('');
   const [location, setLocation] = useState(null); // 현재 위치를 저장할 상태
 
   useEffect(() => {
@@ -56,11 +57,13 @@ const AddComponent = () => {
     }));
     setPostImageFiles(imagePreviews);
   };
+
   const handleRemoveImage = (index) => {
     // 이미지 제거
     setPostImageFiles((postFiles) => postFiles.filter((_, i) => i !== index));
     updateFileInput(index);
   };
+
   const updateFileInput = (removeIndex) => {
     // 입력된 파일 업데이트
     const dataTransfer = new DataTransfer();
@@ -73,15 +76,38 @@ const AddComponent = () => {
     });
     imgRef.current.files = dataTransfer.files; //제거된 파일 반영
   };
+
   const handleChangeBuy = (e) => {
     const { name, value } = e.target;
     setBuy((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 글쓰기 등록하기 버튼
+  const handleGeocode = () => {
+    return new Promise((resolve, reject) => {
+      const { kakao } = window;
+      const geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(buy.location, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          setLocation({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
+          resolve({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
+        } else {
+          setAddResultModal('주소 변환에 실패했습니다.');
+          reject(new Error('Failed to geocode the address.'));
+        }
+      });
+    });
+  };
+
   const handleClickAdd = async () => {
     try {
-      //await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
+      const { latitude, longitude } = await handleGeocode();
 
       if (!buy.buyCategory) {
         setAddResultModal('카테고리를 선택해주세요');
@@ -97,8 +123,6 @@ const AddComponent = () => {
       }
       const time = new Date();
       const timeElement = new Date(buy.deadline);
-      console.log('time:', time);
-      console.log('timeElement:', timeElement);
       if (time > timeElement) {
         setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
         return;
@@ -112,8 +136,8 @@ const AddComponent = () => {
       formData.append('nickname', user.nickname);
       formData.append('title', buy.title);
       formData.append('location', buy.location);
-      formData.append('latitude', location.latitude); // 위도
-      formData.append('longitude', location.longitude); // 경도
+      formData.append('latitude', latitude); // 위도
+      formData.append('longitude', longitude); // 경도
       formData.append('content', buy.content);
       formData.append('buyCategory', buy.buyCategory);
       formData.append('max', buy.max);
@@ -126,6 +150,7 @@ const AddComponent = () => {
       setResult('게시글이 등록되었습니다');
     } catch (error) {
       console.error('Error adding post:', error);
+      setAddResultModal('게시글 등록에 실패했습니다.');
     }
   };
 
@@ -136,31 +161,6 @@ const AddComponent = () => {
 
   const setAddress = (address) => {
     setBuy((prev) => ({ ...prev, location: address }));
-  };
-
-  // 주소검색 결과주소를 좌표로 변환해서 location에 저장
-  const handleGeocode = () => {
-    return new Promise((resolve, reject) => {
-      const { kakao } = window;
-      const geocoder = new kakao.maps.services.Geocoder();
-      geocoder.addressSearch(buy.location, function (result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-          setLocation({
-            latitude: coords.getLat(),
-            longitude: coords.getLng(),
-          });
-          resolve();
-          if (!location || location.latitude === 0 || location.longitude === 0) {
-            setAddResultModal('거래 장소가 등록되었습니다!');
-            return;
-          }
-        } else {
-          setAddResultModal('Failed to geocode the address.');
-          reject(new Error('Failed to geocode the address.'));
-        }
-      });
-    });
   };
 
   const handleInputValidation = (e) => {
@@ -215,7 +215,7 @@ const AddComponent = () => {
         </div>
         <div className="col-start-5 col-span-1">
           <label htmlFor="max" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-            <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;모집인원
+            <img src={iconEdit} className="w-3 하-3" alt="edit"></img>&nbsp;모집인원
           </label>
           <input
             type="number"
@@ -231,7 +231,7 @@ const AddComponent = () => {
         </div>
         <div className="col-start-6 col-span-2">
           <label htmlFor="deadline" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-            <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;모집마감시간
+            <img src={iconEdit} className="w-3 하-3" alt="edit"></img>&nbsp;모집마감시간
           </label>
           <input
             type="datetime-local"
@@ -246,7 +246,7 @@ const AddComponent = () => {
         </div>
         <div className="col-start-2 col-span-6">
           <label htmlFor="title" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-            <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;제목
+            <img src={iconEdit} className="w-3 하-3" alt="edit"></img>&nbsp;제목
           </label>
           <input
             type="text"
@@ -260,15 +260,12 @@ const AddComponent = () => {
         </div>
         <div className="col-start-2 col-span-6">
           <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
-            <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;거래장소
+            <img src={iconEdit} className="w-3 하-3" alt="edit"></img>&nbsp;거래장소
           </label>
           <div className="w-1/5 ml-1 text-base">
             <PostComponent setAddress={setAddress}></PostComponent>
           </div>
           <div className="flex">
-            {/* <div className="w-1/5 text-base">
-              <PostComponent setAddress={setAddress}></PostComponent>
-            </div> */}
             <div className="w-4/5 pl-1">
               <input
                 className="w-full h-10 pl-2 rounded-md border border-stone-400 placeholder:text-base pb-1"
@@ -276,18 +273,14 @@ const AddComponent = () => {
                 type="text"
                 placeholder="주소(우편번호 및 도로명 검색)"
                 value={buy.location}
+                onChange={handleChangeBuy}
               />
-            </div>
-            <div className="w-1/5">
-              <button className="text-base p-2 w-full text-white bg-mainColor ml-1 rounded-md  hover:bg-emerald-600" onClick={handleGeocode}>
-                장소 등록
-              </button>
             </div>
           </div>
         </div>
         <div className="col-start-2 col-span-6">
           <label htmlFor="content" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-            <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;내용
+            <img src={iconEdit} className="w-3 하-3" alt="edit"></img>&nbsp;내용
           </label>
           <textarea
             name="content"
@@ -315,4 +308,5 @@ const AddComponent = () => {
     </div>
   );
 };
+
 export default AddComponent;

@@ -29,7 +29,7 @@ const AddComponent = () => {
   const [result, setResult] = useState(null);
   const [addResultModal, setAddResultModal] = useState(null);
   const imgRef = useRef();
-
+  const [location, setLocation] = useState(null); // 현재 위치를 저장할 상태
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
   const ino = loginInfo.id;
@@ -81,48 +81,82 @@ const AddComponent = () => {
     const { name, value } = e.target;
     setTeam((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handleGeocode = () => {
+    return new Promise((resolve, reject) => {
+      const { kakao } = window;
+      const geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(team.location, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          setLocation({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
+          resolve({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
+        } else {
+          setAddResultModal('주소 변환에 실패했습니다.');
+          reject(new Error('Failed to geocode the address.'));
+        }
+      });
+    });
+  };
+
   const handleClickAdd = async () => {
-    if (!team.teamCategory) {
-      setAddResultModal('카테고리를 선택해주세요');
-      return;
-    }
-    if (!team.title || !team.content) {
-      setAddResultModal('제목과 내용을 입력해주세요');
-      return;
-    }
-    if(!team.deadline || !team.location){
-      setAddResultModal('마감시간과 모임장소를 입력해주세요');
-      return;
-    }
-    const time = new Date();
-    const timeElement = new Date(team.deadline);
-    console.log("time:",time);
-    console.log("timeElement:",timeElement);
-    if(time > timeElement){
-      setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
-      return;
-    }
 
-    const files = imgRef.current.files;
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i]);
-    }
+    try{
+      const { latitude, longitude } = await handleGeocode();    
+    
+      if (!team.teamCategory) {
+        setAddResultModal('카테고리를 선택해주세요');
+        return;
+      }
+      if (!team.title || !team.content) {
+        setAddResultModal('제목과 내용을 입력해주세요');
+        return;
+      }
+      if(!team.deadline || !team.location){
+        setAddResultModal('마감시간과 모임장소를 입력해주세요');
+        return;
+      }
+      const time = new Date();
+      const timeElement = new Date(team.deadline);
+      console.log("time:",time);
+      console.log("timeElement:",timeElement);
+      if(time > timeElement){
+        setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
+        return;
+      }
 
-    formData.append('id', ino);
-    formData.append('nickname', user.nickname);
-    formData.append('title', team.title);
-    formData.append('location', team.location);
-    formData.append('content', team.content);
-    formData.append('teamCategory', team.teamCategory);
-    formData.append('max', team.max);
-    formData.append('current', team.current);
-    formData.append('deadline', team.deadline);
-    formData.append('teamHit', team.teamHit);
-    const response = await postAddTeam(formData);
-    const createRequest = { teamNo: response.teamNo };
-    await postCreateRoom(formData.get('id'), formData.get('title'), createRequest);
-    setResult('게시글이 등록되었습니다');
+      const files = imgRef.current.files;
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+          formData.append("files", files[i]);
+      }
+
+      formData.append('id', ino);
+      formData.append('nickname', user.nickname);
+      formData.append('title', team.title);
+      formData.append('location', team.location);
+      formData.append('latitude', latitude); // 위도
+      formData.append('longitude', longitude); // 경도
+      formData.append('content', team.content);
+      formData.append('teamCategory', team.teamCategory);
+      formData.append('max', team.max);
+      formData.append('current', team.current);
+      formData.append('deadline', team.deadline);
+      formData.append('teamHit', team.teamHit);
+      const response = await postAddTeam(formData);
+      const createRequest = { teamNo: response.teamNo };
+      await postCreateRoom(formData.get('id'), formData.get('title'), createRequest);
+      setResult('게시글이 등록되었습니다');
+    } catch (error){
+      console.error('Error adding post:', error);
+      setAddResultModal('게시글 등록에 실패했습니다.');
+    }  
   };
   
   const closeModal = () => {

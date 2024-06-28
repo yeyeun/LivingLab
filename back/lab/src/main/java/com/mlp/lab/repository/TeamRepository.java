@@ -60,4 +60,49 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     //마이페이지 내가 작성한 글
     @Query("SELECT t FROM Team t WHERE t.user.id = :id ORDER BY t.teamNo DESC")
     Page<Team> findByUser(@Param(value = "id") Long id, Pageable pageable);
+
+        // 거리순
+        @Query("SELECT t, ti, " +
+        "(6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', t.latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', t.longitude) - FUNCTION('radians', :longitude)) " +
+        "+ FUNCTION('sin', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('sin', FUNCTION('radians', t.latitude)))) AS distance " +
+        "FROM Team t " +
+        "LEFT JOIN t.imageList ti " +
+        "WHERE t.flag = false " +
+        "AND (ti.ord = 0 OR ti.ord IS NULL) " +
+        "AND (6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', t.latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', t.longitude) - FUNCTION('radians', :longitude)) " +
+        "+ FUNCTION('sin', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('sin', FUNCTION('radians', t.latitude)))) < 5 " +
+        "ORDER BY distance ASC")
+Page<Object[]> distanceList(
+        @Param("latitude") double latitude,
+        @Param("longitude") double longitude,
+        Pageable pageable);
+
+// 검색 + 거리순
+@Query("SELECT t, ti, " +
+        "(6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', t.latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', t.longitude) - FUNCTION('radians', :longitude)) " +
+        "+ FUNCTION('sin', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('sin', FUNCTION('radians', t.latitude)))) AS distance " +
+        "FROM Team t " +
+        "LEFT JOIN t.imageList ti " +
+        "WHERE t.flag = false " +
+        "AND (ti.ord = 0 OR ti.ord IS NULL) and t.title like %:title% " +
+        "AND (6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', t.latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', t.longitude) - FUNCTION('radians', :longitude)) " +
+        "+ FUNCTION('sin', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('sin', FUNCTION('radians', t.latitude)))) < 2 " +
+        "ORDER BY distance ASC")
+Page<Object[]> searchDistanceList(
+        @Param(value = "title") String title,
+        @Param("latitude") double latitude,
+        @Param("longitude") double longitude,
+        Pageable pageable);
 }
