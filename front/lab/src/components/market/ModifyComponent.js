@@ -31,6 +31,7 @@ const ModifyComponent = ({marketNo}) => {
     const [ market, setMarket ] = useState({...initState});
     const { moveToRead } = useCustomMove();
     const uploadRef = useRef();
+    const [location, setLocation] = useState(null); // 현재 위치를 저장할 상태
 
     useEffect(() => {
         getOne(marketNo).then(data => {
@@ -62,7 +63,10 @@ const ModifyComponent = ({marketNo}) => {
         setPreviewFiles(imagePreviews);
     }
 
-    const handleClickModify = (e) => {
+    const handleClickModify = async () => {
+      try {
+        const { latitude, longitude } = await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
+      
         //유효성 검사
         if (!market.title || !market.content){
             setAddResultModal("제목과 내용을 입력해주세요");
@@ -96,6 +100,8 @@ const ModifyComponent = ({marketNo}) => {
         formData.append("marketCategory",market.marketCategory);
         formData.append("nickname", market.nickname);
         formData.append("location", market.location);
+        formData.append('latitude', latitude); // 위도
+        formData.append('longitude', longitude); // 경도
         formData.append("max",market.max);
         formData.append("deadline",market.deadline);
         formData.append("uploadFileNames", market.uploadFileNames);
@@ -103,13 +109,40 @@ const ModifyComponent = ({marketNo}) => {
         // for (const x of formData.entries()){
         //     console.log(x);
         // }
-        modify(marketNo,formData);
+        await modify(marketNo,formData);
         setResult("게시글이 수정되었습니다");
+      } catch (error) {
+        console.error('Error Modifying post:', error);
+      } 
     }
     const closeModal = () => {
         setResult(null);
         moveToRead(marketNo);
     }
+
+    // 주소검색 결과주소를 좌표로 변환해서 location에 저장
+  const handleGeocode = () => {
+    return new Promise((resolve, reject) => {
+      const { kakao } = window;
+      const geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(market.location, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          setLocation({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
+          resolve({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
+        } else {
+          setAddResultModal('Failed to geocode the address.');
+          reject(new Error('Failed to geocode the address.'));
+        }
+      });
+    });
+  };
 
     //이미지 리스트에서 X버튼 눌렀을때
     const handleRemoveImage = (index, isPreview) => {

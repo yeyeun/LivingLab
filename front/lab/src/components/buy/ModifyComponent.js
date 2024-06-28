@@ -40,8 +40,10 @@ const ModifyComponent = ({ buyNo }) => {
   }, [buyNo]);
 
   const handleChangeBuy = (e) => {
-    buy[e.target.name] = e.target.value;
-    setBuy({ ...buy });
+    setBuy((prevBuy) => ({
+      ...prevBuy,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   // 이미지 변경
@@ -67,7 +69,7 @@ const ModifyComponent = ({ buyNo }) => {
   // 수정하기 버튼
   const handleClickModify = async () => {
     try {
-      await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
+      const { latitude, longitude } = await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
 
       //유효성 검사
       if (!buy.title || !buy.content) {
@@ -102,8 +104,8 @@ const ModifyComponent = ({ buyNo }) => {
       formData.append('buyCategory', buy.buyCategory);
       formData.append('nickname', buy.nickname);
       formData.append('location', buy.location);
-      formData.append('latitude', location.latitude); // 위도
-      formData.append('longitude', location.longitude); // 경도
+      formData.append('latitude', latitude); // 위도
+      formData.append('longitude', longitude); // 경도
       formData.append('max', buy.max);
       formData.append('deadline', buy.deadline);
       formData.append('uploadFileNames', buy.uploadFileNames);
@@ -117,6 +119,7 @@ const ModifyComponent = ({ buyNo }) => {
       console.error('Error Modifying post:', error);
     }
   };
+
   const closeModal = () => {
     setResult(null);
     moveToRead(buyNo);
@@ -134,7 +137,10 @@ const ModifyComponent = ({ buyNo }) => {
             latitude: coords.getLat(),
             longitude: coords.getLng(),
           });
-          resolve();
+          resolve({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
         } else {
           setAddResultModal('Failed to geocode the address.');
           reject(new Error('Failed to geocode the address.'));
@@ -152,8 +158,10 @@ const ModifyComponent = ({ buyNo }) => {
     } else {
       //기존에 업로드된 이미지인 경우
       const newUploadFileNames = buy.uploadFileNames.filter((_, i) => i !== index);
-      buy.uploadFileNames = newUploadFileNames;
-      setBuy({ ...buy });
+      setBuy((prevBuy) => ({
+        ...prevBuy,
+        uploadFileNames: newUploadFileNames,
+      }));
     }
   };
 
@@ -171,7 +179,10 @@ const ModifyComponent = ({ buyNo }) => {
   };
 
   const setAddress = (address) => {
-    setBuy((prev) => ({ ...prev, location: address }));
+    setBuy((prevBuy) => ({
+      ...prevBuy,
+      location: address,
+    }));
   };
 
   const handleInputValidation = (e) => {
@@ -295,11 +306,6 @@ const ModifyComponent = ({ buyNo }) => {
                 placeholder="주소(우편번호 및 도로명 검색)"
                 value={buy.location}
               />
-            </div>
-            <div className="w-1/5">
-              <button className="text-base p-2 w-full text-white bg-mainColor ml-1 rounded-md  hover:bg-emerald-600" onClick={handleGeocode}>
-                장소 등록
-              </button>
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -72,13 +73,13 @@ public class UserService {
     user.setName(userDto.getName());
     user.setPhone(userDto.getPhone());
     user.setNickname(userDto.getNickname());
-    // user.setPwd(passwordEncoder.encode(userDto.getPwd()));
     user.setPwd(userDto.getPwd());
     user.setAddr(userDto.getAddr());
     user.setDetailAddr(userDto.getDetailAddr());
     user.setLocation(userDto.getLocation());
     user.setLatitude(userDto.getLatitude()); // 위도
     user.setLongitude(userDto.getLongitude()); // 경도
+    user.setProfileImage(userDto.getUploadFileName());
 
     userRepository.save(user);
   }

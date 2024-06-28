@@ -28,6 +28,7 @@ const AddComponent = () => {
   const [result, setResult] = useState(null);
   const [addResultModal, setAddResultModal] = useState(null);
   const imgRef = useRef();
+  const [location, setLocation] = useState(null); // 현재 위치를 저장할 상태
 
   const [user, setUser] = useState(initState);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
@@ -76,58 +77,90 @@ const AddComponent = () => {
     imgRef.current.files = dataTransfer.files; //제거된 파일 반영
   };
 
+  const handleGeocode = () => {
+    return new Promise((resolve, reject) => {
+      const { kakao } = window;
+      const geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(market.location, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          setLocation({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
+          resolve({
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+          });
+        } else {
+          setAddResultModal('주소 변환에 실패했습니다.');
+          reject(new Error('Failed to geocode the address.'));
+        }
+      });
+    });
+  };
+
   const handleChangeMarket = (e) => {
     const { name, value } = e.target;
     setMarket((prev) => ({ ...prev, [name]: value }));
   };
   const handleClickAdd = async () => {
-    if (!market.marketCategory) {
-      setAddResultModal('카테고리를 선택해주세요');
-      return;
-    }
-    if (!market.title || !market.content) {
-      setAddResultModal('제목과 내용을 입력해주세요');
-      return;
-    }
-    if(!market.deadline || !market.location){
-      setAddResultModal('마감시간과 거래장소를 입력해주세요');
-      return;
-    }
-    const time = new Date();
-    const timeElement = new Date(market.deadline);
-    console.log("time:",time);
-    console.log("timeElement:",timeElement);
-    if(time > timeElement){
-      setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
-      return;
-    }
+    try {
+      const { latitude, longitude } = await handleGeocode();
 
-    const files = imgRef.current.files;
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i]);
+      if (!market.marketCategory) {
+        setAddResultModal('카테고리를 선택해주세요');
+        return;
+      }
+      if (!market.title || !market.content) {
+        setAddResultModal('제목과 내용을 입력해주세요');
+        return;
+      }
+      if(!market.deadline || !market.location){
+        setAddResultModal('마감시간과 거래장소를 입력해주세요');
+        return;
+      }
+      const time = new Date();
+      const timeElement = new Date(market.deadline);
+      console.log("time:",time);
+      console.log("timeElement:",timeElement);
+      if(time > timeElement){
+        setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
+        return;
+      }
+
+      const files = imgRef.current.files;
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+          formData.append("files", files[i]);
+      }
+
+      formData.append('id', ino);
+      formData.append('nickname', user.nickname);
+      formData.append('title', market.title);
+      formData.append('location', market.location);
+      formData.append('latitude', latitude); // 위도
+      formData.append('longitude', longitude); // 경도
+      formData.append('content', market.content);
+      formData.append('marketCategory', market.marketCategory);
+      formData.append('deadline', market.deadline);
+      formData.append('marketHit', market.marketHit);
+      formData.append('price', market.price);
+
+      for (const x of formData.entries()) {
+        console.log(x);
+      };
+      postAddMarket(formData);
+      setResult('게시글이 등록되었습니다');
+    } catch (error) {
+      console.error('Error adding post:', error);
+      setAddResultModal('게시글 등록에 실패했습니다.');
     }
-
-    formData.append('id', ino);
-    formData.append('nickname', user.nickname);
-    formData.append('title', market.title);
-    formData.append('location', market.location);
-    formData.append('content', market.content);
-    formData.append('marketCategory', market.marketCategory);
-    formData.append('deadline', market.deadline);
-    formData.append('marketHit', market.marketHit);
-    formData.append('price', market.price);
-
-    for (const x of formData.entries()) {
-      console.log(x);
-     };
-    postAddMarket(formData);
-    setResult('게시글이 등록되었습니다');
   };
-  const closeModal = () => {
-    setResult(null);
-    moveToList();
-  };
+    const closeModal = () => {
+      setResult(null);
+      moveToList();
+    };
 
   const setAddress = (address) => {
     setMarket((prev) => ({ ...prev, location: address }));

@@ -101,7 +101,7 @@ const TeamPostComponent = () => {
                                 <div class="back1">
                                     <div className='max-w-2xl mx-auto'>
                                         <div className="flex gap-3 bg-gray-100 overflow-hidden items-center justify-start">
-                                            <div class="flex flex-col w-full gap-2 py-2 mr-3">
+                                            <div class="flex flex-col w-full h-[142px] gap-2 py-2 mr-3">
                                                 <p class="text-xl font-bold text-center">
                                                     <Link to={`/team/read/${team.teamNo}`}>
                                                         {team.title}

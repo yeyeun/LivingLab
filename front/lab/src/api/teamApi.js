@@ -7,9 +7,9 @@ export const getOne = async (teamNo) => {
   return res.data;
 };
 
-export const getList = async (pageParam, search, sort, category) => {
+export const getList = async (pageParam, search, sort, category, latitude, longitude) => {
   const { page, size } = pageParam;
-  const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size, search: search, sort: sort, category: category }});
+  const res = await axios.get(`${prefix}/list`, {params: { page: page, size: size, search: search, sort: sort, category: category, latitude: latitude, longitude: longitude}});
   return res.data;
 };
 

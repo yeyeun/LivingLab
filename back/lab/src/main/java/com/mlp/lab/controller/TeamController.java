@@ -36,8 +36,10 @@ public class TeamController {
     public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto,
             @RequestParam(required = false, value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort,
-            @RequestParam(required = false, value = "category") Character category) {
-        return teamService.list(pageRequestDto, search, sort, category);
+            @RequestParam(required = false, value = "category") Character category,
+            @RequestParam(required = false, value = "latitude") double latitude,
+            @RequestParam(required = false, value = "longitude") double longitude) {
+        return teamService.list(pageRequestDto, search, sort, category, latitude, longitude);
     }
 
     @GetMapping("/read/{teamNo}") // 상세조회
