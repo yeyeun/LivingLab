@@ -43,7 +43,7 @@ public class ChatRoomService {
         return ChatRoomDataResponseDto.Info.of(chatRoom);
     }
 
-    public ChatRoomDataResponseDto.Info createRoom(Long userId, String title, ChatRoomDataRequestDto.create createRequest) {
+    public ChatRoomDataResponseDto.Info createRoom(Long userId, String title, String type, ChatRoomDataRequestDto.create createRequest) {
         if(createRequest.getBuyNo()!=null){ //공동구매
             Buy buy = buyRepository.findByBuyNo(createRequest.getBuyNo());
             User user = buy.getUser();   //글 작성자(채팅방 생성 후 자동으로 입장)
@@ -51,6 +51,7 @@ public class ChatRoomService {
                 .writer(user)
                 .buy(buy)
                 .title(title)
+                .type(type)
                 .build();
             chatRoomRepository.save(chatRoom);
         }
@@ -61,6 +62,7 @@ public class ChatRoomService {
                 .writer(user)
                 .team(team)
                 .title(title)
+                .type(type)
                 .build();
             chatRoomRepository.save(chatRoom);
         }
