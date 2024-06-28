@@ -131,22 +131,6 @@ const AddComponent = () => {
         return;
       }
 
-<<<<<<< HEAD
-    formData.append('id', ino);
-    formData.append('nickname', user.nickname);
-    formData.append('title', team.title);
-    formData.append('location', team.location);
-    formData.append('content', team.content);
-    formData.append('teamCategory', team.teamCategory);
-    formData.append('max', team.max);
-    formData.append('current', team.current);
-    formData.append('deadline', team.deadline);
-    formData.append('teamHit', team.teamHit);
-    const response = await postAddTeam(formData);
-    const createRequest = { teamNo: response.teamNo };
-    await postCreateRoom(formData.get('id'), formData.get('title'), '동네모임', createRequest);
-    setResult('게시글이 등록되었습니다');
-=======
       const files = imgRef.current.files;
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -167,13 +151,12 @@ const AddComponent = () => {
       formData.append('teamHit', team.teamHit);
       const response = await postAddTeam(formData);
       const createRequest = { teamNo: response.teamNo };
-      await postCreateRoom(formData.get('id'), formData.get('title'), createRequest);
+      await postCreateRoom(formData.get('id'), formData.get('title'), '동네모임', createRequest);
       setResult('게시글이 등록되었습니다');
     } catch (error){
       console.error('Error adding post:', error);
       setAddResultModal('게시글 등록에 실패했습니다.');
     }  
->>>>>>> develop
   };
   
   const closeModal = () => {
