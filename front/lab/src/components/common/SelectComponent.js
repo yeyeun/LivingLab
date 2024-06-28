@@ -26,6 +26,7 @@ function SelectComponent({ onSort, email }){
                     >
                         {item.name}
                     </option>
+
                 ))}
             </select>
         </div>
