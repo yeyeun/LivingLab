@@ -24,9 +24,9 @@ export const joinUser = async (formdata) => {
   return res.data;
 };
 
-export const modifyUser = async (user) => {
-  // 로그인한 사용자 기준으로 axios 처리 (JSON으로 바로 보냄)
-  const res = await axios.put(`${host}/modify`, user);
+export const modifyUser = async (id, user) => {
+  const header = { headers: { 'Content-Type': 'multipart/form-data' } };
+  const res = await axios.put(`${host}/modify/${id}`, user, header);
   return res.data;
 };
 
