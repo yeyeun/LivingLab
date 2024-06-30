@@ -253,4 +253,39 @@ public class BuyService {
         return dtoList;
     }
 
+    public PageResponseDto<BuyDto> mylistall(PageRequestDto pageRequestDto, Long id){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage() - 1,
+            pageRequestDto.getSize(),
+            Sort.by("buyNo").descending());
+        Page<Object[]> result = buyRepository.findAllByUser(id, pageable);
+        
+        List<BuyDto> dtoList = result.get().map(arr -> {
+            Buy buy = (Buy) arr[0];
+            BuyImage buyImage = (BuyImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+
+            BuyDto buyDto = BuyDto.builder()
+                    .buyNo(buy.getBuyNo()).title(buy.getTitle()).buyCategory(buy.getBuyCategory())
+                    .location(buy.getLocation()).max(buy.getMax()).current(buy.getCurrent())
+                    .deadline(buy.getDeadline()).nickname(buy.getNickname()).buyHit(buy.getBuyHit()).build();
+
+            if (buyImage != null) {
+                String imageStr = buyImage.getFileName();
+                buyDto.setUploadFileNames(List.of(imageStr));
+            } else {
+                buyDto.setUploadFileNames(List.of(defaultImageStr));
+            }
+            return buyDto;
+        }).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<BuyDto> responseDTO = PageResponseDto.<BuyDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+
+        return responseDTO;
+    }
 }

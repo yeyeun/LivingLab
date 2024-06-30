@@ -61,6 +61,9 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     @Query("SELECT t FROM Team t WHERE t.user.id = :id ORDER BY t.teamNo DESC")
     Page<Team> findByUser(@Param(value = "id") Long id, Pageable pageable);
 
+    @Query("select t, ti from Team t left join t.imageList ti where t.user.id = :id and (ti.ord = 0 or ti.ord IS NULL) order by t.teamNo desc")
+    Page<Object[]> findAllByUser(@Param(value = "id") Long id, Pageable pageable);
+
         // 거리순
         @Query("SELECT t, ti, " +
         "(6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +

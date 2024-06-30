@@ -122,4 +122,9 @@ public class TeamController {
     public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
         return teamService.mylist(id);
     }
+
+    @GetMapping("/mylistall") // 작성한 게시물 조회 (전체)
+    public PageResponseDto<TeamDto> mylistall(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "id") Long id) {
+        return teamService.mylistall(pageRequestDto, id);
+    }
 }

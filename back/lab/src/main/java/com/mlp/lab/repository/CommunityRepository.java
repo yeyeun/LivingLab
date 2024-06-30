@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.Community;
 
 public interface CommunityRepository extends JpaRepository<Community, Long> {
@@ -61,5 +60,8 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     //마이페이지 내가 작성한 글
     @Query("SELECT c FROM Community c WHERE c.user.id = :id ORDER BY c.commNo DESC")
     Page<Community> findByUser(@Param(value = "id") Long id, Pageable pageable);
+
+    @Query("SELECT c FROM Community c WHERE c.user.id = :id ORDER BY c.commNo DESC")
+    Page<Community> findAllByUser(@Param(value = "id") Long id, Pageable pageable);
 }
 
