@@ -158,4 +158,10 @@ public class CommunityController {
     public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
         return communityService.mylist(id);
     }
+
+    @GetMapping("/mylistall") // 작성한 게시물 조회 (전체)
+    public PageResponseDto<CommunityDto> mylistall(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "id") Long id) {
+        return communityService.mylistall(pageRequestDto, id);
+    }
+
 }

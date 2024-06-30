@@ -211,4 +211,40 @@ public class MarketService {
 
         return dtoList;
     }
+
+    public PageResponseDto<MarketDto> mylistall(PageRequestDto pageRequestDto, Long id){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage() - 1,
+            pageRequestDto.getSize(),
+            Sort.by("marketNo").descending());
+        Page<Object[]> result = marketRepository.findAllByUser(id, pageable);
+        
+        List<MarketDto> dtoList = result.get().map(arr -> {
+            Market market = (Market) arr[0];
+            MarketImage marketImage = (MarketImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+
+            MarketDto marketDto = MarketDto.builder()
+                    .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
+                    .location(market.getLocation()).deadline(market.getDeadline()).nickname(market.getNickname())
+                    .marketHit(market.getMarketHit()).price(market.getPrice()).build();
+
+            if (marketImage != null) {
+                String imageStr = marketImage.getFileName();
+                marketDto.setUploadFileNames(List.of(imageStr));
+            } else {
+                marketDto.setUploadFileNames(List.of(defaultImageStr));
+            }
+            return marketDto;
+        }).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<MarketDto> responseDTO = PageResponseDto.<MarketDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+
+        return responseDTO;
+    }
 }
