@@ -17,6 +17,7 @@ import com.mlp.lab.dto.BuyDto;
 import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.entity.Buy;
 import com.mlp.lab.entity.BuyImage;
+import com.mlp.lab.entity.Market;
 import com.mlp.lab.repository.BuyRepository;
 import com.mlp.lab.repository.UserRepository;
 import com.mlp.lab.repository.chat.ChatRoomRepository;
@@ -61,8 +62,8 @@ public class BuyService {
             if (sort.equals("거리순")) {
                 result = buyRepository.distanceList(latitude, longitude, pageable);
             }
-            if (sort.equals("좋아요순")){
-            result = buyRepository.likeList(pageable);
+            if (sort.equals("좋아요순")) {
+                result = buyRepository.likeList(pageable);
             }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
             if (sort.equals("최신순")) {
@@ -74,7 +75,7 @@ public class BuyService {
             if (sort.equals("거리순")) {
                 result = buyRepository.searchDistanceList(search, latitude, longitude, pageable);
             }
-            if (sort.equals("좋아요순")){
+            if (sort.equals("좋아요순")) {
                 result = buyRepository.searchLikeList(search, pageable);
             }
         }
@@ -253,13 +254,13 @@ public class BuyService {
         return dtoList;
     }
 
-    public PageResponseDto<BuyDto> mylistall(PageRequestDto pageRequestDto, Long id){
+    public PageResponseDto<BuyDto> mylistall(PageRequestDto pageRequestDto, Long id) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage() - 1,
-            pageRequestDto.getSize(),
-            Sort.by("buyNo").descending());
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("buyNo").descending());
         Page<Object[]> result = buyRepository.findAllByUser(id, pageable);
-        
+
         List<BuyDto> dtoList = result.get().map(arr -> {
             Buy buy = (Buy) arr[0];
             BuyImage buyImage = (BuyImage) arr[1];
@@ -287,5 +288,13 @@ public class BuyService {
                 .build();
 
         return responseDTO;
+    }
+
+    // 마감 전환
+    public void updateFlag(Long buyNo, boolean flag) {
+        Buy buy = buyRepository.findById(buyNo)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid buy No: " + buyNo));
+        buy.setFlag(flag);
+        buyRepository.save(buy);
     }
 }

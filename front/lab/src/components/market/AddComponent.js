@@ -104,6 +104,7 @@ const AddComponent = () => {
     const { name, value } = e.target;
     setMarket((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleClickAdd = async () => {
     try {
       const { latitude, longitude } = await handleGeocode();
@@ -157,10 +158,11 @@ const AddComponent = () => {
       setAddResultModal('게시글 등록에 실패했습니다.');
     }
   };
-    const closeModal = () => {
-      setResult(null);
-      moveToList();
-    };
+
+  const closeModal = () => {
+    setResult(null);
+    moveToList();
+  };
 
   const setAddress = (address) => {
     setMarket((prev) => ({ ...prev, location: address }));
@@ -216,16 +218,18 @@ const AddComponent = () => {
             <option value="4">나눔</option>
           </select>
         </div>
-        <div className="col-start-5 col-span-1 relative">
-          <label htmlFor="price" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-            <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;가격
-          </label>
-          <div className="relative">
-            <input type="number" name="price" id="price" value={market.price} min="0" step="10" onInput={handleInputValidation}
-            onChange={handleChangeMarket} className="w-full h-9 pl-2 rounded-md border border-stone-400 text-base"/>
-            <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 text-base">원</span>
+        {market.marketCategory !== "3" && market.marketCategory !== "4" && (
+          <div className="col-start-5 col-span-1 relative">
+            <label htmlFor="price" className="flex items-center text-sm font-medium text-gray-700 mb-1">
+              <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;가격
+            </label>
+            <div className="relative">
+              <input type="number" name="price" id="price" value={market.price} min="0" step="10" onInput={handleInputValidation}
+              onChange={handleChangeMarket} className="w-full h-9 pl-2 rounded-md border border-stone-400 text-base"/>
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 text-base">원</span>
+            </div>
           </div>
-        </div>
+        )}
         <div className="col-start-6 col-span-2">
           <label htmlFor="deadline" className="flex items-center text-sm font-medium text-gray-700 mb-1">
             <img src={iconEdit} className="w-3 h-3" alt="edit"></img>&nbsp;모집마감시간
@@ -273,4 +277,5 @@ const AddComponent = () => {
     </div>
   );
 };
+
 export default AddComponent;

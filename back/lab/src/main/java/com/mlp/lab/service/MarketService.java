@@ -29,7 +29,8 @@ public class MarketService {
     private final UserRepository userRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<MarketDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category,
+    public PageResponseDto<MarketDto> list(PageRequestDto pageRequestDto, String search, String sort,
+            Character category,
             double latitude,
             double longitude) {
         Pageable pageable = PageRequest.of(
@@ -41,7 +42,7 @@ public class MarketService {
 
         if (category != null && (search != null && !search.isEmpty())) { // 카테고리와 검색 조건이 모두 지정된 경우
             result = marketRepository.selectCategorySearchList(category, search, pageable);
-        } else if (category != null) {  // 카테고리만 지정된 경우
+        } else if (category != null) { // 카테고리만 지정된 경우
             result = marketRepository.selectCategoryList(category, pageable);
         } else if ((search == null || search.isEmpty()) && (sort == null || sort.isEmpty())) { // 페이지 클릭 시
             result = marketRepository.selectList(pageable);
@@ -57,7 +58,7 @@ public class MarketService {
             if (sort.equals("거리순")) {
                 result = marketRepository.distanceList(latitude, longitude, pageable);
             }
-            if (sort.equals("좋아요순")){
+            if (sort.equals("좋아요순")) {
                 result = marketRepository.likeList(pageable);
             }
         } else if (search != null && sort != null) { // 검색&&정렬 둘다
@@ -70,7 +71,7 @@ public class MarketService {
             if (sort.equals("거리순")) {
                 result = marketRepository.searchDistanceList(search, latitude, longitude, pageable);
             }
-            if (sort.equals("좋아요순")){
+            if (sort.equals("좋아요순")) {
                 result = marketRepository.searchLikeList(search, pageable);
             }
         }
@@ -197,7 +198,7 @@ public class MarketService {
     }
 
     public List<MyActivityDto> mylist(Long id) {
-        PageRequest pageRequest = PageRequest.of(0,3);
+        PageRequest pageRequest = PageRequest.of(0, 3);
         Page<Market> result = marketRepository.findByUser(id, pageRequest);
 
         List<MyActivityDto> dtoList = result.getContent().stream().map(market -> {
@@ -212,13 +213,13 @@ public class MarketService {
         return dtoList;
     }
 
-    public PageResponseDto<MarketDto> mylistall(PageRequestDto pageRequestDto, Long id){
+    public PageResponseDto<MarketDto> mylistall(PageRequestDto pageRequestDto, Long id) {
         Pageable pageable = PageRequest.of(
-            pageRequestDto.getPage() - 1,
-            pageRequestDto.getSize(),
-            Sort.by("marketNo").descending());
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("marketNo").descending());
         Page<Object[]> result = marketRepository.findAllByUser(id, pageable);
-        
+
         List<MarketDto> dtoList = result.get().map(arr -> {
             Market market = (Market) arr[0];
             MarketImage marketImage = (MarketImage) arr[1];
@@ -246,5 +247,13 @@ public class MarketService {
                 .build();
 
         return responseDTO;
+    }
+
+    // 마감 전환
+    public void updateFlag(Long marketNo, boolean flag) {
+        Market market = marketRepository.findById(marketNo.intValue())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid market No: " + marketNo));
+        market.setFlag(flag);
+        marketRepository.save(market);
     }
 }
