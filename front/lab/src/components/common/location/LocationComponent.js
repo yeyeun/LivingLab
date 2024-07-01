@@ -57,7 +57,7 @@ const LocationComponent = () => {
       modifiedUser.location = result[0].address.address_name;
       modifiedUser.latitude = location.latitude; // 위도(가로)
       modifiedUser.longitude = location.longitude; // 경도 (세로)
-      modifyUser(modifiedUser); // 상태값 변경된 거 DB에 반영
+      modifyUser(ino, modifiedUser); // 상태값 변경된 거 DB에 반영
     };
 
     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback); // 좌표로 법정동 상세 주소 정보를 요청합니다
