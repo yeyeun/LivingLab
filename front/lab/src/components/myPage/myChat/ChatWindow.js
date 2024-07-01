@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';  // Stomp.js의 브라우저 버전인 webstomp-client 사용
 import { useSelector } from 'react-redux';
+import { getChatHistory } from '../../../api/chatApi';
 
 const initState = {
   id: 0,
@@ -27,6 +28,17 @@ const ChatWindow = ({ room }) => {
   const nickname = loginInfo.nickname;
 
   useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const response = await getChatHistory(room.roomId);
+        setMessages(response.data.messageHistory);  // 서버에서 받은 데이터를 messages 상태에 저장
+      } catch (error) {
+        console.error('메세지 내역 전송 실패', error);
+      }
+    };
+
+    fetchChatHistory();
+
     const socket = new SockJS('http://localhost:8282/ws'); // SockJS 연결 URL
     const stomp = Stomp.over(socket);
 
