@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="com/mlp/lab/security/" kind="src" path="lab/src/main/java"/>
+	<classpathentry kind="src" path="lab/src/main/java/com/mlp/lab/security"/>
+	<classpathentry kind="src" path="lab/src/test/java"/>
+	<classpathentry kind="lib" path="lab/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="lab/bin/main"/>
+</classpath>
