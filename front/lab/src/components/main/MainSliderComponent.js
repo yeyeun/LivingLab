@@ -5,11 +5,13 @@ import Slider2 from "../../resources/images/banner_slider2.png"
 import Slider3 from "../../resources/images/banner_slider3.png"
 
 const flickityOptions = {
-  autoPlay: 3000, // 자동 재생 간격(ms)
-  wrapAround: true, // 무한 반복
-  prevNextButtons: true, // 이전/다음 버튼 활성화
-};
+  autoPlay: 5000, // 자동 슬라이드 전환 시간 (밀리초 단위)
+  wrapAround: true, // 무한 루프
+  prevNextButtons: false, // 이전/다음 버튼
+  selectedAttraction: 0.025, 
+  friction: 0.65, 
 
+};
 const MainSliderComponent = () => {
   return (
     <Flickity
