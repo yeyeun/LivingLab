@@ -7,6 +7,7 @@ const MyTeamListPage = lazy(() => import('../pages/myPage/activity/MyTeamListPag
 const MyMarketListPage = lazy(() => import('../pages/myPage/activity/MyMarketListPage'));
 const MyShareRoomListPage = lazy(() => import('../pages/myPage/activity/MyShareRoomListPage'));
 const MyCommunityListPage = lazy(() => import('../pages/myPage/activity/MyCommunityListPage'));
+const MyReplyListPage = lazy(() => import('../pages/myPage/activity/MyReplyListPage'));
 const MyChat = lazy(() => import('../pages/myPage/chat/MyChatPage'));
 const MyInfo = lazy(() => import('../pages/myPage/info/MyInfoPage'));
 const MyInfoModify = lazy(() => import('../pages/myPage/info/MyInfoModifyPage'));
@@ -58,6 +59,14 @@ const mypageRouter = () => {
       element: (
         <Suspense fallback={Loading}>
           <MyShareRoomListPage/>
+        </Suspense>
+      )
+    },
+    {
+      path: 'activity/reply',
+      element: (
+        <Suspense fallback={Loading}>
+          <MyReplyListPage/>
         </Suspense>
       )
     },
