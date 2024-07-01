@@ -59,3 +59,9 @@ export const myList = async (id) => {
   const res = await axios.get(`${prefix}/mylist/${id}`);
   return res.data;
 }
+
+export const myListAll = async (pageParam, id) => {
+  const { page, size } = pageParam;
+  const res = await axios.get(`${prefix}/mylistall`, { params: { page: page, size: size, id: id} });
+  return res.data;
+};
