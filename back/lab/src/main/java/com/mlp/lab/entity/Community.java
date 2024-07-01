@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mlp.lab.dto.CommunityDto;
-import com.mlp.lab.entity.like.LikeBuy;
 import com.mlp.lab.entity.like.LikeCommunity;
 
 import jakarta.persistence.*;
