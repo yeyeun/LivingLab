@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from "react";
 import BasicLayout from '../layouts/BasicLayout';
-// import MultipleItems from '../components/products/MultipleItemsComponent';
-import Main from '../resources/images/main1.png';
-import Slide1 from '../resources/images/slide_1.png';
-import Slide2 from '../resources/images/slide_2.png';
-import Slide3 from '../resources/images/slide_3.png';
-import Slide4 from '../resources/images/slide_4.png';
-import Slide5 from '../resources/images/slide_5.png';
 import CommunityPostComponent from '../components/main/CommunityPostComponent';
 import TeamPostComponent from '../components/main/TeamPostComponent';
 import MarketPostComponent from '../components/main/MarketPostComponent';
 import BuyPostComponent from '../components/main/BuyPostComponent';
 import ShareRoomPostComponent from '../components/main/shareRoomPostComponent';
 import WeatherComponent from '../components/main/WeatherComponent';
-import img_main from '../resources/images/img_main5.png';
 import banner_dark from '../resources/images/banner_dark.png';
 import banner_light from '../resources/images/banner_light.png';
 

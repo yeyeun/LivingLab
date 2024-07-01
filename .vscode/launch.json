@@ -2,6 +2,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "LabApplication",
+      "request": "launch",
+      "mainClass": "com.mlp.lab.LabApplication",
+      "projectName": "back"
+    },
+    {
+      "type": "java",
       "name": "Spring Boot-LabApplication<lab>",
       "request": "launch",
       "cwd": "${workspaceFolder}",
