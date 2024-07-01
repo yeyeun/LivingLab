@@ -46,7 +46,7 @@ const ChatWindow = ({ room }) => {
     if (!stompClient) return;
 
     // 채팅방 topic을 구독하여 메시지 수신
-    const subscription = stompClient.subscribe(`/topic/chat/room/${chat.roomId}`, message => {
+    const subscription = stompClient.subscribe(`/topic/chat/room/${room.roomId}`, message => {
       const receivedMessage = JSON.parse(message.body);
       console.log('받은 메시지:', receivedMessage);
       setMessages(prevMessages => [...prevMessages, receivedMessage]);
@@ -57,7 +57,7 @@ const ChatWindow = ({ room }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [stompClient, chat.roomId]);
+  }, [stompClient, room.roomId]);
 
   // const handleSend = (message) => {
   //   setMessages([...messages, { id: messages.length + 1, text: message, sender: 'me' }]);
@@ -68,7 +68,7 @@ const ChatWindow = ({ room }) => {
 
     const newMessage = {
       type: 'TALK',
-      roomId: chat.roomId,
+      roomId: room.roomId,
       message: message,
       sender: nickname,
       userId: loginInfo.id
