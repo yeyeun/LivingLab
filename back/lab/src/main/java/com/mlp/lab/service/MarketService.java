@@ -140,6 +140,7 @@ public class MarketService {
         market.setLongitude(marketDto.getLongitude());
         market.setMarketCategory(marketDto.getMarketCategory());
         market.setDeadline(marketDto.getDeadline());
+        market.setPrice(marketDto.getPrice());
 
         // 파일들 삭제
         market.clearList();
