@@ -20,12 +20,20 @@ const initState = {
   current: 0,
 };
 
+const initUser = {
+  nickname: '',
+  profileImage: '',
+  latitude: 0,
+  longitude: 0,
+};
+
 const host = API_SERVER_HOST;
 
 const ListComponent = ({ search, sort }) => {
   const { page, size, moveToList, moveToRead } = useCustomMove();
   const [serverData, setServerData] = useState(initState);
   const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 카테고리 
+  const [user, setUser] = useState(initUser);
 
   const checkDeadline = (deadline) => {
     const currentDate = new Date();
@@ -65,7 +73,7 @@ const ListComponent = ({ search, sort }) => {
   };
 
   useEffect(() => {
-    getList({ page, size }, search, sort, selectedCategory).then((data) => {
+    getList({ page, size }, search, sort, selectedCategory, user.latitude, user.longitude).then((data) => {
       const updatedData = {
         ...data,
         dtoList: data.dtoList.map((team) => ({
@@ -76,7 +84,7 @@ const ListComponent = ({ search, sort }) => {
       console.log(updatedData);
       setServerData(updatedData);
     });
-  }, [page, size, search, sort, selectedCategory]);
+  }, [page, size, search, sort, selectedCategory, user.latitude, user.longitude]);
 
   return (
 

@@ -17,7 +17,6 @@ import com.mlp.lab.dto.MarketDto;
 import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.entity.Market;
 import com.mlp.lab.entity.MarketImage;
-import com.mlp.lab.entity.Team;
 import com.mlp.lab.repository.MarketRepository;
 import com.mlp.lab.repository.UserRepository;
 
@@ -30,7 +29,9 @@ public class MarketService {
     private final UserRepository userRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<MarketDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category) {
+    public PageResponseDto<MarketDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category,
+            double latitude,
+            double longitude) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
@@ -53,9 +54,9 @@ public class MarketService {
             if (sort.equals("마감임박순")) {
                 result = marketRepository.deadLineList(pageable);
             }
-            // if(sort.equals("거리순")){
-            // result =
-            // }
+            if (sort.equals("거리순")) {
+                result = marketRepository.distanceList(latitude, longitude, pageable);
+            }
             if (sort.equals("좋아요순")){
                 result = marketRepository.likeList(pageable);
             }
@@ -66,9 +67,9 @@ public class MarketService {
             if (sort.equals("마감임박순")) {
                 result = marketRepository.searchDeadLineList(search, pageable);
             }
-            // if(sort.equals("거리순")){
-            // result =
-            // }
+            if (sort.equals("거리순")) {
+                result = marketRepository.searchDistanceList(search, latitude, longitude, pageable);
+            }
             if (sort.equals("좋아요순")){
                 result = marketRepository.searchLikeList(search, pageable);
             }
@@ -134,6 +135,8 @@ public class MarketService {
         market.setTitle(marketDto.getTitle());
         market.setContent(marketDto.getContent());
         market.setLocation(marketDto.getLocation());
+        market.setLatitude(marketDto.getLatitude());
+        market.setLongitude(marketDto.getLongitude());
         market.setMarketCategory(marketDto.getMarketCategory());
         market.setDeadline(marketDto.getDeadline());
 
@@ -207,5 +210,41 @@ public class MarketService {
         }).collect(Collectors.toList());
 
         return dtoList;
+    }
+
+    public PageResponseDto<MarketDto> mylistall(PageRequestDto pageRequestDto, Long id){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage() - 1,
+            pageRequestDto.getSize(),
+            Sort.by("marketNo").descending());
+        Page<Object[]> result = marketRepository.findAllByUser(id, pageable);
+        
+        List<MarketDto> dtoList = result.get().map(arr -> {
+            Market market = (Market) arr[0];
+            MarketImage marketImage = (MarketImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+
+            MarketDto marketDto = MarketDto.builder()
+                    .marketNo(market.getMarketNo()).title(market.getTitle()).marketCategory(market.getMarketCategory())
+                    .location(market.getLocation()).deadline(market.getDeadline()).nickname(market.getNickname())
+                    .marketHit(market.getMarketHit()).price(market.getPrice()).build();
+
+            if (marketImage != null) {
+                String imageStr = marketImage.getFileName();
+                marketDto.setUploadFileNames(List.of(imageStr));
+            } else {
+                marketDto.setUploadFileNames(List.of(defaultImageStr));
+            }
+            return marketDto;
+        }).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<MarketDto> responseDTO = PageResponseDto.<MarketDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+
+        return responseDTO;
     }
 }

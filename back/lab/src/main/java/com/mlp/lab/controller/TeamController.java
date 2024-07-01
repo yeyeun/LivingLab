@@ -36,8 +36,10 @@ public class TeamController {
     public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto,
             @RequestParam(required = false, value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort,
-            @RequestParam(required = false, value = "category") Character category) {
-        return teamService.list(pageRequestDto, search, sort, category);
+            @RequestParam(required = false, value = "category") Character category,
+            @RequestParam(required = false, value = "latitude") double latitude,
+            @RequestParam(required = false, value = "longitude") double longitude) {
+        return teamService.list(pageRequestDto, search, sort, category, latitude, longitude);
     }
 
     @GetMapping("/read/{teamNo}") // 상세조회
@@ -119,5 +121,10 @@ public class TeamController {
     @GetMapping("/mylist/{id}") // 작성한 게시물 조회 (3개)
     public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
         return teamService.mylist(id);
+    }
+
+    @GetMapping("/mylistall") // 작성한 게시물 조회 (전체)
+    public PageResponseDto<TeamDto> mylistall(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "id") Long id) {
+        return teamService.mylistall(pageRequestDto, id);
     }
 }

@@ -35,8 +35,10 @@ public class MarketController {
     public PageResponseDto<MarketDto> List(PageRequestDto pageRequestDto,
             @RequestParam(required = false, value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort,
-            @RequestParam(required = false, value = "category") Character category) {
-        return marketService.list(pageRequestDto, search, sort, category);
+            @RequestParam(required = false, value = "category") Character category,
+            @RequestParam(required = false, value = "latitude") double latitude,
+            @RequestParam(required = false, value = "longitude") double longitude) {
+        return marketService.list(pageRequestDto, search, sort, category, latitude, longitude);
     }
 
     @GetMapping("/read/{marketNo}") // 상세조회
@@ -118,5 +120,10 @@ public class MarketController {
     @GetMapping("/mylist/{id}") // 작성한 게시물 조회 (3개)
     public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
         return marketService.mylist(id);
+    }
+
+    @GetMapping("/mylistall") // 작성한 게시물 조회 (전체)
+    public PageResponseDto<MarketDto> mylistall(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "id") Long id) {
+        return marketService.mylistall(pageRequestDto, id);
     }
 }

@@ -1,12 +1,7 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { API_SERVER_HOST, modifyUser, getUser } from '../../../api/userApi';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import Profile_Img from '../../../resources/images/profile_img.png';
 import { Link } from 'react-router-dom';
-//import useCustomMove from '../../hooks/useCustomMove';
-//import useCustomLogin from '../../hooks/useCustomLogin';
 import PostComponent from '../../common/PostComponent';
 
 const initState = {
@@ -19,15 +14,16 @@ const initState = {
   pwdCheck: '',
   addr: '',
   detailAddr: '',
-  profileImage: '',
+  file: null
 };
 
 const host = API_SERVER_HOST;
 
 const MyInfoModifyComponent = ({ id }) => {
   const [user, setUser] = useState(initState);
+  const [previewImageUrl, setPreviewImageUrl] = useState(null);
+  const [profileImageFile, setProfileImageFile] = useState(null);
   const loginInfo = useSelector((state) => state.loginSlice); // 전역상태에서 loginSlice는 로그인 사용자의 상태정보
-  const navigate = useNavigate();
 
   //주소 찾기 팝업 추가
   const [address, setAddress] = useState('');
@@ -36,9 +32,8 @@ const MyInfoModifyComponent = ({ id }) => {
   useEffect(() => {
     getUser(ino).then((data) => {
       setUser(data);
-      console.log("이미지 파일:"+data.profileImage)
       setAddress(data.addr);
-      // fetchUserProfileImage(data.email);
+      
     });
   }, [ino]);
 
@@ -57,87 +52,44 @@ const MyInfoModifyComponent = ({ id }) => {
     });
   };
 
-  // 수정완료 버튼
-  const handleClickModify = () => {
-    modifyUser(user); // 사용자 정보 전달 (userApi.js에 있는 modifyUser 함수)
-    alert('회원정보 수정 완료되었습니다');
-    navigate('/myPage/info', { state: { ...user } });
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfileImageFile(file);
+      const imageUrl = URL.createObjectURL(file); // 선택한 파일의 URL 생성
+      setPreviewImageUrl(imageUrl); // 미리보기 이미지 URL 설정
+    }
   };
 
-  // 사진 업로드
-  const inputRef = useRef(null);
   const handleFileClick = () => {
     inputRef.current.click();
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0]; // 첫번째 파일만 선택
-    if (file) {
-      uploadFile(file); // 파일을 서버에 업로드
-    }
-    alert('프로필 이미지를 변경했습니다.');
-  };
+  // 수정완료 버튼
+  const handleClickModify = async() => {
+    const formData = new FormData();
+    formData.append('file', profileImageFile || user.file); // 이미지 파일을 FormData에 추가
+    formData.append('id', user.id);
+    formData.append('email', user.email);
+    formData.append('name', user.name);
+    formData.append('phone', user.phone);
+    formData.append('nickname', user.nickname);
+    formData.append('pwd', user.pwd);
+    formData.append('pwdCheck', user.pwdCheck);
+    formData.append('addr', user.addr);
+    formData.append('detailAddr', user.detailAddr);
 
-  // 파일을 서버에 전송하는 함수
-  const uploadFile = async (file) => {
     try {
-      const formData = new FormData();
-      formData.append('email', user.email);
-      formData.append('id', user.id);
-      formData.append('file', file); // 파일을 FormData에 추가
-      console.log('유저 이미지 교체 중');
-      const res = await axios.post('http://localhost:8282/api/user/modify/updateImg', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      console.log('유저 프로필 교체 성공', res.data);
-      // fetchUserProfileImage(user.email); // 이미지 바꾸면 다시 리로딩 (필수)
+      await modifyUser(user.id, formData); // 이미지 파일을 포함한 FormData를 백엔드로 전송
+      alert('회원정보 수정 완료되었습니다');
+      window.location.reload();
     } catch (error) {
-      console.log('Error uploading file', error);
+      console.error('사용자 정보 수정 에러:', error);
     }
   };
 
-  // //프로필 사진 읽어오는 함수
-  // const fetchUserProfileImage = async (email) => {
-  //   try {
-  //     const res = await axios.get(`http://localhost:8282/api/user/userProfileImage?email=${email}`, {
-  //       responseType: 'arraybuffer', // 바이너리 데이터로 응답받기
-  //     });
-
-  //     // 받은 바이너리 데이터 처리
-  //     const blob = new Blob([res.data], { type: 'image/png' });
-  //     const imageUrl = URL.createObjectURL(blob);
-  //     setUser((prev) => ({
-  //       ...prev, // 이전 상태를 복사해야 이미지 삭제하고 다시 변경했을 때 바로 적용됨
-  //       profileImage: imageUrl, // 이미지 데이터 추가
-  //     }));
-  //     console.log('프로필 사진 읽기 최종 성공');
-  //   } catch (error) {
-  //     console.error('프로필 이미지가 없습니다', error);
-  //     // 오류가 발생하면 대체 이미지를 사용하도록 설정
-  //     setUser((prev) => ({
-  //       ...prev,
-  //       profileImage: Profile_Img,
-  //     }));
-  //   }
-  // };
-
-  //프로필 삭제 메서드
-  const handleFileDelete = async () => {
-    try {
-      await axios.put('http://localhost:8282/api/user/modify/userProfileImageDelete', {
-        email: user.email,
-      });
-      alert('프로필 이미지를 삭제했습니다');
-      console.log('이미지 삭제 성공');
-      // fetchUserProfileImage(user.email);
-      // 받은 바이너리 데이터 처리
-    } catch (error) {
-      console.error('이미지 삭제 오류', error);
-    }
-  };
+  // 사진 업로드
+  const inputRef = useRef(null);
 
   return (
     <div>
@@ -169,7 +121,7 @@ const MyInfoModifyComponent = ({ id }) => {
                   <button
                     className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
                                 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-200 file:text-slate-700 hover:file:bg-violet-100"
-                    onClick={handleFileDelete}
+                    // onClick={handleFileDelete}
                   >
                     삭제
                   </button>

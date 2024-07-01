@@ -33,6 +33,51 @@ public interface MarketRepository extends JpaRepository<Market, Integer> {
     @Query("select m, mi from Market m left join m.imageList mi where m.flag = false and (mi.ord = 0 or mi.ord IS NULL) order by m.marketHit desc")
     Page<Object[]> likeList(Pageable pageable);
 
+        // 거리순
+        @Query("SELECT m, mi, " +
+        "(6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', m.latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', m.longitude) - FUNCTION('radians', :longitude)) " +
+        "+ FUNCTION('sin', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('sin', FUNCTION('radians', m.latitude)))) AS distance " +
+        "FROM Market m " +
+        "LEFT JOIN m.imageList mi " +
+        "WHERE m.flag = false " +
+        "AND (mi.ord = 0 OR mi.ord IS NULL) " +
+        "AND (6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', m.latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', m.longitude) - FUNCTION('radians', :longitude)) " +
+        "+ FUNCTION('sin', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('sin', FUNCTION('radians', m.latitude)))) < 5 " +
+        "ORDER BY distance ASC")
+Page<Object[]> distanceList(
+        @Param("latitude") double latitude,
+        @Param("longitude") double longitude,
+        Pageable pageable);
+
+// 검색 + 거리순
+@Query("SELECT m, mi, " +
+        "(6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', m.latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', m.longitude) - FUNCTION('radians', :longitude)) " +
+        "+ FUNCTION('sin', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('sin', FUNCTION('radians', m.latitude)))) AS distance " +
+        "FROM Market m " +
+        "LEFT JOIN m.imageList mi " +
+        "WHERE m.flag = false " +
+        "AND (mi.ord = 0 OR mi.ord IS NULL) and m.title like %:title% " +
+        "AND (6371 * FUNCTION('acos', FUNCTION('cos', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', m.latitude)) " +
+        "* FUNCTION('cos', FUNCTION('radians', m.longitude) - FUNCTION('radians', :longitude)) " +
+        "+ FUNCTION('sin', FUNCTION('radians', :latitude)) " +
+        "* FUNCTION('sin', FUNCTION('radians', m.latitude)))) < 2 " +
+        "ORDER BY distance ASC")
+Page<Object[]> searchDistanceList(
+        @Param(value = "title") String title,
+        @Param("latitude") double latitude,
+        @Param("longitude") double longitude,
+        Pageable pageable);
+
     // 검색 + 최신순
     @Query("select m, mi from Market m left join m.imageList mi where m.flag = false and (mi.ord = 0 or mi.ord IS NULL) and m.title like %:title% order by m.marketNo")
     Page<Object[]> searchNewList(@Param(value = "title") String title, Pageable pageable);
@@ -60,4 +105,7 @@ public interface MarketRepository extends JpaRepository<Market, Integer> {
     //마이페이지 내가 작성한 글
     @Query("SELECT m FROM Market m WHERE m.user.id = :id ORDER BY m.marketNo DESC")
     Page<Market> findByUser(@Param(value = "id") Long id, Pageable pageable);
+
+    @Query("select m, mi from Market m left join m.imageList mi where m.user.id = :id and (mi.ord = 0 or mi.ord IS NULL) order by m.marketNo desc")
+    Page<Object[]> findAllByUser(@Param(value = "id") Long id, Pageable pageable);
 }

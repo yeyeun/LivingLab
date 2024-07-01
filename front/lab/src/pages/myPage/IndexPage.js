@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import BasicLayout from '../../layouts/BasicLayout';
-import { getUser } from '../../api/userApi';
+import { API_SERVER_HOST, getUser } from '../../api/userApi';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 import Profile_Img from '../../resources/images/profile_img.png';
@@ -24,6 +24,8 @@ const initState = {
   detailAddr: '',
   profileImage: '',
 };
+
+const host = API_SERVER_HOST;
 
 const IndexPage = () => {
   const navigate = useNavigate();
@@ -70,36 +72,9 @@ const IndexPage = () => {
       return;
     }
     getUser(ino).then((data) => {
-      fetchUserProfileImage(data.email);
       setUser(data);
-      //setProfileImage(data.profileImage);
     });
   }, [ino,email,navigate]);
-
-  //프로필 사진 읽어오는 함수
-  const fetchUserProfileImage = async (email) => {
-    try {
-      const res = await axios.get(`http://localhost:8282/api/user/userProfileImage?email=${email}`, {
-        responseType: 'arraybuffer', // 바이너리 데이터로 응답받기
-      });
-
-      // 받은 바이너리 데이터 처리
-      const blob = new Blob([res.data], { type: 'image/png' });
-      const imageUrl = URL.createObjectURL(blob);
-      setUser((prev) => ({
-        ...prev, // 이전 상태를 복사해야 이미지 삭제하고 다시 변경했을 대 바로 적용됨
-        profileImage: imageUrl, // 이미지 데이터 추가
-      }));
-      console.log('프로필 사진 읽기 최종 성공');
-    } catch (error) {
-      console.error('프로필 이미지가 없습니다', error);
-      // 오류가 발생하면 대체 이미지를 사용하도록 설정
-      setUser((prev) => ({
-        ...prev,
-        profileImage: Profile_Img,
-      }));
-    }
-  };
 
   return (
     <div>
@@ -108,7 +83,7 @@ const IndexPage = () => {
           <div className="min-h-screen flex flex-row w-4/5 mx-auto my-10">
             <div className="flex flex-col w-1/5 bg-white overflow-hidden h-fit rounded mr-5 shadow-md">
               <ul className="flex flex-col py-4 my-8">
-                <img src={user.profileImage ? user.profileImage : Profile_Img} alt="프로필이미지" className="rounded-full size-2/5 mx-auto shadow-md" />
+                <img src={`${host}/api/user/display/${user.profileImage}`} alt="프로필이미지" className="rounded-full w-40 h-40 mx-auto shadow-md object-cover" />
 
                 <li>
                   <div className="flex items-center pt-3 pb-10 text-gray-900 rounded-lg dark:text-white">

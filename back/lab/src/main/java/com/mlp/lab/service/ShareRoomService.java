@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mlp.lab.dto.MyActivityDto;
+import com.mlp.lab.dto.PageRequestDto;
+import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.dto.ShareRoomDto;
@@ -214,5 +216,46 @@ public class ShareRoomService {
         }).collect(Collectors.toList());
 
         return dtoList;
+    }
+
+    public PageResponseDto<ShareRoomDto> mylistall(PageRequestDto pageRequestDto, Long id) {
+        Pageable pageable = PageRequest.of(
+                pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(),
+                Sort.by("roomNo").descending());
+        Page<Object[]> result = shareRoomRepository.findAllByUser(id, pageable);
+
+        List<ShareRoomDto> dtoList = result.get().map(arr -> {
+            ShareRoom shareRoom = (ShareRoom) arr[0];
+            ShareRoomImage shareRoomImage = (ShareRoomImage) arr[1];
+
+            ShareRoomDto shareRoomDto = ShareRoomDto.builder()
+                    .roomNo(shareRoom.getRoomNo())
+                    .title(shareRoom.getTitle())
+                    .content(shareRoom.getContent())
+                    .rentFee(shareRoom.getRentFee())
+                    .parking(shareRoom.getParking())
+                    .location(shareRoom.getLocation())
+                    .rentStartDate(shareRoom.getRentStartDate())
+                    .rentEndDate(shareRoom.getRentEndDate())
+                    .averFee(shareRoom.getAverFee())
+                    .days(shareRoom.getDays())
+                    .option1(shareRoom.getOption1())
+                    .build();
+
+            String imageStr = shareRoomImage.getFileName();
+            shareRoomDto.setUploadFileNames(List.of(imageStr));
+  
+            return shareRoomDto;
+        }).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<ShareRoomDto> responseDTO = PageResponseDto.<ShareRoomDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+
+        return responseDTO;
     }
 }

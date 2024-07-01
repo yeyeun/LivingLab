@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,8 +52,8 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseDto<Object> join(UserDto userDto) {
-        String uploadFileNames = fileUtil.saveFile(userDto.getFile());
+    public ResponseDto<Object> join(@ModelAttribute UserDto userDto, @RequestParam("file") MultipartFile file) {
+        String uploadFileNames = fileUtil.saveFile(file);
         userDto.setUploadFileName(uploadFileNames);
         userService.add(userDto);
         return ResponseDto.setSuccess("회원가입 완료");
@@ -75,11 +76,26 @@ public class UserController {
     }
 
     // 회원정보 수정
-    @PutMapping("/modify")
-    public Map<String, String> modifyUser(@RequestBody UserDto userDto) {
-        log.info("---------------------userInfo modify-------------------");
+    @PutMapping("/modify/{id}")
+    public void modifyUser(@PathVariable(name = "id") Long id, UserDto userDto) {
+        userDto.setId(id);
+        Optional<User> result = userService.get(id);
+        User user = result.get();
+        UserDto oldDto = user.entityToDto(user);
+        
+        String oldFileName = oldDto.getUploadFileName();
+        MultipartFile file = userDto.getFile();
+        
+        // 새로 업로드된 파일
+        String newUploadFileName = null;
+        if (file != null && !file.isEmpty()) {
+            newUploadFileName = fileUtil.saveFile(file);
+            userDto.setUploadFileName(newUploadFileName);
+        } else {
+            userDto.setUploadFileName(oldFileName);
+        }
+
         userService.modifyUserInfo(userDto);
-        return Map.of("result", "userInfo modified");
     }
 
     // 회원정보 조회
@@ -90,35 +106,9 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/display/{fileName}") //  이미지 파일 출력
+    // 이미지 파일 출력
+    @GetMapping("/display/{fileName}") 
     public ResponseEntity<Resource> displayImage(@PathVariable(name = "fileName") String fileName) {
         return fileUtil.getFile(fileName);
-    }
-
-    // 프로필 이미지 업로드
-    @PutMapping("/update/profileImage/{userId}")
-    public ResponseEntity<String> updateProfileImage(
-            @PathVariable Long userId,
-            @RequestParam("file") MultipartFile file
-    ) {
-        try {
-            String uploadedFileName = fileUtil.updateFile(userId.toString(), file);
-            return ResponseEntity.ok("이미지가 성공적으로 업로드되었습니다: " + uploadedFileName);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("이미지 업로드에 실패했습니다: " + e.getMessage());
-        }
-    }
-
-    // 프로필 이미지 삭제
-    @DeleteMapping("/delete/profileImage/{userId}")
-    public ResponseEntity<String> deleteProfileImage(@PathVariable Long userId) {
-        try {
-            fileUtil.deleteFile(userId.toString());
-            return ResponseEntity.ok("프로필 이미지가 성공적으로 삭제되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("프로필 이미지 삭제에 실패했습니다: " + e.getMessage());
-        }
     }
 }

@@ -18,15 +18,15 @@ export const loginPost = async (loginParam) => {
 };
 
 // 회원가입(FormData 객체를 사용하여 파일과 JSON 데이터를 분리하여 전송)
-export const joinUser = async (user) => {
+export const joinUser = async (formdata) => {
   const header = {headers:{"Content-Type":"multipart/form-data"}};
-  const res = await axios.post(`${host}/join`, user, header);
+  const res = await axios.post(`${host}/join`, formdata, header);
   return res.data;
 };
 
-export const modifyUser = async (user) => {
-  // 로그인한 사용자 기준으로 axios 처리 (JSON으로 바로 보냄)
-  const res = await axios.put(`${host}/modify`, user);
+export const modifyUser = async (id, user) => {
+  const header = { headers: { 'Content-Type': 'multipart/form-data' } };
+  const res = await axios.put(`${host}/modify/${id}`, user, header);
   return res.data;
 };
 

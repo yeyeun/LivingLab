@@ -31,7 +31,9 @@ public class TeamService {
     private final ChatRoomRepository chatRoomRepository;
 
     // 목록 가져오기(페이징 처리, 이미지 포함)
-    public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category) {
+    public PageResponseDto<TeamDto> list(PageRequestDto pageRequestDto, String search, String sort, Character category,
+    double latitude,
+    double longitude) {
         Pageable pageable = PageRequest.of(
                 pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(),
@@ -56,9 +58,9 @@ public class TeamService {
             if (sort.equals("마감임박순")) {
                 result = teamRepository.deadLineList(pageable);
             }
-            // if(sort.equals("거리순")){
-            // result =
-            // }
+            if (sort.equals("거리순")) {
+                result = teamRepository.distanceList(latitude, longitude, pageable);
+            }
             if (sort.equals("좋아요순")){
                 result = teamRepository.likeList(pageable);
             }
@@ -69,9 +71,9 @@ public class TeamService {
             if (sort.equals("마감임박순")) {
                 result = teamRepository.searchDeadLineList(search, pageable);
             }
-            // if(sort.equals("거리순")){
-            // result =
-            // }
+            if (sort.equals("거리순")) {
+                result = teamRepository.searchDistanceList(search, latitude, longitude, pageable);
+            }
             if (sort.equals("좋아요순")){
                 result = teamRepository.searchLikeList(search, pageable);
             }
@@ -140,6 +142,8 @@ public class TeamService {
         team.setTitle(teamDto.getTitle());
         team.setContent(teamDto.getContent());
         team.setLocation(teamDto.getLocation());
+        team.setLatitude(teamDto.getLatitude());
+        team.setLongitude(teamDto.getLongitude());
         team.setTeamCategory(teamDto.getTeamCategory());
         team.setDeadline(teamDto.getDeadline());
 
@@ -212,5 +216,41 @@ public class TeamService {
         }).collect(Collectors.toList());
 
         return dtoList;
+    }
+
+    public PageResponseDto<TeamDto> mylistall(PageRequestDto pageRequestDto, Long id){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage() - 1,
+            pageRequestDto.getSize(),
+            Sort.by("teamNo").descending());
+        Page<Object[]> result = teamRepository.findAllByUser(id, pageable);
+        
+        List<TeamDto> dtoList = result.get().map(arr -> {
+            Team team = (Team) arr[0];
+            TeamImage teamImage = (TeamImage) arr[1];
+            String defaultImageStr = "default.png";// 기본 이미지 파일명 설정
+
+            TeamDto teamDto = TeamDto.builder()
+                    .teamNo(team.getTeamNo()).title(team.getTitle()).teamCategory(team.getTeamCategory())
+                    .location(team.getLocation()).max(team.getMax()).current(team.getCurrent())
+                    .deadline(team.getDeadline()).nickname(team.getNickname()).teamHit(team.getTeamHit()).build();
+
+            if (teamImage != null) {
+                String imageStr = teamImage.getFileName();
+                teamDto.setUploadFileNames(List.of(imageStr));
+            } else {
+                teamDto.setUploadFileNames(List.of(defaultImageStr));
+            }
+            return teamDto;
+        }).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<TeamDto> responseDTO = PageResponseDto.<TeamDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+
+        return responseDTO;
     }
 }

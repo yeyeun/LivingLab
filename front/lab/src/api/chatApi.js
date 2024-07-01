@@ -4,9 +4,9 @@ export const API_SERVER_HOST = 'http://localhost:8282';
 const host = `${API_SERVER_HOST}/chat`;
 
 // 작성자가 게시글 작성 시 자동으로 채팅방 생성, 입장
-export const postCreateRoom = async (userId, title, createRequest) => {
+export const postCreateRoom = async (userId, title, type, createRequest) => {
   const res = await axios.post(`${host}/room/create`, createRequest, {
-    params: { userId, title }
+    params: { userId, title, type }
   });
   return res.data;
 };

@@ -31,6 +31,7 @@ const ModifyComponent = ({teamNo}) => {
     const [ team, setTeam ] = useState({...initState});
     const { moveToRead } = useCustomMove();
     const uploadRef = useRef();
+    const [location, setLocation] = useState(null); // 현재 위치를 저장할 상태
 
     useEffect(() => {
         getOne(teamNo).then(data => {
@@ -62,89 +63,119 @@ const ModifyComponent = ({teamNo}) => {
         setPreviewFiles(imagePreviews);
     }
 
-    const handleClickModify = (e) => {
-        //유효성 검사
-        if (!team.title || !team.content){
-            setAddResultModal("제목과 내용을 입력해주세요");
+    const handleClickModify = async () => {
+      try {
+        const { latitude, longitude } = await handleGeocode(); // 주소검색해서 등록한 주소를 좌표로 받기
+      
+          //유효성 검사
+          if (!team.title || !team.content){
+              setAddResultModal("제목과 내용을 입력해주세요");
+              return;
+          }
+          if (!team.teamCategory) {
+            setAddResultModal('카테고리를 선택해주세요');
             return;
-        }
-        if (!team.teamCategory) {
-          setAddResultModal('카테고리를 선택해주세요');
-          return;
-        }
-        if(!team.deadline || !team.location){
-          setAddResultModal('마감시간과 모임장소를 입력해주세요');
-          return;
-        }
-        const time = new Date();
-        const timeElement = new Date(team.deadline);
-        if(time > timeElement){
-          setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
-          return;
-        }
+          }
+          if(!team.deadline || !team.location){
+            setAddResultModal('마감시간과 모임장소를 입력해주세요');
+            return;
+          }
+          const time = new Date();
+          const timeElement = new Date(team.deadline);
+          if(time > timeElement){
+            setAddResultModal('현재 시간보다 이전의 날짜는 설정할 수 없습니다');
+            return;
+          }
 
-        const files = uploadRef.current.files;
-        const formData = new FormData();
-        for(let i=0; i<files.length; i++){
-            formData.append("files",files[i]);
+          const files = uploadRef.current.files;
+          const formData = new FormData();
+          for(let i=0; i<files.length; i++){
+              formData.append("files",files[i]);
+          }
+          //파일이 아닌 데이터를 formData에 추가
+          formData.append("user_id", team.user_id);
+          formData.append("title", team.title);
+          formData.append("content", team.content);
+          formData.append("teamHit", team.teamHit);
+          formData.append("teamCategory",team.teamCategory);
+          formData.append("nickname", team.nickname);
+          formData.append("location", team.location);
+          formData.append('latitude', latitude); // 위도
+          formData.append('longitude', longitude); // 경도
+          formData.append("max",team.max);
+          formData.append("deadline",team.deadline);
+          formData.append("uploadFileNames", team.uploadFileNames);
+
+
+          await modify(teamNo,formData);
+          setResult("게시글이 수정되었습니다");
+        } catch (error) {
+          console.error('Error Modifying post:', error);
         }
-        //파일이 아닌 데이터를 formData에 추가
-        formData.append("user_id", team.user_id);
-        formData.append("title", team.title);
-        formData.append("content", team.content);
-        formData.append("teamHit", team.teamHit);
-        formData.append("teamCategory",team.teamCategory);
-        formData.append("nickname", team.nickname);
-        formData.append("location", team.location);
-        formData.append("max",team.max);
-        formData.append("deadline",team.deadline);
-        formData.append("uploadFileNames", team.uploadFileNames);
+      };
 
-        // for (const x of formData.entries()){
-        //     console.log(x);
-        // }
-        modify(teamNo,formData);
-        setResult("게시글이 수정되었습니다");
-    }
-    const closeModal = () => {
-        setResult(null);
-        moveToRead(teamNo);
-    }
+      const closeModal = () => {
+          setResult(null);
+          moveToRead(teamNo);
+      }
 
-    //이미지 리스트에서 X버튼 눌렀을때
-    const handleRemoveImage = (index, isPreview) => {
-        if (isPreview) { //새로 추가된 이미지인 경우
-            setPreviewFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
-            updateFileInput(index); //삭제된 이미지를 입력된 파일에서도 삭제
-        } else { //기존에 업로드된 이미지인 경우
-            const newUploadFileNames = team.uploadFileNames.filter((_, i) => i !== index);
-            team.uploadFileNames = newUploadFileNames;
-            setTeam({ ...team});
-        }
-    };
-
-    // 입력된 파일 업데이트
-    const updateFileInput = (removeIndex) => {
-        const dataTransfer = new DataTransfer();
-        const files = Array.from(uploadRef.current.files);
-        files.forEach((file, index) => {
-            if (index !== removeIndex) { //removeIndex와 일치하지 않는 파일만 dataTransfer에 추가
-                dataTransfer.items.add(file);
+      const handleGeocode = () => {
+        return new Promise((resolve, reject) => {
+          const { kakao } = window;
+          const geocoder = new kakao.maps.services.Geocoder();
+          geocoder.addressSearch(team.location, function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+              setLocation({
+                latitude: coords.getLat(),
+                longitude: coords.getLng(),
+              });
+              resolve({
+                latitude: coords.getLat(),
+                longitude: coords.getLng(),
+              });
+            } else {
+              setAddResultModal('Failed to geocode the address.');
+              reject(new Error('Failed to geocode the address.'));
             }
+          });
         });
-        uploadRef.current.files = dataTransfer.files; //제거된 파일 반영
-    };
+      };
 
-    const setAddress = (address) => {
-        setTeam((prev) => ({ ...prev, location: address }));
-    };
+      //이미지 리스트에서 X버튼 눌렀을때
+      const handleRemoveImage = (index, isPreview) => {
+          if (isPreview) { //새로 추가된 이미지인 경우
+              setPreviewFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+              updateFileInput(index); //삭제된 이미지를 입력된 파일에서도 삭제
+          } else { //기존에 업로드된 이미지인 경우
+              const newUploadFileNames = team.uploadFileNames.filter((_, i) => i !== index);
+              team.uploadFileNames = newUploadFileNames;
+              setTeam({ ...team});
+          }
+      };
 
-    const handleInputValidation = (e) => {
-        const value = e.target.value;
-        if (value !== "" && (isNaN(value) || value < 2)) {
-          e.target.value = Math.max(2, value);
-        }
-        handleChangeTeam(e);
+      // 입력된 파일 업데이트
+      const updateFileInput = (removeIndex) => {
+          const dataTransfer = new DataTransfer();
+          const files = Array.from(uploadRef.current.files);
+          files.forEach((file, index) => {
+              if (index !== removeIndex) { //removeIndex와 일치하지 않는 파일만 dataTransfer에 추가
+                  dataTransfer.items.add(file);
+              }
+          });
+          uploadRef.current.files = dataTransfer.files; //제거된 파일 반영
+      };
+
+      const setAddress = (address) => {
+          setTeam((prev) => ({ ...prev, location: address }));
+      };
+
+      const handleInputValidation = (e) => {
+          const value = e.target.value;
+          if (value !== "" && (isNaN(value) || value < 2)) {
+            e.target.value = Math.max(2, value);
+          }
+          handleChangeTeam(e);
     };
 
     return (

@@ -28,6 +28,8 @@ public class MarketDto { // 동네장터 화면에서 받을 데이터
     private String deadline;
     private Character marketCategory;
     private String location;
+    private double latitude;
+    private double longitude;
     private Integer marketHit;
     private String nickname;
     private boolean flag; // true:마감 / false:모집중

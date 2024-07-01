@@ -130,4 +130,9 @@ public class BuyController {
         return buyService.mylist(id);
     }
 
+    @GetMapping("/mylistall") // 작성한 게시물 조회 (전체)
+    public PageResponseDto<BuyDto> mylistall(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "id") Long id) {
+        return buyService.mylistall(pageRequestDto, id);
+    }
+
 }

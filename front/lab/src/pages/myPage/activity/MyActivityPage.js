@@ -3,8 +3,9 @@ import MyTeamComponent from '../../../components/myPage/myActivity/MyTeamCompone
 import MyMarketComponent from '../../../components/myPage/myActivity/MyMarketComponent';
 import MyShareRoomComponent from '../../../components/myPage/myActivity/MyShareRoomComponent';
 import MyCommunityComponent from '../../../components/myPage/myActivity/MyCommunityComponent';
-import MyLikeComponent from '../../../components/myPage/myActivity/MyLikeComponent';
 import { useSelector } from 'react-redux';
+import heart from "../../../resources/images/heart_full.png";
+import reply from "../../../resources/images/reply.png";
 
 const MyActivityPage = () => {
   const loginInfo = useSelector((state) => state.loginSlice);
@@ -28,7 +29,18 @@ const MyActivityPage = () => {
                 </div>
                 <div className="flex h-full justify-center">
                   <MyCommunityComponent id={id}/>
-                  <MyLikeComponent id={id}/>
+                  <div className="w-1/4 h-72 ml-5 mr-1 my-4 group">
+                    <div className="p-6 h-full overflow-hidden bg-white rounded-lg border shadow-md flex flex-col justify-center items-center transition-colors duration-300 group-hover:bg-gray-100 group-hover:cursor-pointer">
+                      <p className="text-xl font-bold text-gray-900 mb-4">나의 좋아요</p>
+                      <img src={heart} alt="..." className="w-24 h-24 transform transition-transform duration-300 group-hover:scale-110" />
+                    </div>
+                  </div>
+                  <div className="w-1/4 h-72 ml-1 mr-4 my-4 group">
+                    <div className="p-6 h-full overflow-hidden bg-white rounded-lg border shadow-md flex flex-col justify-center items-center transition-colors duration-300 group-hover:bg-gray-100 group-hover:cursor-pointer">
+                      <p className="text-xl font-bold text-gray-900 mb-4">나의 댓글</p>
+                      <img src={reply} alt="..." className="w-24 h-24 transform transition-transform duration-300 group-hover:scale-110" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
