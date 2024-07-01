@@ -1,5 +1,6 @@
+import React, { useState, useEffect } from "react";
 import BasicLayout from '../layouts/BasicLayout';
-//import MultipleItems from '../components/products/MultipleItemsComponent';
+// import MultipleItems from '../components/products/MultipleItemsComponent';
 import Main from '../resources/images/main1.png';
 import Slide1 from '../resources/images/slide_1.png';
 import Slide2 from '../resources/images/slide_2.png';
@@ -13,88 +14,59 @@ import BuyPostComponent from '../components/main/BuyPostComponent';
 import ShareRoomPostComponent from '../components/main/shareRoomPostComponent';
 import WeatherComponent from '../components/main/WeatherComponent';
 import img_main from '../resources/images/img_main5.png';
+import banner_dark from '../resources/images/banner_dark.png';
+import banner_light from '../resources/images/banner_light.png';
 
 
 
 import { Link } from 'react-router-dom';
-import React from "react";
-import Slider from "react-slick";
+import MainSliderComponent from "../components/main/MainSliderComponent";
 import TypingComponent from '../components/main/TypingComponent';
 
-
-
 const MainPage = () => {
+  const [imageSrc, setImageSrc] = useState(banner_dark);
+  const [textColor, setTextColor] = useState('white');
 
-  // 슬라이드 세팅
-  var settings = {
-    dots: true,
-    infinite: true,
-    autoplay: true,
-    arrows: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      if (scrollY === 0) {
+        setImageSrc(banner_dark);
+        setTextColor('white');
+      } else {
+        setImageSrc(banner_light);
+        setTextColor('black');
+      }
+    };
 
-  };
-
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
-    //가장 바깥, 배경
+    // 가장 바깥, 배경
     <div className="bg-color">
       <hr className="vertical-line" />
-
       <BasicLayout>
 
         <div className="main-container-top mb-10">
           <div className='main-image-box'>
-            <img className="main-image" src={img_main} alt="MainImage" />
+            {/* <img className="main-image" src={imageSrc} alt="MainImage" />
+            <div className="main-image-text" style={{ color: textColor}}>
+              <TypingComponent />
+            </div> */}
+            <MainSliderComponent />
             <div className="main-image-text">
               <TypingComponent />
-              {/* <hr className="weather-hr "/> */}
             </div>
 
             <div className="weather-container ">
               <WeatherComponent />
-
             </div>
           </div>
         </div>
-
-
-        {/* <div className="main-container text-6xl">
-          #지금 HOT 게시물
-          </div>
-          <div className="main-container">
-
-          <div className="main-slide-container">
-            <div className="main-headline mb-2">
-            </div>
-            <Slider {...settings}>
-              <div>
-                <img alt="slide_1" src={Slide1} className="main-slide" />
-              </div>
-              <div>
-                <img alt="slide_2" src={Slide2} className="main-slide" />
-
-              </div>
-              <div>
-                <img alt="slide_3" src={Slide3} className="main-slide" />
-
-              </div>
-              <div>
-                <img alt="slide_4" src={Slide4} className="main-slide" />
-
-              </div>
-              <div>
-                <img alt="slide_5" src={Slide5} className="main-slide" />
-
-              </div>
-            </Slider>
-          </div>
-         
-        </div> */}
-
-
 
         <div className="background-container mt-10">
           <div className="main-container text-7xl">
@@ -126,9 +98,7 @@ const MainPage = () => {
         </div>
 
         <div className="background-container mb-20">
-
           <div className="main-container">
-
             <div className='main-textbox'>
               <div className='main-desc'>
                 <div className="desc-title">
@@ -141,9 +111,7 @@ const MainPage = () => {
                 </div>
                 <div className="desc-content">
                   여가활동을 함께 할 이웃을 찾아보세요!
-
                 </div>
-
               </div>
             </div>
             <div className='main-box'>
@@ -173,8 +141,6 @@ const MainPage = () => {
               </div>
             </div>
 
-
-
             <div>
               <div className='main-headline'>
                 <Link to={'/market'} className="font-bold">
@@ -197,15 +163,12 @@ const MainPage = () => {
                   #최신순 #낮은 가격순 #좋아요순
                 </div>
               </div>
-              <div className="main-item" >
+              <div className="main-item">
                 <ShareRoomPostComponent />
-
               </div>
-
             </div>
-
-          </div></div>
-
+          </div>
+        </div>
       </BasicLayout>
     </div>
   );
