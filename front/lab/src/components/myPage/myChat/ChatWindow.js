@@ -28,17 +28,6 @@ const ChatWindow = ({ room }) => {
   const nickname = loginInfo.nickname;
 
   useEffect(() => {
-    const fetchChatHistory = async () => {
-      try {
-        const response = await getChatHistory(room.roomId);
-        setMessages(response.data.messageHistory);  // 서버에서 받은 데이터를 messages 상태에 저장
-      } catch (error) {
-        console.error('메세지 내역 전송 실패', error);
-      }
-    };
-
-    fetchChatHistory();
-
     const socket = new SockJS('http://localhost:8282/ws'); // SockJS 연결 URL
     const stomp = Stomp.over(socket);
 
@@ -53,6 +42,20 @@ const ChatWindow = ({ room }) => {
       if (stompClient) stompClient.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const res = await getChatHistory(room.roomId); // 수정된 API 호출
+        setMessages(res.data.messageHistory);
+      } catch (error) {
+        console.error('채팅 기록 불러오기 실패: ', error);
+      }
+    };
+
+    // 의존성 배열에 chat.roomId 추가하여 해당 값이 변경될 때만 호출
+    fetchChatHistory();
+  }, [room.roomId]);
 
   useEffect(() => {
     if (!stompClient) return;
@@ -108,16 +111,16 @@ const ChatWindow = ({ room }) => {
 
   //채팅방 제목 클릭시 해당 게시물로 이동
   const handleClickTitle = (type, value) => {
-    if(type === '공동구매' && value ){
+    if (type === '공동구매' && value) {
       navigate(`/buy/read/${value}`);
     }
-    else if(type === '동네모임' && value ){
+    else if (type === '동네모임' && value) {
       navigate(`/team/read/${value}`);
     }
-    else if(type === '동네장터' && value ){
+    else if (type === '동네장터' && value) {
       navigate(`/market/read/${value}`);
     }
-    else if(type === '자취방쉐어' && value ){
+    else if (type === '자취방쉐어' && value) {
       navigate(`/shareRoom/read/${value}`);
     }
     else {
@@ -131,13 +134,13 @@ const ChatWindow = ({ room }) => {
         {/* 채팅방 정보 표시 */}
         <div className="text-sm flex items-center">
           <span className="bg-mainColor px-2 py-1 mr-1 rounded-2xl">{room.type}</span>
-          <span className="hover:underline cursor-pointer" onClick={()=>handleClickTitle(room.type,value)}>{room.title} / 채팅방번호:{room.roomId}</span>
+          <span className="hover:underline cursor-pointer" onClick={() => handleClickTitle(room.type, value)}>{room.title} / 채팅방번호:{room.roomId}</span>
         </div>
         {/* 사이드바 토글 버튼 */}
         <div className="text-sm flex items-center">
-        <span className="bg-white px-2 py-1 ml-1 rounded text-black font-bold">3명 참여중</span>
-          <button 
-            onClick={toggleSidebar} 
+          <span className="bg-white px-2 py-1 ml-1 rounded text-black font-bold">3명 참여중</span>
+          <button
+            onClick={toggleSidebar}
             className="ml-2 bg-gray-700 hover:bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center">
             ☰
           </button>
