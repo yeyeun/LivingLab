@@ -14,26 +14,6 @@ const ChatList = ({ onSelectChat }) => {
   }, [id]);
 
 
-const getNonEmptyFieldsWithText = (room) => {
-  const fields = [];
-
-  if (room.buyNo !== null) {
-      fields.push({ value: room.buyNo, text: '공동구매' });
-  }
-  if (room.teamNo !== null) {
-      fields.push({ value: room.teamNo, text: '동네모임' });
-  }
-  if (room.marketNo !== null) {
-      fields.push({ value: room.marketNo, text: '동네장터' });
-  }
-  if (room.roomNo !== null) {
-      fields.push({ value: room.roomNo, text: '자취방쉐어' });
-  }
-
-  return fields;
-};
-
-
   return (
     <div className="h-full">
       {chatRooms.data && chatRooms.data.length > 0 ? (
