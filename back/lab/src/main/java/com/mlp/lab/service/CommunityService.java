@@ -17,6 +17,7 @@ import com.mlp.lab.dto.MyActivityDto;
 import com.mlp.lab.dto.PageRequestDto;
 import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.entity.Community;
+import com.mlp.lab.entity.CommunityImage;
 import com.mlp.lab.repository.CommunityRepository;
 import com.mlp.lab.repository.UserRepository;
 
@@ -290,6 +291,23 @@ public class CommunityService {
 
         return dtoList;
     }
-                
 
+    public PageResponseDto<CommunityDto> mylistall(PageRequestDto pageRequestDto, Long id){
+        Pageable pageable = PageRequest.of(
+            pageRequestDto.getPage() - 1,
+            pageRequestDto.getSize(),
+            Sort.by("commNo").descending());
+        Page<Community> result = communityRepository.findAllByUser(id, pageable);
+        
+        List<CommunityDto> dtoList = result.getContent().stream()
+                .map(tip -> modelMapper.map(tip, CommunityDto.class)).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+        PageResponseDto<CommunityDto> responseDto = PageResponseDto.<CommunityDto>withAll()
+                .dtoList(dtoList)
+                .pageRequestDto(pageRequestDto)
+                .totalCount(totalCount)
+                .build();
+        return responseDto;
+    }
 }

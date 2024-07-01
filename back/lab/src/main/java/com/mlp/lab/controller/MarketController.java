@@ -121,4 +121,9 @@ public class MarketController {
     public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
         return marketService.mylist(id);
     }
+
+    @GetMapping("/mylistall") // 작성한 게시물 조회 (전체)
+    public PageResponseDto<MarketDto> mylistall(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "id") Long id) {
+        return marketService.mylistall(pageRequestDto, id);
+    }
 }

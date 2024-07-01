@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mlp.lab.dto.ShareRoomDto;
 import com.mlp.lab.dto.MyActivityDto;
+import com.mlp.lab.dto.PageRequestDto;
+import com.mlp.lab.dto.PageResponseDto;
 import com.mlp.lab.dto.RoomPageRequestDto;
 import com.mlp.lab.dto.RoomPageResponseDto;
 import com.mlp.lab.service.ShareRoomService;
@@ -132,6 +134,11 @@ public class ShareRoomController {
     @GetMapping("/mylist/{id}") // 작성한 게시물 조회 (3개)
     public List<MyActivityDto> mylist(@PathVariable(name = "id") Long id) {
         return shareRoomService.mylist(id);
+    }
+
+    @GetMapping("/mylistall") // 작성한 게시물 조회 (전체)
+    public PageResponseDto<ShareRoomDto> mylistall(PageRequestDto pageRequestDto, @RequestParam(required = false, value = "id") Long id) {
+        return shareRoomService.mylistall(pageRequestDto, id);
     }
 
     

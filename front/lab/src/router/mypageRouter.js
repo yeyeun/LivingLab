@@ -2,7 +2,11 @@ import { Suspense, lazy } from 'react'; // 필요한 순간까지 컴포넌트�
 
 const Loading = <div>Loading...</div>; // 컴포넌트의 처리가 끝나지 않은 경우 화면에 'Loading...' 메시지 출력
 const MyActivity = lazy(() => import('../pages/myPage/activity/MyActivityPage'));
-const MyActivityListPage = lazy(() => import('../pages/myPage/activity/MyActivityListPage'));
+const MyBuyListPage = lazy(() => import('../pages/myPage/activity/MyBuyListPage'));
+const MyTeamListPage = lazy(() => import('../pages/myPage/activity/MyTeamListPage'));
+const MyMarketListPage = lazy(() => import('../pages/myPage/activity/MyMarketListPage'));
+const MyShareRoomListPage = lazy(() => import('../pages/myPage/activity/MyShareRoomListPage'));
+const MyCommunityListPage = lazy(() => import('../pages/myPage/activity/MyCommunityListPage'));
 const MyChat = lazy(() => import('../pages/myPage/chat/MyChatPage'));
 const MyInfo = lazy(() => import('../pages/myPage/info/MyInfoPage'));
 const MyInfoModify = lazy(() => import('../pages/myPage/info/MyInfoModifyPage'));
@@ -21,7 +25,7 @@ const mypageRouter = () => {
       path: 'activity/buy',
       element: (
         <Suspense fallback={Loading}>
-          <MyActivityListPage type={`buy`}/>
+          <MyBuyListPage/>
         </Suspense>
       )
     },
@@ -29,7 +33,7 @@ const mypageRouter = () => {
       path: 'activity/team',
       element: (
         <Suspense fallback={Loading}>
-          <MyActivityListPage type={`team`}/>
+          <MyTeamListPage/>
         </Suspense>
       )
     },
@@ -37,7 +41,7 @@ const mypageRouter = () => {
       path: 'activity/market',
       element: (
         <Suspense fallback={Loading}>
-          <MyActivityListPage type={`market`}/>
+          <MyMarketListPage/>
         </Suspense>
       )
     },
@@ -45,7 +49,7 @@ const mypageRouter = () => {
       path: 'activity/community',
       element: (
         <Suspense fallback={Loading}>
-          <MyActivityListPage type={`community`}/>
+          <MyCommunityListPage/>
         </Suspense>
       )
     },
@@ -53,7 +57,7 @@ const mypageRouter = () => {
       path: 'activity/shareroom',
       element: (
         <Suspense fallback={Loading}>
-          <MyActivityListPage type={`shareroom`}/>
+          <MyShareRoomListPage/>
         </Suspense>
       )
     },

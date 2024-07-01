@@ -146,7 +146,7 @@ const AddComponent = () => {
       formData.append('buyHit', buy.buyHit);
       const response = await postAddBuy(formData); // 등록 버튼 클릭시 디비에 저장 후 buyNo 가져오기
       const createRequest = { buyNo: response.buyNo };
-      await postCreateRoom(formData.get('id'), formData.get('title'), createRequest);
+      await postCreateRoom(formData.get('id'), formData.get('title'), '공동구매', createRequest);
       setResult('게시글이 등록되었습니다');
     } catch (error) {
       console.error('Error adding post:', error);

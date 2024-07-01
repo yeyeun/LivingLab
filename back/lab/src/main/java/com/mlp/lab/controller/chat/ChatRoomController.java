@@ -50,8 +50,8 @@ public class ChatRoomController {
     @PostMapping("/room/create")
     @ResponseBody
     public ResponseDto<ChatRoomDataResponseDto.Info> createRoom(@RequestParam(name="userId") Long userId, @RequestParam(name="title") String title,
-            @RequestBody ChatRoomDataRequestDto.create createRequest) {
-        ChatRoomDataResponseDto.Info roomData = chatRoomService.createRoom(userId, title, createRequest);
+            @RequestParam(name="type") String type, @RequestBody ChatRoomDataRequestDto.create createRequest) {
+        ChatRoomDataResponseDto.Info roomData = chatRoomService.createRoom(userId, title, type, createRequest);
         return ResponseDto.setSuccessData("채팅방 생성", roomData);
     }
 

@@ -106,4 +106,7 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
     // 마이페이지 내가 작성한 글
     @Query("SELECT b FROM Buy b WHERE b.user.id = :id ORDER BY b.buyNo DESC")
     Page<Buy> findByUser(@Param(value = "id") Long id, Pageable pageable);
+    
+    @Query("select b, bi from Buy b left join b.imageList bi where b.user.id = :id and (bi.ord = 0 or bi.ord IS NULL) order by b.buyNo desc")
+    Page<Object[]> findAllByUser(@Param(value = "id") Long id, Pageable pageable);
 }
