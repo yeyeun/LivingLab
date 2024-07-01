@@ -6,8 +6,8 @@ import ChatWindow from '../../../components/myPage/myChat/ChatWindow';
 const MyChatPage = () => {
   const [selectedChat, setSelectedChat] = useState(null);
 
-  const handleChatSelect = (chat) => {
-    setSelectedChat(chat);
+  const handleChatSelect = (room) => {
+    setSelectedChat(room);
   };
 
   return (
@@ -21,7 +21,7 @@ const MyChatPage = () => {
             </div>
             <div className="w-2/3">
               {selectedChat ? (
-                <ChatWindow chat={selectedChat}/>
+                <ChatWindow room={selectedChat}/>
               ) : (
                 <div id="chatwin" className="flex items-center justify-center h-full border-l border-gray-300">
                   <p className="text-gray-600">채팅 목록 중 채팅할 방을 선택하세요</p>

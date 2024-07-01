@@ -12,7 +12,7 @@ const initState = {
   sender: '',
 };
 
-const ChatWindow = ({ chat }) => {
+const ChatWindow = ({ room }) => {
   const navigate = useNavigate();
   //const [messages, setMessages] = useState(initState);
   // const [messages, setMessages] = useState([
@@ -85,27 +85,27 @@ const ChatWindow = ({ chat }) => {
   };
 
   const getRoomInfo = (data) => {
-    if (data.buyNo) return { label: '공동구매', value: data.buyNo };
-    if (data.teamNo) return { label: '동네모임', value: data.teamNo };
-    if (data.marketNo) return { label: '동네장터', value: data.marketNo };
-    if (data.roomNo) return { label: '자취방쉐어', value: data.roomNo };
-    return { label: '-', value: '' };
+    if (data.buyNo) return { value: data.buyNo };
+    if (data.teamNo) return { value: data.teamNo };
+    if (data.marketNo) return { value: data.marketNo };
+    if (data.roomNo) return { value: data.roomNo };
+    return { value: '' };
   };
 
-  const { label, value } = getRoomInfo(chat);
+  const { value } = getRoomInfo(room);
 
   //채팅방 제목 클릭시 해당 게시물로 이동
-  const handleClickTitle = (label, value) => {
-    if (label === '공동구매') {
+  const handleClickTitle = (type, value) => {
+    if(type === '공동구매' && value ){
       navigate(`/buy/read/${value}`);
     }
-    else if (label === '동네모임') {
+    else if(type === '동네모임' && value ){
       navigate(`/team/read/${value}`);
     }
-    else if (label === '동네장터') {
+    else if(type === '동네장터' && value ){
       navigate(`/market/read/${value}`);
     }
-    else if (label === '자취방쉐어') {
+    else if(type === '자취방쉐어' && value ){
       navigate(`/shareRoom/read/${value}`);
     }
     else {
@@ -118,14 +118,14 @@ const ChatWindow = ({ chat }) => {
       <div className="flex items-center justify-between p-4 bg-gray-600 text-white rounded-t">
         {/* 채팅방 정보 표시 */}
         <div className="text-sm flex items-center">
-          <span className="bg-mainColor px-2 py-1 mr-1 rounded-2xl">{label}</span>
-          <span className="hover:underline cursor-pointer" onClick={() => handleClickTitle(label, value)}>{chat.title}</span>
+          <span className="bg-mainColor px-2 py-1 mr-1 rounded-2xl">{room.type}</span>
+          <span className="hover:underline cursor-pointer" onClick={()=>handleClickTitle(room.type,value)}>{room.title} / 채팅방번호:{room.roomId}</span>
         </div>
         {/* 사이드바 토글 버튼 */}
         <div className="text-sm flex items-center">
-          <span className="bg-white px-2 py-1 ml-1 rounded text-black font-bold">{messages.length} / 3</span>
-          <button
-            onClick={toggleSidebar}
+        <span className="bg-white px-2 py-1 ml-1 rounded text-black font-bold">3명 참여중</span>
+          <button 
+            onClick={toggleSidebar} 
             className="ml-2 bg-gray-700 hover:bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center">
             ☰
           </button>

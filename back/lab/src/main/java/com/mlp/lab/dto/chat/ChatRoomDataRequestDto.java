@@ -12,5 +12,6 @@ public class ChatRoomDataRequestDto {
         private Long marketNo;
         private Integer roomNo;
         private String title;
+        private String type;
     }
 }
