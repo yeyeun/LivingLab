@@ -18,7 +18,7 @@ import { API_SERVER_HOST } from './userApi';
 
 const rest_api_key = 'ea0feb168fdd4ed8456013d8b2f26c49'; // 이메일 나오는 rest api 키 받음
 
-const redirect_uri = 'http://localhost:3000/user/kakao'; //카카오 로그인에서 사용할 OAuth Redirect URI를 설정
+const redirect_uri = 'http://223.130.157.92:22222/user/kakao'; //카카오 로그인에서 사용할 OAuth Redirect URI를 설정
 
 const auth_code_path = 'https://kauth.kakao.com/oauth/authorize'; // 인가 코드 받는 경로
 

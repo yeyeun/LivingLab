@@ -1,5 +1,5 @@
 import axios from "axios";
-export const API_SERVER_HOST = "http://localhost:8282";
+export const API_SERVER_HOST = "http://223.130.157.92:22222";
 
 const prefix = `${API_SERVER_HOST}/api/products`;
 

@@ -199,7 +199,7 @@ const ReadComponent = ({ teamNo }) => {
   //프로필 사진 읽어오는 함수
   const fetchUserProfileImage = async (email) => {
     try {
-      const res = await axios.get(`http://localhost:8282/api/user/userProfileImage?email=${email}`, {
+      const res = await axios.get(`http://223.130.157.92:22222/api/user/userProfileImage?email=${email}`, {
         responseType: 'arraybuffer', // 바이너리 데이터로 응답받기
       });
 

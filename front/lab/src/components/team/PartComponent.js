@@ -101,7 +101,7 @@ const PartComponent = ({ teamNo }) => {
           <div>
             {displayUsers.map((user) => (
               <div className="flex p-5" key={user.id}>
-                <img alt="Profile_Img" src={`http://localhost:8282/api/user/userProfileImage?email=${user.email}`} className="rounded-full size-10 mr-2" />
+                <img alt="Profile_Img" src={`http://223.130.157.92:22222/api/user/userProfileImage?email=${user.email}`} className="rounded-full size-10 mr-2" />
                 {user.nickname}
               </div>
             ))}

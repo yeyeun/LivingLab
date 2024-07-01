@@ -28,7 +28,7 @@ const ChatWindow = ({ room }) => {
   const nickname = loginInfo.nickname;
 
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8282/ws'); // SockJS 연결 URL
+    const socket = new SockJS('http://223.130.157.92:22222/ws'); // SockJS 연결 URL
     const stomp = Stomp.over(socket);
 
     stomp.connect({}, frame => {

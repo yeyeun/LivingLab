@@ -1,7 +1,7 @@
 {
   "name": "lab",
   "version": "0.1.0",
-  "proxy": "http://localhost:8282",
+  "proxy": "http://223.130.157.92:22222",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
