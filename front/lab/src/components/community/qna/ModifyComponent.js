@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { modifyQna, getOneQna, API_SERVER_HOST } from "../../../api/communityApi";
+import { modifyQna, getOneQna } from "../../../api/communityApi";
 import ResultModal from "../../common/ResultModal";
 import useCustomQna from "../../../hooks/useCustomQna";
 
@@ -14,8 +14,6 @@ const initState = {
     files: [],
     uploadFileNames: []
 };
-
-const host = API_SERVER_HOST;
 
 const ModifyComponent = ({commNo}) => {
     const [result, setResult] = useState(null);
@@ -152,7 +150,7 @@ const ModifyComponent = ({commNo}) => {
                             <div className="flex flex-wrap items-start">
                                 {qna.uploadFileNames.map((imgFile, index) =>
                                     <div key={index} className="relative inline-block">
-                                        <img alt="qna" src={`${host}/api/community/qna/display/${imgFile}`} className="my-3 mx-1 w-36 h-36 object-cover" />
+                                        <img alt="qna" src={`/api/community/qna/display/${imgFile}`} className="my-3 mx-1 w-36 h-36 object-cover" />
                                         <button type="button"
                                             onClick={() => handleRemoveImage(index, false)}
                                             className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"

@@ -13,7 +13,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("http://localhost:3000") // React 애플리케이션의 주소
+                .setAllowedOriginPatterns("https://223.130.157.92:22222")
+                .setAllowedOriginPatterns("https://livinglab2.kro.kr:22222") // React 애플리케이션의 주소
                 .withSockJS();
     }
 

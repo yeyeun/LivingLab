@@ -1,6 +1,6 @@
 import axios from 'axios';
-export const API_SERVER_HOST = 'http://localhost:8282';
-const prefix = `${API_SERVER_HOST}/api/reply`;
+
+const prefix = `/api/reply`;
 
 export const addReply = async(reply) => {
   const res = await axios.post(`${prefix}/add`, reply);

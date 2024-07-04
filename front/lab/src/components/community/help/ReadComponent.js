@@ -1,7 +1,7 @@
 import ReplyComponent from "../../common/ReplyComponent";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
-import { API_SERVER_HOST, getOneHelp, deleteOne, increaseLike, decreaseLike } from "../../../api/communityApi";
+import { getOneHelp, deleteOne, increaseLike, decreaseLike } from "../../../api/communityApi";
 import { addReply, getList } from "../../../api/replyApi";
 import { likeClick, unlikeClick, likeInfo } from '../../../api/likeApi';
 import useCustomHelp from "../../../hooks/useCustomHelp";
@@ -25,8 +25,6 @@ const initState2 = {
     no: 0,
     type: ''
   };
-
-const host = API_SERVER_HOST;
 
 const ReadComponent = ({commNo}) => {
     const [result, setResult] = useState(null); //게시글 삭제 모달창
@@ -160,7 +158,7 @@ return(
                         alt="help"
                         key={i}
                         width={600}
-                        src={`${host}/api/community/help/display/${imgFile}`}
+                        src={`/api/community/help/display/${imgFile}`}
                         className="my-3"/>
                 )}
 

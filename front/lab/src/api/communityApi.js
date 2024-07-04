@@ -1,6 +1,5 @@
 import axios from "axios";
-export const API_SERVER_HOST = 'http://localhost:8282';
-const prefix = `${API_SERVER_HOST}/api/community`;
+const prefix = `/api/community`;
 
 // ******자취 TIP 게시판******
 export const postAddTip = async(tip) => {

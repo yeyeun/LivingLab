@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike, updateBuyFlag } from '../../api/buyApi';
+import { deleteOne, getOne, increaseLike, decreaseLike, updateBuyFlag } from '../../api/buyApi';
 import { likeClick, unlikeClick, likeInfo } from '../../api/likeApi';
 import { enterChatRoomBuy, chatUserInfoBuy } from '../../api/chatApi';
 import { useSelector } from 'react-redux';
@@ -38,7 +38,6 @@ const initState2 = {
   buyNo: 0
 };
 
-const host = API_SERVER_HOST;
 
 const ReadComponent = ({ buyNo }) => {
   const [buy, setBuy] = useState(initState);
@@ -211,11 +210,11 @@ const ReadComponent = ({ buyNo }) => {
             {buy.uploadFileNames.length > 0 ? (
               <Slider {...settings}>
                 {buy.uploadFileNames.map((imgFile, i) => (
-                  <img alt="buy" key={i} src={`${host}/api/buy/display/${imgFile}`} className="object-contain w-full h-72" />
+                  <img alt="buy" key={i} src={`/api/buy/display/${imgFile}`} className="object-contain w-full h-72" />
                 ))}
               </Slider>
             ) : (
-              <img alt="buy" src={`${host}/api/buy/display/default.png`} className="object-contain w-full h-72" />
+              <img alt="buy" src={`/api/buy/display/default.png`} className="object-contain w-full h-72" />
             )}
           </div>
           <div className="col-start-2 col-span-3 text-base">

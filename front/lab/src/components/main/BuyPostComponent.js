@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { API_SERVER_HOST, getLatestBuy } from '../../api/buyApi';
+import { getLatestBuy } from '../../api/buyApi';
 
 
-const host = API_SERVER_HOST;
 
 const BuyPostComponent = () => {
     const [latestPosts, setLatestPosts] = useState([]);
@@ -36,7 +35,7 @@ const BuyPostComponent = () => {
                     <li key={buy.buyNo} className="main-buylist">
                         <div className="main-buylist-image">
                             <Link to={`/buy/read/${buy.buyNo}`}>
-                                <img className="main-buylist-thumbnail" src={`${host}/api/buy/display/${buy.uploadFileNames[0]}`} alt={buy.title} />
+                                <img className="main-buylist-thumbnail" src={`/api/buy/display/${buy.uploadFileNames[0]}`} alt={buy.title} />
                             </Link>
                             <div className="main-buylist-recruit">{checkDeadline(buy.deadline)}</div>
                         </div>
@@ -53,7 +52,7 @@ const BuyPostComponent = () => {
                     <li key={buy.buyNo} className="main-buylist">
                         <div className="main-buylist-image">
                             <Link to={`/buy/read/${buy.buyNo}`} >
-                                <img className="main-buylist-thumbnail" src={`${host}/api/buy/display/${buy.uploadFileNames[0]}`} alt={buy.title} />
+                                <img className="main-buylist-thumbnail" src={`/api/buy/display/${buy.uploadFileNames[0]}`} alt={buy.title} />
                             </Link>
                             <div className="main-buylist-recruit">{checkDeadline(buy.deadline)}</div>
                         </div>
@@ -71,7 +70,7 @@ const BuyPostComponent = () => {
                     <li key={buy.buyNo} className="main-buylist">
                         <div className="main-buylist-image">
                             <Link to={`/buy/read/${buy.buyNo}`} >
-                                <img className="main-buylist-thumbnail" src={`${host}/api/buy/display/${buy.uploadFileNames[0]}`} alt={buy.title} />
+                                <img className="main-buylist-thumbnail" src={`/api/buy/display/${buy.uploadFileNames[0]}`} alt={buy.title} />
                             </Link>
                             <div className="main-buylist-recruit">{checkDeadline(buy.deadline)}</div>
                         </div>

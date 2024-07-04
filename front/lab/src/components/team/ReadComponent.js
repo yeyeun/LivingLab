@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike, updateTeamFlag } from '../../api/teamApi';
+import { deleteOne, getOne, increaseLike, decreaseLike, updateTeamFlag } from '../../api/teamApi';
 import { likeClick, unlikeClick, likeInfo } from '../../api/likeApi';
 import { enterChatRoomTeam, chatUserInfoTeam } from '../../api/chatApi';
 import { useSelector } from 'react-redux';
@@ -39,7 +39,6 @@ const initState2 = {
   teamNo: 0
 };
 
-const host = API_SERVER_HOST;
 
 const ReadComponent = ({ teamNo }) => {
   const [team, setTeam] = useState(initState);
@@ -215,11 +214,11 @@ const ReadComponent = ({ teamNo }) => {
             {team.uploadFileNames.length > 0 ? (
               <Slider {...settings}>
                 {team.uploadFileNames.map((imgFile, i) => (
-                  <img alt="team" key={i} src={`${host}/api/team/display/${imgFile}`} className="object-contain w-full h-72" />
+                  <img alt="team" key={i} src={`/api/team/display/${imgFile}`} className="object-contain w-full h-72" />
                 ))}
               </Slider>
             ) : (
-              <img alt="team" src={`${host}/api/team/display/default.png`} className="object-contain w-full h-72" />
+              <img alt="team" src={`/api/team/display/default.png`} className="object-contain w-full h-72" />
             )}
           </div>
           <div className="col-start-2 col-span-3 text-base">

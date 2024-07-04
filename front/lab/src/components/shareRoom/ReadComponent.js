@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_SERVER_HOST, getOne, deleteOne, increaseLike, decreaseLike } from '../../api/shareRoomApi';
+import { getOne, deleteOne, increaseLike, decreaseLike } from '../../api/shareRoomApi';
 import { likeClick, unlikeClick, likeInfo } from '../../api/likeApi';
 import { postCreateRoom, chatUserInfoShare } from '../../api/chatApi';
 import useRoomCustomMove from '../../hooks/useRoomCustomMove';
@@ -13,7 +13,6 @@ import InfoModal from '../common/InfoModal';
 import BasicModal from '../common/BasicModal';
 
 
-const host = API_SERVER_HOST;
 
 const initState = {
   id: 0,
@@ -175,12 +174,12 @@ const ReadComponent = ({ roomNo }) => {
               <React.Fragment key={index}>
                 {index === 0 ? (
                   <div id={`child-first-${index}`} className="row-span-2 relative overflow-hidden">
-                    <img src={`${host}/api/shareRoom/display/${imgFile}`} className="position-absolute object-cover w-full h-full" alt="..."/>
+                    <img src={`/api/shareRoom/display/${imgFile}`} className="position-absolute object-cover w-full h-full" alt="..."/>
                   </div>
                 ) : index >= 1 && index <= 4 ? (
                   <>
                     <div id={`child-${index}`} className="relative overflow-hidden">
-                      <img src={`${host}/api/shareRoom/display/${imgFile}`} className="position-absolute object-cover w-full h-full" alt="..."/>
+                      <img src={`/api/shareRoom/display/${imgFile}`} className="position-absolute object-cover w-full h-full" alt="..."/>
                     </div>
                   </>
                 ) : null}
@@ -189,7 +188,7 @@ const ReadComponent = ({ roomNo }) => {
             ))}
             <ModalComponent
               isOpen={isModalOpen2}
-              images={shareRoom.uploadFileNames.map((fileName) => `${host}/api/shareRoom/display/${fileName}`)}
+              images={shareRoom.uploadFileNames.map((fileName) => `/api/shareRoom/display/${fileName}`)}
               closeModal={closeModal}
             />
             {info && <InfoModal title={'알림'} content={`${info}`} callbackFn={closeInfoModal} />}

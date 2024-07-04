@@ -1,18 +1,16 @@
 import axios from 'axios';
 import { getCookie, setCookie } from './cookieUtil';
-import { API_SERVER_HOST } from '../api/todoApi';
 
 // 액세스 토큰을 써야될 때 jwtAxios.post/get
 // 그게 아닌 경우 axios.post/get (userApi.js)
 const jwtAxios = axios.create();
 
 const refreshJWT = async (accessToken, refreshToken) => {
-  const host = API_SERVER_HOST;
 
   const header = { headers: { Authorization: `Bearer ${accessToken}` } };
 
   const res = await axios.get(
-    `${host}/api/user/refresh?refreshToken=${refreshToken}`,
+    `/api/user/refresh?refreshToken=${refreshToken}`,
     header
   );
 

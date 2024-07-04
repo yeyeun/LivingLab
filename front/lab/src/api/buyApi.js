@@ -1,6 +1,5 @@
 import axios from 'axios';
-export const API_SERVER_HOST = 'http://localhost:8282';
-const prefix = `${API_SERVER_HOST}/api/buy`;
+const prefix = `/api/buy`;
 
 export const getOne = async (buyNo) => {
   const res = await axios.get(`${prefix}/read/${buyNo}`);
@@ -62,5 +61,5 @@ export const myListAll = async (pageParam, id) => {
 };
 
 export const updateBuyFlag = (buyNo, flag) => {
-  return axios.post(`${API_SERVER_HOST}/api/buy/updateFlag`, { buyNo, flag });
+  return axios.post(`/api/buy/updateFlag`, { buyNo, flag });
 };

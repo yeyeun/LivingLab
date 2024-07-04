@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { API_SERVER_HOST, getLatestShareRoom } from '../../api/shareRoomApi';
+import { getLatestShareRoom } from '../../api/shareRoomApi';
 
-const host = API_SERVER_HOST;
 
 const ShareComponent = () => {
     const [latestPosts, setLatestPosts] = useState([]);
@@ -29,7 +28,7 @@ const ShareComponent = () => {
                     <li key={shareRoom.roomNo} className="main-roomlist">
                         <div className="main-roomlist-image">
                             <Link to={`/shareRoom/read/${shareRoom.roomNo}`}>
-                                <img className="main-roomlist-thumbnail" src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} alt={shareRoom.title} />
+                                <img className="main-roomlist-thumbnail" src={`/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} alt={shareRoom.title} />
                             </Link>
                         </div>
                         <div className='main-roomlist-content'>

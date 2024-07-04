@@ -14,11 +14,10 @@
 // 2) 카카오 인증 서버가 토큰을 발급해 서비스 서버에 전달합니다.
 
 import axios from 'axios';
-import { API_SERVER_HOST } from './userApi';
 
 const rest_api_key = 'ea0feb168fdd4ed8456013d8b2f26c49'; // 이메일 나오는 rest api 키 받음
 
-const redirect_uri = 'http://localhost:3000/user/kakao'; //카카오 로그인에서 사용할 OAuth Redirect URI를 설정
+const redirect_uri = 'https://livinglab2.kro.kr:22222/user/kakao'; //카카오 로그인에서 사용할 OAuth Redirect URI를 설정
 
 const auth_code_path = 'https://kauth.kakao.com/oauth/authorize'; // 인가 코드 받는 경로
 
@@ -70,7 +69,7 @@ export const getAccessToken = async (authCode) => {
 
 // 리액트에서 api 서버 호출
 export const getUserWithAccessToken = async (accessToken) => {
-  const res = await axios.get(`${API_SERVER_HOST}/api/user/kakao?accessToken=${accessToken}`);
+  const res = await axios.get(`/api/user/kakao?accessToken=${accessToken}`);
 
   return res.data;
 };

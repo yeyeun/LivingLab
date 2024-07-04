@@ -1,7 +1,6 @@
 import axios from 'axios';
-export const API_SERVER_HOST = 'http://localhost:8282';
 
-const host = `${API_SERVER_HOST}/mail`;
+const host = `/mail`;
 
 // 이메일 입력 시 인증번호 이메일로 발송
 export const mailSend = async (email) => {

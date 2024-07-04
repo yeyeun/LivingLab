@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { modify, getOne, API_SERVER_HOST } from "../../api/teamApi";
+import { modify, getOne } from "../../api/teamApi";
 import ResultModal from "../common/ResultModal";
 import useCustomMove from "../../hooks/useCustomMove";
 import PostComponent from '../common/PostComponent';
@@ -22,7 +22,6 @@ const initState = {
   };
 
 
-const host = API_SERVER_HOST;
 
 const ModifyComponent = ({teamNo}) => {
     const [result, setResult] = useState(null);
@@ -187,7 +186,7 @@ const ModifyComponent = ({teamNo}) => {
             <div className="col-start-3 col-span-4 mt-2 border rounded overflow-x-scroll whitespace-nowrap">
             {team.uploadFileNames.map((imgFile, index) =>
               <div key={index} className="relative m-3 w-36 h-36 inline-block align-top border">
-                <img src={`${host}/api/team/display/${imgFile}`} alt="team" className="w-36 h-36 object-cover"/>
+                <img src={`/api/team/display/${imgFile}`} alt="team" className="w-36 h-36 object-cover"/>
                 <button type="button" onClick={() => handleRemoveImage(index,false)}
                   className="absolute top-2 right-2 bg-slate-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-slate-600"
                   aria-label="Remove image">

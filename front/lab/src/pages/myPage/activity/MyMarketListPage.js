@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useCustomMyPage from '../../../hooks/useCustomMyPage';
-import { API_SERVER_HOST, myListAll } from '../../../api/marketApi';
+import { myListAll } from '../../../api/marketApi';
 import PageComponent from '../../../components/common/PageComponent';
 
 const initState = {
@@ -17,7 +17,6 @@ const initState = {
   current: 0,
 };
 
-const host = API_SERVER_HOST;
 
 const MyMarketListPage = () => {
   const { page, size, moveToMarketList, moveToRead } = useCustomMyPage();
@@ -75,7 +74,7 @@ const MyMarketListPage = () => {
                           serverData.dtoList.map((market) => (
                             <div className="flex border p-2 m-1 w-[49%] h-48 box-border cursor-pointer hover:bg-slate-100" onClick={() => moveToRead(`market`, market.marketNo)}>
                               <div className="h-full w-48">
-                                <img className="object-cover h-full w-full shadow" src={`${host}/api/market/display/${market.uploadFileNames[0]}`} alt='...' />
+                                <img className="object-cover h-full w-full shadow" src={`/api/market/display/${market.uploadFileNames[0]}`} alt='...' />
                               </div>
                               <div className="p-4 w-full">
                                 <div className="flex justify-between items-start">

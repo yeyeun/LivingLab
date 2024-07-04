@@ -3,9 +3,8 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ResultModal from '../common/ResultModal';
 import { chatUserInfoTeam, exitChatRoomTeam } from '../../api/chatApi';
-import { getUser, API_SERVER_HOST } from '../../api/userApi';
+import { getUser } from '../../api/userApi';
 
-const host = API_SERVER_HOST;
 
 const PartComponent = ({ teamNo }) => {
   const [chatroomInfo, setChatroomInfo] = useState(null);
@@ -77,7 +76,7 @@ const PartComponent = ({ teamNo }) => {
           <div>
             {displayUsers.map((user) => (
               <div className="flex p-5" key={user.id}>
-                <img alt="Profile_Img" src={`${host}/api/user/display/${user.profileImage}`} className="rounded-full size-10 mr-2" />
+                <img alt="Profile_Img" src={`/api/user/display/${user.profileImage}`} className="rounded-full size-10 mr-2" />
                 {user.nickname}
               </div>
             ))}

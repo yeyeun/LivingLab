@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { API_SERVER_HOST, getLatestTeam } from '../../api/teamApi';
+import { getLatestTeam } from '../../api/teamApi';
 import PersonImg from '../../resources/images/person_num.png';
 
 
-const host = API_SERVER_HOST;
 
 const TeamPostComponent = () => {
     const [latestPosts, setLatestPosts] = useState([]);
@@ -68,7 +67,7 @@ const TeamPostComponent = () => {
                                         <div class="flex gap-3 bg-white rounded overflow-hidden items-center justify-start">
 
                                             <div class="relative w-32 h-32 flex-shrink-0">
-                                                <img class="absolute left-0 top-0 w-full h-full object-cover object-center transition duration-50" loading="lazy" src={`${host}/api/team/display/${team.uploadFileNames[0]}`} />
+                                                <img class="absolute left-0 top-0 w-full h-full object-cover object-center transition duration-50" loading="lazy" src={`/api/team/display/${team.uploadFileNames[0]}`} />
                                             </div>
 
                                             <div class="flex flex-col w-full gap-2 py-2 mr-3">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { API_SERVER_HOST, getList, updateMarketFlag } from '../../api/marketApi';
+import { getList, updateMarketFlag } from '../../api/marketApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import PageComponent from '../common/PageComponent';
 import { getUser } from '../../api/userApi';
@@ -28,7 +28,6 @@ const initUser = {
   longitude: 0,
 };
 
-const host = API_SERVER_HOST;
 
 const ListComponent = ({ search, sort }) => {
   const { page, size, moveToList, moveToRead } = useCustomMove();
@@ -151,7 +150,7 @@ const ListComponent = ({ search, sort }) => {
           <div key={market.marketNo} className="w-full mb-4 cursor-pointer" onClick={() => moveToRead(market.marketNo)}>
             <div className="flex flex-col items-center px-5 bg-white border border-gray-200 rounded-lg shadow sm:flex-row hover:bg-gray-100">
               <div className="w-60 h-48">
-                <img className="w-full h-full object-cover rounded-none border-2" src={`${host}/api/market/display/${market.uploadFileNames[0]}`} alt="..." />
+                <img className="w-full h-full object-cover rounded-none border-2" src={`/api/market/display/${market.uploadFileNames[0]}`} alt="..." />
               </div>
               <div className="flex flex-col p-4 ml-5 leading-normal w-full">
                 <div className="mb-2 inline-flex items-center">

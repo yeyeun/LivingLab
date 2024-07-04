@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { modify, getOne, API_SERVER_HOST } from "../../api/shareRoomApi";
+import { modify, getOne } from "../../api/shareRoomApi";
 import ResultModal from "../common/ResultModal";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PostComponentForRoom from "../../components/shareRoom/PostComponentForRoom";
@@ -17,8 +17,7 @@ const initState = {
     location: '',
     files: [],
     uploadFileNames: []
-}//
-const host = API_SERVER_HOST;
+}
 
 const ModifyComponent = ({ roomNo }) => {
     const [shareRoom, setShareRoom] = useState(initState)
@@ -386,7 +385,7 @@ const ModifyComponent = ({ roomNo }) => {
                                     <div className="col-start-3 col-span-4 mt-2 border rounded overflow-x-scroll whitespace-nowrap">
                                         {shareRoom.uploadFileNames.map((imgFile, index) =>
                                             <div key={index} className="relative m-3 w-36 h-36 inline-block align-top border">
-                                                <img src={`${host}/api/shareRoom/display/${imgFile}`} alt="shareRoom" className="w-36 h-36 object-cover" />
+                                                <img src={`/api/shareRoom/display/${imgFile}`} alt="shareRoom" className="w-36 h-36 object-cover" />
                                                 <button type="button" onClick={() => handleRemoveImage(index, false)}
                                                     className="absolute top-2 right-2 bg-slate-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-slate-600"
                                                     aria-label="Remove image">

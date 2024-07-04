@@ -1,7 +1,6 @@
 import axios from 'axios';
-export const API_SERVER_HOST = 'http://localhost:8282';
 
-const host = `${API_SERVER_HOST}/api/user`;
+const host = `/api/user`;
 
 // 로그인
 export const loginPost = async (loginParam) => {

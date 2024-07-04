@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { API_SERVER_HOST, deleteOne, getOne, increaseLike, decreaseLike } from '../../api/marketApi';
+import { deleteOne, getOne, increaseLike, decreaseLike } from '../../api/marketApi';
 import { useSelector } from 'react-redux';
 import { postCreateRoom, chatUserInfoMarket } from '../../api/chatApi';
 import Slider from 'react-slick';
@@ -35,7 +35,6 @@ const initState2 = {
   marketNo: 0,
 };
 
-const host = API_SERVER_HOST;
 
 const ReadComponent = ({ marketNo }) => {
   const [result, setResult] = useState(null); //삭제 전용 모달창
@@ -215,11 +214,11 @@ const ReadComponent = ({ marketNo }) => {
           {market.uploadFileNames.length > 0 ? (
             <Slider {...settings}>
               {market.uploadFileNames.map((imgFile, i) => (
-                <img alt="market" key={i} src={`${host}/api/market/display/${imgFile}`} className="object-contain w-full h-72" />
+                <img alt="market" key={i} src={`/api/market/display/${imgFile}`} className="object-contain w-full h-72" />
               ))}
             </Slider>
           ) : (
-            <img alt="market" src={`${host}/api/market/display/default.png`} className="object-contain w-full h-72" />
+            <img alt="market" src={`/api/market/display/default.png`} className="object-contain w-full h-72" />
           )}
         </div>
         <div className="col-start-2 col-span-3 text-base">

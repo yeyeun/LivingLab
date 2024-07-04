@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { API_SERVER_HOST, getUser } from '../../../api/userApi';
+import { getUser } from '../../../api/userApi';
 
 const initState = {
   id: 0,
@@ -17,7 +17,6 @@ const initState = {
   profileImage: '',
 };
 
-const host = API_SERVER_HOST;
 
 const MyInfoComponent = () => {
   const [user, setUser] = useState(initState);
@@ -45,7 +44,7 @@ const MyInfoComponent = () => {
         <div className="flex justify-center">
           <div className="w-1/3 p-3 text-left font-bold">프로필 사진</div>
           <div className="relative mb-4 flex w-full items-stretch">
-            <img src={`${host}/api/user/display/${user.profileImage}`} alt="프로필이미지" className="rounded-full size-40 mx-auto" />
+            <img src={`/api/user/display/${user.profileImage}`} alt="프로필이미지" className="rounded-full size-40 mx-auto" />
           </div>
         </div>
 

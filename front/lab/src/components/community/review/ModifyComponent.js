@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { modifyReview, getOneReview, API_SERVER_HOST } from "../../../api/communityApi";
+import { modifyReview, getOneReview } from "../../../api/communityApi";
 import ResultModal from "../../common/ResultModal";
 import useCustomReview from "../../../hooks/useCustomReview";
 
@@ -15,7 +15,6 @@ const initState = {
     uploadFileNames: []
 };
 
-const host = API_SERVER_HOST;
 
 const ModifyComponent = ({commNo}) => {
     const [result, setResult] = useState(null);
@@ -152,7 +151,7 @@ const ModifyComponent = ({commNo}) => {
                             <div className="flex flex-wrap items-start">
                                 {review.uploadFileNames.map((imgFile, index) =>
                                     <div key={index} className="relative inline-block">
-                                        <img alt="review" src={`${host}/api/community/review/display/${imgFile}`} className="my-3 mx-1 w-36 h-36 object-cover" />
+                                        <img alt="review" src={`/api/community/review/display/${imgFile}`} className="my-3 mx-1 w-36 h-36 object-cover" />
                                         <button type="button"
                                             onClick={() => handleRemoveImage(index, false)}
                                             className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"

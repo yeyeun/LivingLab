@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { API_SERVER_HOST, getLatestMarket } from '../../api/marketApi';
+import { getLatestMarket } from '../../api/marketApi';
 
 
-const host = API_SERVER_HOST;
 
 const MarketPostComponent = () => {
     const [latestPosts, setLatestPosts] = useState([]);
@@ -29,7 +28,7 @@ const MarketPostComponent = () => {
                     <li key={market.marketNo} className="main-marketlist">
                         <div className="main-marketlist-image">
                             <Link to={`/market/read/${market.marketNo}`}>
-                                <img className="main-marketlist-thumbnail" src={`${host}/api/market/display/${market.uploadFileNames[0]}`} alt={market.title} />
+                                <img className="main-marketlist-thumbnail" src={`/api/market/display/${market.uploadFileNames[0]}`} alt={market.title} />
                             </Link>
                         </div>
                         <div className="main-marketlist-titlebox">
@@ -53,7 +52,7 @@ const MarketPostComponent = () => {
                     <li key={market.marketNo} className="main-marketlist">
                         <div className="main-marketlist-image">
                             <Link to={`/market/read/${market.marketNo}`}>
-                                <img className="main-marketlist-thumbnail" src={`${host}/api/market/display/${market.uploadFileNames[0]}`} alt={market.title} />
+                                <img className="main-marketlist-thumbnail" src={`/api/market/display/${market.uploadFileNames[0]}`} alt={market.title} />
                             </Link>
                         </div>
                         <div className="main-marketlist-titlebox">
@@ -77,7 +76,7 @@ const MarketPostComponent = () => {
                     <li key={market.marketNo} className="main-marketlist">
                         <div className="main-marketlist-image">
                             <Link to={`/market/read/${market.marketNo}`}>
-                                <img className="main-marketlist-thumbnail" src={`${host}/api/market/display/${market.uploadFileNames[0]}`} alt={market.title} />
+                                <img className="main-marketlist-thumbnail" src={`/api/market/display/${market.uploadFileNames[0]}`} alt={market.title} />
                             </Link>
                         </div>
                         <div className="main-marketlist-titlebox">

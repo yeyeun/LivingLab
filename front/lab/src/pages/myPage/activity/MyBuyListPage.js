@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useCustomMyPage from '../../../hooks/useCustomMyPage';
-import { API_SERVER_HOST, myListAll } from '../../../api/buyApi';
+import { myListAll } from '../../../api/buyApi';
 import PageComponent from '../../../components/common/PageComponent';
 
 const initState = {
@@ -17,7 +17,6 @@ const initState = {
   current: 0,
 };
 
-const host = API_SERVER_HOST;
 
 const MyBuyListPage = () => {
   const { page, size, moveToBuyList, moveToRead } = useCustomMyPage();
@@ -75,7 +74,7 @@ const MyBuyListPage = () => {
                           serverData.dtoList.map((buy) => (
                             <div className="flex border p-2 m-1 w-[49%] h-48 box-border cursor-pointer hover:bg-slate-100" onClick={() => moveToRead(`buy`, buy.buyNo)}>
                               <div className="h-full w-48">
-                                <img className="object-cover h-full w-full shadow" src={`${host}/api/buy/display/${buy.uploadFileNames[0]}`} alt='...' />
+                                <img className="object-cover h-full w-full shadow" src={`/api/buy/display/${buy.uploadFileNames[0]}`} alt='...' />
                               </div>
                               <div className="p-5 w-full">
                                 <div className="flex justify-between items-start">

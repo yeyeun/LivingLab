@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { modifyTip, getOneTip, API_SERVER_HOST } from "../../../api/communityApi";
+import { modifyTip, getOneTip } from "../../../api/communityApi";
 import ResultModal from "../../common/ResultModal";
 import useCustomTip from "../../../hooks/useCustomTip";
 
@@ -15,7 +15,6 @@ const initState = {
     uploadFileNames: []
 };
 
-const host = API_SERVER_HOST;
 
 const ModifyComponent = ({commNo}) => {
     const [result, setResult] = useState(null);
@@ -152,7 +151,7 @@ const ModifyComponent = ({commNo}) => {
                             <div className="flex flex-wrap items-start">
                                 {tip.uploadFileNames.map((imgFile, index) =>
                                     <div key={index} className="relative inline-block">
-                                        <img alt="tip" src={`${host}/api/community/tip/display/${imgFile}`} className="my-3 mx-1 w-36 h-36 object-cover" />
+                                        <img alt="tip" src={`/api/community/tip/display/${imgFile}`} className="my-3 mx-1 w-36 h-36 object-cover" />
                                         <button type="button"
                                             onClick={() => handleRemoveImage(index, false)}
                                             className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"

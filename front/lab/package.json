@@ -1,7 +1,7 @@
 {
   "name": "lab",
   "version": "0.1.0",
-  "proxy": "http://localhost:8282",
+  "proxy": "https://223.130.157.92:22221/",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -19,6 +19,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "global": "^4.4.0",
+    "gsap": "^3.12.5",
     "install": "^0.13.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.379.0",

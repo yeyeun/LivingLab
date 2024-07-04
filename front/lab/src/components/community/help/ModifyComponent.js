@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { modifyHelp, getOneHelp, API_SERVER_HOST } from "../../../api/communityApi";
+import { modifyHelp, getOneHelp } from "../../../api/communityApi";
 import ResultModal from "../../common/ResultModal";
 import useCustomHelp from "../../../hooks/useCustomHelp";
 
@@ -15,7 +15,6 @@ const initState = {
     uploadFileNames: []
 };
 
-const host = API_SERVER_HOST;
 
 const ModifyComponent = ({commNo}) => {
     const [result, setResult] = useState(null);
@@ -140,7 +139,7 @@ const ModifyComponent = ({commNo}) => {
                             <div className="flex flex-wrap items-start">
                                 {help.uploadFileNames.map((imgFile, index) =>
                                     <div key={index} className="relative inline-block">
-                                        <img alt="help" src={`${host}/api/community/help/display/${imgFile}`} className="my-3 mx-1 w-36 h-36 object-cover" />
+                                        <img alt="help" src={`/api/community/help/display/${imgFile}`} className="my-3 mx-1 w-36 h-36 object-cover" />
                                         <button type="button"
                                             onClick={() => handleRemoveImage(index, false)}
                                             className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"

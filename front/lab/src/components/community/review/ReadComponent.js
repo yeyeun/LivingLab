@@ -1,7 +1,7 @@
 import ReplyComponent from "../../common/ReplyComponent";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
-import { API_SERVER_HOST, getOneReview, deleteOne, increaseLike, decreaseLike } from "../../../api/communityApi";
+import { getOneReview, deleteOne, increaseLike, decreaseLike } from "../../../api/communityApi";
 import { addReply, getList } from "../../../api/replyApi";
 import { likeClick, unlikeClick, likeInfo } from '../../../api/likeApi';
 import useCustomReview from "../../../hooks/useCustomReview";
@@ -27,7 +27,6 @@ const initState2 = {
 };
 
 
-const host = API_SERVER_HOST;
 
 const ReadComponent = ({commNo}) => {
     const [result, setResult] = useState(null); //게시글 삭제 모달창
@@ -164,7 +163,7 @@ const ReadComponent = ({commNo}) => {
                                 alt="review"
                                 key={i}
                                 width={600}
-                                src={`${host}/api/community/review/display/${imgFile}`}
+                                src={`/api/community/review/display/${imgFile}`}
                                 className="my-3" />
                         )}
 

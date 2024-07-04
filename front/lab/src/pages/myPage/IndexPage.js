@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import BasicLayout from '../../layouts/BasicLayout';
-import { API_SERVER_HOST, getUser } from '../../api/userApi';
+import { getUser } from '../../api/userApi';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 import chatIcon1 from '../../resources/images/chat_black.png';
@@ -24,7 +24,6 @@ const initState = {
   profileImage: '',
 };
 
-const host = API_SERVER_HOST;
 
 const IndexPage = () => {
   const navigate = useNavigate();
@@ -82,7 +81,7 @@ const IndexPage = () => {
           <div className="min-h-screen flex flex-row w-4/5 mx-auto my-10">
             <div className="flex flex-col w-1/5 bg-white overflow-hidden h-fit rounded mr-5 shadow-md">
               <ul className="flex flex-col py-4 my-8">
-                <img src={`${host}/api/user/display/${user.profileImage}`} alt="프로필이미지" className="rounded-full w-40 h-40 mx-auto shadow-md object-cover" />
+                <img src={`/api/user/display/${user.profileImage}`} alt="프로필이미지" className="rounded-full w-40 h-40 mx-auto shadow-md object-cover" />
 
                 <li>
                   <div className="flex items-center pt-3 pb-10 text-gray-900 rounded-lg dark:text-white">

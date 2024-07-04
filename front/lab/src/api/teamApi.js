@@ -1,6 +1,6 @@
 import axios from 'axios';
-export const API_SERVER_HOST = 'http://localhost:8282';
-const prefix = `${API_SERVER_HOST}/api/team`;
+
+const prefix = `/api/team`;
 
 export const getOne = async (teamNo) => {
   const res = await axios.get(`${prefix}/read/${teamNo}`);
@@ -59,5 +59,5 @@ export const myListAll = async (pageParam, id) => {
 };
 
 export const updateTeamFlag = (teamNo, flag) => {
-  return axios.post(`${API_SERVER_HOST}/api/team/updateFlag`, { teamNo, flag });
+  return axios.post(`/api/team/updateFlag`, { teamNo, flag });
 };

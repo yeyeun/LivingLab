@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { modify, getOne, API_SERVER_HOST } from '../../api/buyApi';
+import { modify, getOne } from '../../api/buyApi';
 import ResultModal from '../common/ResultModal';
 import useCustomMove from '../../hooks/useCustomMove';
 import PostComponent from '../common/PostComponent';
@@ -21,7 +21,6 @@ const initState = {
   uploadFileNames: [],
 };
 
-const host = API_SERVER_HOST;
 
 const ModifyComponent = ({ buyNo }) => {
   const [result, setResult] = useState(null);
@@ -202,7 +201,7 @@ const ModifyComponent = ({ buyNo }) => {
         <div className="col-start-3 col-span-4 mt-2 border rounded overflow-x-scroll whitespace-nowrap">
           {buy.uploadFileNames.map((imgFile, index) => (
             <div key={index} className="relative m-3 w-36 h-36 inline-block align-top border">
-              <img src={`${host}/api/buy/display/${imgFile}`} alt="buy" className="w-36 h-36 object-cover" />
+              <img src={`/api/buy/display/${imgFile}`} alt="buy" className="w-36 h-36 object-cover" />
               <button
                 type="button"
                 onClick={() => handleRemoveImage(index, false)}

@@ -18,7 +18,7 @@ const ChatWindow = ({ room }) => {
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8282/ws'); // SockJS 연결 URL
+    const socket = new SockJS('https://livinglab2.kro.kr:22222/ws'); // SockJS 연결 URL
     const stomp = Stomp.over(socket);
 
     stomp.connect({}, frame => {

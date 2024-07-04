@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { API_SERVER_HOST, getList } from "../../api/shareRoomApi";
+import { getList } from "../../api/shareRoomApi";
 import useRoomCustomMove from "../../hooks/useRoomCustomMove";
 import PageComponent from "../common/PageComponent";
 import LandingComponent from  "../common/mapSearch/LandingComponent";
 
-const host = API_SERVER_HOST;
 const initState = {
   dtoList: [],
   pageNumList: [],
@@ -52,7 +51,7 @@ const ListComponent = ({ search, sort }) => {
             className={`group mx-12 overflow-hidden rounded-sm shadow-lg h-90 w-60 md:w-80 relative ${shareRoom.recruit === '종료' ? 'pointer-events-none' : 'cursor-pointer'}`}
             onClick={shareRoom.recruit === '진행 중' ? () => moveToRead(shareRoom.roomNo) : null}
           >
-            <img alt="..." src={`${host}/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} className="object-cover w-full max-h-40 transition duration-500 group-hover:blur-xl group-hover:brightness-150"/>
+            <img alt="..." src={`/api/shareRoom/display/${shareRoom.uploadFileNames[0]}`} className="object-cover w-full max-h-40 transition duration-500 group-hover:blur-xl group-hover:brightness-150"/>
             {shareRoom.recruit === '종료' && (
               <div className="absolute top-0 w-full h-full flex flex-col items-center justify-center bg-black bg-opacity-50 text-white">
                 <p className="text-xl font-bold">종료되었습니다</p>

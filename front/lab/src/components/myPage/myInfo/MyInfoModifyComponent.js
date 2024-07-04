@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { API_SERVER_HOST, modifyUser, getUser } from '../../../api/userApi';
+import { modifyUser, getUser } from '../../../api/userApi';
 import { Link } from 'react-router-dom';
 import PostComponent from '../../common/PostComponent';
 
@@ -17,7 +17,6 @@ const initState = {
   file: null
 };
 
-const host = API_SERVER_HOST;
 
 const MyInfoModifyComponent = () => {
   const [user, setUser] = useState(initState);
@@ -106,7 +105,7 @@ const MyInfoModifyComponent = () => {
             <div className="w-1/3 p-3 text-left font-bold">프로필 사진</div>
             <div className="relative mb-4 flex w-full items-stretch">
               <div className="mt-2">
-                <img src={previewImageUrl ? previewImageUrl : `${host}/api/user/display/${user.profileImage}`} alt="프로필이미지" className="rounded-full size-40 mx-auto" />
+                <img src={previewImageUrl ? previewImageUrl : `/api/user/display/${user.profileImage}`} alt="프로필이미지" className="rounded-full size-40 mx-auto" />
                 <div class="flex">
                   <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} ref={inputRef} />
                   <button
