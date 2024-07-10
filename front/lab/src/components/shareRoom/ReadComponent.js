@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { API_SERVER_HOST, getOne, deleteOne, increaseLike, decreaseLike } from '../../api/shareRoomApi';
 import { likeClick, unlikeClick, likeInfo } from '../../api/likeApi';
 import { postCreateRoom, chatUserInfoShare } from '../../api/chatApi';
+
+import { addReply, getList } from "../../api/roomreplyApi";
+import ReplyComponent from "../common/RoomReplyComponent";
+
 import useRoomCustomMove from '../../hooks/useRoomCustomMove';
 import { useSelector } from 'react-redux';
 import MapComponentForRoom from '../../components/shareRoom/MapComponentForRoom';
@@ -40,12 +44,16 @@ const ReadComponent = ({ roomNo }) => {
   const [addResultModal, setAddResultModal] = useState(null); //참여 모달창
   const [isLiked, setIsLiked] = useState({}); // true/false에 따라 하트 이미지 변경
   const [info, setInfo] = useState(null);
+  const [input, setInput] = useState(''); //댓글 내용
   const { moveToModify, moveToList } = useRoomCustomMove();
   const [result, setResult] = useState(null);
+  const [replies, setReplies] = useState([]);
   const loginState = useSelector((state) => state.loginSlice);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const loginInfo = useSelector((state) => state.loginSlice);
   const email = loginState?.email;
   const ino = loginState.id;
+  const id = loginInfo.id;
   const [roomData, setRoomData] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -54,6 +62,13 @@ const ReadComponent = ({ roomNo }) => {
       setShareRoom(data);
     });
   }, [roomNo, info, addResultModal]);
+
+  //댓글 리스트 호출
+  useEffect(() => {
+    getList(roomNo).then(data => {
+        setReplies(data);
+    });
+  }, [roomNo, addResultModal]);
 
   useEffect(() => {
     if (email) {
@@ -69,6 +84,26 @@ const ReadComponent = ({ roomNo }) => {
       });
     }
   }, [email, info, roomNo, ino]);
+
+    // 댓글 등록
+    const handleClickAddReply = () => {
+      if(!email){
+          setAddResultModal("로그인 후 이용할 수 있습니다");
+          return;
+      }
+      if(!input){
+          setAddResultModal("내용을 입력해주세요");
+          return;
+      }
+      const newComment = {
+          id: id,
+          content: input,
+          roomNo : roomNo
+      };
+      addReply(newComment);
+      setAddResultModal("댓글이 등록되었습니다");
+      setInput('');
+  };
 
   useEffect(() => {
     const fetchRoomData = async () => {
@@ -157,6 +192,11 @@ const ReadComponent = ({ roomNo }) => {
     setAddResultModal(null);
     window.location.reload();
   };
+
+  //ReplyComponent에서 보낸 메세지값 처리
+  const setModalMessage = (message) => {
+    setAddResultModal(message);
+  }
 
   // 좋아요 버튼 클릭
   const handleLikeClick = () => {
@@ -343,6 +383,46 @@ const ReadComponent = ({ roomNo }) => {
             )}
           </div>
         </div>
+        <div className='w-[1200px] mx-auto'>
+                            <div className="my-6 flex items-center space-x-2">
+                                <input
+                                    type="text"
+                                    placeholder="댓글을 입력해주세요"
+                                    value={input}
+                                    className="flex-1 py-2 px-2 text-base bg-white rounded-lg border border-gray-200"
+                                    onChange={e => setInput(e.target.value)}
+                                    onKeyDown={e => (e.key === 'Enter' ? handleClickAddReply() : null)}
+                                />
+                                <button
+                                    type="button"
+                                    className="py-2.5 px-4 text-xs font-medium text-center text-white bg-subColor opacity-90 rounded-lg hover:bg-amber-900"
+                                    onClick={handleClickAddReply}
+                                >
+                                    댓글 등록
+                                </button>
+                            </div>
+
+                        </div>
+                        {replies.length > 0 ? (
+                            replies.map(roomreply =>
+                                <ReplyComponent
+                                    replyNo={roomreply.replyNo}
+                                    id={roomreply.id}
+                                    content={roomreply.content}
+                                    regDate={roomreply.regDate}
+                                    isWriter={shareRoom.id === roomreply.id? true : false}
+                                    isEdit={id === roomreply.id? true : false}
+                                    callbackFn={setModalMessage}
+                                />    
+                            )
+                        )
+                        :
+                        (
+                            <div className="flex justify-center text-base">
+                                등록된 댓글이 없습니다
+                            </div>
+                        )}
+
       </div>
       {result && <ResultModal title={'알림'} content={`${result}`} callbackFn={closeResultModal} />}
       {addResultModal && <BasicModal title={'알림'} content={`${addResultModal}`} callbackFn={closeBasicModal} />}
